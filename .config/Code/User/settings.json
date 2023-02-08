@@ -150,7 +150,5 @@
         "files.insertFinalNewline": false,
         "files.trimFinalNewlines": true
     },
-    "[ansible]": {
-        "editor.defaultFormatter": "trunk.io"
-    },
+    "update.showReleaseNotes": false,
 }

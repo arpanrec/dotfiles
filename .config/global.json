@@ -4,8 +4,6 @@
     "VAULT": {
         "FQDN": "172-105-47-176.ip.linodeusercontent.com",
         "PORT": 8200,
-        "TLS": false,
-        "REQUIRE_CLIENT_CERT": false
     },
     "GITHUB": {
         "USER": "arpanrecme"

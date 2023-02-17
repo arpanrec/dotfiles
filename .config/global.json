@@ -1,6 +1,15 @@
 {
     "_self": "https://raw.githubusercontent.com/arpanrecme/dotfiles/main/.config/global.json",
     "EMAIL": "arpan.rec@gmail.com",
+    "SEED": {
+        "S3": {
+            "HOST": "s3.seed.arpanrec.com",
+            "PORT": 9000,
+            "REGION": "ap-south-1",
+            "PROTOCOL": "https",
+            "MINIO_CONSOLE_PORT": 9095
+        }
+    },
     "VAULT": {
         "FQDN": "192-46-208-217.ip.linodeusercontent.com",
         "PORT": 8200,

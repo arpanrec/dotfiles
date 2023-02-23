@@ -17,3 +17,5 @@
 	autocrlf = false
 [fetch]
 	prune = false
+[advice]
+	detachedHead = false

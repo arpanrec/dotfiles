@@ -3,7 +3,7 @@
     "EMAIL": "arpan.rec@gmail.com",
     "SEED": {
         "POSTGRES": {
-            "HOST": "posrgres.seed.arpanrec.com",
+            "FQDN": "posrgres.seed.arpanrec.com",
             "PORT": 9000
         },
         "VAULT": {

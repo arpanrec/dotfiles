@@ -3,11 +3,11 @@
     "EMAIL": "arpan.rec@gmail.com",
     "SEED": {
         "POSTGRES": {
-            "FQDN": "posrgres.seed.arpanrec.com",
+            "FQDN": "postgres.me.dev.arpanrec.com",
             "PORT": 9000
         },
         "VAULT": {
-            "FQDN": "vault.seed.arpanrec.com",
+            "FQDN": "vault.me.dev.arpanrec.com",
             "PORT": 8200,
             "PROTOCOL": "https",
             "TLS": true

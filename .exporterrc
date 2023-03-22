@@ -81,6 +81,11 @@ if [[ -f "$HOME/.local/share/gradle/bin/gradle" ]] && [[ ! "$PATH" =~ $HOME/.loc
     export PATH
 fi
 
+if [[ -f "$HOME/.local/share/coursier/bin/cs" ]] && [[ ! "$PATH" =~ $HOME/.local/share/coursier/bin: ]]; then
+    PATH="$HOME/.local/share/coursier/bin:$PATH"
+    export PATH
+fi
+
 if hash mvn &>/dev/null; then
     M2_HOME=$(dirname "$(dirname "$(readlink -f "$(which mvn)")")")
     export M2_HOME

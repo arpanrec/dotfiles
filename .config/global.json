@@ -9,8 +9,12 @@
         "VAULT": {
             "FQDN": "vault.me.dev.arpanrec.com",
             "PORT": 8200,
-            "PROTOCOL": "https",
-            "TLS": true
+            "PROTOCOL": "https"
+        },
+        "DAVFS": {
+            "FQDN": "dav.me.dev.arpanrec.com",
+            "PORT": 8885,
+            "PROTOCOL": "https"
         }
     },
     "GITHUB": {

@@ -3,16 +3,16 @@
     "EMAIL": "arpan.rec@gmail.com",
     "SEED": {
         "POSTGRES": {
-            "FQDN": "postgres.me.dev.arpanrec.com",
+            "FQDN": "postgres.me.arpanrec.com",
             "PORT": 9000
         },
         "VAULT": {
-            "FQDN": "vault.me.dev.arpanrec.com",
+            "FQDN": "vault.me.arpanrec.com",
             "PORT": 8200,
             "PROTOCOL": "https"
         },
         "FILES": {
-            "FQDN": "files.me.dev.arpanrec.com",
+            "FQDN": "files.me.arpanrec.com",
             "PORT": 4721,
             "PROTOCOL": "https"
         }

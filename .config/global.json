@@ -11,9 +11,9 @@
             "PORT": 8200,
             "PROTOCOL": "https"
         },
-        "DAVFS": {
-            "FQDN": "dav.me.dev.arpanrec.com",
-            "PORT": 8885,
+        "FILES": {
+            "FQDN": "files.me.dev.arpanrec.com",
+            "PORT": 4721,
             "PROTOCOL": "https"
         }
     },

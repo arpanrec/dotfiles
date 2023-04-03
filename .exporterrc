@@ -97,11 +97,6 @@ if ! [[ "$PATH" =~ $HOME/.local/bin:$HOME/bin: ]]; then
     export PATH
 fi
 
-if ! [[ "$PATH" =~ $HOME/.local/share/JetBrains/Toolbox/scripts: ]]; then
-    PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
-    export PATH
-fi
-
 export PATH
 
 GPG_TTY="$(tty)"

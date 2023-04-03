@@ -27,6 +27,7 @@ alias vim='nvim'
 # Password manager and Authentication manager
 # alias bwl='bw login --apikey'
 # alias bws='bw sync'
+alias bws='curl -X POST http://localhost:8087/sync -v'
 # alias bwu='export BW_SESSION=$(bw unlock --raw)'
 alias bwus='$HOME/.local/bin/bitwarden_utils.sh'
 alias s2g='ssh_auth_sock_to_gpg.sh'

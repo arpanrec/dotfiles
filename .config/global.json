@@ -28,8 +28,7 @@
     },
     "TERRAFORM_CLOUD": {
         "ORGANIZATION": "arpanrecme",
-        "HOSTNAME": "app.terraform.io",
-        "AUTH_POLICY": "two_factor_mandatory"
+        "HOSTNAME": "app.terraform.io"
     },
     "COUNTRY": "IN",
     "STATE": "WB",

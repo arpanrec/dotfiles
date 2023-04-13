@@ -3,16 +3,16 @@
     "EMAIL": "arpan.rec@gmail.com",
     "SEED": {
         "POSTGRES": {
-            "FQDN": "postgres.me.arpanrec.com",
+            "FQDN": "postgres.seed.me.arpanrec.com",
             "PORT": 9000
         },
         "VAULT": {
-            "FQDN": "vault.me.arpanrec.com",
+            "FQDN": "vault.seed.me.arpanrec.com",
             "PORT": 8200,
             "PROTOCOL": "https"
         },
         "FILES": {
-            "FQDN": "files.me.arpanrec.com",
+            "FQDN": "files.seed.me.arpanrec.com",
             "PORT": 4721,
             "PROTOCOL": "https"
         }
@@ -28,7 +28,8 @@
     },
     "TERRAFORM_CLOUD": {
         "ORGANIZATION": "arpanrecme",
-        "HOSTNAME": "app.terraform.io"
+        "HOSTNAME": "app.terraform.io",
+        "AUTH_POLICY": "two_factor_mandatory"
     },
     "COUNTRY": "IN",
     "STATE": "WB",

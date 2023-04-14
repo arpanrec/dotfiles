@@ -2,16 +2,16 @@
     "_self": "https://raw.githubusercontent.com/arpanrecme/dotfiles/main/.config/global.json",
     "EMAIL": "arpan.rec@gmail.com",
     "POSTGRES": {
-        "FQDN": "postgres.seed.me.arpanrec.com",
+        "FQDN": "postgres.me.arpanrec.com",
         "PORT": 9000
     },
     "VAULT": {
-        "FQDN": "vault.seed.me.arpanrec.com",
+        "FQDN": "vault.me.arpanrec.com",
         "PORT": 8200,
         "PROTOCOL": "https"
     },
     "FILES": {
-        "FQDN": "files.seed.me.arpanrec.com",
+        "FQDN": "files.me.arpanrec.com",
         "PORT": 4721,
         "PROTOCOL": "https"
     },

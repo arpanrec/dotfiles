@@ -1,21 +1,19 @@
 {
     "_self": "https://raw.githubusercontent.com/arpanrecme/dotfiles/main/.config/global.json",
     "EMAIL": "arpan.rec@gmail.com",
-    "SEED": {
-        "POSTGRES": {
-            "FQDN": "postgres.seed.me.arpanrec.com",
-            "PORT": 9000
-        },
-        "VAULT": {
-            "FQDN": "vault.seed.me.arpanrec.com",
-            "PORT": 8200,
-            "PROTOCOL": "https"
-        },
-        "FILES": {
-            "FQDN": "files.seed.me.arpanrec.com",
-            "PORT": 4721,
-            "PROTOCOL": "https"
-        }
+    "POSTGRES": {
+        "FQDN": "postgres.seed.me.arpanrec.com",
+        "PORT": 9000
+    },
+    "VAULT": {
+        "FQDN": "vault.seed.me.arpanrec.com",
+        "PORT": 8200,
+        "PROTOCOL": "https"
+    },
+    "FILES": {
+        "FQDN": "files.seed.me.arpanrec.com",
+        "PORT": 4721,
+        "PROTOCOL": "https"
     },
     "GITHUB": {
         "USER": "arpanrecme"

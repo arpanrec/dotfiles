@@ -114,10 +114,7 @@ fi
 
 export PATH
 
-if [ -t 1 ] ;
-then
-    export GPG_TTY="$TTY";
-fi
+export GPG_TTY=$(tty)
 
 
 # Not working on centos7 systems

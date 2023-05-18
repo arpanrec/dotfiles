@@ -153,4 +153,5 @@
   "update.showReleaseNotes": false,
   "githubPullRequests.createOnPublishBranch": "never",
   "git.openRepositoryInParentFolders": "always",
+  "workbench.editor.enablePreview": false
 }

@@ -98,7 +98,9 @@
     "**/ansible/**/*.yml": "ansible",
     "site*.yml": "ansible",
     "**/*.tf": "terraform",
-    "**/requirements.txt": "pip-requirements"
+    "**/requirements.txt": "pip-requirements",
+    "**/requirements-dev.in": "pip-requirements",
+    "**/requirements-dev.txt": "pip-requirements"
   },
   "ansible.validation": true,
   "ansible.ansibleLint.enabled": true,

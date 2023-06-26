@@ -155,5 +155,8 @@
   "update.showReleaseNotes": false,
   "githubPullRequests.createOnPublishBranch": "never",
   "git.openRepositoryInParentFolders": "always",
-  "workbench.editor.enablePreview": false
+  "workbench.editor.enablePreview": false,
+  "terminal.integrated.env.linux": {
+    "DEBUG": "true"
+  }
 }

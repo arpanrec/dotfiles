@@ -158,5 +158,12 @@
   "workbench.editor.enablePreview": false,
   "terminal.integrated.env.linux": {
     "DEBUG": "true"
+  },
+  "githubPullRequests.pullBranch": "never",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

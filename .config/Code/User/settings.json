@@ -100,7 +100,8 @@
     "**/*.tf": "terraform",
     "**/requirements.txt": "pip-requirements",
     "**/requirements-dev.in": "pip-requirements",
-    "**/requirements-dev.txt": "pip-requirements"
+    "**/requirements-dev.txt": "pip-requirements",
+    "**/.ansible-lint": "yaml"
   },
   "ansible.validation": true,
   "ansible.ansibleLint.enabled": true,

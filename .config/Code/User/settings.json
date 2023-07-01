@@ -46,10 +46,11 @@
   "git.enableSmartCommit": true,
   "security.workspace.trust.untrustedFiles": "open",
   "github.copilot.enable": {
-    "*": false,
-    "yaml": true,
+    "*": true,
     "plaintext": true,
     "markdown": true,
+    "scminput": false,
+    "yaml": true,
     "shellscript": true
   },
   "terminal.integrated.fontFamily": "'Hack Nerd Font'",
@@ -168,5 +169,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "liveServer.settings.donotVerifyTags": true,
-  "liveServer.settings.donotShowInfoMsg": true
+  "liveServer.settings.donotShowInfoMsg": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "ansible.lightspeed.enabled": true,
+  "ansible.lightspeed.suggestions.enabled": true
 }

@@ -51,7 +51,8 @@
     "markdown": true,
     "scminput": false,
     "yaml": true,
-    "shellscript": true
+    "shellscript": true,
+    "ansible": true
   },
   "terminal.integrated.fontFamily": "'Hack Nerd Font'",
   "editor.mouseWheelZoom": true,
@@ -102,7 +103,9 @@
     "**/requirements.txt": "pip-requirements",
     "**/requirements-dev.in": "pip-requirements",
     "**/requirements-dev.txt": "pip-requirements",
-    "**/.ansible-lint": "yaml"
+    "**/.ansible-lint": "yaml",
+    "**/ansible.cfg": "ini",
+    "**/.yamllint": "yaml"
   },
   "ansible.validation": true,
   "ansible.ansibleLint.enabled": true,

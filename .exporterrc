@@ -42,6 +42,10 @@ if ! [[ "$PATH" =~ /usr/sbin: ]]; then
     export PATH
 fi
 
+if [[ -f "/var/lib/snapd/snap/bin" ]] && [[ ! "$PATH" =~ /var/lib/snapd/snap/bin: ]]; then
+    PATH="/var/lib/snapd/snap/bin:$PATH"
+fi
+
 # shellcheck source=/dev/null
 if [ -f "$HOME/.secrets" ]; then
     source "$HOME/.secrets"

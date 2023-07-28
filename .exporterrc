@@ -55,6 +55,10 @@ for secret_file in ~/.secrets.d/*.sh; do
     source "${secret_file}"
 done
 
+if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "$PATH" =~ /var/lib/snapd/snap/bin: ]]; then
+    PATH="/var/lib/snapd/snap/bin:$PATH"
+fi
+
 if [ -f "$HOME/.local/share/go/bin/go" ] && [[ ! "$PATH" =~ $HOME/.local/share/go/bin: ]]; then
     PATH="$HOME/.local/share/go/bin:$PATH"
     export PATH
@@ -64,6 +68,12 @@ export GOPATH="$HOME/go"
 
 if [[ ! "$PATH" =~ $HOME/.go/bin: ]]; then
     PATH="$HOME/.go/bin:$PATH"
+    export PATH
+fi
+
+if [[ -f "$HOME/.local/share/groovy/bin/groovy" ]] && [[ ! "$PATH" =~ $HOME/.local/share/groovy/bin: ]]; then
+    PATH="$HOME/.local/share/groovy/bin:$PATH"
+    export GROOVY_HOME="$HOME/.local/share/groovy"
     export PATH
 fi
 

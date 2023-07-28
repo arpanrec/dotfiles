@@ -42,10 +42,6 @@ if ! [[ "$PATH" =~ /usr/sbin: ]]; then
     export PATH
 fi
 
-if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "$PATH" =~ /var/lib/snapd/snap/bin: ]]; then
-    PATH="/var/lib/snapd/snap/bin:$PATH"
-fi
-
 # shellcheck source=/dev/null
 if [ -f "$HOME/.secrets" ]; then
     source "$HOME/.secrets"
@@ -100,12 +96,6 @@ if [[ -f "$HOME/.local/share/gradle/bin/gradle" ]] && [[ ! "$PATH" =~ $HOME/.loc
     export PATH
 fi
 
-if [[ -f "$HOME/.local/share/groovy/bin/groovy" ]] && [[ ! "$PATH" =~ $HOME/.local/share/groovy/bin: ]]; then
-    PATH="$HOME/.local/share/groovy/bin:$PATH"
-    export GROOVY_HOME="$HOME/.local/share/groovy"
-    export PATH
-fi
-
 if [[ -f "$HOME/.local/share/coursier/bin/cs" ]] && [[ ! "$PATH" =~ $HOME/.local/share/coursier/bin: ]]; then
     PATH="$HOME/.local/share/coursier/bin:$PATH"
     export PATH
@@ -124,6 +114,7 @@ fi
 
 if [[ -f "$HOME/.cargo/bin/cargo" ]] && [[ ! "$PATH" =~ $HOME/.cargo/bin: ]]; then
     PATH="$HOME/.cargo/bin:$PATH"
+    source "$HOME/.cargo/env"
 fi
 
 export PATH

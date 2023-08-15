@@ -77,7 +77,6 @@
   "ansible.ansible.useFullyQualifiedCollectionNames": true,
   "ansible.validation.lint.path": "ansible-lint",
   "ansible.validation.enabled": true,
-  "ansible.executionEnvironment.enabled": true,
   "workbench.startupEditor": "none",
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,

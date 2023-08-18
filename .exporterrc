@@ -71,50 +71,19 @@ if [[ ! "$PATH" =~ $HOME/.go/bin: ]]; then
     export PATH
 fi
 
-if [[ -f "$HOME/.local/share/groovy/bin/groovy" ]] && [[ ! "$PATH" =~ $HOME/.local/share/groovy/bin: ]]; then
-    PATH="$HOME/.local/share/groovy/bin:$PATH"
-    export GROOVY_HOME="$HOME/.local/share/groovy"
-    export PATH
-fi
-
 if [ -f "$HOME/.local/share/node/bin/node" ] && [[ ! "$PATH" =~ $HOME/.local/share/node/bin: ]]; then
     PATH="$HOME/.local/share/node/bin:$PATH"
     export PATH
 fi
 
-if [[ -f "$HOME/.local/share/java/bin/java" ]] && [[ ! "$PATH" =~ $HOME/.local/share/java/bin: ]]; then
-    PATH="$HOME/.local/share/java/bin:$PATH"
-    export PATH
-fi
-
-if hash javac &>/dev/null; then
-    JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(which javac)")")")
-    export JAVA_HOME
-elif hash java &>/dev/null; then
-    JAVA_HOME=$(dirname "$(dirname "$(readlink -f "$(which java)")")")
-    export JAVA_HOME
-fi
-
-if [[ -f "$HOME/.local/share/maven/bin/mvn" ]] && [[ ! "$PATH" =~ $HOME/.local/share/maven/bin: ]]; then
-    PATH="$HOME/.local/share/maven/bin:$PATH"
-    export PATH
-fi
-
-if [[ -f "$HOME/.local/share/gradle/bin/gradle" ]] && [[ ! "$PATH" =~ $HOME/.local/share/gradle/bin: ]]; then
-    PATH="$HOME/.local/share/gradle/bin:$PATH"
-    export GRADLE_HOME="$HOME/.local/share/gradle"
-    export PATH
+if [ -f "$HOME/.jdk.env.sh" ]; then
+    # shellcheck source=/dev/null
+    source "${HOME}/.jdk.env.sh"
 fi
 
 if [[ -f "$HOME/.local/share/coursier/bin/cs" ]] && [[ ! "$PATH" =~ $HOME/.local/share/coursier/bin: ]]; then
     PATH="$HOME/.local/share/coursier/bin:$PATH"
     export PATH
-fi
-
-if hash mvn &>/dev/null; then
-    M2_HOME=$(dirname "$(dirname "$(readlink -f "$(which mvn)")")")
-    export M2_HOME
-    export MAVEN_HOME="${M2_HOME}"
 fi
 
 if ! [[ "$PATH" =~ $HOME/.local/bin:$HOME/bin: ]]; then
@@ -124,6 +93,7 @@ fi
 
 if [[ -f "$HOME/.cargo/bin/cargo" ]] && [[ ! "$PATH" =~ $HOME/.cargo/bin: ]]; then
     PATH="$HOME/.cargo/bin:$PATH"
+    # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
 fi
 

@@ -47,3 +47,5 @@ fi
 if hash kubectl &>/dev/null ; then
     source <(kubectl completion zsh)
 fi
+
+eval "$(bw completion --shell zsh); compdef _bw bw;"

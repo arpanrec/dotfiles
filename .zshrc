@@ -48,4 +48,6 @@ if hash kubectl &>/dev/null ; then
     source <(kubectl completion zsh)
 fi
 
-eval "$(bw completion --shell zsh); compdef _bw bw;"
+if command -v bw &> /dev/null; then
+    eval "$(bw completion --shell zsh); compdef _bw bw;"
+fi

@@ -66,8 +66,8 @@ fi
 
 export GOPATH="$HOME/go"
 
-if [[ ! "$PATH" =~ $HOME/.go/bin: ]]; then
-    PATH="$HOME/.go/bin:$PATH"
+if [[ ! "$PATH" =~ $HOME/go/bin: ]]; then
+    PATH="$HOME/go/bin:$PATH"
     export PATH
 fi
 

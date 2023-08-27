@@ -21,7 +21,8 @@
     "**/ENV/**": true,
     "**/env.bak/**": true,
     "**/venv.bak/**": true,
-    "**/.trunk/*out": true
+    "**/.trunk/*out": true,
+    ".ex.old": true,
   },
   "files.watcherExclude": {
     "**/.classpath": true,
@@ -38,7 +39,8 @@
     "**/ENV/**": true,
     "**/env.bak/**": true,
     "**/venv.bak/**": true,
-    "**/.trunk/*out": true
+    "**/.trunk/*out": true,
+    ".ex.old": true,
   },
   "redhat.telemetry.enabled": false,
   "explorer.confirmDelete": false,

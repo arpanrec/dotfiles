@@ -3,11 +3,6 @@
 # ~/.bashrc
 #
 
-: <<COMMENT
-Author: arpan <arpan.rec@gmail.com>
-This file is managed from https://github.com/arpanrecme/dotfiles/blob/main/.bashrc
-COMMENT
-
 # shellcheck source=/dev/null
 if [ -f "/etc/bashrc" ]; then
 	source /etc/bashrc

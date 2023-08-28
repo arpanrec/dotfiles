@@ -1,9 +1,3 @@
-#!/usr/bin/env bash
-: <<COMMENT
-Author: arpan <arpan.rec@gmail.com>
-This file is managed from https://github.com/arpanrecme/dotfiles/blob/main/.exporterrc
-COMMENT
-
 export LANG=en_US.UTF-8
 export LC_CTYPE="en_US.UTF8"
 export LC_NUMERIC="en_US.UTF8"

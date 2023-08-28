@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-: <<COMMENT
-Author: arpan <arpan.rec@gmail.com>
-This file is managed from https://github.com/arpanrecme/dotfiles/blob/main/.aliasrc
-COMMENT
 
 # My Dot Files Git Repo
 alias config='git --git-dir="$HOME/.dotfiles" --work-tree=$HOME'

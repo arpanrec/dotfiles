@@ -23,6 +23,7 @@
     "**/venv.bak/**": true,
     "**/.trunk/*out": true,
     "**/.idea/**": true,
+    "**/.vscode/**": true,
   },
   "files.watcherExclude": {
     "**/.classpath": true,
@@ -41,6 +42,7 @@
     "**/venv.bak/**": true,
     "**/.trunk/*out": true,
     "**/.idea/**": true,
+    "**/.vscode/**": true,
   },
   "redhat.telemetry.enabled": false,
   "explorer.confirmDelete": false,
@@ -179,5 +181,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "ansible.lightspeed.enabled": true,
-  "ansible.lightspeed.suggestions.enabled": true
+  "ansible.lightspeed.suggestions.enabled": true,
+  "yaml.customTags": [
+    "!vault"
+  ]
 }

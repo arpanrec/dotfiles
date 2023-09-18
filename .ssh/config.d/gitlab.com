@@ -1,6 +1,6 @@
-Host github.com
+Host gitlab.com
     User git
-    HostName github.com
+    HostName gitlab.com
     PreferredAuthentications publickey
     StrictHostKeyChecking yes
     UserKnownHostsFile ~/.ssh/known_hosts

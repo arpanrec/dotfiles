@@ -111,7 +111,7 @@ openssl x509 -req -days 7 -sha256 \
 echo "Create vault_client.crt chain"
 cat "${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_CRT.pem" | sudo tee -a "${HOME}/.secrets.d/vault_client.crt" >/dev/null
 
-echo  "Creating ${HOME}/.secrets.d/030-vault_client.sh with vault environment variables"
+echo "Creating ${HOME}/.secrets.d/030-vault_client.sh with vault environment variables"
 tee "${HOME}/.secrets.d/030-vault_client.sh" <<EOF >/dev/null
 VAULT_ADDR='${VAULT_ADDR}'
 export VAULT_ADDR
@@ -131,11 +131,13 @@ source "${HOME}/.secrets.d/030-vault_client.sh"
 vault_username=$(echo "${bw_vault_item}" | jq '.login.username' -r)
 vault_password=$(echo "${bw_vault_item}" | jq '.login.password' -r)
 
+unset VAULT_TOKEN
+
 echo "Logging in to vault, Please Wait!!!!!!!!!!!!"
-vault_token=$(vault login -method=userpass username="${vault_username}" password="${vault_password}" --format=json | jq .auth.client_token -r)
+new_vault_token=$(vault login -method=userpass username="${vault_username}" password="${vault_password}" --format=json | jq .auth.client_token -r)
 
 echo "adding vault token to ${HOME}/.secrets.d/030-vault_client.sh"
 tee -a "${HOME}/.secrets.d/030-vault_client.sh" <<EOF >/dev/null
-VAULT_TOKEN='${vault_token}'
+VAULT_TOKEN='${new_vault_token}'
 export VAULT_TOKEN
 EOF

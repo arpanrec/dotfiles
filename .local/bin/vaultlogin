@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+cd "${HOME}/.secrets.d"
+
+bw get attachment create_environment_file.sh --itemid 'Hashicorp Vault Server'
+
+bash create_environment_file.sh
+
+source .env

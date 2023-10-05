@@ -27,8 +27,14 @@ if [ "${current_status}" != "unlocked" ]; then
     exit 1
 fi
 
+echo "Creating ${HOME}/.ssh if it does not exist"
 mkdir -p "${HOME}/.ssh"
+
+echo "Setting permissions for ${HOME}/.ssh"
 chmod 700 "${HOME}/.ssh"
 
+echo "Getting attachment id_rsa"
 bw get attachment id_rsa --itemid 'OPENSSH ID_RSA' --output "${HOME}/.ssh/id_rsa"
+
+echo "Setting permissions for ${HOME}/.ssh/id_rsa"
 chmod 600 "${HOME}/.ssh/id_rsa"

@@ -3,8 +3,72 @@ set -e
 
 cd "${HOME}/.secrets.d"
 
-bw get attachment create_environment_file.sh --itemid 'Hashicorp Vault Server'
+bw get attachment INIT_OPENSSL_ROOT_CA_KEY --itemid 'Hashicorp Vault Server' --output "${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_KEY.pem"
 
-bash create_environment_file.sh
+bw get attachment INIT_OPENSSL_ROOT_CA_CRT --itemid 'Hashicorp Vault Server' --output "${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_CRT.pem"
 
-source .env
+bw_vault_item=$(bw get item 'Hashicorp Vault Server' --raw)
+
+VAULT_ADDR=$(echo "${bw_vault_item}" | jq '.login.uris[0].uri' -r)
+
+hostname_port=$(echo "${VAULT_ADDR}" | cut -d'/' -f3)
+
+INIT_VAULT_DOMAIN=$(echo "${hostname_port}" | cut -d':' -f1)
+
+echo "Find INIT_OPENSSL_ROOT_CA_PASSWORD in Bitwarden fiends"
+INIT_OPENSSL_ROOT_CA_PASSWORD=$(echo "${bw_vault_item}" | jq '.fields[] | select(.name=="INIT_OPENSSL_ROOT_CA_PASSWORD") | .value' -r)
+
+openssl genrsa -out "${HOME}/.secrets.d/vault_client.key" 2048
+
+cat <<EOT >"${HOME}/.secrets.d/vault_client.csr.cnf"
+[ req ]
+distinguished_name	=	req_distinguished_name
+default_md			=	sha256
+prompt				=	no
+req_extensions		=	v3_req
+
+[ req_distinguished_name ]
+CN	=	${INIT_VAULT_DOMAIN}
+
+[ v3_req ]
+basicConstraints		=	critical,CA:FALSE
+keyUsage				=	critical,digitalSignature,nonRepudiation,keyEncipherment
+extendedKeyUsage		=	critical,serverAuth
+subjectAltName          =   @alt_names
+[alt_names]
+DNS.1 = ${INIT_VAULT_DOMAIN}
+EOT
+
+openssl req -new -key "${HOME}/.secrets.d/vault_client.key" \
+    -out "${HOME}/.secrets.d/vault_client.csr" \
+    -config "${HOME}/.secrets.d/vault_client.csr.cnf"
+
+cat <<EOT >"${HOME}/.secrets.d/vault_client.ext.cnf"
+[ v3_ca ]
+subjectKeyIdentifier	=	hash
+authorityKeyIdentifier	=	keyid,issuer
+basicConstraints		=	critical,CA:FALSE
+keyUsage				=	critical,digitalSignature,nonRepudiation,keyEncipherment
+extendedKeyUsage		=	critical,serverAuth
+subjectAltName          =   @alt_names
+[alt_names]
+DNS.1 = ${INIT_VAULT_DOMAIN}
+EOT
+
+openssl x509 -req -days 7 -sha256 \
+    -in "${HOME}/.secrets.d/vault_client.csr" -CA "${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_CRT.pem" \
+    -CAkey "${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_KEY.pem" \
+    -CAcreateserial -passin "pass:${INIT_OPENSSL_ROOT_CA_PASSWORD}" \
+    -out "${HOME}/.secrets.d/vault_client.crt" \
+    -extensions v3_ca -extfile "${HOME}/.secrets.d/vault_client.ext.cnf"
+
+tee "${HOME}/.secrets.d/030-vault_client.sh" <<EOF >/dev/null
+VAULT_ADDR='${VAULT_ADDR}'
+export VAULT_ADDR
+VAULT_CACERT="${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_CRT.pem"
+export VAULT_CACERT
+VAULT_CLIENT_CERT="${HOME}/.secrets.d/vault_client.crt"
+export VAULT_CLIENT_CERT
+VAULT_CLIENT_KEY="${HOME}/.secrets.d/vault_client.key"
+export VAULT_CLIENT_KEY
+EOF

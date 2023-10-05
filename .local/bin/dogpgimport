@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
+pre_pro=(bw jq gpg)
+for prog in "${pre_pro[@]}"; do
+    if ! hash "${prog}" &>/dev/null; then
+        echo "${prog}" not Installed
+        exit 1
+    fi
+done
+
 import_gpg_key() {
 
     bw_item_id="${1}"

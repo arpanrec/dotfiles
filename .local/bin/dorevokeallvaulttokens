@@ -14,6 +14,11 @@ except ImportError as ex:
     sys.exit(1)
 
 client = hvac.Client()
+
+if not client.is_authenticated():
+    print("Please login to vault: dovaultlogin, and try again")
+    sys.exit(1)
+
 current_accessor = client.auth.token.lookup_self().get("data").get("accessor")
 payload = client.list("auth/token/accessors")
 keys = payload["data"]["keys"]

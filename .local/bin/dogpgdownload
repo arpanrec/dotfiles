@@ -35,29 +35,18 @@ if [ "${current_status}" == "locked" ]; then
     bwlogin
 fi
 
-echo "Import GPG key for : PGP KEY - AB - 8B5DA775C63F6D456B3525A334D06AC4966B56C8"
-read -r -n1 -p "Press Y to continue :: " __import_gpg_key
-echo ""
-if [ "${__import_gpg_key}" == "Y" ] || [ "${__import_gpg_key}" == "y" ]; then
+declare -a bw_items=(
+    "PGP KEY - AB - 8B5DA775C63F6D456B3525A334D06AC4966B56C8" SECRET.asc
+    "PGP KEY 1B0D9C73D1221DB0DB64592912086B524AF4FD70" private.asc
+    "Hashicorp Vault Server" INIT_GPG_KEY
+)
 
-    import_gpg_key 'PGP KEY - AB - 8B5DA775C63F6D456B3525A334D06AC4966B56C8' SECRET.asc
-
-fi
-
-echo "Import GPG key for : PGP KEY 1B0D9C73D1221DB0DB64592912086B524AF4FD70"
-read -r -n1 -p "Press Y to continue :: " __import_gpg_key
-echo ""
-if [ "${__import_gpg_key}" == "Y" ] || [ "${__import_gpg_key}" == "y" ]; then
-
-    import_gpg_key 'PGP KEY 1B0D9C73D1221DB0DB64592912086B524AF4FD70' private.asc
-
-fi
-
-echo "Import GPG key for : Hashicorp Vault Server"
-read -r -n1 -p "Press Y to continue :: " __import_gpg_key
-echo ""
-if [ "${__import_gpg_key}" == "Y" ] || [ "${__import_gpg_key}" == "y" ]; then
-
-    import_gpg_key 'Hashicorp Vault Server' INIT_GPG_KEY
-
-fi
+for ((i = 0; i < ${#bw_items[@]}; i += 2)); do
+    echo bw item "${bw_items[i]}"
+    echo bw attachment "${bw_items[i + 1]}"
+    read -r -n1 -p "Press Y to continue :: " __import_gpg_key
+    echo ""
+    if [ "${__import_gpg_key}" == "Y" ] || [ "${__import_gpg_key}" == "y" ]; then
+        import_gpg_key "${bw_items[i]}" "${bw_items[i + 1]}"
+    fi
+done

@@ -131,7 +131,11 @@ source "${HOME}/.secrets.d/030-vault_client.sh"
 vault_username=$(echo "${bw_vault_item}" | jq '.login.username' -r)
 vault_password=$(echo "${bw_vault_item}" | jq '.login.password' -r)
 
+echo "unset VAULT_TOKEN"
 unset VAULT_TOKEN
+
+echo "Remove ${HOME}/.vault-token"
+rm -f "${HOME}/.vault-token"
 
 echo "Logging in to vault, Please Wait!!!!!!!!!!!!"
 new_vault_token=$(vault login -method=userpass username="${vault_username}" password="${vault_password}" --format=json | jq .auth.client_token -r)

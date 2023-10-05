@@ -46,3 +46,8 @@ fi
 if command -v bw &> /dev/null; then
     eval "$(bw completion --shell zsh); compdef _bw bw;"
 fi
+
+if command -v vault &> /dev/null; then
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C "$(readlink -f "$(which vault)")" vault
+fi

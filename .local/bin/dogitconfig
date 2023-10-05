@@ -76,6 +76,7 @@ __setup_git_interactively() {
 
 echo "Check if gitconfig is already present then press Y to delete it"
 read -r -n1 -p "Press any other key to skip : " __delete_existing_gitconfig
+echo ""
 
 if [[ "${__delete_existing_gitconfig}" == Y || "${__delete_existing_gitconfig}" == y ]]; then
     rm -rf "${HOME}/.gitconfig"
@@ -117,7 +118,6 @@ git config --global push.followTags true
 echo "git config --global credential.helper store --file=~/.git-credentials"
 git config --global credential.helper 'store --file="~/.git-credentials"'
 
-echo ""
 echo "Press a for arpanrec git config"
 echo "Press d for dummy git config"
 echo "Press any other key to setup gitconfig interactively"

@@ -78,8 +78,6 @@ if [ "${current_status}" == "locked" ]; then
         exit 1
     fi
     export BW_SESSION="${__bw_session_id}"
-    echo "Session id is ${__bw_session_id}"
-    echo "export BW_SESSION=${__bw_session_id}"
     read -n1 -r -p "Set session id in ${bw_api_session_file} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then

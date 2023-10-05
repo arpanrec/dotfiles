@@ -30,9 +30,9 @@ import_gpg_key() {
 
 echo "Check if bitwarden is unlocked"
 current_status="$(bw status --raw | jq .status -r)"
-if [ "${current_status}" == "locked" ]; then
-    echo "Bitwarden is locked"
-    bwlogin
+if [ "${current_status}" != "unlocked" ]; then
+    echo "Bitwarden is not unlocked"
+    dobwlogin
 fi
 
 declare -a bw_items=(

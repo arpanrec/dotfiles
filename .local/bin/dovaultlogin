@@ -9,13 +9,8 @@ for prog in "${pre_pro[@]}"; do
     fi
 done
 
-__get_current_status() {
-    __ss="$(bw status --raw | jq .status -r)"
-    echo "${__ss}"
-}
-
 echo "Check if bitwarden is unlocked"
-current_status=$(__get_current_status)
+current_status="$(bw status --raw | jq .status -r)"
 if [ "${current_status}" == "locked" ]; then
     echo "Bitwarden is locked"
     bwlogin

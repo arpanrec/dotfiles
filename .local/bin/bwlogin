@@ -32,10 +32,10 @@ if [ "${current_status}" == "unauthenticated" ]; then
             fi
             echo "Logging in to bitwarden cli, Please Wait!!!!!!!!!!!!"
             BW_CLIENTID="${__bw_client_id}" BW_CLIENTSECRET="${__bw_client_secret}" bw login --apikey
-            read -r -n1 -p "Press Y/y to save client id and client secret in ${HOME}/.secrets :: " __save_apikeys_in_secrets
+            read -r -n1 -p "Press Y/y to save client id and client secret in ${bw_api_key_file}: " __save_apikeys_in_secrets
             if [ "${__save_apikeys_in_secrets}" == "Y" ] || [ "${__save_apikeys_in_secrets}" == "y" ]; then
 
-                tee "${bw_api_key_file}" <<EOF
+                tee "${bw_api_key_file}" <<EOF >/dev/null
 BW_CLIENTID=${__bw_client_id}
 export BW_CLIENTID
 BW_CLIENTSECRET=${__bw_client_secret}
@@ -55,7 +55,7 @@ EOF
     current_status=$(__get_current_status)
 fi
 
-bw_api_session_file="${HOME}/.secrets.d/010-bwlogin-session.sh"
+bw_api_session_file="${HOME}/.secrets.d/020-bwlogin-session.sh"
 
 if [ "${current_status}" == "locked" ]; then
     echo "Bitwarden is locked"
@@ -74,9 +74,9 @@ if [ "${current_status}" == "locked" ]; then
     export BW_SESSION="${__bw_session_id}"
     echo "Session id is ${__bw_session_id}"
     echo "export BW_SESSION=${__bw_session_id}"
-    read -n1 -r -p "Set session id in ${HOME}/.secrets : " __set_session_id_in_secrets
+    read -n1 -r -p "Set session id in ${bw_api_session_file} : " __set_session_id_in_secrets
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then
-        tee "${bw_api_session_file}" <<EOF
+        tee "${bw_api_session_file}" <<EOF >/dev/null
 BW_SESSION=${__bw_session_id}
 export BW_SESSION
 EOF

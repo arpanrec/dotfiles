@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-pre_pro=(bw jq)
+pre_pro=(jq)
 for prog in "${pre_pro[@]}"; do
     if ! hash "${prog}" &>/dev/null; then
         echo "${prog}" not Installed
@@ -13,6 +13,27 @@ __get_current_status() {
     __ss="$(bw status --raw | jq .status -r)"
     echo "${__ss}"
 }
+
+echo "Check if bw cli is installed if not then download it"
+
+if ! hash bw &>/dev/null; then
+    echo "bw cli is not installed"
+    read -r -n1 -p "Press Y/y to install it : " __install_bw_cli
+    if [[ "${__install_bw_cli}" == "Y" ]] || [[ "${__install_bw_cli}" == "y" ]]; then
+        echo ""
+        echo "Installing bw cli"
+        if [[ "$(uname -m)" == "x86_64" ]]; then
+            curl -L "https://vault.bitwarden.com/download/?app=cli&platform=linux" -o /tmp/bw.zip
+            unzip /tmp/bw.zip -d "${HOME}/.local/bin"
+        else
+            echo "Error!!!!!!!!!!!!!!!! Unsupported Architecture"
+        fi
+    else
+        echo ""
+        echo "Skipping bw cli installation"
+        exit 0
+    fi
+fi
 
 bw_api_key_file="${HOME}/.secrets.d/010-bwlogin-apikey.sh"
 

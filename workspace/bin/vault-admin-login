@@ -17,28 +17,6 @@ if [ "${current_status}" != "unlocked" ]; then
     exit 1
 fi
 
-echo "Check if ${HOME}/.local/bin/vault file exists"
-if [ ! -f "${HOME}/.local/bin/vault" ]; then
-
-    vault_version=1.15.0
-    system_arch=$(uname -m)
-
-    if [ "${system_arch}" == "x86_64" ]; then
-        vault_arch="amd64"
-    elif [ "${system_arch}" == "aarch64" ]; then
-        vault_arch="arm64"
-    else
-        echo "Unsupported system architecture"
-        exit 1
-    fi
-
-    echo "Downloading vault for linux ${vault_arch}"
-    curl -s https://releases.hashicorp.com/vault/${vault_version}/vault_${vault_version}_linux_${vault_arch}.zip -o /tmp/vault.zip
-    unzip -o /tmp/vault.zip -d "${HOME}/.local/bin/"
-    rm -f /tmp/vault.zip
-    chmod +x "${HOME}/.local/bin/vault"
-fi
-
 echo "Downloading INIT_OPENSSL_ROOT_CA_KEY to ${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_KEY.pem"
 bw get attachment INIT_OPENSSL_ROOT_CA_KEY --itemid 'Hashicorp Vault Server' --output "${HOME}/.secrets.d/INIT_OPENSSL_ROOT_CA_KEY.pem"
 

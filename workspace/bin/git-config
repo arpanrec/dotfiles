@@ -116,7 +116,8 @@ echo "git config --global push.followTags true"
 git config --global push.followTags true
 
 echo "git config --global credential.helper store --file=\${HOME}/.git-credentials"
-git config --global credential.helper 'store --file="~/.git-credentials"'
+# shellcheck disable=SC2016
+git config --global credential.helper 'store --file="${HOME}/.git-credentials"'
 
 echo "Press a for arpanrec git config"
 echo "Press d for dummy git config"

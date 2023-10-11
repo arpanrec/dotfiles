@@ -37,4 +37,4 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias steam='prime-run steam'
 # alias dec='$HOME/.local/bin/dev_env_check.sh'
 alias running-services='systemctl list-unit-files --type=service'
-alias yd='youtube-dl -f best --verbose'
+alias yd='youtube-dl -f best --verbose --external-downloader axel --external-downloader-args "-n 10 -a"'

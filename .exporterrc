@@ -51,6 +51,12 @@ done
 
 if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "$PATH" =~ /var/lib/snapd/snap/bin: ]]; then
     PATH="/var/lib/snapd/snap/bin:$PATH"
+    export PATH
+fi
+
+if [[ -d "$HOME/.local/share/JetBrains/Toolbox/scripts" ]] && [[ ! "$PATH" =~ $HOME/.local/share/JetBrains/Toolbox/scripts: ]]; then
+    PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
+    export PATH
 fi
 
 if [ -f "$HOME/.local/share/go/bin/go" ] && [[ ! "$PATH" =~ $HOME/.local/share/go/bin: ]]; then
@@ -89,12 +95,10 @@ if [[ -f "$HOME/.cargo/bin/cargo" ]] && [[ ! "$PATH" =~ $HOME/.cargo/bin: ]]; th
     PATH="$HOME/.cargo/bin:$PATH"
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
+    export PATH
 fi
 
-export PATH
-
 export GPG_TTY=$(tty)
-
 
 # Not working on centos7 systems
 # gpg-connect-agent updatestartuptty /bye >/dev/null

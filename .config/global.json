@@ -1,5 +1,5 @@
 {
-    "_self": "https://raw.githubusercontent.com/arpanrecme/dotfiles/main/.config/global.json",
+    "_self": "https://raw.githubusercontent.com/arpanrec/dotfiles/main/.config/global.json",
     "EMAIL": "me@arpanrec.com",
     "POSTGRES": {
         "FQDN": "postgres.me.arpanrec.com",
@@ -16,23 +16,23 @@
         "PROTOCOL": "https"
     },
     "GITHUB": {
-        "USER": "arpanrecme"
+        "USER": "arpanrec"
     },
     "GITLAB": {
-        "USER": "arpanrecme"
+        "USER": "arpanrec"
     },
     "DOCKER": {
         "USER": "arpanrecme"
     },
     "TERRAFORM_CLOUD": {
-        "ORGANIZATION": "arpanrecme",
+        "ORGANIZATION": "arpanrec",
         "HOSTNAME": "app.terraform.io",
         "AUTH_POLICY": "two_factor_mandatory"
     },
     "COUNTRY": "IN",
     "STATE": "WB",
     "LOCALITY": "Arambagh",
-    "NAME": "arpanrecme",
+    "NAME": "arpanrec",
     "ROOT_CA": {
         "OU": "web authority",
         "CN": "root ca v2"

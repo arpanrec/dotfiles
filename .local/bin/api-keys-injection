@@ -18,10 +18,10 @@ if [ "${current_status}" != "unlocked" ]; then
 fi
 
 declare -a bw_items=(
-    "Github - arpanrecme" GH_PROD_API_TOKEN
-    "GitLab - arpanrecme" GL_PROD_API_KEY
+    "Github - arpanrec" GH_PROD_API_TOKEN
+    "GitLab - arpanrec" GL_PROD_API_KEY
     "Docker Hub - arpanrecme" DOCKER_PROD_API_KEY
-    "HashiCorp Terraform cloud - arpanrecme" TF_PROD_TOKEN
+    "HashiCorp Terraform cloud - arpanrec" TF_PROD_TOKEN
     "Linode - arpanrecme" LINODE_CLI_PROD_TOKEN
 )
 

@@ -131,8 +131,8 @@ a | A)
     echo "git config --global user.name arpanrec"
     git config --global user.name arpanrec
 
-    echo "git config --global user.email arpan.rec@gmail.com"
-    git config --global user.email arpan.rec@gmail.com
+    echo "git config --global user.email me@arpanrec.com"
+    git config --global user.email me@arpanrec.com
 
     echo "git config --global commit.gpgsign true"
     git config --global commit.gpgsign true

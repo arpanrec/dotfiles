@@ -123,8 +123,7 @@
     "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
     "java.format.settings.profile": "GoogleStyle",
     "[python]": {
-        "editor.wordBasedSuggestions": false,
-        "editor.defaultFormatter": "ms-python.python"
+        "editor.wordBasedSuggestions": false
     },
     "telemetry.telemetryLevel": "off",
     "trunk.trunkGrayOutNonBlockingIssues": false,

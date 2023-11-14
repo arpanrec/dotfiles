@@ -13,7 +13,7 @@ echo "Check if bitwarden is unlocked"
 current_status="$(bw status --raw | jq .status -r)"
 if [ "${current_status}" != "unlocked" ]; then
     echo "Bitwarden is not unlocked"
-    echo dobwlogin
+    echo bw-login
     exit 1
 fi
 

@@ -86,6 +86,9 @@
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
     "editor.formatOnSave": true,
+    "[.git/config]": {
+        "editor.formatOnSave": false
+    },
     "[xml]": {
         "editor.defaultFormatter": "redhat.vscode-xml"
     },
@@ -169,8 +172,8 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "ansible.lightspeed.enabled": true,
-    "ansible.lightspeed.suggestions.enabled": true,
+    "ansible.lightspeed.enabled": false,
+    "ansible.lightspeed.suggestions.enabled": false,
     "yaml.customTags": [
         "!vault"
     ]

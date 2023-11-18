@@ -4,4 +4,5 @@ Host github.com
     PreferredAuthentications publickey
     StrictHostKeyChecking yes
     UserKnownHostsFile ~/.ssh/known_hosts
-    IdentityFile ~/.ssh/id_rsa
+    IdentityFile ~/.ssh/github.com
+

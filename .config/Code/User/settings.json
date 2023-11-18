@@ -77,10 +77,6 @@
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
         "files.trimTrailingWhitespace": false
     },
-    "ansible.validation.lint.enabled": true,
-    "ansible.ansible.useFullyQualifiedCollectionNames": true,
-    "ansible.validation.lint.path": "ansible-lint",
-    "ansible.validation.enabled": true,
     "workbench.startupEditor": "none",
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
@@ -107,6 +103,12 @@
     "ansible.validation": true,
     "ansible.ansibleLint.enabled": true,
     "ansible.ansible.path": "ansible",
+    "ansible.lightspeed.enabled": false,
+    "ansible.lightspeed.suggestions.enabled": false,
+    "ansible.validation.lint.enabled": true,
+    "ansible.ansible.useFullyQualifiedCollectionNames": true,
+    "ansible.validation.lint.path": "ansible-lint",
+    "ansible.validation.enabled": true,
     "html.format.wrapLineLength": 180,
     "terminal.integrated.persistentSessionScrollback": 1000,
     "yaml.format.printWidth": 180,
@@ -172,8 +174,6 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "ansible.lightspeed.enabled": false,
-    "ansible.lightspeed.suggestions.enabled": false,
     "yaml.customTags": [
         "!vault"
     ]

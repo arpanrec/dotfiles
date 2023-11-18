@@ -4,4 +4,4 @@ Host gitlab.com
     PreferredAuthentications publickey
     StrictHostKeyChecking yes
     UserKnownHostsFile ~/.ssh/known_hosts
-    IdentityFile ~/.ssh/id_rsa
+    IdentityFile ~/.ssh/id_rsa_gitlab

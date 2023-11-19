@@ -1,7 +1,7 @@
 [Unit]
-Description="Bitwarden Local Server"
-# Requires=network-online.target
-# After=network-online.target,syslog.target
+Description="Bitwarden Local Server (https://bitwarden.com/help/vault-management-api/)"
+Requires=network-online.target
+After=network-online.target,syslog.target
 
 [Service]
 Type=simple
@@ -9,7 +9,7 @@ ConditionPathExists=%h/.secrets.d/020-bwlogin-session.sh
 ConditionPathExists=%h/.secrets.d/010-bwlogin-apikey.sh
 Environment="PATH=%h/.local/share/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 ExecStart=%h/.local/share/node/bin/bw serve
-# SuccessExitStatus=143
+SuccessExitStatus=143
 
 [Install]
 WantedBy=default.target

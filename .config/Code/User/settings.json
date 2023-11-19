@@ -75,7 +75,7 @@
     },
     "telemetry.telemetryLevel": "off",
     "[yaml]": {
-        "editor.defaultFormatter": "redhat.vscode-yaml",
+        "editor.defaultFormatter": "redhat.vscode-yaml"
     },
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -143,7 +143,7 @@
         "**/venv.bak/**": true,
         "**/.trunk/**": true,
         "**/.idea/**": true,
-        "**/.vscode/**": true,
+        "**/.vscode/**": true
     },
     "files.watcherExclude": {
         "**/.classpath": true,
@@ -162,7 +162,7 @@
         "**/env.bak/**": true,
         "**/venv.bak/**": true,
         "**/.idea/**": true,
-        "**/.vscode/**": true,
+        "**/.vscode/**": true
     },
     "files.associations": {
         "**/tasks/**/*.yml": "ansible",
@@ -175,6 +175,6 @@
         "**/.ansible-lint": "yaml",
         "**/ansible.cfg": "ini",
         "**/.yamllint": "yaml",
-        ".git/config": "gitconfig",
-    },
+        ".git/config": "gitconfig"
+    }
 }

@@ -71,8 +71,17 @@
     "terminal.integrated.fontFamily": "'Hack Nerd Font'",
     "maven.dependency.enableConflictDiagnostics": true,
     "[python]": {
-        "editor.wordBasedSuggestions": false
+        "editor.wordBasedSuggestions": false,
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "always",
+        },
     },
+    "black-formatter.args": [
+        "--line-length",
+        "180"
+    ],
     "telemetry.telemetryLevel": "off",
     "[yaml]": {
         "editor.defaultFormatter": "redhat.vscode-yaml"

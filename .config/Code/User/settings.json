@@ -63,6 +63,7 @@
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
     "ansible.validation.lint.path": "ansible-lint",
     "ansible.validation.enabled": true,
+    "ansibleServer.trace.server": "messages",
     "html.format.wrapLineLength": 180,
     "terminal.integrated.persistentSessionScrollback": 1000,
     "terminal.integrated.env.linux": {
@@ -84,7 +85,8 @@
     ],
     "telemetry.telemetryLevel": "off",
     "[yaml]": {
-        "editor.defaultFormatter": "redhat.vscode-yaml"
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 4
     },
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -185,5 +187,8 @@
         "**/ansible.cfg": "ini",
         "**/.yamllint": "yaml",
         ".git/config": "gitconfig"
-    }
+    },
+    "cSpell.userWords": [
+        "lightspeed"
+    ]
 }

@@ -64,6 +64,17 @@
     "ansible.validation.lint.path": "ansible-lint",
     "ansible.validation.enabled": true,
     "ansibleServer.trace.server": "messages",
+    "[ansible]": {
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+        "editor.quickSuggestions": {
+            "comments": true,
+            "other": true,
+            "strings": true
+        },
+        "editor.autoIndent": "advanced"
+    },
     "html.format.wrapLineLength": 180,
     "terminal.integrated.persistentSessionScrollback": 1000,
     "terminal.integrated.env.linux": {
@@ -176,8 +187,11 @@
         "**/.vscode/**": true
     },
     "files.associations": {
+        "**/tasks/**/*.yaml": "ansible",
         "**/tasks/**/*.yml": "ansible",
+        "**/ansible/**/*.yaml": "ansible",
         "**/ansible/**/*.yml": "ansible",
+        "site*.yaml": "ansible",
         "site*.yml": "ansible",
         "**/*.tf": "terraform",
         "**/requirements.txt": "pip-requirements",

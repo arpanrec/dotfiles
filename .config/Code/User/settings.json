@@ -98,6 +98,7 @@
     "[yaml]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.tabSize": 2,
+        "editor.insertSpaces": true,
     },
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"

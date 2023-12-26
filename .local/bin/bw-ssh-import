@@ -81,7 +81,7 @@ echo "Setting permissions for ${HOME}/.ssh"
 chmod 700 "${HOME}/.ssh"
 
 declare -a bw_items=(
-    "GitHub - arpanrecme" github.com OPENSSH_KEY_PASSPHRASE
+    "GitHub - arpanrec" github.com OPENSSH_KEY_PASSPHRASE
     "OPENSSH ID_RSA" id_rsa OPENSSH_KEY_PASSPHRASE
     "GitLab - arpanrec" id_rsa_gitlab OPENSSH_KEY_PASSPHRASE
     "root-certificates - cloud infra" id_init_key INIT_OPENSSH_KEY_PASSWORD

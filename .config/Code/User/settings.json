@@ -83,7 +83,7 @@
     "terminal.integrated.fontFamily": "'Hack Nerd Font'",
     "maven.dependency.enableConflictDiagnostics": true,
     "[python]": {
-        "editor.wordBasedSuggestions": false,
+        "editor.wordBasedSuggestions": "off",
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": false,
         "editor.codeActionsOnSave": {

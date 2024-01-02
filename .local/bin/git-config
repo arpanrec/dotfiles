@@ -119,7 +119,7 @@ echo "git config --global credential.helper store --file=\${HOME}/.git-credentia
 # shellcheck disable=SC2016
 git config --global credential.helper 'store --file="${HOME}/.git-credentials"'
 
-echo "Press a for arpanrec git config"
+echo "Press a for arpan git config"
 echo "Press d for dummy git config"
 echo "Press any other key to setup gitconfig interactively"
 read -r -n1 __symlink_gitconfig
@@ -128,8 +128,8 @@ echo ""
 case ${__symlink_gitconfig} in
 
 a | A)
-    echo "git config --global user.name arpanrec"
-    git config --global user.name arpanrec
+    echo "git config --global user.name arpan"
+    git config --global user.name arpan
 
     echo "git config --global user.email arpan.rec@gmail.com"
     git config --global user.email arpan.rec@gmail.com

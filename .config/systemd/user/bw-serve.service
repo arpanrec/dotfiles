@@ -6,6 +6,8 @@ ConditionPathExists=%h/.secrets.d/010-bwlogin-apikey.sh
 [Service]
 Type=simple
 Environment="PATH=%h/.local/share/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+EnvironmentFile=%h/.secrets.d/020-bwlogin-session.sh
+EnvironmentFile=%h/.secrets.d/010-bwlogin-apikey.sh
 ExecStart=%h/.local/share/node/bin/bw serve
 SuccessExitStatus=143
 

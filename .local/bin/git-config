@@ -115,6 +115,9 @@ git config --global core.pager less
 echo "git config --global push.followTags true"
 git config --global push.followTags true
 
+echo "git config --global init.defaultBranch main"
+git config --global init.defaultBranch main
+
 echo "git config --global credential.helper store --file=\${HOME}/.git-credentials"
 # shellcheck disable=SC2016
 git config --global credential.helper 'store --file="${HOME}/.git-credentials"'

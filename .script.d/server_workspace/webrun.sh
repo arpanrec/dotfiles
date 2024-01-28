@@ -4,7 +4,7 @@ set -e
 deactivate || true
 
 __clone_directory="${HOME}/.tmp/dotfiles_server_workspace"
-__working_dir="${__clone_directory}/workspace/.setup"
+__working_dir="${__clone_directory}/.script.d/server_workspace"
 __git_setup_repo='https://github.com/arpanrec/dotfiles.git'
 
 if ! hash git &>/dev/null; then

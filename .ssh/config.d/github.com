@@ -5,4 +5,3 @@ Host github.com
     StrictHostKeyChecking yes
     UserKnownHostsFile ~/.ssh/known_hosts
     IdentityFile ~/.ssh/github.com
-

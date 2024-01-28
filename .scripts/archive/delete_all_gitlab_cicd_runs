@@ -13,9 +13,9 @@ project_id = args.project_id
 gl = gitlab.Gitlab(private_token=private_token)
 project = gl.projects.get(project_id)
 while True:
-  pipelines = project.pipelines.list(iterator=True, per_page=5)
-  if len(pipelines) == 0:
-    break
-  for pipeline in pipelines:
-    print(f"Deleting pipeline f{pipeline}")
-    pipeline.delete()
+    pipelines = project.pipelines.list(iterator=True, per_page=5)
+    if len(pipelines) == 0:
+        break
+    for pipeline in pipelines:
+        print(f"Deleting pipeline f{pipeline}")
+        pipeline.delete()

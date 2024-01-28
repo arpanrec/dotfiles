@@ -12,16 +12,13 @@ if os.geteuid() == 0:
     sys.exit("This script should not run as root")
 
 # Fail if running in virtual environment
-get_base_prefix_compat = getattr(sys, "base_prefix", None) \
-    or getattr(sys, "real_prefix", None) \
-    or sys.prefix
+get_base_prefix_compat = getattr(sys, "base_prefix", None) or getattr(sys, "real_prefix", None) or sys.prefix
 
 if get_base_prefix_compat != sys.prefix:
     sys.exit("Deactivate the virtual env")
 
 # Check for tools
-list_tools: list[str] = ["jq", "git", "gcc", "curl", "tar", "wget", "bw",
-                         "code"]
+list_tools: list[str] = ["jq", "git", "gcc", "curl", "tar", "wget", "bw", "code"]
 
 for tool in list_tools:
     if which(tool):

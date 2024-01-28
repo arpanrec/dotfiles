@@ -12,14 +12,14 @@ except ImportError as ex:
     print("pip install python-gitlab")
     sys.exit(1)
 
-private_token=os.environ.get("GL_PROD_API_KEY", None)
+private_token = os.environ.get("GL_PROD_API_KEY", None)
 if private_token is None:
     print("Please set GL_PROD_API_KEY")
     sys.exit(1)
 
-project_id=input("Enter project id: ")
+project_id = input("Enter project id: ")
 
-print (f"Project id is {project_id}")
+print(f"Project id is {project_id}")
 
 gl = gitlab.Gitlab(private_token=private_token)
 project = gl.projects.get(project_id)

@@ -35,9 +35,7 @@ pretty_table_approle.field_names = [
 for key in keys:
     output = client.lookup_token(key, accessor=True)
     display_name = output["data"]["display_name"]
-    creation_date = time.strftime(
-        "%Y-%m-%d %H:%M:%S", time.localtime(output["data"]["creation_time"])
-    )
+    creation_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(output["data"]["creation_time"]))
     expire_time = output["data"]["expire_time"]
     policies = output["data"]["policies"]
     accessor = key
@@ -46,9 +44,7 @@ for key in keys:
         client.revoke_token(accessor, accessor=True)
         REVOKED = True
         # if "root" in policies:
-        pretty_table_approle.add_row(
-            [display_name, creation_date, expire_time, policies, accessor, REVOKED]
-        )
+        pretty_table_approle.add_row([display_name, creation_date, expire_time, policies, accessor, REVOKED])
 print(pretty_table_approle)
 
 pretty_table_approle = PrettyTable()
@@ -67,16 +63,10 @@ for auth_method in auth_methods["data"]:
         list_of_approles = client.auth.approle.list_roles(mount_point=auth_method)
         for role_name in list_of_approles["data"]["keys"]:
             try:
-                list_secret_id_accessors = client.auth.approle.list_secret_id_accessors(
-                    role_name, mount_point=auth_method
-                )
+                list_secret_id_accessors = client.auth.approle.list_secret_id_accessors(role_name, mount_point=auth_method)
             except hvac.exceptions.InvalidPath as ex:
                 list_secret_id_accessors = {"data": {"keys": []}}
             for secret_id_accessor in list_secret_id_accessors["data"]["keys"]:
-                client.auth.approle.destroy_secret_id_accessor(
-                    role_name, secret_id_accessor, mount_point="approle"
-                )
-                pretty_table_approle.add_row(
-                    [auth_method, role_name, secret_id_accessor, True]
-                )
+                client.auth.approle.destroy_secret_id_accessor(role_name, secret_id_accessor, mount_point="approle")
+                pretty_table_approle.add_row([auth_method, role_name, secret_id_accessor, True])
 print(pretty_table_approle)

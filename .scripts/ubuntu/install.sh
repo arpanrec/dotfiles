@@ -5,7 +5,7 @@ sudo timedatectl set-ntp true
 sudo timedatectl set-timezone Asia/Kolkata
 
 sudo apt-get install -y linux-firmware linux-headers-"$(uname -r)" linux-modules-extra-"$(uname -r)" \
-  dkms network-manager net-tools build-essential openssh-server dhcpcd5 libgtkmm-3.0-dev ethtool vim neovim
+    dkms network-manager net-tools build-essential openssh-server dhcpcd5 libgtkmm-3.0-dev ethtool vim neovim
 
 # Add VS Code Repo
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg
@@ -25,17 +25,16 @@ sudo apt update
 sudo apt-get install -y git gnupg2 curl zsh terminator htop
 
 if hash google-chrome-stable &>/dev/null; then
-  echo "google-chrome is installed!"
+    echo "google-chrome is installed!"
 else
-  wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O google-chrome-stable_current_amd64.deb
-  sudo dpkg -i google-chrome-stable_current_amd64.deb
-  rm -rf google-chrome-stable_current_amd64.deb
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O google-chrome-stable_current_amd64.deb
+    sudo dpkg -i google-chrome-stable_current_amd64.deb
+    rm -rf google-chrome-stable_current_amd64.deb
 fi
 
-
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-echo "deb [arch=$(dpkg-architecture -q DEB_BUILD_ARCH) signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" | \
-  sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+echo "deb [arch=$(dpkg-architecture -q DEB_BUILD_ARCH) signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" |
+    sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 
 sudo apt update
 
@@ -60,14 +59,14 @@ sudo apt-get install -y ffmpegthumbnailer ffmpeg vlc eog heif-gdk-pixbuf heif-th
 __optional_packages=('gnome-tweak-tool' 'gnome-tweaks' 'gnome-shell-extension-manager')
 
 for i in "${__optional_packages[@]}"; do
-  echo "Checking for package $i"
-  __apt_search=$(apt-cache search --names-only "$i")
-  if [[ -n $__apt_search ]]; then
-    echo "Installing $i"
-    sudo apt-get install -y "$i"
-  else
-    echo "No install candidate for $i"
-  fi
+    echo "Checking for package $i"
+    __apt_search=$(apt-cache search --names-only "$i")
+    if [[ -n $__apt_search ]]; then
+        echo "Installing $i"
+        sudo apt-get install -y "$i"
+    else
+        echo "No install candidate for $i"
+    fi
 done
 
 sudo apt install -y gnome-shell-extensions gnome-shell-extension-prefs

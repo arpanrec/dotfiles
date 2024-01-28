@@ -99,7 +99,8 @@ if [[ -f "$HOME/.cargo/bin/cargo" ]] && [[ ! "$PATH" =~ $HOME/.cargo/bin: ]]; th
     export PATH
 fi
 
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # Not working on centos7 systems
 # gpg-connect-agent updatestartuptty /bye >/dev/null

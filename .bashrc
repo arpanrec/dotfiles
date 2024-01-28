@@ -1,4 +1,5 @@
-# shellcheck disable=SC2148
+#!/usr/bin/env bash
+
 # shellcheck source=/dev/null
 if [ -f "/etc/bashrc" ]; then
     source /etc/bashrc

@@ -8,23 +8,26 @@ __dotfiles_git_remote="${__dotfiles_git_https_remote}"
 __dotfiles_git_branch="main"
 __dotfiles_dir="${HOME}/.dotfiles"
 
+# ask user for http or ssh and save in __dotfiles_git_remote_user
+
+read -r -n1 -p 'Use SSH or HTTPS? (default: HTTPS) [y/N]: ' __dotfiles_git_remote_user
+
+if [[ "${__dotfiles_git_remote_user}" == "y" ]]; then
+    __dotfiles_git_remote="${__dotfiles_git_ssh_remote}"
+fi
+
 echo "Configuring dotfiles"
 echo "Repo: ${__dotfiles_repo}"
 echo "Remote: ${__dotfiles_git_remote}"
 echo "Branch: ${__dotfiles_git_branch}"
 echo "Dir: ${__dotfiles_dir}"
 
-echo "Reset: $1"
+# ask user for total reset
 
-__dotfiles_reset=false
-if [[ $# -gt 0 ]]; then
-    if [[ "$1" == "reset" ]]; then
-        __dotfiles_reset=true
-    fi
-fi
+read -r -n1 -p 'Reset all dotfiles? (default: no) [y/N]: ' __dotfiles_reset
 
-if [[ "${__dotfiles_reset}" == true ]]; then
-    echo "Resetting dotfiles"
+if [[ "${__dotfiles_reset}" == "y" ]]; then
+    echo "Resetting all dotfiles"
     rm -rf "${__dotfiles_dir}"
 fi
 

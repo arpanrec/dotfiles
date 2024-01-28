@@ -1,0 +1,5 @@
+---
+collections:
+  - source: https://github.com/arpanrec/nebula.git
+    type: git
+    name: arpanrec.nebula

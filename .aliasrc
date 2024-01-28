@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-
-# My Dot Files Git Repo
 alias config='git --git-dir="$HOME/.dotfiles" --work-tree=$HOME'
 
 # Core Utils

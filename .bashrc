@@ -1,8 +1,3 @@
-#!/usr/bin/env bash
-#
-# ~/.bashrc
-#
-
 # shellcheck source=/dev/null
 if [ -f "/etc/bashrc" ]; then
     source /etc/bashrc

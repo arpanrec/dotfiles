@@ -3,7 +3,7 @@ set -e
 
 deactivate || true
 
-__clone_directory="${HOME}/.tmp/server_workspace"
+__clone_directory="${HOME}/.tmp/dotfiles_server_workspace"
 __working_dir="${__clone_directory}/workspace/bastille/server_workspace"
 __git_setup_repo='https://github.com/arpanrec/dotfiles.git'
 
@@ -11,8 +11,6 @@ if ! hash git &>/dev/null; then
     echo "git not Installed"
     exit 1
 fi
-
-rm -rf "${__clone_directory}"
 
 mkdir -p "$(dirname "${__clone_directory}")"
 

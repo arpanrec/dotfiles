@@ -119,15 +119,10 @@ if [[ -z ${VIRTUAL_ENV} ]]; then
         source venv/bin/activate
     fi
 fi
-
 echo ""
-echo ""
-echo ""
+echo "Python :: $(python3 --version)"
 echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
-echo ""
-echo ""
-echo ""
 pip3 install --upgrade setuptools-rust pip
 pip3 install -r requirements.txt --upgrade
 ansible-galaxy install -r requirements.yml --force
@@ -147,9 +142,7 @@ else
 fi
 
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
-    ansible-playbook -i inventory.yml arpanrec.nebula.server_workspace \
-        --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
+    ansible-playbook -i inventory.yml arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
 elif [[ -z ${__ansible_tags} && -n $* ]]; then
-    ansible-playbook -i inventory.yml arpanrec.nebula.server_workspace \
-        --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
+    ansible-playbook -i inventory.yml arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
 fi

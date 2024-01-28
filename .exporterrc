@@ -71,6 +71,11 @@ if [ -f "$HOME/.local/share/node/bin/node" ] && [[ ! "$PATH" =~ $HOME/.local/sha
     export PATH="$HOME/.local/share/node/bin:$PATH"
 fi
 
+if [ -f "$HOME/.pre.jdk.env.sh" ]; then
+    # shellcheck source=/dev/null
+    source "${HOME}/.pre.jdk.env.sh"
+fi
+
 if [ -f "$HOME/.jdk.env.sh" ]; then
     # shellcheck source=/dev/null
     source "${HOME}/.jdk.env.sh"

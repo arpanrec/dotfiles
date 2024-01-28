@@ -14,27 +14,26 @@ export LC_MEASUREMENT="en_US.UTF8"
 export LC_IDENTIFICATION="en_US.UTF8"
 export LC_ALL=en_US.UTF8
 
-LD_LIBRARY_PATH=$HOME/.local/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$HOME/.local/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
 
 if ! [[ "$PATH" =~ /usr/local/bin: ]]; then
-    PATH="/usr/local/bin:$PATH"
-    export PATH
+    export PATH="/usr/local/bin:$PATH"
 fi
 
 if ! [[ "$PATH" =~ /usr/local/sbin: ]]; then
-    PATH="/usr/local/sbin:$PATH"
-    export PATH
+    export PATH="/usr/local/sbin:$PATH"
 fi
 
 if ! [[ "$PATH" =~ /sbin: ]]; then
-    PATH="/sbin:$PATH"
-    export PATH
+    export PATH="/sbin:$PATH"
 fi
 
 if ! [[ "$PATH" =~ /usr/sbin: ]]; then
-    PATH="/usr/sbin:$PATH"
-    export PATH
+    export PATH="/usr/sbin:$PATH"
+fi
+
+if [[ -d "$HOME/.script.d/bin" ]] && [[ ! "$PATH" =~ $HOME/.script.d/bin: ]]; then
+    export PATH="$HOME/.script.d/bin:$PATH"
 fi
 
 # shellcheck source=/dev/null
@@ -51,30 +50,25 @@ for secret_file in ~/.secrets.d/*.sh; do
 done
 
 if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "$PATH" =~ /var/lib/snapd/snap/bin: ]]; then
-    PATH="/var/lib/snapd/snap/bin:$PATH"
-    export PATH
+    export PATH="/var/lib/snapd/snap/bin:$PATH"
 fi
 
 if [[ -d "$HOME/.local/share/JetBrains/Toolbox/scripts" ]] && [[ ! "$PATH" =~ $HOME/.local/share/JetBrains/Toolbox/scripts: ]]; then
-    PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
-    export PATH
+    export PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
 fi
 
 if [ -f "$HOME/.local/share/go/bin/go" ] && [[ ! "$PATH" =~ $HOME/.local/share/go/bin: ]]; then
-    PATH="$HOME/.local/share/go/bin:$PATH"
-    export PATH
+    export PATH="$HOME/.local/share/go/bin:$PATH"
 fi
 
 export GOPATH="$HOME/go"
 
 if [[ ! "$PATH" =~ $HOME/go/bin: ]]; then
-    PATH="$HOME/go/bin:$PATH"
-    export PATH
+    export PATH="$HOME/go/bin:$PATH"
 fi
 
 if [ -f "$HOME/.local/share/node/bin/node" ] && [[ ! "$PATH" =~ $HOME/.local/share/node/bin: ]]; then
-    PATH="$HOME/.local/share/node/bin:$PATH"
-    export PATH
+    export PATH="$HOME/.local/share/node/bin:$PATH"
 fi
 
 if [ -f "$HOME/.jdk.env.sh" ]; then
@@ -83,20 +77,17 @@ if [ -f "$HOME/.jdk.env.sh" ]; then
 fi
 
 if [[ -f "$HOME/.local/share/coursier/bin/cs" ]] && [[ ! "$PATH" =~ $HOME/.local/share/coursier/bin: ]]; then
-    PATH="$HOME/.local/share/coursier/bin:$PATH"
-    export PATH
+    export PATH="$HOME/.local/share/coursier/bin:$PATH"
 fi
 
 if ! [[ "$PATH" =~ $HOME/.local/bin:$HOME/bin: ]]; then
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-    export PATH
+    export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 
 if [[ -f "$HOME/.cargo/bin/cargo" ]] && [[ ! "$PATH" =~ $HOME/.cargo/bin: ]]; then
-    PATH="$HOME/.cargo/bin:$PATH"
+    export PATH="$HOME/.cargo/bin:$PATH"
     # shellcheck source=/dev/null
     source "$HOME/.cargo/env"
-    export PATH
 fi
 
 GPG_TTY=$(tty)
@@ -110,10 +101,7 @@ if hash vim &>/dev/null; then
 fi
 
 if [[ -f "/usr/bin/ksshaskpass" ]]; then
-    SSH_ASKPASS="/usr/bin/ksshaskpass"
-    export SSH_ASKPASS
-    SH_ASKPASS_REQUIRE=prefer
-    export SH_ASKPASS_REQUIRE
-    GIT_ASKPASS="/usr/bin/ksshaskpass"
-    export GIT_ASKPASS
+    export SSH_ASKPASS="/usr/bin/ksshaskpass"
+    export SH_ASKPASS_REQUIRE=prefer
+    export GIT_ASKPASS="/usr/bin/ksshaskpass"
 fi

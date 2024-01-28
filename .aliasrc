@@ -1,3 +1,4 @@
+# shellcheck disable=SC2148
 alias config='git --git-dir="$HOME/.dotfiles" --work-tree=$HOME'
 
 # Core Utils

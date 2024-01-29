@@ -1,5 +1,6 @@
-#!/bin/bash
-set -ex
+#!/usr/bin/env bash
+set -e
+
 sudo apt update
 
 if ! command -v sudo &>/dev/null; then

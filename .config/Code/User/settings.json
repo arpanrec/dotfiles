@@ -38,9 +38,9 @@
         "editor.defaultFormatter": "redhat.java",
         "editor.formatOnSave": false,
         "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always",
+            "source.organizeImports.ruff": "always"
         },
-        "editor.indentSize": "tabSize",
+        "editor.indentSize": "tabSize"
     },
     "window.zoomLevel": 1,
     "diffEditor.ignoreTrimWhitespace": false,
@@ -97,8 +97,8 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": false,
         "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always",
-        },
+            "source.organizeImports.ruff": "always"
+        }
     },
     "black-formatter.args": [
         "--line-length",

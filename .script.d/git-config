@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 __select_gpg_key() {
     gpg --list-secret-keys --keyid-format LONG

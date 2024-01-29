@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 sudo timedatectl set-ntp true
 sudo timedatectl set-timezone Asia/Kolkata

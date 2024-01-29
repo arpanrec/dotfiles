@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 sudo apt update
 
@@ -39,10 +39,10 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y \
 
 if [[ $(apt-cache search "linux-headers-$(uname -r)") ]]; then
     echo "installing linux-headers-$(uname -r)"
-    sudo apt-get install -y "linux-headers-$(uname -r)"
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers-$(uname -r)"
 else
     echo "installing linux-headers"
-    sudo apt-get install -y "linux-headers"
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers"
 fi
 
 getent group "${CLOUD_INIT_GROUPNAME}" || sudo groupadd "${CLOUD_INIT_GROUPNAME}"

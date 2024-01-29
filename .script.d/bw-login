@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 pre_pro=(jq)
 for prog in "${pre_pro[@]}"; do

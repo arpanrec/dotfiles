@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 enable_ufw() {
     if ! command -v ufw &>/dev/null; then

@@ -33,7 +33,7 @@ Secrets in [`./.env`](./.env) file:
 First argument to `install.sh` is the path to the `.env` file.
 
 ```bash
-sudo ./install.sh ./.env
+sudo <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/install-minio) ./.env
 ```
 
 ```bash

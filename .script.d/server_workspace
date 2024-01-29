@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 if [[ $(id -u) -eq 0 ]]; then
     echo "Root user detected!!!! Error"
@@ -104,28 +104,31 @@ if [[ -z $* ]]; then
 
 fi
 
+__server_workspace_venv_directory="${HOME}/.tmp/server_workspace_venv"
+
 # shellcheck source=/dev/null
 if [[ -z ${VIRTUAL_ENV} ]]; then
     export PATH="${HOME}/.local/bin:${PATH}"
     echo "Updating Python packages"
     # "$(readlink -f "$(which python3)")" -m pip install testresources wheel setuptools pip virtualenv --user --upgrade
     echo "Pip Packages installed"
-    if [[ ! -d "${PWD}/venv" ]]; then
-        "$(readlink -f "$(which python3)")" -m venv venv
+    if [[ ! -d "${__server_workspace_venv_directory}" ]]; then
+        "$(readlink -f "$(which python3)")" -m venv "${__server_workspace_venv_directory}"
     fi
-    if [[ -f "${PWD}/venv/local/bin/activate" ]]; then
-        source venv/local/bin/activate
+    if [[ -f "${__server_workspace_venv_directory}/local/bin/activate" ]]; then
+        source "${__server_workspace_venv_directory}/local/bin/activate"
     else
-        source venv/bin/activate
+        source "${__server_workspace_venv_directory}/bin/activate"
     fi
 fi
+
 echo ""
 echo "Python :: $(python3 --version)"
 echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
 pip3 install --upgrade setuptools-rust pip
-pip3 install -r requirements.txt --upgrade
-ansible-galaxy install -r requirements.yml --force
+pip3 install ansible requests --upgrade
+ansible-galaxy collection install git+https://github.com/arpanrec/nebula.git -f
 
 MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${HOME}/.tmp/server_workspace.json}"
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"
@@ -141,8 +144,20 @@ else
     echo "This file will be used as extra-vars"
 fi
 
+__server_workspace_inventory="${HOME}/.tmp/server_workspace_inventory.yml"
+
+echo "Creating ${__server_workspace_inventory}"
+tee "${__server_workspace_inventory}" >/dev/null <<EOF
+---
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+
+EOF
+
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
-    ansible-playbook -i inventory.yml arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
+    ansible-playbook -i "${__server_workspace_inventory}" arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
 elif [[ -z ${__ansible_tags} && -n $* ]]; then
-    ansible-playbook -i inventory.yml arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
+    ansible-playbook -i "${__server_workspace_inventory}" arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
 fi

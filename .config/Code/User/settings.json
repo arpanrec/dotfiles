@@ -92,7 +92,7 @@
     },
     "black-formatter.args": [
         "--line-length",
-        "180"
+        "120"
     ],
     "telemetry.telemetryLevel": "off",
     "[yaml]": {

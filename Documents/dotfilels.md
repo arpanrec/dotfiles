@@ -18,8 +18,8 @@ For custom/silent install tags, extra-vars are optional
 
 ```bash
 bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/server_workspace) \
---tags all,code \
---extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
+    --tags all,code \
+    --extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
 ```
 
 ## MinIO

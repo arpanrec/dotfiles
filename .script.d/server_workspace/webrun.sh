@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 deactivate || true
 
@@ -15,9 +15,11 @@ fi
 mkdir -p "$(dirname "${__clone_directory}")"
 
 if [[ ! -d ${__clone_directory} ]]; then
+    echo "Cloning ${__git_setup_repo} to ${__clone_directory} and moving to ${__working_dir}"
     git clone --depth 1 --single-branch "${__git_setup_repo}" "${__clone_directory}"
     cd "${__working_dir}"
 else
+    echo "Moving to ${__working_dir}"
     cd "${__working_dir}"
 fi
 

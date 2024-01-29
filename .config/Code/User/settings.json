@@ -68,6 +68,8 @@
         "editor.detectIndentation": false,
         "editor.insertSpaces": true,
         "editor.tabSize": 4,
+        "editor.indentSize": "tabSize",
+        "editor.formatOnSave": false,
         "editor.quickSuggestions": {
             "comments": true,
             "other": true,
@@ -75,7 +77,7 @@
         },
         "editor.autoIndent": "advanced"
     },
-    "html.format.wrapLineLength": 180,
+    "html.format.wrapLineLength": 120,
     "terminal.integrated.persistentSessionScrollback": 1000,
     "terminal.integrated.env.linux": {
         "DEBUG": "true"
@@ -99,6 +101,7 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.tabSize": 4,
         "editor.insertSpaces": true,
+        "editor.indentSize": "tabSize"
     },
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -143,7 +146,7 @@
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "editor.fontFamily": "'Cascadia Code', 'Hack Nerd Font', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.mouseWheelZoom": true,
     "editor.inlineSuggest.enabled": true,

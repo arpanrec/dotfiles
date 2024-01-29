@@ -10,7 +10,7 @@ __dotfiles_dir="${HOME}/.dotfiles"
 
 # ask user for http or ssh and save in __dotfiles_git_remote_user
 
-read -r -n1 -p 'Use SSH or HTTPS? (default: HTTPS) [y/N]: ' __dotfiles_git_remote_user
+read -r -n1 -p "Use SSH remote ${__dotfiles_git_ssh_remote}? (default: HTTPS: ${__dotfiles_git_https_remote}) [y/N]: " __dotfiles_git_remote_user
 
 if [[ "${__dotfiles_git_remote_user}" == "y" ]]; then
     __dotfiles_git_remote="${__dotfiles_git_ssh_remote}"

@@ -44,6 +44,7 @@ if [[ ! -d "${__dotfiles_dir}" ]]; then
     git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_dir}"
 fi
 
+git --git-dir="${__dotfiles_dir}" --work-tree="${HOME}" set-url origin "${__dotfiles_git_remote}"
 git --git-dir="${__dotfiles_dir}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
 echo "alias config='git --git-dir=${__dotfiles_dir} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
 echo "alias config='git --git-dir=${__dotfiles_dir} --work-tree=${HOME}'" >>"${HOME}/.zshrc"

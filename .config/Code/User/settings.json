@@ -221,5 +221,5 @@
         "!vault"
     ],
     "yaml.format.enable": true,
-    "yaml.format.printWidth": 180
+    "yaml.format.printWidth": 120
 }

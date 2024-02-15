@@ -1,5 +1,5 @@
 # shellcheck disable=SC2148
-alias config='git --git-dir="$HOME/.dotfiles" --work-tree=$HOME'
+alias config='git --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 
 # Core Utils
 alias ls="ls --color=auto"
@@ -11,7 +11,7 @@ alias df="sudo df -h"
 # alias sftp="sftp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Office System local zsh shell
-alias zzx='exec $HOME/.local/bin/zsh -l'
+alias zzx='exec ${HOME}/.local/bin/zsh -l'
 
 # Editors
 alias code="code --no-sandbox"
@@ -23,16 +23,16 @@ alias vim='nvim'
 # alias bws='bw sync'
 # alias bws='curl -X POST http://localhost:8087/sync -v'
 # alias bwu='export BW_SESSION=$(bw unlock --raw)'
-# alias bwus='$HOME/.local/bin/bitwarden_utils.sh'
+# alias bwus='${HOME}/.local/bin/bitwarden_utils.sh'
 alias s2g='ssh_auth_sock_to_gpg.sh'
 
 # Directories
-alias cdws='cd $HOME/workspace'
-alias cdwd='cd $HOME/work-drive'
+alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'
+alias cdwd='cd ${HOME}/work-drive'
 
 # Misc
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias steam='prime-run steam'
-# alias dec='$HOME/.local/bin/dev_env_check.sh'
+# alias dec='${HOME}/.local/bin/dev_env_check.sh'
 alias running-services='systemctl list-unit-files --type=service'
 alias yd='youtube-dl -f best --verbose --external-downloader axel --external-downloader-args "-n 10 -a"'

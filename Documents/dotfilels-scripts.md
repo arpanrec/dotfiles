@@ -3,7 +3,7 @@
 ## Debian
 
 ```bash
-sudo -H -u root bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit-ansible)'
+sudo -H -u root bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit-ansible.sh)'
 ```
 
 ## Server Workspace
@@ -11,13 +11,13 @@ sudo -H -u root bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/a
 Setup workspace for development using [server workspace playbook](https://github.com/arpanrec/nebula/blob/main/playbooks/server_workspace.md)
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/server_workspace)
+bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/server-workspace.sh)
 ```
 
 For custom/silent install tags, extra-vars are optional
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/server_workspace) \
+bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/server-workspace.sh) \
     --tags all,code \
     --extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
 ```
@@ -33,7 +33,7 @@ Secrets in [`./.env`](./.env) file:
 First argument to `install.sh` is the path to the `.env` file.
 
 ```bash
-sudo <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/install-minio) ./.env
+sudo <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/install-minio.sh) ./.env
 ```
 
 ```bash

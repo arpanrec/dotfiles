@@ -69,7 +69,9 @@ for auth_method in auth_methods["data"]:
         list_of_approles = client.auth.approle.list_roles(mount_point=auth_method)
         for role_name in list_of_approles["data"]["keys"]:
             try:
-                list_secret_id_accessors = client.auth.approle.list_secret_id_accessors(role_name, mount_point=auth_method)
+                list_secret_id_accessors = client.auth.approle.list_secret_id_accessors(
+                    role_name, mount_point=auth_method
+                )
             except hvac.exceptions.InvalidPath as ex:
                 list_secret_id_accessors = {"data": {"keys": []}}
             for secret_id_accessor in list_secret_id_accessors["data"]["keys"]:

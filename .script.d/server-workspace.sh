@@ -88,12 +88,6 @@ if [[ -z $* ]]; then
         __install_tags+=('themes')
     fi
 
-    read -n1 -r -p 'Enter "Y" to copy KDE profiles (Press any other key to Skip*) : ' copy_kde_konsave
-    echo ""
-    if [[ ${copy_kde_konsave} == "Y" || ${copy_kde_konsave} == "y" ]]; then
-        __install_tags+=('kde')
-    fi
-
     read -n1 -r -p 'Enter "Y" to install gnome (Press any other key to Skip*) : ' install_gnome
     echo ""
     if [[ ${install_gnome} == "Y" || ${install_gnome} == "y" ]]; then

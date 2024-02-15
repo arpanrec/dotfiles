@@ -12,9 +12,7 @@ ENABLE_CORRECTION="false"
 
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(git
-    mvn
-    fzf
+plugins=(fzf
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-completions

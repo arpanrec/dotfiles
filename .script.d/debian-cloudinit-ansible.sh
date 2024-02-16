@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 sudo apt update
 
@@ -66,7 +66,7 @@ sudo ufw --force enable
 sudo systemctl enable --now ufw
 sudo systemctl restart ufw
 
-sudo -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -ex && \
+sudo -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   export DEBIAN_FRONTEND=noninteractive && \
   export PATH="${HOME}/.local/bin:${PATH}" && \
   deactivate || true && \

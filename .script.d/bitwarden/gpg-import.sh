@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 pre_pro=(bw jq gpg)
 for prog in "${pre_pro[@]}"; do

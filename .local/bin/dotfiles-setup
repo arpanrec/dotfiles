@@ -85,6 +85,8 @@ if [[ ! -d "${__dotfiles_directory}" ]]; then
     echo "Cloning dotfiles"
     git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}"
     git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
 else
 
     echo "Repository already cloned in ${__dotfiles_directory}"
@@ -112,6 +114,7 @@ else
     else
         echo "Current branch is ${__dotfiles_git_branch}"
     fi
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
 
 fi
 

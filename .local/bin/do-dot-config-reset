@@ -40,7 +40,7 @@ __dotfiles_available_branches=$(curl -sL \
     "https://api.github.com/repos/${__dotfiles_repo}/branches" | jq -r '.[].name')
 
 echo "Current branch is: ${__dotfiles_git_branch}"
-echo "Available branches: ${__dotfiles_available_branches}"
+printf "Available branches: \n\n%s\n\n" "${__dotfiles_available_branches}"
 read -r -n1 -p "Want change the current branch? (default: N) [y/N]: " __dotfiles__selection_user_input_git_branch
 echo ""
 
@@ -82,29 +82,37 @@ if [[ ! -d "${__dotfiles_directory}" ]]; then
     git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}"
 else
 
-    echo "Repository already cloned"
+    echo "Repository already cloned in ${__dotfiles_directory}"
 
     __dotfiles_current_remote=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote get-url origin)
 
     if [[ "${__dotfiles_current_remote}" != "${__dotfiles_git_remote}" ]]; then
-        echo "Remote is different, changing remote"
+        echo "Current remote is ${__dotfiles_current_remote}, changing to ${__dotfiles_git_remote}"
         git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
+    else
+        echo "Remote is ${__dotfiles_git_remote}"
     fi
 
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    echo "Fetching all"
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all
+
+    ## Change branch if required
+    __dotfiles_current_branch=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --show-current)
+
+    if [[ "${__dotfiles_current_branch}" != "${__dotfiles_git_branch}" ]]; then
+        echo "Current branch is ${__dotfiles_current_branch}, changing to ${__dotfiles_git_branch}"
+        git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" checkout "${__dotfiles_git_branch}"
+    else
+        echo "Current branch is ${__dotfiles_git_branch}"
+    fi
+
 fi
 
 ## Set status.showUntrackedFiles to no
 echo "Setting status.showUntrackedFiles to no"
 git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
-
-## Change branch if required
-__dotfiles_current_branch=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --show-current)
-
-if [[ "${__dotfiles_current_branch}" != "${__dotfiles_git_branch}" ]]; then
-    echo "Changing branch to ${__dotfiles_git_branch}"
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" checkout "${__dotfiles_git_branch}"
-fi
 
 ## Add alias to rc files
 echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"

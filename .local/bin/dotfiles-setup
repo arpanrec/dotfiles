@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+set -e
+
+# Check if git is installed
+if ! command -v git &>/dev/null; then
+    echo "git could not be found"
+    exit
+fi
+
+# Check if jq is installed
+if ! command -v jq &>/dev/null; then
+    echo "jq could not be found"
+    exit
+fi
+
+__dotfiles_directory="${HOME}/.dotfiles"
+__dotfiles_repo="arpanrec/dotfiles"
+__dotfiles_git_ssh_remote="git@github.com:${__dotfiles_repo}.git"
+__dotfiles_git_https_remote="https://github.com/${__dotfiles_repo}.git"
+__dotfiles_git_remote="${__dotfiles_git_https_remote}"
+
+echo "GitHub repository: ${__dotfiles_repo}"
+echo "Dotfiles directory: ${__dotfiles_directory}"
+
+## Remote selection
+read -r -n1 -p "Current remote is HTTPS: ${__dotfiles_git_https_remote}, Want to use SSH: ${__dotfiles_git_ssh_remote}? (default: N) [y/N]: " __dotfiles_selection_user_input_git_remote
+echo ""
+
+if [[ "${__dotfiles_selection_user_input_git_remote}" == "y" ]]; then
+    __dotfiles_git_remote="${__dotfiles_git_ssh_remote}"
+fi
+
+echo "Selected remote: ${__dotfiles_git_remote}"
+
+## Branch selection
+__dotfiles_git_branch=$(curl -sL \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/${__dotfiles_repo}" | jq -r '.default_branch')
+
+__dotfiles_available_branches=$(curl -sL \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/${__dotfiles_repo}/branches" | jq -r '.[].name')
+
+echo "Current branch is: ${__dotfiles_git_branch}"
+printf "Available branches: \n\n%s\n\n" "${__dotfiles_available_branches}"
+read -r -n1 -p "Want change the current branch? (default: N) [y/N]: " __dotfiles__selection_user_input_git_branch
+echo ""
+
+if [[ "${__dotfiles__selection_user_input_git_branch}" == "y" ]]; then
+    echo "Enter the branch number followed by enter key"
+    select __dotfiles_git_branch in ${__dotfiles_available_branches}; do
+        break
+    done
+
+    if [[ -z "${__dotfiles_git_branch}" ]]; then
+        echo "No branch selected, exiting"
+        exit 1
+    fi
+fi
+
+echo "Selected branch: ${__dotfiles_git_branch}"
+
+## Dotfiles directory
+# read -r -p "Enter the dotfiles directory (default: ~/.dotfiles): " __dotfiles_directory
+# echo ""
+
+# if [[ -z "${__dotfiles_directory}" ]]; then
+#     __dotfiles_directory="${HOME}/.dotfiles"
+# fi
+
+# echo "Selected dotfiles directory: ${__dotfiles_directory}"
+
+## Reset all dotfiles
+read -r -n1 -p 'Reset all dotfiles? (default: N) [y/N]: ' __dotfiles_user_input_reset
+
+if [[ "${__dotfiles_user_input_reset}" == "y" ]]; then
+    echo "Resetting all dotfiles"
+    rm -rf "${__dotfiles_directory}"
+fi
+
+## Check if repo is already cloned
+if [[ ! -d "${__dotfiles_directory}" ]]; then
+    echo "Cloning dotfiles"
+    git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}"
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+else
+
+    echo "Repository already cloned in ${__dotfiles_directory}"
+
+    __dotfiles_current_remote=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote get-url origin)
+
+    if [[ "${__dotfiles_current_remote}" != "${__dotfiles_git_remote}" ]]; then
+        echo "Current remote is ${__dotfiles_current_remote}, changing to ${__dotfiles_git_remote}"
+        git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
+    else
+        echo "Remote is ${__dotfiles_git_remote}"
+    fi
+
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    echo "Fetching all"
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all --prune
+
+    ## Change branch if required
+    __dotfiles_current_branch=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --show-current)
+
+    if [[ "${__dotfiles_current_branch}" != "${__dotfiles_git_branch}" ]]; then
+        echo "Current branch is ${__dotfiles_current_branch}, changing to ${__dotfiles_git_branch}"
+        git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" checkout "${__dotfiles_git_branch}"
+    else
+        echo "Current branch is ${__dotfiles_git_branch}"
+    fi
+
+fi
+
+## Set status.showUntrackedFiles to no
+echo "Setting status.showUntrackedFiles to no"
+git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
+
+## Add alias to rc files
+echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
+echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
+echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
+
+## Check status
+git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" status

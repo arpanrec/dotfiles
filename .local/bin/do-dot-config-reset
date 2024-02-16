@@ -1,35 +1,5 @@
 #!/usr/bin/env bash
-set -ex
-
-__dotfiles_repo="arpanrec/dotfiles"
-__dotfiles_git_ssh_remote="git@github.com:${__dotfiles_repo}.git"
-__dotfiles_git_https_remote="https://github.com/${__dotfiles_repo}.git"
-__dotfiles_git_remote="${__dotfiles_git_https_remote}"
-__dotfiles_git_branch="main"
-__dotfiles_dir="${HOME}/.dotfiles"
-
-# ask user for http or ssh and save in __dotfiles_git_remote_user
-
-read -r -n1 -p "Use SSH remote ${__dotfiles_git_ssh_remote}? (default: HTTPS: ${__dotfiles_git_https_remote}) [y/N]: " __dotfiles_git_remote_user
-
-if [[ "${__dotfiles_git_remote_user}" == "y" ]]; then
-    __dotfiles_git_remote="${__dotfiles_git_ssh_remote}"
-fi
-
-echo "Configuring dotfiles"
-echo "Repo: ${__dotfiles_repo}"
-echo "Remote: ${__dotfiles_git_remote}"
-echo "Branch: ${__dotfiles_git_branch}"
-echo "Dir: ${__dotfiles_dir}"
-
-# ask user for total reset
-
-read -r -n1 -p 'Reset all dotfiles? (default: no) [y/N]: ' __dotfiles_reset
-
-if [[ "${__dotfiles_reset}" == "y" ]]; then
-    echo "Resetting all dotfiles"
-    rm -rf "${__dotfiles_dir}"
-fi
+set -e
 
 # Check if git is installed
 if ! command -v git &>/dev/null; then
@@ -37,16 +7,84 @@ if ! command -v git &>/dev/null; then
     exit
 fi
 
-# Check if repo is already cloned
-
-if [[ ! -d "${__dotfiles_dir}" ]]; then
-    echo "Cloning dotfiles repo"
-    git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_dir}"
+# Check if jq is installed
+if ! command -v jq &>/dev/null; then
+    echo "jq could not be found"
+    exit
 fi
 
-git --git-dir="${__dotfiles_dir}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
-git --git-dir="${__dotfiles_dir}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
-echo "alias config='git --git-dir=${__dotfiles_dir} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
-echo "alias config='git --git-dir=${__dotfiles_dir} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
-echo "alias config='git --git-dir=${__dotfiles_dir} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
-git --git-dir="${__dotfiles_dir}" --work-tree="${HOME}" status
+__dotfiles_repo="arpanrec/dotfiles"
+__dotfiles_git_ssh_remote="git@github.com:${__dotfiles_repo}.git"
+__dotfiles_git_https_remote="https://github.com/${__dotfiles_repo}.git"
+__dotfiles_git_remote="${__dotfiles_git_https_remote}"
+
+## Remote selection
+read -r -n1 -p "Current remote is HTTPS: ${__dotfiles_git_https_remote}, Want to use SSH: ${__dotfiles_git_ssh_remote}? (default: N) [y/N]: " __dotfiles_selection_user_input_git_remote
+echo ""
+
+if [[ "${__dotfiles_selection_user_input_git_remote}" == "y" ]]; then
+    __dotfiles_git_remote="${__dotfiles_git_ssh_remote}"
+fi
+
+echo "Selected remote: ${__dotfiles_git_remote}"
+
+## Branch selection
+__dotfiles_git_branch=$(curl -sL \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/${__dotfiles_repo}" | jq -r '.default_branch')
+
+__dotfiles_available_branches=$(curl -sL \
+    -H "Accept: application/vnd.github+json" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    "https://api.github.com/repos/${__dotfiles_repo}/branches" | jq -r '.[].name')
+
+echo "Current branch is: ${__dotfiles_git_branch}"
+echo "Available branches: ${__dotfiles_available_branches}"
+read -r -n1 -p "Want change the current branch? (default: N) [y/N]: " __dotfiles__selection_user_input_git_branch
+echo ""
+
+if [[ "${__dotfiles__selection_user_input_git_branch}" == "y" ]]; then
+    echo "Enter the branch number followed by enter key"
+    select __dotfiles_git_branch in ${__dotfiles_available_branches}; do
+        break
+    done
+
+    if [[ -z "${__dotfiles_git_branch}" ]]; then
+        echo "No branch selected, exiting"
+        exit 1
+    fi
+fi
+
+echo "Selected branch: ${__dotfiles_git_branch}"
+
+## Dotfiles directory
+read -r -p "Enter the dotfiles directory (default: ~/.dotfiles): " __dotfiles_directory
+echo ""
+
+if [[ -z "${__dotfiles_directory}" ]]; then
+    __dotfiles_directory="${HOME}/.dotfiles"
+fi
+
+echo "Selected dotfiles directory: ${__dotfiles_directory}"
+
+## Reset all dotfiles
+read -r -n1 -p 'Reset all dotfiles? (default: N) [y/N]: ' __dotfiles_user_input_reset
+
+if [[ "${__dotfiles_user_input_reset}" == "y" ]]; then
+    echo "Resetting all dotfiles"
+    rm -rf "${__dotfiles_directory}"
+fi
+
+## Check if repo is already cloned
+if [[ ! -d "${__dotfiles_directory}" ]]; then
+    echo "Cloning dotfiles repo"
+    git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}" --single-branch
+fi
+
+git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
+git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
+echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
+echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
+echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
+git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" status

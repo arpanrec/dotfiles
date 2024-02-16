@@ -18,10 +18,6 @@ fi
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
-# shellcheck source=/dev/null
-if [ -f "$HOME/.dotfiles/linode_cli_completion.sh" ]; then
-    source "$HOME/.dotfiles/linode_cli_completion.sh"
-fi
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return

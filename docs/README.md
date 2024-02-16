@@ -3,7 +3,7 @@
 ## Setup Dot Files
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.local/bin/dotfiles-setup)
+bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dotfiles-setup.sh)
 ```
 
 ## Debian
@@ -39,7 +39,7 @@ Secrets in [`./.env`](./.env) file:
 First argument to `install.sh` is the path to the `.env` file.
 
 ```bash
-sudo <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/install-minio.sh) ./.env
+sudo <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh) ./.env
 ```
 
 ```bash

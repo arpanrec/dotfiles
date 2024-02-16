@@ -80,47 +80,57 @@ if [[ "${__dotfiles_user_input_reset}" == "y" ]]; then
     rm -rf "${__dotfiles_directory}"
 fi
 
+__doconfig="git --git-dir=${__dotfiles_directory} --work-tree=${HOME}"
+
 ## Check if repo is already cloned
 if [[ ! -d "${__dotfiles_directory}" ]]; then
     echo "Cloning dotfiles"
     git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}"
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
+    ${__doconfig} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    echo "Fetching all branches"
+    ${__doconfig} fetch --all
+
+    echo "Setting upstream to origin/${__dotfiles_git_branch}"
+    ${__doconfig} branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
 else
 
     echo "Repository already cloned in ${__dotfiles_directory}"
 
-    __dotfiles_current_remote=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote get-url origin)
+    __dotfiles_current_remote=$(${__doconfig} remote get-url origin)
 
     if [[ "${__dotfiles_current_remote}" != "${__dotfiles_git_remote}" ]]; then
         echo "Current remote is ${__dotfiles_current_remote}, changing to ${__dotfiles_git_remote}"
-        git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
+        ${__doconfig} remote set-url origin "${__dotfiles_git_remote}"
     else
-        echo "Remote is ${__dotfiles_git_remote}"
+        echo "Current remote is ${__dotfiles_git_remote}"
     fi
 
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    ${__doconfig} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
-    echo "Fetching all"
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all --prune
+    echo "Fetching all branches"
+    ${__doconfig} fetch --all --prune
 
     ## Change branch if required
-    __dotfiles_current_branch=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --show-current)
+    __dotfiles_current_branch=$(${__doconfig} branch --show-current)
 
     if [[ "${__dotfiles_current_branch}" != "${__dotfiles_git_branch}" ]]; then
         echo "Current branch is ${__dotfiles_current_branch}, changing to ${__dotfiles_git_branch}"
-        git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" checkout "${__dotfiles_git_branch}"
+        echo "Stashing changes"
+        ${__doconfig} stash
+        ${__doconfig} checkout "${__dotfiles_git_branch}"
     else
         echo "Current branch is ${__dotfiles_git_branch}"
     fi
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
+
+    echo "Setting upstream to origin/${__dotfiles_git_branch}"
+    ${__doconfig} branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
 
 fi
 
 ## Set status.showUntrackedFiles to no
 echo "Setting status.showUntrackedFiles to no"
-git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
+${__doconfig} config --local status.showUntrackedFiles no
 
 ## Add alias to rc files
 echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
@@ -128,4 +138,4 @@ echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" 
 echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
 
 ## Check status
-git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" status
+${__doconfig} status

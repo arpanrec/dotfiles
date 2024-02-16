@@ -78,13 +78,38 @@ fi
 
 ## Check if repo is already cloned
 if [[ ! -d "${__dotfiles_directory}" ]]; then
-    echo "Cloning dotfiles repo"
-    git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}" --single-branch
+    echo "Cloning dotfiles"
+    git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}"
+else
+
+    echo "Repository already cloned"
+
+    __dotfiles_current_remote=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote get-url origin)
+
+    if [[ "${__dotfiles_current_remote}" != "${__dotfiles_git_remote}" ]]; then
+        echo "Remote is different, changing remote"
+        git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
+    fi
+
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch
 fi
 
-git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" remote set-url origin "${__dotfiles_git_remote}"
+## Set status.showUntrackedFiles to no
+echo "Setting status.showUntrackedFiles to no"
 git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
+
+## Change branch if required
+__dotfiles_current_branch=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --show-current)
+
+if [[ "${__dotfiles_current_branch}" != "${__dotfiles_git_branch}" ]]; then
+    echo "Changing branch to ${__dotfiles_git_branch}"
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" checkout "${__dotfiles_git_branch}"
+fi
+
+## Add alias to rc files
 echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
 echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
 echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
+
+## Check status
 git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" status

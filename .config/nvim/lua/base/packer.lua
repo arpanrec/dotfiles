@@ -33,7 +33,40 @@ return require('packer').startup(function(use)
 		-- run = ':TSUpdate'
 	}
 	use { 'mbbill/undotree' }
--- Automatically set up your configuration after cloning packer.nvim
+	use { 'tpope/vim-fugitive' }
+
+
+	use {
+		'VonHeikemen/lsp-zero.nvim',
+		branch = 'v3.x',
+		requires = {
+			--- Uncomment the two plugins below if you want to manage the language servers from neovim
+			{'williamboman/mason.nvim'},
+			{'williamboman/mason-lspconfig.nvim'},
+
+			-- LSP Support
+			{'neovim/nvim-lspconfig'},
+			-- Autocompletion
+			{'hrsh7th/nvim-cmp'},
+			{'hrsh7th/cmp-nvim-lsp'},
+			{'L3MON4D3/LuaSnip'},
+
+			-- Snippets
+			{'rafamadriz/friendly-snippets'},
+			{ 'hrsh7th/cmp-nvim-lua' },
+			{ 'saadparwaiz1/cmp_luasnip' },
+			{ 'hrsh7th/cmp-path' },
+			{ 'hrsh7th/cmp-buffer' },
+			{ 'hrsh7th/cmp-calc' },
+			{ 'hrsh7th/cmp-emoji' },
+			{ 'hrsh7th/cmp-vsnip' },
+			{ 'hrsh7th/vim-vsnip' },
+			{ 'hrsh7th/vim-vsnip-integ' },
+
+		}
+	}
+
+	-- Automatically set up your configuration after cloning packer.nvim
 -- Put this at the end after all plugins
 if packer_bootstrap then
 	require('packer').sync()

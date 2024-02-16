@@ -14,6 +14,8 @@ export LC_MEASUREMENT="en_US.UTF8"
 export LC_IDENTIFICATION="en_US.UTF8"
 export LC_ALL=en_US.UTF8
 
+export HISTTIMEFORMAT="%F %T "
+
 export LD_LIBRARY_PATH=$HOME/.local/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
 
 if ! [[ "$PATH" =~ /usr/local/bin: ]]; then

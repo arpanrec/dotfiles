@@ -13,10 +13,14 @@ if ! command -v jq &>/dev/null; then
     exit
 fi
 
+__dotfiles_directory="${HOME}/.dotfiles"
 __dotfiles_repo="arpanrec/dotfiles"
 __dotfiles_git_ssh_remote="git@github.com:${__dotfiles_repo}.git"
 __dotfiles_git_https_remote="https://github.com/${__dotfiles_repo}.git"
 __dotfiles_git_remote="${__dotfiles_git_https_remote}"
+
+echo "GitHub repository: ${__dotfiles_repo}"
+echo "Dotfiles directory: ${__dotfiles_directory}"
 
 ## Remote selection
 read -r -n1 -p "Current remote is HTTPS: ${__dotfiles_git_https_remote}, Want to use SSH: ${__dotfiles_git_ssh_remote}? (default: N) [y/N]: " __dotfiles_selection_user_input_git_remote
@@ -59,14 +63,14 @@ fi
 echo "Selected branch: ${__dotfiles_git_branch}"
 
 ## Dotfiles directory
-read -r -p "Enter the dotfiles directory (default: ~/.dotfiles): " __dotfiles_directory
-echo ""
+# read -r -p "Enter the dotfiles directory (default: ~/.dotfiles): " __dotfiles_directory
+# echo ""
 
-if [[ -z "${__dotfiles_directory}" ]]; then
-    __dotfiles_directory="${HOME}/.dotfiles"
-fi
+# if [[ -z "${__dotfiles_directory}" ]]; then
+#     __dotfiles_directory="${HOME}/.dotfiles"
+# fi
 
-echo "Selected dotfiles directory: ${__dotfiles_directory}"
+# echo "Selected dotfiles directory: ${__dotfiles_directory}"
 
 ## Reset all dotfiles
 read -r -n1 -p 'Reset all dotfiles? (default: N) [y/N]: ' __dotfiles_user_input_reset

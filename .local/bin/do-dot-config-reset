@@ -96,7 +96,7 @@ else
     git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
     echo "Fetching all"
-    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all
+    git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" fetch --all --prune
 
     ## Change branch if required
     __dotfiles_current_branch=$(git --git-dir="${__dotfiles_directory}" --work-tree="${HOME}" branch --show-current)

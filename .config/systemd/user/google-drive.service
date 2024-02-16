@@ -1,0 +1,33 @@
+[Unit]
+Description=Rclone :: google-drive
+#AssertPathIsDirectory="%h/google-drive"
+#After=plexdrive.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/mkdir -p "%h/google-drive"
+ExecStart=/usr/bin/rclone mount \
+        --config="%h/.config/rclone/rclone.conf" \
+#        --allow-other \
+        --cache-tmp-upload-path="%h/.cache/rclone/upload" \
+        --cache-chunk-path="%h/.cache/rclone/chunks" \
+        --cache-workers=8 \
+        --cache-writes \
+        --cache-dir="%h/.cache/rclone/vfs" \
+        --cache-db-path="%h/.cache/rclone/db" \
+        --no-modtime \
+        --drive-use-trash \
+        --gphotos-read-size \
+        --log-level=INFO \
+        --stats=0 \
+        --checkers=16 \
+        --bwlimit=40M \
+        --dir-cache-time=60m \
+        --vfs-cache-mode full \
+        --cache-info-age=60m google-drive:/ "%h/google-drive"
+ExecStop=/bin/fusermount -u "%h/google-drive"
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

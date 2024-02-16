@@ -1,0 +1,32 @@
+[Desktop Entry]
+DefaultProfile=arpanrec.profile
+
+[KFileDialog Settings]
+detailViewIconSize=16
+
+[MainWindow]
+MenuBar=Disabled
+State=AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAfsAAAAcAFMAUwBIAE0AYQBuAGEAZwBlAHIARABvAGMAawAAAAAA/////wAAANQA////AAAHgAAABBwAAAAEAAAABAAAAAgAAAAI/AAAAAEAAAACAAAAAgAAABYAbQBhAGkAbgBUAG8AbwBsAEIAYQByAQAAAAD/////AAAAAAAAAAAAAAAcAHMAZQBzAHMAaQBvAG4AVABvAG8AbABiAGEAcgEAAADi/////wAAAAAAAAAA
+ToolBarsMovable=Disabled
+eDP Height 1920x1200=1101
+eDP Height 2560x1600=732
+eDP Width 1920x1200=1920
+eDP Width 2560x1600=2552
+eDP Window-Maximized 1920x1200=true
+eDP Window-Maximized 2560x1600=true
+eDP XPosition 1920x1200=0
+eDP XPosition 2560x1600=4
+eDP YPosition 1920x1200=55
+eDP YPosition 2560x1600=55
+eDP-1 Height 2560x1600=1501
+eDP-1 Width 2560x1600=2560
+eDP-1 Window-Maximized 2560x1600=true
+eDP-1 XPosition 2560x1600=0
+eDP-1 YPosition 2560x1600=55
+
+[Notification Messages]
+CloseSingleTab=true
+
+[UiSettings]
+ColorScheme=
+WindowColorScheme=Default

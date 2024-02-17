@@ -122,6 +122,10 @@ echo "git config --global credential.helper store --file=\${HOME}/.git-credentia
 # shellcheck disable=SC2016
 git config --global credential.helper 'store --file="${HOME}/.git-credentials"'
 
+echo "git config --global core.excludesFile '~/.gitignore'"
+# shellcheck disable=SC2088
+git config --global core.excludesFile '~/.gitignore'
+
 echo "Press a for arpan git config"
 echo "Press d for dummy git config"
 echo "Press any other key to setup gitconfig interactively"

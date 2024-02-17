@@ -13,6 +13,11 @@ if ! command -v jq &>/dev/null; then
     exit
 fi
 
+if [[ "true" == $(git rev-parse --is-inside-work-tree) ]]; then
+    echo "Already inside a git worktree, this script should be run out of a git repository"
+    exit 1
+fi
+
 __dotfiles_directory="${HOME}/.dotfiles"
 __dotfiles_repo="arpanrec/dotfiles"
 __dotfiles_git_ssh_remote="git@github.com:${__dotfiles_repo}.git"

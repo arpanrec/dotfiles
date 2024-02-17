@@ -15,7 +15,7 @@ fi
 
 cd "${HOME}"
 
-if [[ "true" == $(git rev-parse --is-inside-work-tree) ]]; then
+if [[ "true" == $(git rev-parse --is-inside-work-tree > /dev/null) ]]; then
     echo "Already inside a git worktree, this script should be run out of a git repository"
     exit 1
 fi

@@ -13,6 +13,8 @@ if ! command -v jq &>/dev/null; then
     exit
 fi
 
+cd "${HOME}"
+
 if [[ "true" == $(git rev-parse --is-inside-work-tree) ]]; then
     echo "Already inside a git worktree, this script should be run out of a git repository"
     exit 1

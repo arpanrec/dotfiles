@@ -122,7 +122,7 @@ else
         __dotfiles_stash_name=$(date +%s)
         echo "Stashing changes with message: ${__dotfiles_stash_name}"
         ${__doconfig} stash push -m "${__dotfiles_stash_name}"
-        ${__doconfig} checkout "${__dotfiles_git_branch} -- "
+        ${__doconfig} checkout "${__dotfiles_git_branch}"
     else
         echo "Current branch is already ${__dotfiles_git_branch}"
     fi

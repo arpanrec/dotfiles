@@ -1,6 +1,15 @@
 
 # Scripts
 
+Scripts
+The scripts in this repository automate various tasks, making it easier to set up and configure my environment. These scripts include:
+
+Dotfiles setup: .script.d/dotfiles-setup.sh
+Git configuration: .script.d/git-config.sh
+And more...
+Usage
+To use these dotfiles and scripts, clone this repository to your local machine and run the appropriate scripts. Please note that these files are tailored to my personal preferences and may not work perfectly in your environment without modification.
+
 ## Debian
 
 ```bash

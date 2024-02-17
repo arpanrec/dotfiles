@@ -2,9 +2,9 @@
 set -e
 
 __select_gpg_key() {
-    gpg --list-secret-keys --keyid-format LONG
-
     list_private_keys=$(gpg --list-secret-keys --keyid-format LONG)
+
+    printf "List of GPG keys \n %s\n" "${list_private_keys}"
 
     gpgkeys=$(
         gpg --with-colons --fingerprint |
@@ -16,12 +16,9 @@ __select_gpg_key() {
     __keys_arr=()
 
     if [ "${#gpgkeys[@]}" -lt 1 ] || [[ "${gpgkeys}" == "" ]]; then
-        echo ""
         echo "no Keys found"
-        echo ""
     else
         int_con=0
-        echo ""
         for key in ${gpgkeys}; do
             last_8_char=$(echo "${key}" | tail -c 15)
             if [[ $list_private_keys =~ ${last_8_char} ]]; then
@@ -30,8 +27,7 @@ __select_gpg_key() {
                 __keys_arr+=("${key}")
             fi
         done
-        read -r -n 1 -p "Enter exact number " __gpg_key_index_in_array
-        echo ""
+        read -r -n1 -p "Enter exact number " __gpg_key_index_in_array && echo ""
         if [[ -n ${__gpg_key_index_in_array} ]]; then
             git config --global user.signingkey "${__keys_arr[$__gpg_key_index_in_array]}"
         fi
@@ -56,7 +52,7 @@ __setup_git_interactively() {
     fi
 
     echo "Git sign commints with gpg keys, Current Value: $(git config --global commit.gpgsign)"
-    read -r -n1 -p "Press Y/N to Enable or Disable, [Leave Empty to skip] :: " __gitconfig_enable_gpg
+    read -r -n1 -p "Press Y/N to Enable or Disable, [Leave Empty to skip] :: " __gitconfig_enable_gpg && echo ""
 
     if [[ "${__gitconfig_enable_gpg}" == Y || "${__gitconfig_enable_gpg}" == y ]]; then
         git config --global commit.gpgsign true
@@ -64,9 +60,8 @@ __setup_git_interactively() {
         git config --global commit.gpgsign false
     fi
 
-    echo ""
     echo "Git GPG key id: $(git config --global user.signingkey)"
-    read -r -n1 -p "Press Y to change, [Leave Empty to skip] :: " __gitconfig_key_id
+    read -r -n1 -p "Press Y to change, [Leave Empty to skip] :: " __gitconfig_key_id && echo ""
 
     if [[ "${__gitconfig_key_id}" == Y || "${__gitconfig_key_id}" == y ]]; then
         __select_gpg_key
@@ -74,12 +69,11 @@ __setup_git_interactively() {
 
 }
 
-echo "Check if gitconfig is already present then press Y to delete it"
-read -r -n1 -p "Press any other key to skip : " __delete_existing_gitconfig
-echo ""
-
-if [[ "${__delete_existing_gitconfig}" == Y || "${__delete_existing_gitconfig}" == y ]]; then
-    rm -rf "${HOME}/.gitconfig"
+if [[ -f "${HOME}/.gitconfig" ]]; then
+    read -r -n1 -p "${HOME}/gitconfig is already present, Press Y/y to Delete the existing gitconfig, Press any other config to ignore. :: " __delete_existing_gitconfig && echo ""
+    if [[ "${__delete_existing_gitconfig}" == Y || "${__delete_existing_gitconfig}" == y ]]; then
+        rm -rf "${HOME}/.gitconfig"
+    fi
 fi
 
 echo "git config --global advice.detachedHead false"
@@ -121,6 +115,15 @@ git config --global init.defaultBranch main
 echo "git config --global credential.helper store --file=\${HOME}/.git-credentials"
 # shellcheck disable=SC2016
 git config --global credential.helper 'store --file="${HOME}/.git-credentials"'
+touch "${HOME}/.git-credentials"
+
+echo "git config --global core.excludesFile '~/.gitignore'"
+# shellcheck disable=SC2088
+git config --global core.excludesFile '~/.gitignore'
+touch "${HOME}/.gitignore"
+
+echo "git config --global color.ui auto"
+git config --global color.ui auto
 
 echo "Press a for arpan git config"
 echo "Press d for dummy git config"
@@ -144,6 +147,7 @@ a | A)
     git config --global user.signingkey 1B0D9C73D1221DB0DB64592912086B524AF4FD70
 
     ;;
+
 d | D)
     echo "git config --global commit.gpgsign false"
     git config --global commit.gpgsign false
@@ -157,13 +161,13 @@ d | D)
     ;;
 
 *)
-    echo ""
     echo "Press Y to Delete the existing gitconfig"
-    read -r -n1 -p "Press any other key to update the existing git config :: " __delete_existing_gitconfig
+    read -r -n1 -p "Press any other key to update the existing git config :: " __delete_existing_gitconfig && echo ""
 
     if [[ "${__delete_existing_gitconfig}" == Y || "${__delete_existing_gitconfig}" == y ]]; then
         rm -rf "${HOME}/.gitconfig"
     fi
     __setup_git_interactively
     ;;
+
 esac

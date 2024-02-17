@@ -10,9 +10,9 @@ This repository contains my personal dotfiles and scripts, which I use to set up
 bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dotfiles-setup.sh)
 ```
 
-## [Dotfiles](./dotfiles)
+## [Dotfiles](/docs/dotfiles.md)
 
-## [Scripts](./scripts.md)
+## [Scripts](/docs/scripts.md)
 
 ## License
 

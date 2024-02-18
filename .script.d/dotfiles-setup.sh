@@ -137,9 +137,9 @@ echo "Setting status.showUntrackedFiles to no"
 ${__doconfig} config --local status.showUntrackedFiles no
 
 ## Add alias to rc files
-echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
-echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
-echo "alias config='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
+echo "alias dotfiles='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
+echo "alias dotfiles='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
+echo "alias dotfiles='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
 
 ## Check status
 ${__doconfig} status

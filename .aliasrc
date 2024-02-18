@@ -34,7 +34,7 @@ alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -f'
 alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delete'
 
 # remove all neovim config files
-alias nvim-rm-config='rm -rf ${HOME}/.config/nvim ${HOME}/.local/share/nvim ${HOME}/.cache/nvim'
+alias nvim-rm-config='rm -rf ${HOME}/.config/nvim && rm -rf ${HOME}/.local/share/nvim && rm -rf ${HOME}/.cache/nvim'
 
 # remove all ansible cache
-alias ansible-rm-cache='rm -rf ${HOME}/.ansible ${HOME}/.cache/ansible* ${HOME}/.cache/molecule*'
+alias ansible-rm-cache='rm -rf ${HOME}/.ansible && rm -rf ${HOME}/.cache/ansible* && rm -rf ${HOME}/.cache/molecule*'

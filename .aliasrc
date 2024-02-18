@@ -22,8 +22,8 @@ alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delet
 alias nvim-rm-config='rm -rf ${HOME}/.config/nvim && \
     rm -rf ${HOME}/.config/nvim-* && \
     rm -rf ${HOME}/.local/share/nvim && \
-    rm -rf ${HOME}/.cache/nvim && \
-    rm -rf ${HOME}/.local/state/nvim'
+    rm -rf ${HOME}/.local/state/nvim && \
+    rm -rf ${HOME}/.cache/nvim'
 
 alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'
 

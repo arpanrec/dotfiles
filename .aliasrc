@@ -20,9 +20,9 @@ alias dvim='XDG_CONFIG_HOME=~/workspace/dotfiles/.config nvim .'
 alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delete'
 # remove all neovim config files
 alias nvim-rm-config='rm -rf ${HOME}/.config/nvim && \
+    rm -rf ${HOME}/.config/nvim-* && \
     rm -rf ${HOME}/.local/share/nvim && \
     rm -rf ${HOME}/.cache/nvim && \
-    rm -rf ${HOME}/.config/nvim-* && \
     rm -rf ${HOME}/.local/state/nvim'
 
 alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'

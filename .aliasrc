@@ -14,7 +14,7 @@ alias df="sudo df -h"
 alias zzx='exec ${HOME}/.local/bin/zsh -l'
 
 ## NEOVIM
-alias nvim-prod='NVIM_APPNAME='nvim-prod nvim'
+alias nvim-prod='NVIM_APPNAME=nvim-prod nvim'
 alias dvim='XDG_CONFIG_HOME=~/workspace/dotfiles/.config nvim .'
 # remove all neovim swap files
 alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delete'

@@ -7,6 +7,7 @@ alias ll="ls --color=auto -alrhtF"
 alias la='ls -A'
 alias l='ls -CF'
 alias df="sudo df -h"
+
 # alias ssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 # alias sftp="sftp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
@@ -14,25 +15,26 @@ alias df="sudo df -h"
 alias zzx='exec ${HOME}/.local/bin/zsh -l'
 
 # Editors
-alias code="code --no-sandbox"
 alias vim='nvim'
-# alias codesudo="sudo code --user-data-dir=/tmp/vscode-root-user-data-dir --no-sandbox"
-
-# Password manager and Authentication manager
-# alias bwl='bw login --apikey'
-# alias bws='bw sync'
-# alias bws='curl -X POST http://localhost:8087/sync -v'
-# alias bwu='export BW_SESSION=$(bw unlock --raw)'
-# alias bwus='${HOME}/.local/bin/bitwarden_utils.sh'
-alias s2g='ssh_auth_sock_to_gpg.sh'
 
 # Directories
 alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'
-alias cdwd='cd ${HOME}/work-drive'
 
-# Misc
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias steam='prime-run steam'
-# alias dec='${HOME}/.local/bin/dev_env_check.sh'
+
 alias running-services='systemctl list-unit-files --type=service'
+
 alias yd='youtube-dl -f best --verbose --external-downloader axel --external-downloader-args "-n 10 -a"'
+
+# remove all docker containers
+alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -f'
+
+# remove all neovim swap files
+alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delete'
+
+# remove all neovim config files
+alias nvim-rm-config='rm -rf ${HOME}/.config/nvim ${HOME}/.local/share/nvim ${HOME}/.cache/nvim'
+
+# remove all ansible cache
+alias ansible-rm-cache='rm -rf ${HOME}/.ansible ${HOME}/.cache/ansible* ${HOME}/.cache/molecule*'

@@ -1,7 +1,6 @@
 # shellcheck disable=SC2148
 alias dotfiles='git --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 
-# Core Utils
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -alrhtF"
 alias la='ls -A'
@@ -14,11 +13,14 @@ alias df="sudo df -h"
 # Office System local zsh shell
 alias zzx='exec ${HOME}/.local/bin/zsh -l'
 
-# Editors
+## NEOVIM
 alias vim='nvim'
 alias dvim='XDG_CONFIG_HOME=~/workspace/dotfiles/.config nvim .'
+# remove all neovim swap files
+alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delete'
+# remove all neovim config files
+alias nvim-rm-config='rm -rf ${HOME}/.config/nvim && rm -rf ${HOME}/.local/share/nvim && rm -rf ${HOME}/.cache/nvim && rm -rf ${HOME}/.local/state/nvim'
 
-# Directories
 alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -28,14 +30,8 @@ alias running-services='systemctl list-unit-files --type=service'
 
 alias yd='youtube-dl -f best --verbose --external-downloader axel --external-downloader-args "-n 10 -a"'
 
+## Docker
 # remove all docker containers
 alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -f'
-
-# remove all neovim swap files
-alias nvim-rm-swap='find ${HOME}/.local/share/nvim/ -type f -name "*.swp" -delete'
-
-# remove all neovim config files
-alias nvim-rm-config='rm -rf ${HOME}/.config/nvim && rm -rf ${HOME}/.local/share/nvim && rm -rf ${HOME}/.cache/nvim && rm -rf ${HOME}/.local/state/nvim'
-
 # remove all ansible cache
 alias ansible-rm-cache='rm -rf ${HOME}/.ansible && rm -rf ${HOME}/.cache/ansible* && rm -rf ${HOME}/.cache/molecule*'

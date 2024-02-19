@@ -24,7 +24,7 @@ lspconfig.ansiblels.setup {}
 lspconfig.jedi_language_server.setup{}
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'rust_analyzer'},
+  ensure_installed = {'tsserver', 'rust_analyzer', 'gopls', 'pyright', 'bashls', 'ansiblels', 'jedi_language_server'},
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()

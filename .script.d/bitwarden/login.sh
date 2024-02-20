@@ -14,7 +14,8 @@ __get_current_status() {
     echo "${__ss}"
 }
 
-bw_api_key_file="${HOME}/.secrets.d/010-bwlogin-apikey.sh"
+BW_API_KEY_FILE="${BW_API_KEY_FILE:-"${HOME}/.secrets.d/010-bwlogin-apikey.sh"}"
+BW_API_SESSION_FILE="${BW_API_SESSION_FILE:-"${HOME}/.secrets.d/020-bwlogin-session.sh"}"
 
 current_status=$(__get_current_status)
 
@@ -36,17 +37,17 @@ if [ "${current_status}" == "unauthenticated" ]; then
             fi
             echo "Logging in to bitwarden cli, Please Wait!!!!!!!!!!!!"
             BW_CLIENTID="${__bw_client_id}" BW_CLIENTSECRET="${__bw_client_secret}" bw login --apikey
-            read -r -n1 -p "Press Y/y to save client id and client secret in ${bw_api_key_file}: " __save_apikeys_in_secrets
+            read -r -n1 -p "Press Y/y to save client id and client secret in ${BW_API_KEY_FILE}: " __save_apikeys_in_secrets
             echo ""
             if [ "${__save_apikeys_in_secrets}" == "Y" ] || [ "${__save_apikeys_in_secrets}" == "y" ]; then
 
-                tee "${bw_api_key_file}" <<EOF >/dev/null
+                tee "${BW_API_KEY_FILE}" <<EOF >/dev/null
 BW_CLIENTID=${__bw_client_id}
 export BW_CLIENTID
 BW_CLIENTSECRET=${__bw_client_secret}
 export BW_CLIENTSECRET
 EOF
-                chmod +x "${bw_api_key_file}"
+                chmod +x "${BW_API_KEY_FILE}"
             fi
         else
             echo "Client ID and Client Secret found in environment"
@@ -59,8 +60,6 @@ EOF
     fi
     current_status=$(__get_current_status)
 fi
-
-bw_api_session_file="${HOME}/.secrets.d/020-bwlogin-session.sh"
 
 if [ "${current_status}" == "locked" ]; then
     echo "Bitwarden is locked"
@@ -78,10 +77,10 @@ if [ "${current_status}" == "locked" ]; then
         exit 1
     fi
     export BW_SESSION="${__bw_session_id}"
-    read -n1 -r -p "Set session id in ${bw_api_session_file} : " __set_session_id_in_secrets
+    read -n1 -r -p "Set session id in ${BW_API_SESSION_FILE} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then
-        tee "${bw_api_session_file}" <<EOF >/dev/null
+        tee "${BW_API_SESSION_FILE}" <<EOF >/dev/null
 BW_SESSION=${__bw_session_id}
 export BW_SESSION
 EOF

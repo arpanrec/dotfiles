@@ -75,7 +75,7 @@ sudo -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   python3 -m venv "${HOME}/.tmp/venv" && \
   source "${HOME}/.tmp/venv/bin/activate" && \
   pip install ansible --upgrade && \
-  ansible-galaxy collection install git+https://github.com/arpanrec/nebula.git -f && \
+  ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f && \
   ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f && \
   mkdir "${HOME}/.tmp/cloudinit" -p && \
   echo "[local]" > "${HOME}/.tmp/cloudinit/inv" && \

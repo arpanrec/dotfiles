@@ -41,8 +41,10 @@ if hash kubectl &>/dev/null ; then
     source <(kubectl completion zsh)
 fi
 
-if command -v bw &> /dev/null; then
-    eval "$(bw completion --shell zsh); compdef _bw bw;"
+if [ -f "${HOME}/.secrets.d/020-bwlogin-session.sh" ]; then
+    if command -v bw &> /dev/null; then
+        eval "$(bw completion --shell zsh); compdef _bw bw;"
+    fi
 fi
 
 if command -v vault &> /dev/null; then

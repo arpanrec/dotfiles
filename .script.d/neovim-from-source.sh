@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -ex
 
-NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"${HOME}/.local/src/neovim-$(date +%s)"}"
+NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
 
 neovim_install() {

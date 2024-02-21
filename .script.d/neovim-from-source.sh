@@ -16,6 +16,7 @@ neovim_install() {
     make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}"
     make install
 }
+
 mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 git clone https://github.com/neovim/neovim.git --single-branch --branch=stable --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
 

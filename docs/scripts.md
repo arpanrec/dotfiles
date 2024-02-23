@@ -47,10 +47,12 @@ INIT_STORAGE_MINIO_CERT_CHAIN_BASE64='Base64 encoded certificate chain'
 INIT_STORAGE_MINIO_CERT_FULL_CHAIN_BASE64='Base64 encoded full certificate chain'
 ```
 
-The first argument to `minio-install.sh` is the path to the `.env` file.
+The first argument to [minio-install.sh](/.script.d/minio-install.sh) is the path to the `.env` file.
+
+raw script: <https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh>
 
 ```bash
-sudo <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh) ./.env
+sudo -H -u root bash -c '/bin/bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh) $(realpath .env)'
 ```
 
 ### Post-installation

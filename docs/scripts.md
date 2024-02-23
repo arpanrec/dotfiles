@@ -52,7 +52,7 @@ The first argument to [minio-install.sh](/.script.d/minio-install.sh) is the pat
 raw script: <https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh>
 
 ```bash
-sudo -H -u root bash -c '/bin/bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh) $(realpath .env)'
+sudo -H -u root bash -c "/bin/bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/minio-install.sh) $(realpath .env)"
 ```
 
 ### Post-installation

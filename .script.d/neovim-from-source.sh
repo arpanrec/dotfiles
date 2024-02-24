@@ -6,6 +6,7 @@ NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
 
 neovim_install() {
 
+    rm -rf "${HOME}/.local/*/nvim"
     rm -rf "${HOME}/.local/*/nvim*"
     rm -rf "${HOME}/.cache/nvim*"
 

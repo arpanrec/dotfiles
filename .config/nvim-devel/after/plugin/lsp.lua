@@ -18,10 +18,6 @@ end)
 
 -- to learn how to use mason.nvim with lsp-zero
 -- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
-lspconfig.tsserver.setup {}
-lspconfig.rust_analyzer.setup {}
-lspconfig.bashls.setup {}
-lspconfig.ansiblels.setup {}
 lspconfig.jedi_language_server.setup {}
 require('mason').setup({})
 require('mason-lspconfig').setup({

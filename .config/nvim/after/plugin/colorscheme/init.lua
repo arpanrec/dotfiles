@@ -1,2 +1,2 @@
--- require("rose-pine-setup")
-require("tokyonight-setup")
+-- require("colorscheme/rose-pine")
+require("colorscheme/tokyonight")

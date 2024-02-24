@@ -15,7 +15,7 @@ alias zzx='exec ${HOME}/.local/bin/zsh -l'
 
 ## NEOVIM
 alias nvim-valina='NVIM_APPNAME=nvim-valina nvim'
-alias nvim-lazy='NVIM_APPNAME=nvim-lazy nvim'
+alias nvim-packer='NVIM_APPNAME=nvim-packer nvim'
 alias nvim-lazyvim='NVIM_APPNAME=nvim-lazyvim nvim'
 # remove all neovim swap files
 

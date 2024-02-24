@@ -6,12 +6,12 @@ NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
 
 neovim_install() {
 
-    rm -rf "${HOME}/.local/bin/nvim"
-    rm -rf "${HOME}/.local/state/nvim"
-    rm -rf "${HOME}/.local/share/nvim"
-    rm -rf "${HOME}/.cache/nvim"
-    rm -rf "${HOME}/.local/lib/nvim"
-    rm -rf "${HOME}/.local/neovim"
+    rm -rf "${HOME}/.local/bin/nvim*"
+    rm -rf "${HOME}/.local/state/nvim*"
+    rm -rf "${HOME}/.local/share/nvim*"
+    rm -rf "${HOME}/.cache/nvim*"
+    rm -rf "${HOME}/.local/lib/nvim*"
+    rm -rf "${HOME}/.local/neovim*"
 
     make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}"
     make install

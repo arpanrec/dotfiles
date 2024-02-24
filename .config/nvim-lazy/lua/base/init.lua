@@ -1,4 +1,4 @@
-require("base.packer")
+require("base.lazy")
 
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)

@@ -74,5 +74,12 @@ require("lazy").setup({
             { "hrsh7th/vim-vsnip-integ" },
         }
     },
-    { "github/copilot.vim", branch = "release" }
+    { "github/copilot.vim", branch = "release" },
+    {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- add any options here
+        },
+        lazy = false,
+    }
 })

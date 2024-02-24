@@ -8,6 +8,7 @@ neovim_install() {
 
     rm -rf "${HOME}/.local/*/nvim"
     rm -rf "${HOME}/.local/*/nvim*"
+    rm -rf "${HOME}/.cache/nvim"
     rm -rf "${HOME}/.cache/nvim*"
 
     make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}"

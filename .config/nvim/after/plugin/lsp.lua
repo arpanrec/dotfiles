@@ -21,7 +21,7 @@ end)
 lspconfig.jedi_language_server.setup {}
 require('mason').setup({})
 require('mason-lspconfig').setup({
-    ensure_installed = { 'tsserver', 'rust_analyzer', 'gopls', 'pyright',
+    ensure_installed = { 'tsserver', 'rust_analyzer', 'gopls', 'pyright', 'marksman',
         'bashls', 'ansiblels', 'jedi_language_server', 'cssls', 'html', 'jsonls', },
     handlers = {
         lsp_zero.default_setup,

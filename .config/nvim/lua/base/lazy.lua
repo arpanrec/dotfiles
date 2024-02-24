@@ -22,7 +22,6 @@ require("lazy").setup({
             vim.cmd([[colorscheme tokyonight]])
         end,
     },
-    { "rose-pine/neovim",  name = "rose-pine", lazy = false },
     {
         "nvim-neo-tree/neo-tree.nvim",
         branch = "v3.x",

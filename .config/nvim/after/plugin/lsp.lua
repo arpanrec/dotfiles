@@ -1,5 +1,6 @@
 local lsp_zero = require('lsp-zero')
-local lspconfig = require('lspconfig')
+local cmp = require('cmp')
+lsp_zero.preset("recommended")
 
 lsp_zero.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
@@ -18,7 +19,6 @@ end)
 
 -- to learn how to use mason.nvim with lsp-zero
 -- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
-lspconfig.jedi_language_server.setup {}
 require('mason').setup({})
 require('mason-lspconfig').setup({
     ensure_installed = { 'tsserver', 'rust_analyzer', 'gopls', 'pyright', 'marksman',
@@ -32,7 +32,7 @@ require('mason-lspconfig').setup({
     }
 })
 
-local cmp = require('cmp')
+
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 -- this is the function that loads the extra snippets to luasnip
@@ -54,4 +54,10 @@ cmp.setup({
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ['<C-Space>'] = cmp.mapping.complete(),
     }),
+})
+
+lsp_zero.setup()
+
+vim.diagnostic.config({
+    virtual_text = true
 })

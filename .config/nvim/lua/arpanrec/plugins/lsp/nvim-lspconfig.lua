@@ -169,25 +169,9 @@ return {
             },
         })
 
-        lspconfig["ansiblels"].setup({
+        lspconfig.ansiblels.setup({
             capabilities = capabilities,
             on_attach = on_attach,
-            ansible = {
-                path = "ansible",
-            },
-            executionEnvironment = {
-                enabled = false,
-            },
-            python = {
-                interpreterPath = "python",
-            },
-            validation = {
-                enabled = true,
-                lint = {
-                    enabled = true,
-                    path = "ansible-lint",
-                },
-            },
         })
     end,
 }

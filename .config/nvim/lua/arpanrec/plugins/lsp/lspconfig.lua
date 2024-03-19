@@ -88,6 +88,10 @@ return {
             on_attach = on_attach,
         })
 
+        lspconfig.bashls.setup({
+            filetypes = { "sh", "zsh" }
+        })
+
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
             capabilities = capabilities,

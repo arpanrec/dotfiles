@@ -19,8 +19,6 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
-
 require("lazy").setup({ { import = "arpanrec.plugins" }, { import = "arpanrec.plugins.lsp" } }, {
     install = {
         colorscheme = { "nightfly" },

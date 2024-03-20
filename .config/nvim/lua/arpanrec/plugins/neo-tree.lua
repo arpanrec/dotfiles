@@ -1,6 +1,6 @@
 return {
     "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
+    -- branch = "v3.x",
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
@@ -35,10 +35,20 @@ return {
 
         require("neo-tree").setup({
             close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+            event_handlers = {
+                {
+                    event = "neo_tree_popup_input_ready",
+                    ---@param args { bufnr: integer, winid: integer }
+                    handler = function(args)
+                        vim.cmd("stopinsert")
+                        vim.keymap.set("i", "<esc>", vim.cmd.stopinsert, { noremap = true, buffer = args.bufnr })
+                    end,
+                }
+            },
             popup_border_style = "rounded",
             enable_git_status = true,
             enable_diagnostics = true,
-            enable_normal_mode_for_inputs = false,                             -- Enable normal mode for input dialogs.
+            -- enable_normal_mode_for_inputs = false,                             -- Enable normal mode for input dialogs.
             open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
             sort_case_insensitive = false,                                     -- used when sorting files and directories in the tree
             sort_function = nil,                                               -- use a custom function for sorting files and directories in the tree

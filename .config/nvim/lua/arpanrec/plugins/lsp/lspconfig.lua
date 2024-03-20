@@ -64,7 +64,6 @@ return {
             vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
             vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
             vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-
         end
 
         -- used to enable autocompletion (assign to every lsp server config)
@@ -77,6 +76,63 @@ return {
             local hl = "DiagnosticSign" .. type
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
         end
+
+        -- configure html server
+        lspconfig.html.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        -- configure css server
+        lspconfig.cssls.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        -- configure tailwindcss server
+        lspconfig.tailwindcss.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+
+        -- configure svelte server
+        lspconfig.svelte.setup({
+            capabilities = capabilities,
+            on_attach = function(client, bufnr)
+                on_attach(client, bufnr)
+
+                vim.api.nvim_create_autocmd("BufWritePost", {
+                    pattern = { "*.js", "*.ts" },
+                    callback = function(ctx)
+                        if client.name == "svelte" then
+                            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+                        end
+                    end,
+                })
+            end,
+        })
+
+        -- configure prisma orm server
+        lspconfig.prismals.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        -- configure graphql language server
+        lspconfig.graphql.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+        })
+
+
+        -- configure emmet language server
+        lspconfig.emmet_ls.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+        })
 
         lspconfig.gopls.setup({
             capabilities = capabilities,
@@ -92,17 +148,24 @@ return {
         lspconfig.bashls.setup({
             filetypes = { "sh", "zsh" }
         })
+
         lspconfig.tsserver.setup({
             capabilities = capabilities,
             on_attach = on_attach,
         })
+
+        lspconfig.jsonls.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
             capabilities = capabilities,
             on_attach = on_attach,
             settings = { -- custom settings for lua
-            Lua = {
-                -- make the language server recognize "vim" global
+                Lua = {
+                    -- make the language server recognize "vim" global
                     diagnostics = {
                         globals = { "vim" },
                     },
@@ -117,4 +180,5 @@ return {
             },
         })
     end,
+
 }

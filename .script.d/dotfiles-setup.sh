@@ -76,6 +76,7 @@ echo "Selected branch: ${__dotfiles_git_branch}"
 
 ## Reset all dotfiles
 read -r -n1 -p 'Reset all dotfiles? (default: N) [y/N]: ' __dotfiles_decision_if_reset
+echo ""
 
 if [[ "${__dotfiles_decision_if_reset}" == "y" ]]; then
     echo "Resetting all dotfiles"

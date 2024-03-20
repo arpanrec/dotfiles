@@ -11,9 +11,6 @@ return {
     config = function()
         -- import mason
         local mason = require("mason")
-
-        -- import mason-lspconfig
-
         -- enable mason and configure icons
         mason.setup({
             ui = {
@@ -31,13 +28,13 @@ return {
             -- list of servers for mason to install
             ensure_installed = {
                 "lua_ls",
-                'gopls',
-                'pyright',
-                'marksman',
-                'bashls',
-                'jedi_language_server',
-                'tsserver',
-                'jsonls',
+                "gopls",
+                "pyright",
+                "marksman",
+                "bashls",
+                "jedi_language_server",
+                "tsserver",
+                "jsonls",
                 "html",
                 "cssls",
                 "tailwindcss",
@@ -45,6 +42,8 @@ return {
                 "graphql",
                 "emmet_ls",
                 "prismals",
+                "ansiblels",
+                "yamlls",
             },
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
@@ -60,6 +59,9 @@ return {
                 "black",    -- python formatter
                 "pylint",   -- python linter
                 "eslint_d", -- js linter
+                "yamlfmt",  -- yaml formatter
+                "yamllint",  -- yaml linter
+                "ansible-lint", -- ansible linter
             },
         })
     end,

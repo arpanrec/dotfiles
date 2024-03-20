@@ -20,7 +20,6 @@ map("n", "<leader>f", vim.lsp.buf.format)
 
 map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-
 -- Move to window using the <ctrl> hjkl keys
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })

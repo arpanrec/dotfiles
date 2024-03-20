@@ -72,6 +72,7 @@ return {
         -- Change the Diagnostic symbols in the sign column (gutter)
         -- (not in youtube nvim video)
         local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+
         for type, icon in pairs(signs) do
             local hl = "DiagnosticSign" .. type
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
@@ -94,7 +95,6 @@ return {
             capabilities = capabilities,
             on_attach = on_attach,
         })
-
 
         -- configure svelte server
         lspconfig.svelte.setup({
@@ -126,12 +126,21 @@ return {
             filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
 
-
         -- configure emmet language server
         lspconfig.emmet_ls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+        })
+
+        lspconfig.tsserver.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
+
+        lspconfig.jsonls.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
         })
 
         lspconfig.gopls.setup({
@@ -149,18 +158,8 @@ return {
             filetypes = { "sh", "zsh" }
         })
 
-        lspconfig.tsserver.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
-
-        lspconfig.jsonls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
-
         -- configure lua server (with special settings)
-        lspconfig["lua_ls"].setup({
+        lspconfig.lua_ls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
             settings = { -- custom settings for lua
@@ -180,5 +179,4 @@ return {
             },
         })
     end,
-
 }

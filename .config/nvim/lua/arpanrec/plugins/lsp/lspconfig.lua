@@ -84,7 +84,7 @@ return {
         })
 
         -- configure python server
-        lspconfig["pyright"].setup({
+        lspconfig.pyright.setup({
             capabilities = capabilities,
             on_attach = on_attach,
         })
@@ -92,14 +92,17 @@ return {
         lspconfig.bashls.setup({
             filetypes = { "sh", "zsh" }
         })
-
+        lspconfig.tsserver.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+        })
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
             capabilities = capabilities,
             on_attach = on_attach,
             settings = { -- custom settings for lua
-                Lua = {
-                    -- make the language server recognize "vim" global
+            Lua = {
+                -- make the language server recognize "vim" global
                     diagnostics = {
                         globals = { "vim" },
                     },

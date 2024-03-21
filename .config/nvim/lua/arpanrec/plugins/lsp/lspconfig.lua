@@ -5,13 +5,9 @@ return {
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         { "antosha417/nvim-lsp-file-operations", config = true },
+        { "folke/neodev.nvim",                   config = true }
     },
     config = function()
-
-        require("neodev").setup({
-            -- add any options here, or leave empty to use the default settings
-        })
-
         -- import lspconfig plugin
         local lspconfig = require("lspconfig")
 
@@ -172,7 +168,11 @@ return {
             filetypes = { "sh", "zsh" }
         })
 
-        -- configure lua server (with special settings)
+        -- configure lua server (with special settingsi)
+        if not package.loaded["neodev"] then
+            require("neodev").setup({})
+        end
+
         lspconfig.lua_ls.setup({
             capabilities = capabilities,
             on_attach = on_attach,

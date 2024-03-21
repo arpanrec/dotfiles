@@ -3,10 +3,12 @@ return {
     run = ":TSUpdate",
     lazy = false,
     config = function()
-        require 'nvim-treesitter.configs'.setup {
+        require 'nvim-treesitter.configs'.setup({
             ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "go", "bash", "tsx",
                 "json", "javascript", "typescript", "html", "css", "yaml", "rust", "dockerfile", "graphql", "jsonc", },
+
             sync_install = false,
+            ignore_install = {},
             auto_install = true,
             highlight = {
                 enable = true,
@@ -15,6 +17,6 @@ return {
             indent = {
                 enable =true,
             },
-        }
+        })
     end,
 }

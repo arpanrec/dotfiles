@@ -138,6 +138,15 @@ return {
             on_attach = on_attach,
         })
 
+        lspconfig.eslint.setup({
+            on_attach = function(client, bufnr)
+                vim.api.nvim_create_autocmd("BufWritePre", {
+                    buffer = bufnr,
+                    command = "EslintFixAll",
+                })
+            end,
+        })
+
         lspconfig.jsonls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
@@ -188,6 +197,5 @@ return {
             capabilities = capabilities,
             on_attach = on_attach,
         })
-
     end,
 }

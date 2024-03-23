@@ -51,3 +51,18 @@ if command -v vault &> /dev/null; then
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which vault)")" vault
 fi
+
+if command -v gh &> /dev/null; then
+
+    __auto_comp_file_path="${HOME}/.oh-my-zsh/completions/_gh"
+
+    if [ ! -f "${__auto_comp_file_path}" ]; then
+        mkdir "$(dirname "${__auto_comp_file_path}")" 2>/dev/null
+        gh completion -s zsh > "${__auto_comp_file_path}"
+    fi
+
+    autoload -U compinit
+    compinit -i
+
+fi
+

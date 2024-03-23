@@ -136,3 +136,8 @@ fi
 if hash vault &>/dev/null; then
     complete -C "$(readlink -f "$(which vault)")" vault
 fi
+
+if hash gh &>/dev/null; then
+    eval "$(gh completion -s bash)"
+fi
+

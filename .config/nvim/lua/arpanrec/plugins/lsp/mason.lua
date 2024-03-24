@@ -26,8 +26,11 @@ return {
 
         mason_lspconfig.setup({
             -- list of servers for mason to install
-            ensure_installed = { "lua_ls", "gopls", "pyright", "marksman", "bashls", "pyright", "tsserver", "jsonls",
-                "html", "cssls", "tailwindcss", "svelte", "graphql", "emmet_ls", "prismals", "ansiblels", "yamlls", },
+            ensure_installed = { "lua_ls", "gopls", "pyright", "marksman", "bashls",
+                "pyright", "tsserver", "jsonls",
+                "html", "cssls", "tailwindcss", "svelte", "graphql",
+                "emmet_ls", "prismals", "ansiblels", "yamlls",
+                "cssmodules_ls", },
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
         })

@@ -3,9 +3,10 @@ return {
     lazy = false,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-        { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim",                   config = true }
+        { "hrsh7th/cmp-nvim-lsp", },
+        { "antosha417/nvim-lsp-file-operations",  config = true },
+        { "folke/neodev.nvim",                    config = true },
+        { "hrsh7th/vscode-langservers-extracted", },
     },
     config = function()
         local opts = { noremap = true, silent = true }
@@ -79,22 +80,13 @@ return {
         local lspconfig = require("lspconfig")
 
         -- configure html server
-        lspconfig.html.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure css server
-        lspconfig.cssls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure tailwindcss server
-        lspconfig.tailwindcss.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure svelte server
         lspconfig.svelte.setup({
@@ -114,10 +106,7 @@ return {
         })
 
         -- configure prisma orm server
-        lspconfig.prismals.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure graphql language server
         lspconfig.graphql.setup({
@@ -133,10 +122,7 @@ return {
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
 
-        lspconfig.tsserver.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         lspconfig.eslint.setup({
             on_attach = function(client, bufnr)
@@ -147,25 +133,25 @@ return {
             end,
         })
 
-        lspconfig.jsonls.setup({
-            capabilities = capabilities,
+        local capabilities_cssls = vim.lsp.protocol.make_client_capabilities()
+        capabilities_cssls.textDocument.completion.completionItem.snippetSupport = true
+        lspconfig.cssls.setup({
+            capabilities = capabilities_cssls,
             on_attach = on_attach,
         })
 
-        lspconfig.gopls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach, })
+
+
+        lspconfig.jsonls.setup({ capabilities = capabilities, on_attach = on_attach, })
+
+        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure python server
-        lspconfig.pyright.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach, })
 
-        lspconfig.bashls.setup({
-            filetypes = { "sh", "zsh" }
-        })
+        lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach, filetypes = { "sh", "zsh" } })
 
         -- configure lua server (with special settingsi)
         if not package.loaded["neodev"] then
@@ -195,14 +181,8 @@ return {
             },
         })
 
-        lspconfig.ansiblels.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach, })
 
-        lspconfig.yamlls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-        })
+        lspconfig.yamlls.setup({ capabilities = capabilities, on_attach = on_attach, })
     end,
 }

@@ -4,19 +4,18 @@ return {
     event = "InsertEnter",
     lazy = false,
     dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-calc",
-        "hrsh7th/cmp-emoji",
-        "hrsh7th/cmp-vsnip",
-        "hrsh7th/vim-vsnip",
-        "hrsh7th/vim-vsnip-integ",
-        "rafamadriz/friendly-snippets",
-        "onsails/lspkind.nvim",
-        "SirVer/ultisnips"
+        { "hrsh7th/cmp-nvim-lsp" },
+        { "hrsh7th/cmp-buffer" },
+        { "hrsh7th/cmp-path" },
+        { "L3MON4D3/LuaSnip" },
+        { "saadparwaiz1/cmp_luasnip" },
+        { "hrsh7th/cmp-calc" },
+        { "hrsh7th/cmp-emoji" },
+        { "hrsh7th/cmp-vsnip" },
+        { "hrsh7th/vim-vsnip" },
+        { "hrsh7th/vim-vsnip-integ" },
+        { "rafamadriz/friendly-snippets" },
+        { "onsails/lspkind.nvim" }
     },
     opts = function()
         vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })

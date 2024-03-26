@@ -20,15 +20,23 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({ { import = "arpanrec.plugins" }, { import = "arpanrec.plugins.lsp" } }, {
+    defaults = {
+        lazy = true, -- should plugins be lazy-loaded?
+        version = nil,
+        -- default `cond` you can use to globally disable a lot of plugins
+        -- when running inside vscode for example
+        cond = nil, ---@type boolean|fun(self:LazyPlugin):boolean|nil
+        -- version = "*", -- enable this to try installing the latest stable versions of plugins
+    },
     install = {
         colorscheme = { "nightfly" },
     },
     checker = {
         enabled = true,
-        notify = false,
+        notify = true,
     },
     change_detection = {
-        notify = false,
+        notify = true,
     },
     git = {
         log = { "-8" },

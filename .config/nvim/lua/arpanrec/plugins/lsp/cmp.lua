@@ -2,7 +2,7 @@ return {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
     event = "InsertEnter",
-    lazy = false,
+    lazy = true,
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
@@ -16,6 +16,7 @@ return {
         "hrsh7th/vim-vsnip-integ",
         "rafamadriz/friendly-snippets",
         "onsails/lspkind.nvim",
+        "SirVer/ultisnips"
     },
     opts = function()
         vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
@@ -53,7 +54,6 @@ return {
                 { name = "path" },
                 { name = "nvim_lsp" },
                 { name = "nvim_lua" },
-                { name = "luasnip" },
                 { name = "buffer" },
                 { name = "emoji" },
                 { name = "calc" },

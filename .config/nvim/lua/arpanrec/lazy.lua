@@ -33,10 +33,10 @@ require("lazy").setup({ { import = "arpanrec.plugins" }, { import = "arpanrec.pl
     },
     checker = {
         enabled = true,
-        notify = true,
+        notify = false,
     },
     change_detection = {
-        notify = true,
+        notify = false,
     },
     git = {
         log = { "-8" },

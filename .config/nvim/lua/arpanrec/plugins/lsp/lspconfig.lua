@@ -86,6 +86,9 @@ return {
         lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure tailwindcss server
+        if vim.fn.executable("tailwindcss-language-server") == 0 then
+            vim.api.nvim_err_writeln('@tailwindcss/language-server : tailwindcss-language-server is not installed')
+        end
         lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach, })
 
         -- configure svelte server
@@ -116,6 +119,9 @@ return {
         })
 
         -- configure emmet language server
+        if vim.fn.executable("emmet_ls") == 0 then
+            vim.api.nvim_err_writeln('@olrtg/emmet-language-server : emmet_ls is not installed')
+        end
         lspconfig.emmet_ls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
@@ -133,6 +139,10 @@ return {
             end,
         })
 
+        -- CSS Language Server
+        if vim.fn.executable("vscode-css-language-server") == 0 then
+            vim.api.nvim_err_writeln('vscode-langservers-extracted / vscode-css-language-server is not installed')
+        end
         local capabilities_cssls = vim.lsp.protocol.make_client_capabilities()
         capabilities_cssls.textDocument.completion.completionItem.snippetSupport = true
         lspconfig.cssls.setup({
@@ -140,7 +150,16 @@ return {
             on_attach = on_attach,
         })
 
+        -- CSS Variables Language Server
+        if vim.fn.executable("css-variables-language-server") == 0 then
+            vim.api.nvim_err_writeln('css-variables-language-server is not installed')
+        end
         lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach, })
+
+        -- CSS Modules Language Server
+        if vim.fn.executable("vcssmodules-language-server") == 0 then
+            vim.api.nvim_err_writeln('cssmodules-language-server is not installed')
+        end
         lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach, })
 
 

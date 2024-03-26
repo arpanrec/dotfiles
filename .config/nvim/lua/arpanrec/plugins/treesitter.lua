@@ -6,13 +6,10 @@ return {
         { "nvim-treesitter/nvim-treesitter-textobjects" },
     },
     run = ":TSUpdate",
-    lazy = false,
     config = function()
         require("nvim-treesitter.configs").setup({
-            ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python", "go", "bash", "tsx",
-                "json", "javascript", "typescript", "html", "css", "yaml", "rust", "dockerfile", "graphql", "jsonc", },
-            sync_install = false,
-            modules = {},
+            ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
+            sync_install = true,
             ignore_install = {},
             auto_install = true,
             highlight = {
@@ -20,7 +17,7 @@ return {
                 additional_vim_regex_highlighting = false,
             },
             indent = {
-                enable =true,
+                enable = true,
             },
             refactor = {
                 highlight_definitions = {
@@ -56,7 +53,7 @@ return {
                     -- mapping query_strings to modes.
                     selection_modes = {
                         ['@parameter.outer'] = 'v', -- charwise
-                        ['@function.outer'] = 'V', -- linewise
+                        ['@function.outer'] = 'V',  -- linewise
                         ['@class.outer'] = '<c-v>', -- blockwise
                     },
                     -- If you set this to `true` (default is `false`) then any textobject is

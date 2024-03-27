@@ -1,22 +1,40 @@
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+local opts = { noremap = true, silent = true }
 
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+opts.desc = "Open netrw"
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, opts)
+
+opts.desc = "Move highlighted lines down"
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", opts)
+
+opts.desc = "Move highlighted lines up"
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", opts)
+
+-- opts.desc = "Append the line below followed by the current line with a space and keep the cursor in the same place"
+-- vim.keymap.set("n", "J", "mzJ`z", opts)
+
+opts.desc = "Jump half page down"
+vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
+
+opts.desc = "Jump half page up"
+vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
+
+opts.desc = "Keep the search text result in the middle"
+vim.keymap.set("n", "n", "nzzzv", opts)
+
+opts.desc = "Keep the search text result in the middle"
+vim.keymap.set("n", "N", "Nzzzv", opts)
 
 -- greatest remap ever
-vim.keymap.set("x", "<leader>p", [["_dP]])
+opts.desc = "Keeps the current copied text, by first deleting the selected text and place the copiied text into the void register."
+vim.keymap.set("x", "<leader>p", [["_dP]], opts)
 
 -- next greatest remap ever : asbjornHaland
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], opts)
+vim.keymap.set("n", "<leader>Y", [["+Y]], opts)
 
--- vim.keymap.set({ "n", "v" }, "<leader>f", vim.lsp.buf.format)
+-- vim.keymap.set({ "n", "v" }, "<leader>f", vim.lsp.buf.format, opts)
 
-vim.keymap.set("n", "<leader>vrn", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>vrn", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Move to window using the <ctrl> hjkl keys
@@ -26,13 +44,13 @@ vim.keymap.set("n", "<leader>wk", "<C-w>k", { desc = "Go to upper window", remap
 vim.keymap.set("n", "<leader>wl", "<C-w>l", { desc = "Go to right window", remap = true })
 
 -- Resize window using <ctrl> arrow keys
-vim.keymap.set("n", "<C-S-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
-vim.keymap.set("n", "<C-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
-vim.keymap.set("n", "<C-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
-vim.keymap.set("n", "<C-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+vim.keymap.set("n", "<C-S-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" } )
+vim.keymap.set("n", "<C-S-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" } )
+vim.keymap.set("n", "<C-S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" } )
+vim.keymap.set("n", "<C-S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" } )
 
-vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })                     -- open new tab
-vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" })              -- close current tab
-vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })                     --  go to next tab
-vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" })                 --  go to previous tab
-vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" } )                     -- open new tab
+vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" } )              -- close current tab
+vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" } )                     --  go to next tab
+vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" } )                 --  go to previous tab
+vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" } ) --  move current buffer to new tab

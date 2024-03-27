@@ -1,10 +1,12 @@
 return {
     "williamboman/mason.nvim",
     lazy = false,
+
     dependencies = {
-        "williamboman/mason-lspconfig.nvim",
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        { "williamboman/mason-lspconfig.nvim" },
+        { "WhoIsSethDaniel/mason-tool-installer.nvim" },
     },
+
     cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ":MasonUpdate",
@@ -26,11 +28,7 @@ return {
 
         mason_lspconfig.setup({
             -- list of servers for mason to install
-            ensure_installed = { "lua_ls", "gopls", "pyright", "marksman", "bashls",
-                "pyright", "tsserver", "jsonls", "eslint",
-                "html", "cssls", "tailwindcss", "svelte", "graphql",
-                "emmet_ls", "prismals", "ansiblels", "yamlls",
-                "cssmodules_ls", "marksman" },
+            ensure_installed = {},
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
         })
@@ -38,8 +36,14 @@ return {
         local mason_tool_installer = require("mason-tool-installer")
 
         mason_tool_installer.setup({
-            ensure_installed = {
-                "prettier", "stylua", "isort", "black", "pylint", "eslint_d", "yamlfmt", "yamllint", "ansible-lint", },
+            ensure_installed = { "lua_ls", "gopls", "pyright", "marksman", "bashls",
+                "pyright", "tsserver", "jsonls", "eslint",
+                "html", "cssls", "tailwindcss", "svelte", "graphql",
+                "emmet_ls", "prismals", "ansiblels", "yamlls",
+                "cssmodules_ls", "marksman",
+                "prettier", "stylua", "isort", "black", "pylint",
+                "eslint_d", "yamlfmt", "yamllint", "ansible-lint",
+                "css-variables-language-server" },
         })
     end,
 }

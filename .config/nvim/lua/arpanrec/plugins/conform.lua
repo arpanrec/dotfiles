@@ -15,7 +15,7 @@ return {
                 css = { "prettier" },
                 html = { "prettier" },
                 json = { "prettier" },
-                yaml = { "prettier" },
+                yaml = { "yamlfmt" },
                 markdown = { "prettier" },
                 graphql = { "prettier" },
                 lua = { "stylua" },
@@ -28,9 +28,9 @@ return {
             -- },
         })
 
-        vim.keymap.set({ "n", "v" }, "<leader>=", function()
+        vim.keymap.set({ "n", "v" }, "<C-f>", function()
             conform.format({
-                lsp_fallback = true,
+                lsp_fallback = false,
                 async = false,
                 timeout_ms = 1000,
             })

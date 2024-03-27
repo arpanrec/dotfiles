@@ -1,11 +1,22 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    version = false,
+    init = function(plugin)
+        -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
+        -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
+        -- no longer trigger the **nvim-treesitter** module to be loaded in time.
+        -- Luckily, the only things that those plugins need are the custom queries, which we make available
+        -- during startup.
+
+        require("lazy.core.loader").add_to_rtp(plugin)
+        require("nvim-treesitter.query_predicates")
+    end,
     dependencies = {
         { "nvim-treesitter/nvim-treesitter-context" },
         { "nvim-treesitter/nvim-treesitter-refactor" },
         { "nvim-treesitter/nvim-treesitter-textobjects" },
     },
-    run = ":TSUpdate",
+    build = ":TSUpdate",
     config = function()
         require("nvim-treesitter.configs").setup({
             ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
@@ -26,6 +37,7 @@ return {
                     clear_on_cursor_move = true,
                 },
             },
+            modules = {},
             textobjects = {
                 select = {
                     enable = true,
@@ -45,17 +57,18 @@ return {
                         ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
                     },
                     -- You can choose the select mode (default is charwise 'v')
-                    --
+
                     -- Can also be a function which gets passed a table with the keys
                     -- * query_string: eg '@function.inner'
                     -- * method: eg 'v' or 'o'
                     -- and should return the mode ('v', 'V', or '<c-v>') or a table
                     -- mapping query_strings to modes.
                     selection_modes = {
-                        ['@parameter.outer'] = 'v', -- charwise
-                        ['@function.outer'] = 'V',  -- linewise
-                        ['@class.outer'] = '<c-v>', -- blockwise
+                        ["@parameter.outer"] = "v", -- charwise
+                        ["@function.outer"] = "V",  -- linewise
+                        ["@class.outer"] = "<c-v>", -- blockwise
                     },
+
                     -- If you set this to `true` (default is `false`) then any textobject is
                     -- extended to include preceding or succeeding whitespace. Succeeding
                     -- whitespace has priority in order to act similarly to eg the built-in

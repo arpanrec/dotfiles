@@ -30,7 +30,7 @@ return {
                 "pyright", "tsserver", "jsonls", "eslint",
                 "html", "cssls", "tailwindcss", "svelte", "graphql",
                 "emmet_ls", "prismals", "ansiblels", "yamlls",
-                "cssmodules_ls", },
+                "cssmodules_ls", "marksman"},
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
         })

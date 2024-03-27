@@ -18,6 +18,8 @@ map("n", "<leader>Y", [["+Y]])
 
 map("n", "<leader>f", vim.lsp.buf.format)
 
+
+map("n", "<leader>vrn", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 map("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Move to window using the <ctrl> hjkl keys

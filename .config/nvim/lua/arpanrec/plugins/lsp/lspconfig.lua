@@ -3,10 +3,10 @@ return {
     lazy = false,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        { "hrsh7th/cmp-nvim-lsp", },
-        { "antosha417/nvim-lsp-file-operations",  config = true },
-        { "folke/neodev.nvim",                    config = true },
-        { "hrsh7th/vscode-langservers-extracted", },
+        { "hrsh7th/cmp-nvim-lsp" },
+        { "antosha417/nvim-lsp-file-operations", config = true },
+        { "folke/neodev.nvim",                   config = true },
+        { "hrsh7th/vscode-langservers-extracted" },
     },
     config = function()
         local opts = { noremap = true, silent = true }
@@ -17,9 +17,6 @@ return {
             -- opts.desc = "Show LSP references"
             -- vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
-            -- opts.desc = "Go to declaration"
-            -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
             -- opts.desc = "Show LSP definitions"
             -- vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
@@ -28,12 +25,6 @@ return {
 
             -- opts.desc = "Show LSP type definitions"
             -- vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
-
-            -- opts.desc = "See available code actions"
-            -- vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-
-            -- opts.desc = "Smart rename"
-            -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
             -- opts.desc = "Show buffer diagnostics"
             -- vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
@@ -50,15 +41,29 @@ return {
             opts.desc = "Show documentation for what is under cursor"
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
 
-            opts.desc = "Restart LSP"
-            vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+            opts.desc = "Go to declaration"
+            vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 
-            vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-            vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-            vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-            vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-            vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-            vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+            opts.desc = "Go to definition"
+            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+
+            opts.desc = "Show lsp workspace_symbol"
+            vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+
+            opts.desc = "Prompt for lsp code action"
+            vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
+
+            opts.desc = "Show current references"
+            vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+
+            opts.desc = "Rename a variable"
+            vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+
+            opts.desc = "Show help for the method signature"
+            vim.keymap.set("n", "<leader>vh", vim.lsp.buf.signature_help, opts)
+
+            opts.desc = "Format the code using LSP"
+            vim.keymap.set({ "n", "v" }, "<leader>vf", vim.lsp.buf.format, opts)
         end
 
         -- import cmp-nvim-lsp plugin
@@ -80,13 +85,13 @@ return {
         local lspconfig = require("lspconfig")
 
         -- configure html server
-        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure css server
-        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure tailwindcss server
-        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure svelte server
         lspconfig.svelte.setup({
@@ -106,7 +111,7 @@ return {
         })
 
         -- configure prisma orm server
-        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure graphql language server
         lspconfig.graphql.setup({
@@ -122,7 +127,7 @@ return {
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
 
-        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.eslint.setup({
             on_attach = function(client, bufnr)
@@ -140,9 +145,8 @@ return {
             on_attach = on_attach,
         })
 
-        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach, })
-        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach, })
-
+        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.jsonls.setup({
             capabilities = capabilities,
@@ -155,33 +159,41 @@ return {
                         { fileMatch = { "tsconfig*.json" }, url = "https://json.schemastore.org/tsconfig.json" },
                         {
                             fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
-                            url = "https://json.schemastore.org/prettierrc.json"
+                            url = "https://json.schemastore.org/prettierrc.json",
                         },
-                        { fileMatch = { ".eslintrc", ".eslintrc.json" }, url = "https://json.schemastore.org/eslintrc.json" },
+                        {
+                            fileMatch = { ".eslintrc", ".eslintrc.json" },
+                            url = "https://json.schemastore.org/eslintrc.json",
+                        },
                         {
                             fileMatch = { ".babelrc", ".babelrc.json", "babel.config.json" },
-                            url = "https://json.schemastore.rg/babelrc.json"
+                            url = "https://json.schemastore.rg/babelrc.json",
                         },
-                        { fileMatch = { "lerna.json" },                  url = "https://json.schemastore.org/lerna.json" },
-                        { fileMatch = { "now.json", "vercel.json" },     url = "https://json.schemastore.org/now.json" },
+                        {
+                            fileMatch = { "lerna.json" },
+                            url = "https://json.schemastore.org/lerna.json",
+                        },
+                        {
+                            fileMatch = { "now.json", "vercel.json" },
+                            url = "https://json.schemastore.org/now.json",
+                        },
                         {
                             fileMatch = {
                                 ".stylelintrc",
                                 ".stylelintrc.json",
-                                "stylelint.config.json"
+                                "stylelint.config.json",
                             },
-                            url = "http://json.schemastore.org/stylelintrc.json"
-                        }
-                    }
-                }
-            }
-
+                            url = "http://json.schemastore.org/stylelintrc.json",
+                        },
+                    },
+                },
+            },
         })
 
-        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure python server
-        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach, filetypes = { "sh", "zsh" } })
 
@@ -207,13 +219,13 @@ return {
                         },
                     },
                     completion = {
-                        callSnippet = "Replace"
-                    }
+                        callSnippet = "Replace",
+                    },
                 },
             },
         })
 
-        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach, })
+        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.yamlls.setup({
             capabilities = capabilities,
@@ -223,20 +235,21 @@ return {
                     schemas = {
                         ["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
                         ["https://json.schemastore.org/bamboo-spec.json"] = {
-                            "bamboo-specs/*.{yml,yaml}"
+                            "bamboo-specs/*.{yml,yaml}",
                         },
                         ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
-                            "docker-compose*.{yml,yaml}"
+                            "docker-compose*.{yml,yaml}",
                         },
                         ["http://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
                         ["http://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
                         ["http://json.schemastore.org/prettierrc.json"] = ".prettierrc.{yml,yaml}",
                         ["http://json.schemastore.org/stylelintrc.json"] = ".stylelintrc.{yml,yaml}",
-                        ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}"
-                    }
-                }
-            }
-
+                        ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+                    },
+                },
+            },
         })
+
+        lspconfig.marksman.setup({ capabilities = capabilities, on_attach = on_attach })
     end,
 }

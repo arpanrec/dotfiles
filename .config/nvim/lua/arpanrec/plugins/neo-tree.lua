@@ -43,7 +43,7 @@ return {
                         vim.cmd("stopinsert")
                         vim.keymap.set("i", "<esc>", vim.cmd.stopinsert, { noremap = true, buffer = args.bufnr })
                     end,
-                }
+                },
             },
             popup_border_style = "rounded",
             enable_git_status = true,

@@ -17,9 +17,6 @@ return {
             -- opts.desc = "Show LSP references"
             -- vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
 
-            -- opts.desc = "Go to declaration"
-            -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
-
             -- opts.desc = "Show LSP definitions"
             -- vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
@@ -28,12 +25,6 @@ return {
 
             -- opts.desc = "Show LSP type definitions"
             -- vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
-
-            -- opts.desc = "See available code actions"
-            -- vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-
-            -- opts.desc = "Smart rename"
-            -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
             -- opts.desc = "Show buffer diagnostics"
             -- vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
@@ -50,13 +41,28 @@ return {
             opts.desc = "Show documentation for what is under cursor"
             vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
 
+            opts.desc = "Go to declaration"
+            vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
+
+            opts.desc = "Go to definition"
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+
+            opts.desc = "Show lsp workspace_symbol"
             vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+
+            opts.desc = "Prompt for lsp code action"
             vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
+
+            opts.desc = "Show current references"
             vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+
+            opts.desc = "Rename a variable"
             vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+
+            opts.desc = "Show help for the method signature"
             vim.keymap.set("n", "<leader>vh", vim.lsp.buf.signature_help, opts)
 
+            opts.desc = "Format the code using LSP"
             vim.keymap.set({ "n", "v" }, "<leader>vf", vim.lsp.buf.format, opts)
         end
 

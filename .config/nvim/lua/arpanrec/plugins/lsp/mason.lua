@@ -8,7 +8,7 @@ return {
     },
 
     cmd = "Mason",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Open Mason Manage UI" } },
     build = ":MasonUpdate",
     config = function()
         -- import mason

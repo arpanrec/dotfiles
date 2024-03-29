@@ -34,6 +34,4 @@ FYI: If any directory name is matching with any branch then it will cause an err
 
 ## License
 
-[`WTFPL`](/docs/LICENSE)
-
-More details can be found in [Here](http://www.wtfpl.net/).
+[`GLWTS`](/docs/LICENSE)

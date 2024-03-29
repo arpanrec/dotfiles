@@ -28,6 +28,7 @@ return {
 
         mason_lspconfig.setup({
             -- list of servers for mason to install
+            ---@type string[]
             ensure_installed = {
                 -- LSP
                 "lua_ls", "gopls", "pyright", "marksman", "bashls", "pyright", "tsserver", "jsonls", "eslint", "html",
@@ -37,6 +38,7 @@ return {
                 -- Linter
                 -- Formatter
             },
+
             -- auto-install configured servers (with lspconfig)
             automatic_installation = true, -- not the same as ensure_installed
         })
@@ -49,6 +51,7 @@ return {
                 "css-variables-language-server",
                 -- DAP
                 -- Linter
+                "luacheck", "pylint", "eslint_d", "yamllint",
                 -- Formatter
             },
         })

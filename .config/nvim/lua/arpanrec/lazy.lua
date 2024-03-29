@@ -1,3 +1,4 @@
+-- luacheck: globals vim
 -- if ~/.ssh/id_rsa_gitlab exists, set git clone url to ssh instead of https
 local lazy_git_url = "https://github.com/%s.git"
 

@@ -1,0 +1,22 @@
+[global_config]
+  suppress_multiple_term_dialog = True
+  title_use_system_font = False
+  title_font = Hack Nerd Font 9
+[keybindings]
+[profiles]
+  [[default]]
+    background_darkness = 0.95
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    font = Hack Nerd Font 10
+    foreground_color = "#00ff00"
+    use_system_font = False
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]

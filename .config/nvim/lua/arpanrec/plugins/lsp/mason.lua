@@ -31,9 +31,25 @@ return {
             ---@type string[]
             ensure_installed = {
                 -- LSP
-                "lua_ls", "gopls", "marksman", "bashls", "pyright", "tsserver", "jsonls", "eslint", "html",
-                "cssls", "tailwindcss", "svelte", "graphql", "emmet_ls", "prismals", "ansiblels", "yamlls",
-                "cssmodules_ls", "marksman",
+                "lua_ls",
+                "gopls",
+                "marksman",
+                "bashls",
+                "pyright",
+                "tsserver",
+                "jsonls",
+                "eslint",
+                "html",
+                "cssls",
+                "tailwindcss",
+                "svelte",
+                "graphql",
+                "emmet_ls",
+                "prismals",
+                "ansiblels",
+                "yamlls",
+                "cssmodules_ls",
+                "marksman",
                 -- DAP
                 -- Linter
                 -- Formatter
@@ -51,9 +67,13 @@ return {
                 "css-variables-language-server",
                 -- DAP
                 -- Linter
-                "luacheck", "pylint", "eslint_d", "yamllint",
+                "luacheck",
+                "pylint",
+                "eslint_d",
+                "yamllint",
                 -- Formatter
                 "yamlfmt",
+                "stylua",
             },
         })
     end,

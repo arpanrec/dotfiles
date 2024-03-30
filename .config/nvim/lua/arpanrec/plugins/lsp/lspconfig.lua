@@ -1,3 +1,4 @@
+-- luacheck: globals vim
 return {
     "neovim/nvim-lspconfig",
     lazy = false,
@@ -63,7 +64,7 @@ return {
             vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
 
             opts.desc = "Format the code using LSP"
-            vim.keymap.set({ "n", "v" }, "<leader>vf", vim.lsp.buf.format, opts)
+            vim.keymap.set({ "n", "v" }, "<leader>vfl", vim.lsp.buf.format, opts)
         end
 
         -- import cmp-nvim-lsp plugin

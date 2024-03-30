@@ -8,7 +8,7 @@ return {
         require("copilot").setup({
             panel = {
                 enabled = true,
-                auto_refresh = false,
+                auto_refresh = true,
                 keymap = {
                     jump_prev = "[[",
                     jump_next = "]]",
@@ -23,27 +23,27 @@ return {
             },
             suggestion = {
                 enabled = true,
-                auto_trigger = false,
+                auto_trigger = true,
                 debounce = 75,
                 keymap = {
                     accept = "<M-l>",
-                    accept_word = false,
-                    accept_line = false,
+                    accept_word = true,
+                    accept_line = true,
                     next = "<M-]>",
                     prev = "<M-[>",
                     dismiss = "<C-]>",
                 },
             },
             filetypes = {
-                yaml = false,
-                markdown = false,
-                help = false,
-                gitcommit = false,
-                gitrebase = false,
-                hgcommit = false,
-                svn = false,
-                cvs = false,
-                ["."] = false,
+                yaml = true,
+                markdown = true,
+                help = true,
+                gitcommit = true,
+                gitrebase = true,
+                hgcommit = true,
+                svn = true,
+                cvs = true,
+                ["."] = true,
             },
             copilot_node_command = "node", -- Node.js version must be > 18.x
             server_opts_overrides = {},

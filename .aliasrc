@@ -13,13 +13,6 @@ alias df="sudo df -h"
 # Office System local zsh shell
 alias zzx='exec ${HOME}/.local/bin/zsh -l'
 
-## NEOVIM
-alias nvim-valina='NVIM_APPNAME=nvim-valina nvim'
-alias nvim-packer='NVIM_APPNAME=nvim-packer nvim'
-alias nvim-lazyvim='NVIM_APPNAME=nvim-lazyvim nvim'
-alias nvim-devel='NVIM_APPNAME=nvim-devel nvim'
-# remove all neovim swap files
-
 alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -32,5 +25,3 @@ alias yd='youtube-dl -f best --verbose --external-downloader axel --external-dow
 ## Docker
 # remove all docker containers
 alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -f'
-# remove all ansible cache
-alias ansible-rm-cache='rm -rf ${HOME}/.ansible && rm -rf ${HOME}/.cache/ansible* && rm -rf ${HOME}/.cache/molecule*'

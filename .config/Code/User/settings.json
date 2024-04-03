@@ -114,6 +114,7 @@
         "**/*.tf": "terraform",
         "**/.ansible-lint": "yaml",
         "**/.yamllint": "yaml",
+        "**/.yamlfmt": "yaml",
         "**/ansible.cfg": "ini",
         "**/ansible/**/*.yaml": "ansible",
         "**/ansible/**/*.yml": "ansible",

@@ -1,5 +1,6 @@
 # shellcheck disable=SC2148
 alias dotfiles='git --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
+alias dotfiles-lazygit='lazygit --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -alrhtF"

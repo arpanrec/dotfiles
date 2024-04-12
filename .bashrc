@@ -141,3 +141,6 @@ if hash gh &>/dev/null; then
     eval "$(gh completion -s bash)"
 fi
 
+if hash mc &>/dev/null; then
+    complete -C "$(readlink -f "$(which mc)")" mc
+fi

@@ -50,7 +50,7 @@ EOF
                 chmod +x "${BW_API_KEY_FILE}"
             fi
         else
-            echo "Client ID and Client Secret found in environment"
+            echo "Client ID and Client Secret found in environment, Possibly from ${BW_API_KEY_FILE}"
             echo "Please Wait!!!!!!!!!!!!"
             bw login --apikey
         fi

@@ -2,10 +2,10 @@
 
 -- if ~/.ssh/id_rsa_gitlab is not present, then use https
 
-local railbow_del_url = "git@gitlab.com:HiPhish/rainbow-delimiters.nvim.git"
+local railbow_del_url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
 
-if vim.fn.filereadable(vim.fn.expand("~/.ssh/id_rsa_github")) == 1 then
-    railbow_del_url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
+if vim.fn.filereadable(vim.fn.expand("~/.ssh/id_rsa_gitlab")) == 1 then
+    railbow_del_url = "git@gitlab.com:HiPhish/rainbow-delimiters.nvim.git"
 end
 
 return {

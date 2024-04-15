@@ -2,7 +2,7 @@
 -- if ~/.ssh/id_rsa_gitlab exists, set git clone url to ssh instead of https
 local lazy_git_url = "https://github.com/%s.git"
 
-if vim.fn.filereadable(vim.fn.expand("~/.ssh/id_rsa_github")) == 1 then
+if vim.fn.filereadable(vim.fn.expand("~/.ssh/github.com")) == 1 then
     lazy_git_url = "git@github.com:%s.git"
 end
 

@@ -1,3 +1,5 @@
+-- luacheck: globals vim
+
 return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",

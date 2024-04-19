@@ -1,4 +1,5 @@
 -- luacheck: globals vim
+
 return {
     "mfussenegger/nvim-lint",
     lazy = true,

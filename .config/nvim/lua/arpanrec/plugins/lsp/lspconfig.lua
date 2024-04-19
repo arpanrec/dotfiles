@@ -1,4 +1,5 @@
 -- luacheck: globals vim
+
 return {
     "neovim/nvim-lspconfig",
     lazy = false,

@@ -1,3 +1,5 @@
+-- luacheck: globals vim
+
 return {
     "stevearc/dressing.nvim",
     event = "VeryLazy",

@@ -1,3 +1,5 @@
+-- luacheck: globals vim
+
 return {
     "catppuccin/nvim",
     name = "catppuccin",

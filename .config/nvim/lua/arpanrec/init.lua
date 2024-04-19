@@ -1,4 +1,5 @@
 -- luacheck: globals vim
+
 vim.g.mapleader = " "
 require("arpanrec.lazy")
 require("arpanrec.filetype")

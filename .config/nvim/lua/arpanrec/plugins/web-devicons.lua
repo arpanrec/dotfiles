@@ -1,3 +1,5 @@
+-- luacheck: globals vim
+
 return {
     "nvim-tree/nvim-web-devicons",
     config = function()

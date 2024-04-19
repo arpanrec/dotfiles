@@ -1,4 +1,5 @@
 -- luacheck: globals vim
+
 return {
     "mhartington/formatter.nvim",
     version = nil,

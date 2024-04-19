@@ -1,3 +1,5 @@
+-- luacheck: globals vim
+
 return {
     "williamboman/mason.nvim",
     lazy = false,

@@ -74,13 +74,15 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.indentSize": "tabSize",
         "editor.insertSpaces": true,
-        "editor.tabSize": 4
+        "editor.tabSize": 4,
+        "editor.formatOnSave": false
     },
     "[yml]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.indentSize": "tabSize",
         "editor.insertSpaces": true,
-        "editor.tabSize": 4
+        "editor.tabSize": 4,
+        "editor.formatOnSave": false
     },
     "ansible.ansible.path": "ansible",
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
@@ -147,7 +149,7 @@
         "**/venv.bak/**": true,
         "**/venv/**": true
     },
-    "files.trimTrailingWhitespace": true,
+    "files.trimTrailingWhitespace": false,
     "files.watcherExclude": {
         "**/.classpath": true,
         "**/.env/**": true,
@@ -221,6 +223,9 @@
     "yaml.customTags": [
         "!vault"
     ],
-    "yaml.format.enable": true,
-    "yaml.format.printWidth": 120
+    "yaml.format.enable": false,
+    "yaml.format.printWidth": 120,
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
 }

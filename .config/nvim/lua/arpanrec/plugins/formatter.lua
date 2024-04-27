@@ -4,29 +4,26 @@ return {
     "stevearc/conform.nvim",
     config = function()
         require("conform").setup({
-            require("conform").setup({
-                log_level = vim.log.levels.DEBUG,
-                format_on_save = {
-                    timeout_ms = 3000,
-                    async = false,
-                    quiet = false,
-                },
-                formatters_by_ft = {
-                    javascript = { "prettier" },
-                    typescript = { "prettier" },
-                    javascriptreact = { "prettier" },
-                    typescriptreact = { "prettier" },
-                    css = { "prettier" },
-                    html = { "prettier" },
-                    json = { "prettier" },
-                    markdown = { "prettier" },
-                    lua = { "stylua" },
-                    python = { "black" },
-                    ["yaml.ansible"] = { "prettier" },
-                    yaml = { "prettier" },
-                },
-            })
-
+            log_level = vim.log.levels.DEBUG,
+            format_on_save = {
+                timeout_ms = 3000,
+                async = false,
+                quiet = false,
+            },
+            formatters_by_ft = {
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                javascriptreact = { "prettier" },
+                typescriptreact = { "prettier" },
+                css = { "prettier" },
+                html = { "prettier" },
+                json = { "prettier" },
+                markdown = { "prettier" },
+                lua = { "stylua" },
+                python = { "black" },
+                ["yaml.ansible"] = { "prettier" },
+                yaml = { "prettier" },
+            },
         })
     end,
 }

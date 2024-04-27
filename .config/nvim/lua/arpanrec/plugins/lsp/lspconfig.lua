@@ -12,7 +12,7 @@ return {
     },
     config = function()
         local opts = { noremap = true, silent = true }
-        local prepare_on_attach = function(client, bufnr)
+        local on_attach = function(client, bufnr)
             opts.buffer = bufnr
 
             -- set keybinds
@@ -68,8 +68,6 @@ return {
             vim.keymap.set({ "n", "v" }, "<leader>vfl", vim.lsp.buf.format, opts)
         end
 
-        local on_attach = prepare_on_attach
-
         -- import cmp-nvim-lsp plugin
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
@@ -89,20 +87,19 @@ return {
         local lspconfig = require("lspconfig")
 
         -- configure html server
-        lspconfig.html.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure css server
-        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure tailwindcss server
-        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure svelte server
         lspconfig.svelte.setup({
             capabilities = capabilities,
             on_attach = function(client, bufnr)
-                prepare_on_attach(client, bufnr)
-
+                on_attach(client, bufnr)
                 vim.api.nvim_create_autocmd("BufWritePost", {
                     pattern = { "*.js", "*.ts" },
                     callback = function(ctx)
@@ -115,30 +112,29 @@ return {
         })
 
         -- configure prisma orm server
-        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure graphql language server
         lspconfig.graphql.setup({
             capabilities = capabilities,
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
             filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
 
         -- configure emmet language server
         lspconfig.emmet_ls.setup({
             capabilities = capabilities,
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
 
-        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- -- configure eslint language server removed and added to lint.lua
         -- lspconfig.eslint.setup({
         --     capabilities = capabilities,
-        --     --            on_attach = prepare_on_attach,
         --     on_attach = function(client, bufnr)
-        --         prepare_on_attach(client, bufnr)
+        --         on_attach(client, bufnr)
         --         vim.api.nvim_create_autocmd("BufWritePre", {
         --             buffer = bufnr,
         --             command = "EslintFixAll",
@@ -182,15 +178,15 @@ return {
         capabilities_cssls.textDocument.completion.completionItem.snippetSupport = true
         lspconfig.cssls.setup({
             capabilities = capabilities_cssls,
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
         })
 
-        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
-        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.jsonls.setup({
             capabilities = capabilities,
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
             filetypes = { "json", "jsonc" },
             settings = {
                 json = {
@@ -230,14 +226,14 @@ return {
             },
         })
 
-        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure python server
-        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.bashls.setup({
             capabilities = capabilities,
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
             filetypes = { "sh", "zsh" },
         })
 
@@ -248,7 +244,7 @@ return {
 
         lspconfig.lua_ls.setup({
             capabilities = capabilities,
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
             settings = { -- custom settings for lua
                 Lua = {
                     -- make the language server recognize "vim" global
@@ -269,7 +265,7 @@ return {
             },
         })
 
-        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.yamlls.setup({
             capabilities = capabilities,
@@ -278,7 +274,7 @@ return {
                 "yaml.docker-compose",
                 "yaml.ansible",
             },
-            on_attach = prepare_on_attach,
+            on_attach = on_attach,
             settings = {
                 yaml = {
                     schemas = {
@@ -300,6 +296,6 @@ return {
             },
         })
 
-        lspconfig.marksman.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.marksman.setup({ capabilities = capabilities, on_attach = on_attach })
     end,
 }

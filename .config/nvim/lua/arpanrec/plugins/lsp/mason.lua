@@ -71,7 +71,7 @@ return {
                 -- Linter
                 "luacheck",
                 "pylint",
-                "eslint_d",
+                "eslint",
                 "yamllint",
                 -- Formatter
                 "yamlfmt",

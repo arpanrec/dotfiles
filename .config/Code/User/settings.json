@@ -28,6 +28,9 @@
         "files.insertFinalNewline": false,
         "files.trimFinalNewlines": true
     },
+    "[lua]": {
+        "editor.defaultFormatter": "sumneko.lua"
+    },
     "[markdown]": {
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },

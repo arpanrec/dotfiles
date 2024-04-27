@@ -40,7 +40,6 @@ return {
                 "pyright",
                 "tsserver",
                 "jsonls",
-                "eslint",
                 "html",
                 "cssls",
                 "tailwindcss",
@@ -54,6 +53,7 @@ return {
                 "marksman",
                 -- DAP
                 -- Linter
+                "eslint",
                 -- Formatter
             },
 
@@ -71,11 +71,12 @@ return {
                 -- Linter
                 "luacheck",
                 "pylint",
-                "eslint",
                 "yamllint",
                 -- Formatter
                 "yamlfmt",
                 "stylua",
+                "black",
+                "prettier",
             },
         })
     end,

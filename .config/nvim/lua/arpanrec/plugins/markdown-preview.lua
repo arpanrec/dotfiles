@@ -1,7 +1,8 @@
 -- luacheck: globals vim
 
 if vim.fn.executable("yarn") == 0 then
-    vim.api.nvim_err_writeln(debug.traceback("yarn is not installed, install it to use markdown-preview"))
+    vim.notify("yarn is not installed, install it to use markdown-preview", vim.log.levels.ERROR, {})
+    -- vim.api.nvim_err_writeln(debug.traceback("yarn is not installed, install it to use markdown-preview"))
     return {}
 end
 

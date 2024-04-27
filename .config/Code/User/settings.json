@@ -6,7 +6,8 @@
             "comments": true,
             "other": true,
             "strings": true
-        }
+        },
+        "prettier.singleQuote": false
     },
     "[dockerfile]": {
         "editor.defaultFormatter": "ms-azuretools.vscode-docker"
@@ -49,6 +50,9 @@
     },
     "[xml]": {
         "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "[yaml]": {
+        "prettier.singleQuote": false
     },
     "ansible.ansible.path": "ansible",
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
@@ -162,7 +166,11 @@
     "liveServer.settings.donotShowInfoMsg": true,
     "liveServer.settings.donotVerifyTags": true,
     "maven.dependency.enableConflictDiagnostics": true,
+    "prettier.printWidth": 120,
+    "prettier.requireConfig": false,
+    "prettier.singleQuote": true,
     "prettier.tabWidth": 4,
+    "prettier.useEditorConfig": true,
     "prettier.useTabs": false,
     "redhat.telemetry.enabled": false,
     "security.workspace.trust.untrustedFiles": "open",

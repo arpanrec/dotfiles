@@ -128,7 +128,15 @@ return {
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
 
-        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.tsserver.setup({
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = {
+                implicitProjectConfiguration = {
+                    checkJs = true,
+                },
+            },
+        })
 
         -- -- configure eslint language server removed and added to lint.lua
         -- lspconfig.eslint.setup({

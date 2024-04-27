@@ -12,6 +12,7 @@ return {
                 lua = { require("formatter.filetypes.lua").stylua },
                 yaml = { require("formatter.filetypes.yaml").yamlfmt },
                 python = { require("formatter.filetypes.python").black },
+                json = { require("formatter.filetypes.json").prettier },
                 ["yaml.ansible"] = { require("formatter.filetypes.yaml").yamlfmt },
             },
             vim.keymap.set({ "n", "v" }, "<leader>vff", function()

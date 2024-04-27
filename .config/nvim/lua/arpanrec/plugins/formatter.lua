@@ -4,7 +4,8 @@ return {
     "stevearc/conform.nvim",
     config = function()
         require("conform").setup({
-            log_level = vim.log.levels.DEBUG,
+            log_level = vim.log.levels.TRACE,
+            notify_on_error = true,
             -- format_on_save = {
             --     timeout_ms = 3000,
             --     async = false,

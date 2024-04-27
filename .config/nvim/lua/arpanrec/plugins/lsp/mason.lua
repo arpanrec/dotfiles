@@ -53,7 +53,7 @@ return {
                 "marksman",
                 -- DAP
                 -- Linter
-                "eslint",
+                "eslint", -- This is not useded for lsp, but for linting only
                 -- Formatter
             },
 

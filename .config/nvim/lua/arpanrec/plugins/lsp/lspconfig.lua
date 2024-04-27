@@ -7,12 +7,12 @@ return {
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp" },
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim",                   config = true },
+        { "folke/neodev.nvim", config = true },
         { "hrsh7th/vscode-langservers-extracted" },
     },
     config = function()
         local opts = { noremap = true, silent = true }
-        local on_attach = function(client, bufnr)
+        local prepare_on_attach = function(client, bufnr)
             opts.buffer = bufnr
 
             -- set keybinds
@@ -68,6 +68,8 @@ return {
             vim.keymap.set({ "n", "v" }, "<leader>vfl", vim.lsp.buf.format, opts)
         end
 
+        local on_attach = prepare_on_attach
+
         -- import cmp-nvim-lsp plugin
         local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
@@ -87,19 +89,19 @@ return {
         local lspconfig = require("lspconfig")
 
         -- configure html server
-        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.html.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         -- configure css server
-        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         -- configure tailwindcss server
-        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         -- configure svelte server
         lspconfig.svelte.setup({
             capabilities = capabilities,
             on_attach = function(client, bufnr)
-                on_attach(client, bufnr)
+                prepare_on_attach(client, bufnr)
 
                 vim.api.nvim_create_autocmd("BufWritePost", {
                     pattern = { "*.js", "*.ts" },
@@ -113,51 +115,87 @@ return {
         })
 
         -- configure prisma orm server
-        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         -- configure graphql language server
         lspconfig.graphql.setup({
             capabilities = capabilities,
-            on_attach = on_attach,
+            on_attach = prepare_on_attach,
             filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
 
         -- configure emmet language server
         lspconfig.emmet_ls.setup({
             capabilities = capabilities,
-            on_attach = on_attach,
+            on_attach = prepare_on_attach,
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
 
-        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.tsserver.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
-        lspconfig.eslint.setup({
-            on_attach = function(client, bufnr)
-                vim.api.nvim_create_autocmd("BufWritePre", {
-                    buffer = bufnr,
-                    command = "EslintFixAll",
-                })
-            end,
-        })
+        -- -- configure eslint language server removed and added to lint.lua
+        -- lspconfig.eslint.setup({
+        --     capabilities = capabilities,
+        --     --            on_attach = prepare_on_attach,
+        --     on_attach = function(client, bufnr)
+        --         prepare_on_attach(client, bufnr)
+        --         vim.api.nvim_create_autocmd("BufWritePre", {
+        --             buffer = bufnr,
+        --             command = "EslintFixAll",
+        --         })
+        --     end,
+        --     settings = {
+        --         codeAction = {
+        --             disableRuleComment = {
+        --                 enable = true,
+        --                 location = "separateLine",
+        --             },
+        --             showDocumentation = {
+        --                 enable = true,
+        --             },
+        --         },
+        --         codeActionOnSave = {
+        --             enable = false,
+        --             mode = "all",
+        --         },
+        --         experimental = {
+        --             useFlatConfig = false,
+        --         },
+        --         format = false,
+        --         nodePath = "",
+        --         onIgnoredFiles = "off",
+        --         problems = {
+        --             shortenToSingleLine = false,
+        --         },
+        --         quiet = false,
+        --         rulesCustomizations = {},
+        --         run = "onType",
+        --         useESLintClass = false,
+        --         validate = "on",
+        --         workingDirectory = {
+        --             mode = "location",
+        --         },
+        --     },
+        -- })
 
         local capabilities_cssls = vim.lsp.protocol.make_client_capabilities()
         capabilities_cssls.textDocument.completion.completionItem.snippetSupport = true
         lspconfig.cssls.setup({
             capabilities = capabilities_cssls,
-            on_attach = on_attach,
+            on_attach = prepare_on_attach,
         })
 
-        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach })
-        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
+        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         lspconfig.jsonls.setup({
             capabilities = capabilities,
-            on_attach = on_attach,
+            on_attach = prepare_on_attach,
             filetypes = { "json", "jsonc" },
             settings = {
                 json = {
                     schemas = {
-                        { fileMatch = { "package.json" },   url = "https://json.schemastore.org/package.json" },
+                        { fileMatch = { "package.json" }, url = "https://json.schemastore.org/package.json" },
                         { fileMatch = { "tsconfig*.json" }, url = "https://json.schemastore.org/tsconfig.json" },
                         {
                             fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
@@ -192,12 +230,16 @@ return {
             },
         })
 
-        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.gopls.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         -- configure python server
-        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.pyright.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
-        lspconfig.bashls.setup({ capabilities = capabilities, on_attach = on_attach, filetypes = { "sh", "zsh" } })
+        lspconfig.bashls.setup({
+            capabilities = capabilities,
+            on_attach = prepare_on_attach,
+            filetypes = { "sh", "zsh" },
+        })
 
         -- configure lua server (with special settingsi)
         if not package.loaded["neodev"] then
@@ -206,7 +248,7 @@ return {
 
         lspconfig.lua_ls.setup({
             capabilities = capabilities,
-            on_attach = on_attach,
+            on_attach = prepare_on_attach,
             settings = { -- custom settings for lua
                 Lua = {
                     -- make the language server recognize "vim" global
@@ -227,25 +269,29 @@ return {
             },
         })
 
-        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
 
         lspconfig.yamlls.setup({
             capabilities = capabilities,
             filetypes = {
-                "yaml", "yaml.docker-compose", "yaml.ansible",
+                "yaml",
+                "yaml.docker-compose",
+                "yaml.ansible",
             },
-            on_attach = on_attach,
+            on_attach = prepare_on_attach,
             settings = {
                 yaml = {
                     schemas = {
-                        ["http://json.schemastore.org/gitlab-ci.json"]                                                  = { ".gitlab-ci.yml" },
-                        ["https://json.schemastore.org/bamboo-spec.json"]                                               = { "bamboo-specs/*.{yml,yaml}", },
-                        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = { "docker-compose*.{yml,yaml}", },
-                        ["http://json.schemastore.org/github-workflow.json"]                                            = { ".github/workflows/*.{yml,yaml}" },
-                        ["http://json.schemastore.org/github-action.json"]                                              = { ".github/action.{yml,yaml}" },
-                        ["http://json.schemastore.org/prettierrc.json"]                                                 = { ".prettierrc.{yml,yaml}" },
-                        ["http://json.schemastore.org/stylelintrc.json"]                                                = { ".stylelintrc.{yml,yaml}" },
-                        ["http://json.schemastore.org/circleciconfig"]                                                  = { ".circleci/**/*.{yml,yaml}" },
+                        ["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
+                        ["https://json.schemastore.org/bamboo-spec.json"] = { "bamboo-specs/*.{yml,yaml}" },
+                        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
+                            "docker-compose*.{yml,yaml}",
+                        },
+                        ["http://json.schemastore.org/github-workflow.json"] = { ".github/workflows/*.{yml,yaml}" },
+                        ["http://json.schemastore.org/github-action.json"] = { ".github/action.{yml,yaml}" },
+                        ["http://json.schemastore.org/prettierrc.json"] = { ".prettierrc.{yml,yaml}" },
+                        ["http://json.schemastore.org/stylelintrc.json"] = { ".stylelintrc.{yml,yaml}" },
+                        ["http://json.schemastore.org/circleciconfig"] = { ".circleci/**/*.{yml,yaml}" },
 
                         -- ["https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/galaxy.json"] = { "galaxy.yml" },
                         -- ["https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/ansible.json#/$defs/tasks"] = { "**/tasks/*.{yml,yaml}" }
@@ -254,6 +300,6 @@ return {
             },
         })
 
-        lspconfig.marksman.setup({ capabilities = capabilities, on_attach = on_attach })
+        lspconfig.marksman.setup({ capabilities = capabilities, on_attach = prepare_on_attach })
     end,
 }

@@ -37,14 +37,14 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.indentSize": "tabSize",
         "editor.tabSize": 4,
         "files.insertFinalNewline": false,
         "files.trimFinalNewlines": true
     },
     "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[markdown]": {
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
@@ -94,10 +94,7 @@
     "ansible.validation.lint.enabled": true,
     "ansible.validation.lint.path": "ansible-lint",
     "ansibleServer.trace.server": "messages",
-    "black-formatter.args": [
-        "--line-length",
-        "120"
-    ],
+    "black-formatter.args": ["--line-length", "120"],
     "diffEditor.ignoreTrimWhitespace": false,
     "editor.detectIndentation": false,
     "editor.fontFamily": "'Cascadia Code', 'Hack Nerd Font', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
@@ -220,12 +217,10 @@
     },
     "workbench.iconTheme": "material-icon-theme",
     "workbench.startupEditor": "none",
-    "yaml.customTags": [
-        "!vault"
-    ],
+    "yaml.customTags": ["!vault"],
     "yaml.format.enable": false,
     "yaml.format.printWidth": 120,
     "[dockerfile]": {
         "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-    },
+    }
 }

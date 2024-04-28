@@ -88,6 +88,12 @@ if [[ -z $* ]]; then
         __install_tags+=('themes')
     fi
 
+    read -n1 -r -p 'Enter "Y" to terminal tools (Press any other key to Skip*) : ' download_terminal
+    echo ""
+    if [[ $download_terminal == "Y" || $download_terminal == "y" ]]; then
+        __install_tags+=('terminal')
+    fi
+
     read -n1 -r -p 'Enter "Y" to install gnome (Press any other key to Skip*) : ' install_gnome
     echo ""
     if [[ ${install_gnome} == "Y" || ${install_gnome} == "y" ]]; then

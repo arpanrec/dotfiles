@@ -26,6 +26,7 @@ fi
 
 sudo sed -i '/^127.0.1.1/d' /etc/hosts
 echo "127.0.1.1 ${CLOUD_INIT_HOSTNAME} ${CLOUD_INIT_HOSTNAME}.${CLOUD_INIT_DOMAINNAME}" | sudo tee -a /etc/hosts
+echo "${CLOUD_INIT_HOSTNAME}" | sudo tee /etc/hostname
 sudo hostnamectl set-hostname "${CLOUD_INIT_HOSTNAME}"
 
 export CLOUD_INIT_IS_DEVELOPMENT_MACHINE=${CLOUD_INIT_IS_DEVELOPMENT_MACHINE:-false}
@@ -47,7 +48,8 @@ if [ "${CLOUD_INIT_IS_DEVELOPMENT_MACHINE}" = true ]; then
 
     ALL_PAKGS+=('openssh-client' 'rsync' 'ntfs-3g' 'exfat-fuse')
 
-    ALL_PAKGS+=('fontconfig' 'gtk-update-icon-cache' 'libnss3' 'libatk1.0-0' 'libatk-bridge2.0-0' 'libgtk-3-0' 'libgbm-dev' 'libglib2.0-dev' 'libdrm-dev' 'libasound2' 'libcap2-bin')
+    # Assuming below packages are required for GUI applications and not server
+    # ALL_PAKGS+=('fontconfig' 'gtk-update-icon-cache' 'libnss3' 'libatk1.0-0' 'libatk-bridge2.0-0' 'libgtk-3-0' 'libgbm-dev' 'libglib2.0-dev' 'libdrm-dev' 'libasound2' 'libcap2-bin')
 
 fi
 

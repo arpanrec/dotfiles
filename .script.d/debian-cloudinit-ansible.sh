@@ -28,8 +28,6 @@ sudo sed -i '/^127.0.1.1/d' /etc/hosts
 echo "127.0.1.1 ${CLOUD_INIT_HOSTNAME} ${CLOUD_INIT_HOSTNAME}.${CLOUD_INIT_DOMAINNAME}" | sudo tee -a /etc/hosts
 sudo hostnamectl set-hostname "${CLOUD_INIT_HOSTNAME}"
 
-sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
-
 export CLOUD_INIT_IS_DEVELOPMENT_MACHINE=${CLOUD_INIT_IS_DEVELOPMENT_MACHINE:-false}
 echo "CLOUD_INIT_IS_DEVELOPMENT_MACHINE=${CLOUD_INIT_IS_DEVELOPMENT_MACHINE}"
 

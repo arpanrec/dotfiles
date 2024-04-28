@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-sudo apt update
-
 if ! command -v sudo &>/dev/null; then
+    DEBIAN_FRONTEND=noninteractive apt update
     DEBIAN_FRONTEND=noninteractive apt install sudo -y
 fi
+
+sudo apt update
 
 export CLOUD_INIT_GROUPNAME=${CLOUD_INIT_GROUPNAME:-cloudinit}
 export CLOUD_INIT_USERNAME=${CLOUD_INIT_USERNAME:-clouduser}
@@ -29,14 +30,30 @@ sudo hostnamectl set-hostname "${CLOUD_INIT_HOSTNAME}"
 
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 
-sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-    zip unzip tar wget curl ca-certificates sudo systemd systemd-timesyncd gnupg2 apt-transport-https locales network-manager gnupg pigz cron acl ufw \
-    net-tools build-essential bzip2 \
-    telnet lsb-release software-properties-common \
-    python3 python3-venv python3-pip xz-utils \
-    vim git fontconfig gtk-update-icon-cache libnss3 libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 \
-    libgbm-dev libglib2.0-dev libdrm-dev libasound2 jq zsh libcap2-bin ntfs-3g exfat-fuse \
-    openssh-client openssh-server openssh-sftp-server rsync ninja-build gettext cmake make
+export CLOUD_INIT_IS_DEVELOPMENT_MACHINE=${CLOUD_INIT_IS_DEVELOPMENT_MACHINE:-false}
+echo "CLOUD_INIT_IS_DEVELOPMENT_MACHINE=${CLOUD_INIT_IS_DEVELOPMENT_MACHINE}"
+
+ALL_PAKGS=('zip' 'unzip' 'tar' 'wget' 'curl' 'ca-certificates' 'sudo' 'systemd' 'gnupg2' 'apt-transport-https' 'locales' 'systemd-timesyncd' 'network-manager' 'gnupg' 'pigz' 'cron' 'acl' 'ufw' 'bzip2' 'procps' 'xz-utils')
+
+ALL_PAKGS+=('apt-utils' 'lsb-release' 'software-properties-common')
+
+ALL_PAKGS+=('python3' 'python3-venv' 'python3-pip')
+
+ALL_PAKGS+=('openssh-server' 'openssh-sftp-server')
+
+if [ "${CLOUD_INIT_IS_DEVELOPMENT_MACHINE}" = true ]; then
+
+    ALL_PAKGS+=('net-tools' 'telnet' 'vim' 'git' 'jq' 'zsh' 'htop' 'tmux' 'tree' 'neovim' 'python3-neovim' 'luarocks')
+
+    ALL_PAKGS+=('build-essential' 'ninja-build' 'gettext' 'cmake' 'make')
+
+    ALL_PAKGS+=('openssh-client' 'rsync' 'ntfs-3g' 'exfat-fuse')
+
+    ALL_PAKGS+=('fontconfig' 'gtk-update-icon-cache' 'libnss3' 'libatk1.0-0' 'libatk-bridge2.0-0' 'libgtk-3-0' 'libgbm-dev' 'libglib2.0-dev' 'libdrm-dev' 'libasound2' 'libcap2-bin')
+
+fi
+
+sudo DEBIAN_FRONTEND=noninteractive apt install -y "${ALL_PAKGS[@]}"
 
 if [[ $(apt-cache search "linux-headers-$(uname -r)") ]]; then
     echo "installing linux-headers-$(uname -r)"
@@ -48,13 +65,12 @@ fi
 
 getent group "${CLOUD_INIT_GROUPNAME}" || sudo groupadd "${CLOUD_INIT_GROUPNAME}"
 
+sudo DEBIAN_FRONTEND=noninteractive apt install -y zsh
 id -u "${CLOUD_INIT_USERNAME}" &>/dev/null ||
     sudo /sbin/useradd -m -d /home/"${CLOUD_INIT_USERNAME}" -g "${CLOUD_INIT_GROUPNAME}" -s /bin/zsh "${CLOUD_INIT_USERNAME}"
 
 sudo mkdir -p /home/"${CLOUD_INIT_USERNAME}"/.ssh
-
 echo "${CLOUD_INIT_USE_SSHPUBKEY}" | sudo tee -a /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
-
 sudo chown "${CLOUD_INIT_USERNAME}":"${CLOUD_INIT_GROUPNAME}" -R /home/"${CLOUD_INIT_USERNAME}"/.ssh
 sudo chmod 700 /home/"${CLOUD_INIT_USERNAME}"/.ssh
 sudo chmod 600 /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
@@ -67,6 +83,7 @@ sudo ufw --force enable
 sudo systemctl enable --now ufw
 sudo systemctl restart ufw
 
+sudo DEBIAN_FRONTEND=noninteractive apt install -y git
 sudo -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   export DEBIAN_FRONTEND=noninteractive && \
   export PATH="${HOME}/.local/bin:${PATH}" && \

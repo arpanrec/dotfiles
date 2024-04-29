@@ -32,6 +32,11 @@ sudo hostnamectl set-hostname "${CLOUD_INIT_HOSTNAME}"
 export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
 echo "CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE}"
 
+if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
+    echo "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false)"
+    exit 1
+fi
+
 ALL_PAKGS=('zip' 'unzip' 'tar' 'wget' 'curl' 'ca-certificates' 'sudo' 'systemd' 'gnupg2' 'apt-transport-https' 'locales' 'systemd-timesyncd' 'network-manager' 'gnupg' 'pigz' 'cron' 'acl' 'ufw' 'bzip2' 'procps' 'xz-utils')
 
 ALL_PAKGS+=('apt-utils' 'lsb-release' 'software-properties-common')
@@ -87,7 +92,7 @@ sudo systemctl restart ufw
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y git
 sudo CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
-  -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
+    -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   export DEBIAN_FRONTEND=noninteractive && \
   export PATH="${HOME}/.local/bin:${PATH}" && \
   deactivate || true && \

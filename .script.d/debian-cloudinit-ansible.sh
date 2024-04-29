@@ -105,6 +105,8 @@ if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ]; then
     if [ -f /root/.ssh/authorized_keys ]; then
         echo "Setting up SSH public key for ${CLOUD_INIT_USERNAME} from root"
         sudo cat /root/.ssh/authorized_keys | sudo tee -a /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
+    else
+        echo "No SSH public key found for root"
     fi
 fi
 
@@ -123,28 +125,40 @@ sudo systemctl restart ufw
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y git python3-venv python3-pip
 sudo CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
-    -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
-  export DEBIAN_FRONTEND=noninteractive && \
-  export PATH="${HOME}/.local/bin:${PATH}" && \
-  deactivate || true && \
-  mkdir -p "${HOME}/.tmp" && \
-  rm -rf "${HOME}/.tmp/venv" && \
-  python3 -m venv "${HOME}/.tmp/venv" && \
-  source "${HOME}/.tmp/venv/bin/activate" && \
-  pip install ansible --upgrade && \
-  ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f && \
-  ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f && \
-  mkdir "${HOME}/.tmp/cloudinit" -p && \
-  echo "[local]" > "${HOME}/.tmp/cloudinit/inv" && \
-  echo "localhost ansible_connection=local" >> "${HOME}/.tmp/cloudinit/inv" && \
-  ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" \
-  --extra-vars "pv_cloud_username=$(whoami) pv_cloud_is_dev_machine=${CLOUD_INIT_IS_DEV_MACHINE}" \
-  arpanrec.nebula.cloudinit && \
-  if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then \
-    ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace --tags all && \
-  else \
-    ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace \
-    --tags all --skip-tags java,bw,go,terraform,vault,nodejs && \
-  fi && \
-  git --git-dir="$HOME/.dotfiles" --work-tree=$HOME reset --hard HEAD
+    CLOUD_INIT_USERNAME="${CLOUD_INIT_USERNAME}" \
+    CLOUD_INIT_GROUPNAME="${CLOUD_INIT_GROUPNAME}" \
+    CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME}" \
+    CLOUD_INIT_DOMAINNAME="${CLOUD_INIT_DOMAINNAME}" \
+    CLOUD_INIT_USE_SSHPUBKEY="${CLOUD_INIT_USE_SSHPUBKEY}" \
+    -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e
+
+    export DEBIAN_FRONTEND=noninteractive
+    export PATH="${HOME}/.local/bin:${PATH}"
+
+    deactivate || true
+    mkdir -p "${HOME}/.tmp"
+    rm -rf "${HOME}/.tmp/venv"
+    python3 -m venv "${HOME}/.tmp/venv"
+    source "${HOME}/.tmp/venv/bin/activate"
+    pip install ansible --upgrade
+    ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f
+    ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f
+
+    mkdir "${HOME}/.tmp/cloudinit" -p
+    echo "[local]" >"${HOME}/.tmp/cloudinit/inv"
+    echo "localhost ansible_connection=local" >>"${HOME}/.tmp/cloudinit/inv"
+
+    ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" \
+        --extra-vars "pv_cloud_username=$(whoami) pv_cloud_is_dev_machine=${CLOUD_INIT_IS_DEV_MACHINE}" \
+        arpanrec.nebula.cloudinit
+
+    if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
+        ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace --tags all
+    else
+        ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace \
+            --tags all --skip-tags java,bw,go,terraform,vault,nodejs
+    fi
+
+    git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" reset --hard HEAD
+
   '

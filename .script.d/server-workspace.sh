@@ -157,6 +157,7 @@ all:
     hosts:
         localhost:
             ansible_connection: local
+            ansible_become: false
 EOF
 
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then

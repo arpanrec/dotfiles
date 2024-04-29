@@ -100,7 +100,7 @@ sudo DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH}" \
         ansible-playbook -i "/tmp/cloudinit/hosts.yml" arpanrec.nebula.server_workspace --tags all
     else
         ansible-playbook -i "/tmp/cloudinit/hosts.yml" arpanrec.nebula.server_workspace \
-            --tags all --skip-tags java,bw,go,terraform,vault,nodejs
+            --tags all --skip-tags java,go,terraform,vault,nodejs
     fi
     git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" reset --hard HEAD
 '

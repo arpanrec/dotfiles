@@ -55,7 +55,7 @@ ALL_PAKGS=('zip' 'unzip' 'tar' 'wget' 'curl' 'ca-certificates' 'sudo' 'systemd' 
 
 ALL_PAKGS+=('apt-utils' 'lsb-release' 'software-properties-common')
 
-ALL_PAKGS+=('python3' 'python3-venv' 'python3-pip')
+ALL_PAKGS+=('python3')
 
 ALL_PAKGS+=('openssh-server' 'openssh-sftp-server' 'fail2ban' 'sendmail')
 
@@ -66,6 +66,8 @@ if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     ALL_PAKGS+=('build-essential' 'ninja-build' 'gettext' 'cmake' 'make')
 
     ALL_PAKGS+=('openssh-client' 'rsync' 'ntfs-3g' 'exfat-fuse')
+
+    ALL_PAKGS+=('python3-venv' 'python3-pip' 'python3-dev')
 
     # Assuming below packages are required for GUI applications and not server
     # ALL_PAKGS+=('fontconfig' 'gtk-update-icon-cache' 'libnss3' 'libatk1.0-0' 'libatk-bridge2.0-0' 'libgtk-3-0' 'libgbm-dev' 'libglib2.0-dev' 'libdrm-dev' 'libasound2' 'libcap2-bin')

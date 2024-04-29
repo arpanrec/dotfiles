@@ -53,9 +53,10 @@ rm -rf "/tmp/cloudinit"
 
 mkdir -p "/tmp/cloudinit" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
 python3 -m venv "/tmp/cloudinit/venv"
+# shellcheck source=/dev/null
 source "/tmp/cloudinit/venv/bin/activate"
 pip install ansible --upgrade
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/cloudinit -f
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress -f
 
 tee "/tmp/cloudinit/hosts.yml" <<EOF >/dev/null
 all:

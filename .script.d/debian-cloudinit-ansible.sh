@@ -140,7 +140,11 @@ sudo CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
   ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" \
   --extra-vars "pv_cloud_username=$(whoami) pv_cloud_is_dev_machine=${CLOUD_INIT_IS_DEV_MACHINE}" \
   arpanrec.nebula.cloudinit && \
-  ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace \
-  --tags all --skip-tags java,bw,go,terraform,vault,nodejs && \
+  if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then \
+    ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace --tags all && \
+  else \
+    ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace \
+    --tags all --skip-tags java,bw,go,terraform,vault,nodejs && \
+  fi && \
   git --git-dir="$HOME/.dotfiles" --work-tree=$HOME reset --hard HEAD
   '

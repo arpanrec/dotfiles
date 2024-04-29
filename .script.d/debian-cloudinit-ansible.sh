@@ -38,7 +38,7 @@ ALL_PAKGS+=('apt-utils' 'lsb-release' 'software-properties-common')
 
 ALL_PAKGS+=('python3' 'python3-venv' 'python3-pip')
 
-ALL_PAKGS+=('openssh-server' 'openssh-sftp-server')
+ALL_PAKGS+=('openssh-server' 'openssh-sftp-server' 'fail2ban' 'sendmail')
 
 if [ "${CLOUD_INIT_IS_DEVELOPMENT_MACHINE}" = true ]; then
 
@@ -55,12 +55,14 @@ fi
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y "${ALL_PAKGS[@]}"
 
-if [[ $(apt-cache search "linux-headers-$(uname -r)") ]]; then
-    echo "installing linux-headers-$(uname -r)"
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers-$(uname -r)"
-else
-    echo "installing linux-headers"
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers"
+if [ "${CLOUD_INIT_IS_DEVELOPMENT_MACHINE}" = true ]; then
+    if [[ $(apt-cache search "linux-headers-$(uname -r)") ]]; then
+        echo "installing linux-headers-$(uname -r)"
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers-$(uname -r)"
+    else
+        echo "installing linux-headers"
+        sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers"
+    fi
 fi
 
 getent group "${CLOUD_INIT_GROUPNAME}" || sudo groupadd "${CLOUD_INIT_GROUPNAME}"
@@ -98,7 +100,9 @@ sudo -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   mkdir "${HOME}/.tmp/cloudinit" -p && \
   echo "[local]" > "${HOME}/.tmp/cloudinit/inv" && \
   echo "localhost ansible_connection=local" >> "${HOME}/.tmp/cloudinit/inv" && \
-  ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" --extra-vars "pv_cloud_username=$(whoami)" arpanrec.nebula.cloudinit && \
+  ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" \
+  --extra-vars "pv_cloud_username=$(whoami) linux_patching_rv_install_devel_packages=false" \
+  arpanrec.nebula.cloudinit && \
   ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace \
   --tags all --skip-tags java,bw,go,terraform,vault,nodejs && \
   git --git-dir="$HOME/.dotfiles" --work-tree=$HOME reset --hard HEAD

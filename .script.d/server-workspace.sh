@@ -16,10 +16,10 @@ if [[ -z $* ]]; then
         __install_tags+=('dotfiles')
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Telegram (Press any other key to Skip*) : ' install_telegram
+    read -n1 -r -p 'Enter "Y" to install Telegram (Press any other key to Skip*) : ' install_telegram_desktop
     echo ""
-    if [[ $install_telegram == "Y" || $install_telegram == "y" ]]; then
-        __install_tags+=('telegram')
+    if [[ $install_telegram_desktop == "Y" || $install_telegram_desktop == "y" ]]; then
+        __install_tags+=('telegram_desktop')
     fi
 
     read -n1 -r -p 'Enter "Y" to install Terraform (Press any other key to Skip*) : ' install_terraform

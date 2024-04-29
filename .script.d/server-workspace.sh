@@ -150,10 +150,13 @@ echo "Creating ${__server_workspace_inventory}"
 tee "${__server_workspace_inventory}" >/dev/null <<EOF
 ---
 all:
-  hosts:
-    localhost:
-      ansible_connection: local
-
+    children:
+        server_workspace:
+            hosts:
+                localhost:
+    hosts:
+        localhost:
+            ansible_connection: local
 EOF
 
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then

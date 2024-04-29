@@ -48,17 +48,17 @@ apt update
 apt install -y git python3-venv python3-pip
 
 deactivate || true
+export CLOUD_INIT_ANSIBLE_DIR="/tmp/cloudinit"
+rm -rf "${CLOUD_INIT_ANSIBLE_DIR}"
 
-rm -rf "/tmp/cloudinit"
-
-mkdir -p "/tmp/cloudinit" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
-python3 -m venv "/tmp/cloudinit/venv"
+mkdir -p "${CLOUD_INIT_ANSIBLE_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
+python3 -m venv "${CLOUD_INIT_ANSIBLE_DIR}/venv"
 # shellcheck source=/dev/null
-source "/tmp/cloudinit/venv/bin/activate"
+source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
 pip install ansible --upgrade
 ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress -f
 
-tee "/tmp/cloudinit/hosts.yml" <<EOF >/dev/null
+tee "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" <<EOF >/dev/null
 all:
     children:
         server_workspace:
@@ -85,22 +85,24 @@ all:
             ansible_python_interpreter: /usr/bin/python3
 EOF
 
-ansible-playbook -i "/tmp/cloudinit/hosts.yml" arpanrec.nebula.cloudinit
+ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.cloudinit
 
 deactivate
 
-chown -R "${CLOUD_INIT_USERNAME}:${CLOUD_INIT_GROUPNAME}" "/tmp/cloudinit"
+chown -R "${CLOUD_INIT_USERNAME}:${CLOUD_INIT_GROUPNAME}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
 sudo DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH}" \
+    CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
     ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH}" \
     ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH}" \
+    CLOUD_INIT_ANSIBLE_DIR="${CLOUD_INIT_ANSIBLE_DIR}" \
     -H -u "${CLOUD_INIT_USERNAME}" bash -c '
     set -ex
-    source "/tmp/cloudinit/venv/bin/activate"
+    source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-        ansible-playbook -i "/tmp/cloudinit/hosts.yml" arpanrec.nebula.server_workspace --tags all
+        ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.server_workspace --tags all
     else
-        ansible-playbook -i "/tmp/cloudinit/hosts.yml" arpanrec.nebula.server_workspace \
+        ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.server_workspace \
             --tags all --skip-tags java,go,terraform,vault,nodejs
     fi
     git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" reset --hard HEAD

@@ -73,12 +73,12 @@ all:
             vars:
                 ansible_user: root
                 ansible_become: false
-                pv_cloud_username: "${CLOUD_INIT_USERNAME}"
-                pv_cloud_is_dev_machine: "${CLOUD_INIT_IS_DEV_MACHINE}"
-                pv_cloud_groupname: "${CLOUD_INIT_GROUPNAME}"
-                pv_cloud_hostname: "${CLOUD_INIT_HOSTNAME}"
-                pv_cloud_domainname: ${CLOUD_INIT_DOMAINNAME}
-                pv_cloud_user_ssh_public_key: ${CLOUD_INIT_USE_SSHPUBKEY}
+                pv_cloud_init_username: "${CLOUD_INIT_USERNAME}"
+                pv_cloud_init_is_dev_machine: "${CLOUD_INIT_IS_DEV_MACHINE}"
+                pv_cloud_init_groupname: "${CLOUD_INIT_GROUPNAME}"
+                pv_cloud_init_hostname: "${CLOUD_INIT_HOSTNAME}"
+                pv_cloud_init_domainname: ${CLOUD_INIT_DOMAINNAME}
+                pv_cloud_init_user_ssh_public_key: ${CLOUD_INIT_USE_SSHPUBKEY}
     hosts:
         localhost:
             ansible_connection: local

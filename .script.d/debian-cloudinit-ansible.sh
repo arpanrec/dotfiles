@@ -121,7 +121,7 @@ sudo ufw --force enable
 sudo systemctl enable --now ufw
 sudo systemctl restart ufw
 
-sudo DEBIAN_FRONTEND=noninteractive apt install -y git
+sudo DEBIAN_FRONTEND=noninteractive apt install -y git python3-venv python3-pip
 sudo CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
     -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   export DEBIAN_FRONTEND=noninteractive && \

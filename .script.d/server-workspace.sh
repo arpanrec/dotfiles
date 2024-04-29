@@ -40,12 +40,6 @@ if [[ -z $* ]]; then
         __install_tags+=('bitwarden_desktop')
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Bitwarden Command-line Interface (Press any other key to Skip*) : ' install_bitwarden_cli
-    echo ""
-    if [[ $install_bitwarden_cli == "Y" || $install_bitwarden_cli == "y" ]]; then
-        __install_tags+=('bw')
-    fi
-
     read -n1 -r -p 'Enter "Y" to install Mattermost (Press any other key to Skip*) : ' install_mattermost
     echo ""
     if [[ $install_mattermost == "Y" || $install_mattermost == "y" ]]; then

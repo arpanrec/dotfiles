@@ -29,8 +29,8 @@ echo "127.0.1.1 ${CLOUD_INIT_HOSTNAME} ${CLOUD_INIT_HOSTNAME}.${CLOUD_INIT_DOMAI
 echo "${CLOUD_INIT_HOSTNAME}" | sudo tee /etc/hostname
 sudo hostnamectl set-hostname "${CLOUD_INIT_HOSTNAME}"
 
-export LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES=${LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES:-false}
-echo "LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES=${LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES}"
+export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
+echo "CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE}"
 
 ALL_PAKGS=('zip' 'unzip' 'tar' 'wget' 'curl' 'ca-certificates' 'sudo' 'systemd' 'gnupg2' 'apt-transport-https' 'locales' 'systemd-timesyncd' 'network-manager' 'gnupg' 'pigz' 'cron' 'acl' 'ufw' 'bzip2' 'procps' 'xz-utils')
 
@@ -40,7 +40,7 @@ ALL_PAKGS+=('python3' 'python3-venv' 'python3-pip')
 
 ALL_PAKGS+=('openssh-server' 'openssh-sftp-server' 'fail2ban' 'sendmail')
 
-if [ "${LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES}" = true ]; then
+if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
 
     ALL_PAKGS+=('net-tools' 'telnet' 'vim' 'git' 'jq' 'zsh' 'htop' 'tmux' 'tree' 'neovim' 'python3-neovim' 'luarocks')
 
@@ -55,7 +55,7 @@ fi
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y "${ALL_PAKGS[@]}"
 
-if [ "${LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES}" = true ]; then
+if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     if [[ $(apt-cache search "linux-headers-$(uname -r)") ]]; then
         echo "installing linux-headers-$(uname -r)"
         sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "linux-headers-$(uname -r)"
@@ -86,7 +86,7 @@ sudo systemctl enable --now ufw
 sudo systemctl restart ufw
 
 sudo DEBIAN_FRONTEND=noninteractive apt install -y git
-sudo LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES="${LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES}" \
+sudo CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
   -H -u "${CLOUD_INIT_USERNAME}" bash -c 'set -e && \
   export DEBIAN_FRONTEND=noninteractive && \
   export PATH="${HOME}/.local/bin:${PATH}" && \
@@ -102,7 +102,7 @@ sudo LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES="${LINUX_PATCHING_RV_INSTALL_DEVEL
   echo "[local]" > "${HOME}/.tmp/cloudinit/inv" && \
   echo "localhost ansible_connection=local" >> "${HOME}/.tmp/cloudinit/inv" && \
   ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" \
-  --extra-vars "pv_cloud_username=$(whoami) linux_patching_rv_install_devel_packages=${LINUX_PATCHING_RV_INSTALL_DEVEL_PACKAGES}" \
+  --extra-vars "pv_cloud_username=$(whoami) pv_cloud_is_dev_machine=${CLOUD_INIT_IS_DEV_MACHINE}" \
   arpanrec.nebula.cloudinit && \
   ansible-playbook -i "${HOME}/.tmp/cloudinit/inv" arpanrec.nebula.server_workspace \
   --tags all --skip-tags java,bw,go,terraform,vault,nodejs && \

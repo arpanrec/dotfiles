@@ -8,8 +8,20 @@ fi
 
 sudo apt update
 
+export CLOUD_INIT_COPY_ROOT_SSH_KEYS=false
+
+if [ -n "${LINODE_ID}" ]; then
+    echo "LINODE_ID is set, copying root SSH keys"
+    CLOUD_INIT_COPY_ROOT_SSH_KEYS=true
+fi
+echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
+
 export CLOUD_INIT_GROUPNAME=${CLOUD_INIT_GROUPNAME:-cloudinit}
+echo "CLOUD_INIT_GROUPNAME=${CLOUD_INIT_GROUPNAME}"
+
 export CLOUD_INIT_USERNAME=${CLOUD_INIT_USERNAME:-clouduser}
+echo "CLOUD_INIT_USERNAME=${CLOUD_INIT_USERNAME}"
+
 export CLOUD_INIT_USE_SSHPUBKEY=${CLOUD_INIT_USE_SSHPUBKEY:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
 
 if [ "$(hostname)" = 'localhost' ]; then
@@ -17,12 +29,14 @@ if [ "$(hostname)" = 'localhost' ]; then
 else
     CLOUD_INIT_HOSTNAME=$(hostname)
 fi
+echo "CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME}"
 
 if [ "$(domainname)" = '(none)' ]; then
     CLOUD_INIT_DOMAINNAME=${CLOUD_INIT_DOMAINNAME:-clouddomain}
 else
     CLOUD_INIT_DOMAINNAME=$(domainname)
 fi
+echo "CLOUD_INIT_DOMAINNAME=${CLOUD_INIT_DOMAINNAME}"
 
 sudo sed -i '/^127.0.1.1/d' /etc/hosts
 echo "127.0.1.1 ${CLOUD_INIT_HOSTNAME} ${CLOUD_INIT_HOSTNAME}.${CLOUD_INIT_DOMAINNAME}" | sudo tee -a /etc/hosts
@@ -58,6 +72,7 @@ if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
 
 fi
 
+echo "Installing packages: ${ALL_PAKGS[*]}"
 sudo DEBIAN_FRONTEND=noninteractive apt install -y "${ALL_PAKGS[@]}"
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
@@ -77,8 +92,22 @@ id -u "${CLOUD_INIT_USERNAME}" &>/dev/null ||
     sudo /sbin/useradd -m -d /home/"${CLOUD_INIT_USERNAME}" -g "${CLOUD_INIT_GROUPNAME}" -s /bin/zsh "${CLOUD_INIT_USERNAME}"
 
 sudo mkdir -p /home/"${CLOUD_INIT_USERNAME}"/.ssh
-echo "${CLOUD_INIT_USE_SSHPUBKEY}" | sudo tee -a /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
+
+# if CLOUD_INIT_USE_SSHPUBKEY is set
+if [ -n "${CLOUD_INIT_USE_SSHPUBKEY}" ]; then
+    echo "Setting up SSH public key for ${CLOUD_INIT_USERNAME}"
+    echo "${CLOUD_INIT_USE_SSHPUBKEY}" | sudo tee -a /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
+fi
+
+if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ]; then
+    if [ -f /root/.ssh/authorized_keys ]; then
+        echo "Setting up SSH public key for ${CLOUD_INIT_USERNAME} from root"
+        sudo cat /root/.ssh/authorized_keys | sudo tee -a /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
+    fi
+fi
+
 sudo chown "${CLOUD_INIT_USERNAME}":"${CLOUD_INIT_GROUPNAME}" -R /home/"${CLOUD_INIT_USERNAME}"/.ssh
+
 sudo chmod 700 /home/"${CLOUD_INIT_USERNAME}"/.ssh
 sudo chmod 600 /home/"${CLOUD_INIT_USERNAME}"/.ssh/authorized_keys
 

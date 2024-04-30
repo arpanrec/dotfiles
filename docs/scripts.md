@@ -3,7 +3,7 @@
 
 The scripts in this repository automate various tasks, making it easier to set up and configure my environment. These scripts include:
 
-## [Debian](/.script.d/debian-cloudinit-ansible.sh)
+## [Debian](/.script.d/debian-cloudinit.sh)
 
 Variables:
 

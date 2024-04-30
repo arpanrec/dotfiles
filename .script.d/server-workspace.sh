@@ -122,7 +122,7 @@ echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
 pip3 install --upgrade setuptools-rust pip
 pip3 install ansible requests --upgrade
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f
+ansible-galaxy collection install arpanrec.nebula -f
 
 MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${HOME}/.tmp/server_workspace.json}"
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"

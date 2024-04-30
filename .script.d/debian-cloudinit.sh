@@ -2,6 +2,29 @@
 set -ex
 export CLOUD_INIT_USE_SSH_PUB=${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
 
+export DEBIAN_FRONTEND=noninteractive
+export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}
+export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
+export CLOUD_INIT_USER=${CLOUD_INIT_USER:-cloudinit}
+export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
+export CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-cloudinit}
+export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-cloudinit}
+
+if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
+    echo "CLOUD_INIT_USE_SSH_PUB is not set"
+    exit 1
+fi
+
+if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
+    echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false)"
+    exit 1
+fi
+
+if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
+    echo "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false)"
+    exit 1
+fi
+
 if [ "$(id -u)" -ne 0 ]; then
     echo "Please run as root"
     exit 1
@@ -9,36 +32,6 @@ fi
 
 if [ "${HOME}" != "/root" ]; then
     echo "HOME is not set to /root"
-    exit 1
-fi
-
-export DEBIAN_FRONTEND=noninteractive
-export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}
-export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
-export CLOUD_INIT_USER=${CLOUD_INIT_USER:-clouduser}
-export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
-
-if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
-    echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false)"
-    exit 1
-fi
-
-if [ "$(hostname)" = 'localhost' ]; then
-    export CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-cloudvm}
-else
-    CLOUD_INIT_HOSTNAME=$(hostname)
-    export CLOUD_INIT_HOSTNAME
-fi
-
-if [ "$(domainname)" = '(none)' ]; then
-    export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-clouddomain}
-else
-    CLOUD_INIT_DOMAIN=$(domainname)
-    export CLOUD_INIT_DOMAIN
-fi
-
-if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
-    echo "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false)"
     exit 1
 fi
 

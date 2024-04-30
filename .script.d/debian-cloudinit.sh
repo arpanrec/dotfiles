@@ -13,7 +13,7 @@ if [ "${HOME}" != "/root" ]; then
 fi
 
 export DEBIAN_FRONTEND=noninteractive
-export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-false}
+export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}
 export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
 export CLOUD_INIT_USER=${CLOUD_INIT_USER:-clouduser}
 export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
@@ -24,10 +24,6 @@ export ANSIBLE_COLLECTIONS_PATH="/tmp/cloudinit/collections"
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
     echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false)"
     exit 1
-fi
-
-if [ -n "${LINODE_ID}" ]; then
-    export CLOUD_INIT_COPY_ROOT_SSH_KEYS=true
 fi
 
 if [ "$(hostname)" = 'localhost' ]; then

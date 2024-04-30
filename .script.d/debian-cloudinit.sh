@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 export CLOUD_INIT_USE_SSH_PUB=${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
 
 export DEBIAN_FRONTEND=noninteractive
@@ -98,7 +98,7 @@ deactivate
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
-    set -ex
+    set -e
     source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
         ansible-playbook arpanrec.nebula.server_workspace --tags all

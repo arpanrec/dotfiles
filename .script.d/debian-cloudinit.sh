@@ -17,9 +17,6 @@ export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}
 export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
 export CLOUD_INIT_USER=${CLOUD_INIT_USER:-clouduser}
 export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
-export DEFAULT_ROLES_PATH="/tmp/cloudinit/roles"
-export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
-export ANSIBLE_COLLECTIONS_PATH="/tmp/cloudinit/collections"
 
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
     echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false)"
@@ -50,6 +47,10 @@ apt install -y python3-venv python3-pip
 
 deactivate || true
 export CLOUD_INIT_ANSIBLE_DIR="/tmp/cloudinit"
+export DEFAULT_ROLES_PATH="${CLOUD_INIT_ANSIBLE_DIR}/roles"
+export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
+export ANSIBLE_COLLECTIONS_PATH="${CLOUD_INIT_ANSIBLE_DIR}/collections"
+
 rm -rf "${CLOUD_INIT_ANSIBLE_DIR}"
 
 mkdir -p "${CLOUD_INIT_ANSIBLE_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"

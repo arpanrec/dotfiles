@@ -1,16 +1,21 @@
 #!/usr/bin/env bash
 set -ex
+export CLOUD_INIT_USE_SSH_PUB=${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
 
 if [ "$(id -u)" -ne 0 ]; then
     echo "Please run as root"
     exit 1
 fi
 
+if [ "${HOME}" != "/root" ]; then
+    echo "HOME is not set to /root"
+    exit 1
+fi
+
 export DEBIAN_FRONTEND=noninteractive
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-false}
-export CLOUD_INIT_GROUPNAME=${CLOUD_INIT_GROUPNAME:-cloudinit}
-export CLOUD_INIT_USERNAME=${CLOUD_INIT_USERNAME:-clouduser}
-export CLOUD_INIT_USE_SSHPUBKEY=${CLOUD_INIT_USE_SSHPUBKEY:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
+export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
+export CLOUD_INIT_USER=${CLOUD_INIT_USER:-clouduser}
 export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
 export DEFAULT_ROLES_PATH="/tmp/cloudinit/roles"
 export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
@@ -33,10 +38,10 @@ else
 fi
 
 if [ "$(domainname)" = '(none)' ]; then
-    export CLOUD_INIT_DOMAINNAME=${CLOUD_INIT_DOMAINNAME:-clouddomain}
+    export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-clouddomain}
 else
-    CLOUD_INIT_DOMAINNAME=$(domainname)
-    export CLOUD_INIT_DOMAINNAME
+    CLOUD_INIT_DOMAIN=$(domainname)
+    export CLOUD_INIT_DOMAIN
 fi
 
 if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
@@ -45,18 +50,28 @@ if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
 fi
 
 apt update
-apt install -y git python3-venv python3-pip
+apt install -y python3-venv python3-pip
 
 deactivate || true
 export CLOUD_INIT_ANSIBLE_DIR="/tmp/cloudinit"
 rm -rf "${CLOUD_INIT_ANSIBLE_DIR}"
+
+echo "${CLOUD_INIT_USE_SSH_PUB}" >"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
+
+if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
+    cat "/root/.ssh/authorized_keys" >>"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
+fi
 
 mkdir -p "${CLOUD_INIT_ANSIBLE_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
 python3 -m venv "${CLOUD_INIT_ANSIBLE_DIR}/venv"
 # shellcheck source=/dev/null
 source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
 pip install ansible --upgrade
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress -f
+ansible-galaxy collection install arpanrec.nebula -f
+
+# apt install -y git
+# ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress -f
+# ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f
 
 tee "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" <<EOF >/dev/null
 all:
@@ -65,7 +80,7 @@ all:
             hosts:
                 localhost:
             vars:
-                ansible_user: "${CLOUD_INIT_USERNAME}"
+                ansible_user: ${CLOUD_INIT_USER}
                 ansible_become: false
         cloudinit:
             hosts:
@@ -73,12 +88,12 @@ all:
             vars:
                 ansible_user: root
                 ansible_become: false
-                pv_cloud_init_username: "${CLOUD_INIT_USERNAME}"
-                pv_cloud_init_is_dev_machine: "${CLOUD_INIT_IS_DEV_MACHINE}"
-                pv_cloud_init_groupname: "${CLOUD_INIT_GROUPNAME}"
-                pv_cloud_init_hostname: "${CLOUD_INIT_HOSTNAME}"
-                pv_cloud_init_domainname: ${CLOUD_INIT_DOMAINNAME}
-                pv_cloud_init_user_ssh_public_key: ${CLOUD_INIT_USE_SSHPUBKEY}
+                pv_cloud_init_user: ${CLOUD_INIT_USER}
+                pv_cloud_init_group: ${CLOUD_INIT_GROUP}
+                pv_cloud_init_authorized_keys: ${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys
+                pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
+                pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
+                pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}
     hosts:
         localhost:
             ansible_connection: local
@@ -89,14 +104,14 @@ ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.cloudi
 
 deactivate
 
-chown -R "${CLOUD_INIT_USERNAME}:${CLOUD_INIT_GROUPNAME}" "${CLOUD_INIT_ANSIBLE_DIR}"
+chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
 sudo DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH}" \
     CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
     ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH}" \
     ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH}" \
     CLOUD_INIT_ANSIBLE_DIR="${CLOUD_INIT_ANSIBLE_DIR}" \
-    -H -u "${CLOUD_INIT_USERNAME}" bash -c '
+    -H -u "${CLOUD_INIT_USER}" bash -c '
     set -ex
     source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then

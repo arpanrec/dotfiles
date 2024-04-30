@@ -68,7 +68,7 @@ pip install ansible --upgrade
 # ansible-galaxy collection install arpanrec.nebula:5.0.2
 
 apt install -y git
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress --force
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git --force
 # ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f
 
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null

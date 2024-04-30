@@ -16,7 +16,7 @@ Variables:
 * `CLOUD_INIT_DOMAIN` - Domain name for the machine
 
 ```bash
-sudo -H -u root bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit.sh)'
+sudo -E -H -u root bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit.sh)'
 ```
 
 ## [Server Workspace](/.script.d/server-workspace.sh)

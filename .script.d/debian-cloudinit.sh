@@ -70,7 +70,7 @@ pip install ansible --upgrade
 # ansible-galaxy collection install arpanrec.nebula:5.0.2
 
 apt install -y git
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress -f
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress --force
 # ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f
 
 tee "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" <<EOF >/dev/null

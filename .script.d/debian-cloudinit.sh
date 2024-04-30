@@ -50,6 +50,7 @@ export CLOUD_INIT_ANSIBLE_DIR="/tmp/cloudinit"
 export DEFAULT_ROLES_PATH="${CLOUD_INIT_ANSIBLE_DIR}/roles"
 export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
 export ANSIBLE_COLLECTIONS_PATH="${CLOUD_INIT_ANSIBLE_DIR}/collections"
+export ANSIBLE_INVENTORY="${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml"
 
 rm -rf "${CLOUD_INIT_ANSIBLE_DIR}"
 
@@ -70,7 +71,7 @@ apt install -y git
 ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,feature/inprogress --force
 # ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f
 
-tee "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" <<EOF >/dev/null
+tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 all:
     children:
         server_workspace:
@@ -97,25 +98,19 @@ all:
             ansible_python_interpreter: /usr/bin/python3
 EOF
 
-ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.cloudinit
+ansible-playbook arpanrec.nebula.cloudinit
 
 deactivate
 
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
-sudo DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH}" \
-    CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE}" \
-    ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH}" \
-    ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH}" \
-    CLOUD_INIT_ANSIBLE_DIR="${CLOUD_INIT_ANSIBLE_DIR}" \
-    -H -u "${CLOUD_INIT_USER}" bash -c '
+sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
     set -ex
     source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-        ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.server_workspace --tags all
+        ansible-playbook arpanrec.nebula.server_workspace --tags all
     else
-        ansible-playbook -i "${CLOUD_INIT_ANSIBLE_DIR}/hosts.yml" arpanrec.nebula.server_workspace \
-            --tags all --skip-tags java,go,terraform,vault,nodejs
+        ansible-playbook arpanrec.nebula.server_workspace --tags all --skip-tags java,go,terraform,vault,nodejs
     fi
     git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" reset --hard HEAD
 '

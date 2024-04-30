@@ -35,9 +35,6 @@ if [ "${HOME}" != "/root" ]; then
     exit 1
 fi
 
-apt update
-apt install -y python3-venv python3-pip
-
 deactivate || true
 export CLOUD_INIT_ANSIBLE_DIR="/tmp/cloudinit"
 export DEFAULT_ROLES_PATH="${CLOUD_INIT_ANSIBLE_DIR}/roles"
@@ -54,15 +51,18 @@ if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_
     cat "/root/.ssh/authorized_keys" >>"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
 fi
 
+apt update
+apt install -y python3-venv python3-pip
 python3 -m venv "${CLOUD_INIT_ANSIBLE_DIR}/venv"
 # shellcheck source=/dev/null
 source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
 pip install ansible --upgrade
+
 # ansible-galaxy collection install arpanrec.nebula:5.0.2
 
 apt install -y git
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git --force
-# ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker -f
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,5.2.0,arpanrec.nebula -f
+ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,7.1.0,geerlingguy.docker -f
 
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 all:

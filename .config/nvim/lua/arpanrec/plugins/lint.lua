@@ -68,7 +68,7 @@ return {
             python = { "venv_pylint" },
             lua = { "luacheck" },
             yaml = { "yamllint" },
-            ["yaml.ansible"] = { "ansible-lint" },
+            ["yaml.ansible"] = { "ansible_lint" },
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })

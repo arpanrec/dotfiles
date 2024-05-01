@@ -37,7 +37,7 @@ return {
                 "gopls",
                 "marksman",
                 "bashls",
-                "pyright",
+                -- "pyright",
                 "tsserver",
                 "jsonls",
                 "html",
@@ -70,12 +70,12 @@ return {
                 -- DAP
                 -- Linter
                 "luacheck",
-                "pylint",
+                -- "pylint",
                 "yamllint",
                 -- Formatter
                 "yamlfmt",
                 "stylua",
-                "black",
+                -- "black",
                 "prettier",
             },
         })

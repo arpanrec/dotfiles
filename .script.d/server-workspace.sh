@@ -122,7 +122,14 @@ echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
 pip3 install --upgrade setuptools-rust pip
 pip3 install ansible requests --upgrade
-ansible-galaxy collection install arpanrec.nebula -f
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git -f
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git -f
+ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git -f
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git -f
+ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git -f
+ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git -f
+ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git -f
 
 MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${HOME}/.tmp/server_workspace.json}"
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"
@@ -152,6 +159,7 @@ all:
         localhost:
             ansible_connection: local
             ansible_become: false
+            ansible_python_interpreter: "$(which python3)"
 EOF
 
 cd "${HOME}/.tmp" || exit 1

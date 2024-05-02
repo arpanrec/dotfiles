@@ -138,10 +138,10 @@ else
     echo "This file will be used as extra-vars"
 fi
 
-__server_workspace_inventory="${HOME}/.tmp/server_workspace_inventory.yml"
+export ANSIBLE_INVENTORY="${HOME}/.tmp/server_workspace_inventory.yml"
 
-echo "Creating ${__server_workspace_inventory}"
-tee "${__server_workspace_inventory}" >/dev/null <<EOF
+echo "Creating ${ANSIBLE_INVENTORY}"
+tee "${ANSIBLE_INVENTORY}" >/dev/null <<EOF
 ---
 all:
     children:
@@ -154,8 +154,10 @@ all:
             ansible_become: false
 EOF
 
+cd "${HOME}/.tmp" || exit 1
+
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
-    ansible-playbook -i "${__server_workspace_inventory}" arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
 elif [[ -z ${__ansible_tags} && -n $* ]]; then
-    ansible-playbook -i "${__server_workspace_inventory}" arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
 fi

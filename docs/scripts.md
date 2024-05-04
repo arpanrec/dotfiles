@@ -61,8 +61,6 @@ INIT_STORAGE_MINIO_ROOT_USER=svc_minio_admin
 INIT_STORAGE_MINIO_ROOT_PASSWORD='Password for root user (Not access key/secret credentials)'
 INIT_STORAGE_MINIO_EMAIL='MinIO Admin email address'
 INIT_STORAGE_MINIO_CERT_PRIV_KEY_BASE64='Base64 encoded private key'
-INIT_STORAGE_MINIO_CERT_BASE64='Base64 encoded certificate'
-INIT_STORAGE_MINIO_CERT_CHAIN_BASE64='Base64 encoded certificate chain'
 INIT_STORAGE_MINIO_CERT_FULL_CHAIN_BASE64='Base64 encoded full certificate chain'
 ```
 

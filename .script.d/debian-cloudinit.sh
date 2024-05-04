@@ -58,11 +58,11 @@ python3 -m venv "${CLOUD_INIT_ANSIBLE_DIR}/venv"
 source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
 pip install ansible --upgrade
 
-# ansible-galaxy collection install arpanrec.nebula:5.0.2
+# ansible-galaxy collection install arpanrec.nebula:5.2.4
 
 apt install -y git
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,5.2.1 -f
-ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,7.1.0,geerlingguy.docker -f
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,5.2.4
+ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,7.1.0,geerlingguy.docker
 
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 all:

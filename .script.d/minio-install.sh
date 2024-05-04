@@ -24,21 +24,13 @@ enable_ufw() {
 
 }
 
-remove_kes() {
-
+install_kes() {
     docker network create "${INIT_STORAGE_DOCKER_NETWORK}" || true
-
     echo "Stop, disable and remove ${INIT_STORAGE_KES_CONTAINER_NAME}"
     docker rm -f "${INIT_STORAGE_KES_CONTAINER_NAME}"
-
     echo "Deleting existing Group: ${INIT_STORAGE_KES_GROUP} and USER: ${INIT_STORAGE_KES_USER}"
     userdel "${INIT_STORAGE_KES_USER}" || true
     groupdel "${INIT_STORAGE_KES_GROUP}" || true
-}
-
-install_kes() {
-    remove_kes
-
     echo "Creating ${INIT_STORAGE_KES_GROUP} and ${INIT_STORAGE_KES_USER}"
     groupadd --system "${INIT_STORAGE_KES_GROUP}"
     useradd --system --no-create-home --shell /bin/false --gid "${INIT_STORAGE_KES_GROUP}" "${INIT_STORAGE_KES_USER}"
@@ -123,7 +115,7 @@ EOF
         minio/kes:"${INIT_STORAGE_KES_VERSION}" server --config="${INIT_STORAGE_KES_CONFIG_FILE}"
 }
 
-remove_minio() {
+install_minio() {
 
     echo "Stop, disable and remove ${INIT_STORAGE_MINIO_CONTAINER_NAME}"
     docker rm -f "${INIT_STORAGE_MINIO_CONTAINER_NAME}"
@@ -131,11 +123,6 @@ remove_minio() {
     echo "Deleting existing Group: ${INIT_STORAGE_MINIO_GROUP} and USER: ${INIT_STORAGE_MINIO_USER}"
     userdel -r "${INIT_STORAGE_MINIO_USER}" || true
     groupdel "${INIT_STORAGE_MINIO_GROUP}" || true
-}
-
-install_minio() {
-
-    remove_minio
 
     echo "Creating Group: ${INIT_STORAGE_MINIO_GROUP} and USER: ${INIT_STORAGE_MINIO_USER}"
     groupadd --system "${INIT_STORAGE_MINIO_GROUP}"

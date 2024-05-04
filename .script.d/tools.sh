@@ -17,5 +17,7 @@ npm i -g bw
 
 go install golang.org/x/tools/gopls@latest
 go install mvdan.cc/sh/v3/cmd/gosh@latest
+go install github.com/mikefarah/yq/v4@latest
+go install github.com/minio/mc@latest
 
 "${HOME}/.script.d/neovim-from-source.sh"

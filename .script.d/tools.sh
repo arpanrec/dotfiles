@@ -28,23 +28,41 @@ install_neovim() {
 
 }
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
+which_python() {
+    declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10" "python3.9" "python3.8" "python3.7" "python3.6")
 
+    for python_version in "${PYTHON_VERSIONS[@]}"; do
+        if command -v "${python_version}" &>/dev/null; then
+            echo "${python_version}"
+            return
+        fi
+    done
+
+    echo "Supported Python version not found, Only Python3.6+ >< 4 is supported"
+
+}
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
 # shellcheck source=/dev/null
-source "$HOME/.cargo/env"
+source "${HOME}/.cargo/env"
 cargo install ripgrep
 cargo install fd-find
 
-curl -sSL https://install.python-poetry.org | python3 -
+curl -sSL https://install.python-poetry.org | $(which_python) -
 
-npm i -g yarn
-npm i -g bw
-npm i -g neovim
+if command -v npm &>/dev/null; then
 
-go install golang.org/x/tools/gopls@latest
-go install mvdan.cc/sh/v3/cmd/gosh@latest
-go install github.com/mikefarah/yq/v4@latest
-go install github.com/minio/mc@latest
+    npm i -g yarn
+    npm i -g bw
+    npm i -g neovim
+fi
+
+if command -v go &>/dev/null; then
+    go install golang.org/x/tools/gopls@latest
+    go install mvdan.cc/sh/v3/cmd/gosh@latest
+    go install github.com/mikefarah/yq/v4@latest
+    go install github.com/minio/mc@latest
+fi
 
 curl -fsSL https://get.pulumi.com | sh
 

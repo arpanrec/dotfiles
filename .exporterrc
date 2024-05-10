@@ -14,31 +14,31 @@ export LC_MEASUREMENT="en_US.UTF8"
 export LC_IDENTIFICATION="en_US.UTF8"
 export LC_ALL=en_US.UTF8
 
-export LD_LIBRARY_PATH=$HOME/.local/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=${HOME}/.local/lib64:${HOME}/.local/lib:${LD_LIBRARY_PATH}
 
-if ! [[ "$PATH" =~ /usr/local/bin: ]]; then
-    export PATH="/usr/local/bin:$PATH"
+if ! [[ "${PATH}" =~ /usr/local/bin: ]]; then
+    export PATH="/usr/local/bin:${PATH}"
 fi
 
-if ! [[ "$PATH" =~ /usr/local/sbin: ]]; then
-    export PATH="/usr/local/sbin:$PATH"
+if ! [[ "${PATH}" =~ /usr/local/sbin: ]]; then
+    export PATH="/usr/local/sbin:${PATH}"
 fi
 
-if ! [[ "$PATH" =~ /sbin: ]]; then
-    export PATH="/sbin:$PATH"
+if ! [[ "${PATH}" =~ /sbin: ]]; then
+    export PATH="/sbin:${PATH}"
 fi
 
-if ! [[ "$PATH" =~ /usr/sbin: ]]; then
-    export PATH="/usr/sbin:$PATH"
+if ! [[ "${PATH}" =~ /usr/sbin: ]]; then
+    export PATH="/usr/sbin:${PATH}"
 fi
 
-if [[ -d "$HOME/.script.d/bin" ]] && [[ ! "$PATH" =~ $HOME/.script.d/bin: ]]; then
-    export PATH="$HOME/.script.d/bin:$PATH"
+if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: ]]; then
+    export PATH="${HOME}/.script.d/bin:${PATH}"
 fi
 
 # shellcheck source=/dev/null
-if [ -f "$HOME/.secrets" ]; then
-    source "$HOME/.secrets"
+if [ -f "${HOME}/.secrets" ]; then
+    source "${HOME}/.secrets"
 fi
 
 for secret_file in ~/.secrets.d/*.sh; do
@@ -49,50 +49,55 @@ for secret_file in ~/.secrets.d/*.sh; do
     source "${secret_file}"
 done
 
-if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "$PATH" =~ /var/lib/snapd/snap/bin: ]]; then
-    export PATH="/var/lib/snapd/snap/bin:$PATH"
+if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "${PATH}" =~ /var/lib/snapd/snap/bin: ]]; then
+    export PATH="/var/lib/snapd/snap/bin:${PATH}"
 fi
 
-if [[ -d "$HOME/.local/share/JetBrains/Toolbox/scripts" ]] && [[ ! "$PATH" =~ $HOME/.local/share/JetBrains/Toolbox/scripts: ]]; then
-    export PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
+if [[ -d "${HOME}/.local/share/JetBrains/Toolbox/scripts" ]] &&
+    [[ ! "${PATH}" =~ ${HOME}/.local/share/JetBrains/Toolbox/scripts: ]]; then
+    export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:${PATH}"
 fi
 
-if [ -f "$HOME/.local/share/go/bin/go" ] && [[ ! "$PATH" =~ $HOME/.local/share/go/bin: ]]; then
-    export PATH="$HOME/.local/share/go/bin:$PATH"
+if [ -f "${HOME}/.local/share/go/bin/go" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/go/bin: ]]; then
+    export PATH="${HOME}/.local/share/go/bin:${PATH}"
 fi
 
-export GOPATH="$HOME/go"
+export GOPATH="${HOME}/go"
 
-if [[ ! "$PATH" =~ $HOME/go/bin: ]]; then
-    export PATH="$HOME/go/bin:$PATH"
+if [[ ! "${PATH}" =~ ${HOME}/go/bin: ]]; then
+    export PATH="${HOME}/go/bin:${PATH}"
 fi
 
-if [ -f "$HOME/.local/share/node/bin/node" ] && [[ ! "$PATH" =~ $HOME/.local/share/node/bin: ]]; then
-    export PATH="$HOME/.local/share/node/bin:$PATH"
+if [ -f "${HOME}/.local/share/node/bin/node" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/node/bin: ]]; then
+    export PATH="${HOME}/.local/share/node/bin:${PATH}"
 fi
 
-if [ -f "$HOME/.pre.jdk.env.sh" ]; then
+if [ -f "${HOME}/.pre.jdk.env.sh" ]; then
     # shellcheck source=/dev/null
     source "${HOME}/.pre.jdk.env.sh"
 fi
 
-if [ -f "$HOME/.jdk.env.sh" ]; then
+if [ -f "${HOME}/.jdk.env.sh" ]; then
     # shellcheck source=/dev/null
     source "${HOME}/.jdk.env.sh"
 fi
 
-if [[ -f "$HOME/.local/share/coursier/bin/cs" ]] && [[ ! "$PATH" =~ $HOME/.local/share/coursier/bin: ]]; then
-    export PATH="$HOME/.local/share/coursier/bin:$PATH"
+if [[ -f "${HOME}/.local/share/coursier/bin/cs" ]] && [[ ! "${PATH}" =~ ${HOME}/.local/share/coursier/bin: ]]; then
+    export PATH="${HOME}/.local/share/coursier/bin:${PATH}"
 fi
 
-if ! [[ "$PATH" =~ $HOME/.local/bin:$HOME/bin: ]]; then
-    export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+if ! [[ "${PATH}" =~ ${HOME}/.local/bin:${HOME}/bin: ]]; then
+    export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
 fi
 
-if [[ -f "$HOME/.cargo/bin/cargo" ]] && [[ ! "$PATH" =~ $HOME/.cargo/bin: ]]; then
-    export PATH="$HOME/.cargo/bin:$PATH"
+if [[ -f "${HOME}/.cargo/bin/cargo" ]] && [[ ! "${PATH}" =~ ${HOME}/.cargo/bin: ]]; then
+    export PATH="${HOME}/.cargo/bin:${PATH}"
     # shellcheck source=/dev/null
-    source "$HOME/.cargo/env"
+    source "${HOME}/.cargo/env"
+fi
+
+if [[ -f "${HOME}/.pulumi/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.pulumi/bin: ]]; then
+    export PATH="${HOME}/.pulumi/bin:${PATH}"
 fi
 
 GPG_TTY=$(tty)

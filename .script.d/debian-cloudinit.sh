@@ -65,6 +65,7 @@ ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebul
 ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker
 
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
+---
 all:
     children:
         server_workspace:

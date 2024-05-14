@@ -86,8 +86,12 @@ if [[ -f "${HOME}/.local/share/coursier/bin/cs" ]] && [[ ! "${PATH}" =~ ${HOME}/
     export PATH="${HOME}/.local/share/coursier/bin:${PATH}"
 fi
 
-if ! [[ "${PATH}" =~ ${HOME}/.local/bin:${HOME}/bin: ]]; then
-    export PATH="${HOME}/.local/bin:${HOME}/bin:${PATH}"
+if [[ ! "${PATH}" =~ ${HOME}/.local/bin: ]]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+fi
+
+if [[ ! "${PATH}" =~ ${HOME}/bin: ]]; then
+    export PATH="${HOME}/bin:${PATH}"
 fi
 
 if [[ -f "${HOME}/.cargo/bin/cargo" ]] && [[ ! "${PATH}" =~ ${HOME}/.cargo/bin: ]]; then

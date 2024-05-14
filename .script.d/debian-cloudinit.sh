@@ -103,7 +103,7 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
         ansible-playbook arpanrec.nebula.server_workspace --tags all
     else
-        ansible-playbook arpanrec.nebula.server_workspace --tags all --skip-tags java,go,terraform,vault,nodejs
+        ansible-playbook arpanrec.nebula.server_workspace --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
     fi
     git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" reset --hard HEAD
 '

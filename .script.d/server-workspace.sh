@@ -132,16 +132,16 @@ echo ""
 echo "Python :: $(python3 --version)"
 echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
-pip3 install --upgrade setuptools-rust pip
-pip3 install ansible requests --upgrade
+pip3 install setuptools-rust pip
+pip3 install ansible cryptography requests hvac
 ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git -f
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git -f
-ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git -f
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git -f
-ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git -f
-ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git -f
-ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git -f
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git
+ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git
+ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git
+ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git
+ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git
 
 MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${HOME}/.tmp/server_workspace.json}"
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"

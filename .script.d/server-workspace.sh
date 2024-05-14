@@ -64,6 +64,12 @@ if [[ -z $* ]]; then
         __install_tags+=('go')
     fi
 
+    read -n1 -r -p 'Enter "Y" to install pulumi (Press any other key to Skip*) : ' install_pulumi
+    echo ""
+    if [[ $install_pulumi == "Y" || $install_pulumi == "y" ]]; then
+        __install_tags+=('pulumi')
+    fi
+
     read -n1 -r -p 'Enter "Y" to install Oracle JDK17 (Press any other key to Skip*) : ' install_java
     echo ""
     if [[ $install_java == "Y" || $install_java == "y" ]]; then

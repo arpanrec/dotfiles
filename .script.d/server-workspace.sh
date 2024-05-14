@@ -177,7 +177,8 @@ EOF
 cd "${HOME}/.tmp" || exit 1
 
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" --tags "${__ansible_tags::-1}"
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" \
+        --tags "${__ansible_tags::-1}"
 elif [[ -z ${__ansible_tags} && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
 fi

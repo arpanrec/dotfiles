@@ -67,3 +67,5 @@ fi
 curl -fsSL https://get.pulumi.com | sh
 
 install_neovim
+
+exit 0

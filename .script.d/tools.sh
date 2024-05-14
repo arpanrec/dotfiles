@@ -62,6 +62,7 @@ if command -v go &>/dev/null; then
     go install mvdan.cc/sh/v3/cmd/gosh@latest
     go install github.com/mikefarah/yq/v4@latest
     go install github.com/minio/mc@latest
+    go install github.com/jesseduffield/lazygit@latest
 fi
 
 curl -fsSL https://get.pulumi.com | sh

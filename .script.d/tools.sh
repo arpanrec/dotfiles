@@ -65,8 +65,6 @@ if command -v go &>/dev/null; then
     go install github.com/jesseduffield/lazygit@latest
 fi
 
-curl -fsSL https://get.pulumi.com | sh
-
 install_neovim
 
 exit 0

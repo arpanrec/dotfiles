@@ -2,6 +2,7 @@
 set -ex
 
 install_neovim() {
+    CPUCOUNT=$(grep -c "^processor" /proc/cpuinfo)
 
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
@@ -23,7 +24,7 @@ install_neovim() {
     rm -rf "${NEOVIM_INSTALL_DIR}/bin/nvim"
     rm -rf "${HOME}/.cache/nvim"
 
-    make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}"
+    make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}" -j"${CPUCOUNT}"
     make install
 
 }

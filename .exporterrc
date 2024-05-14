@@ -96,7 +96,7 @@ if [[ -f "${HOME}/.cargo/bin/cargo" ]] && [[ ! "${PATH}" =~ ${HOME}/.cargo/bin: 
     source "${HOME}/.cargo/env"
 fi
 
-if [[ -f "${HOME}/.pulumi/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.pulumi/bin: ]]; then
+if [[ -f "${HOME}/.pulumi/bin/pulumi" ]] && [[ ! "${PATH}" =~ ${HOME}/.pulumi/bin: ]]; then
     export PATH="${HOME}/.pulumi/bin:${PATH}"
 fi
 

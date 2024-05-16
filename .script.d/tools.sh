@@ -59,7 +59,10 @@ which_python() {
 
 echo "Installing tools"
 
+echo "Installing Rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
+
+echo "Sourcing cargo env"
 # shellcheck source=/dev/null
 source "${HOME}/.cargo/env"
 

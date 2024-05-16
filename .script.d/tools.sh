@@ -75,7 +75,7 @@ fi
 
 curl -sSL https://install.python-poetry.org | $(which_python) -
 
-declare -a npm_packages=("yarn" "bw" "neovim")
+declare -a npm_packages=("yarn" "@bitwarden/cli" "neovim")
 if command -v npm &>/dev/null; then
     echo "Installing npm packages"
     for npm_package in "${npm_packages[@]}"; do

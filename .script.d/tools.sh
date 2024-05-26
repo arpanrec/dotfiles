@@ -80,6 +80,12 @@ curl -sSL https://install.python-poetry.org | $(which_python) -
 
 declare -a npm_packages=("yarn" "@bitwarden/cli" "neovim")
 if command -v npm &>/dev/null; then
+
+    if command -v corepack &>/dev/null; then
+        echo "enable pnpm"
+        corepack enable pnpm
+    fi
+
     echo "Installing npm packages"
     for npm_package in "${npm_packages[@]}"; do
         echo "Installing npm package globally ${npm_package}"

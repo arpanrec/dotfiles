@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 if [ "$(id -u)" -eq 0 ]; then
     echo "Root user detected!!!! Error"
@@ -84,7 +84,6 @@ if command -v npm &>/dev/null; then
     if command -v corepack &>/dev/null; then
         echo "enable pnpm and yarn"
         corepack enable pnpm yarn
-        c
     fi
 
     echo "Installing npm packages"

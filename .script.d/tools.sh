@@ -76,7 +76,7 @@ if command -v cargo &>/dev/null; then
     done
 fi
 
-curl -sSL https://install.python-poetry.org | $(which_python) -
+# curl -sSL https://install.python-poetry.org | $(which_python) -
 
 declare -a npm_packages=("@bitwarden/cli" "neovim")
 if command -v npm &>/dev/null; then

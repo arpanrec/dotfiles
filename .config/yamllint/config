@@ -11,43 +11,47 @@ yaml-files:
     - "*.yml"
     - ".yamllint"
 rules:
-    line-length:
-        max: 120
-        level: error
     braces:
-        max-spaces-inside: 1
         level: error
+        max-spaces-inside: 1
     brackets:
+        level: error
         max-spaces-inside: 1
-        level: error
     colons:
-        max-spaces-after: -1
         level: error
+        max-spaces-after: -1
     commas:
+        level: error
         max-spaces-after: -1
-        level: error
     comments:
-        min-spaces-from-content: 1
         level: error
+        min-spaces-from-content: 1
     comments-indentation: false
     document-start: enable
     empty-lines:
-        max: 3
         level: error
+        max: 3
     hyphens:
         level: error
     indentation:
-        indent-sequences: consistent
         check-multi-line-strings: false
+        indent-sequences: consistent
         level: error
         spaces: 2
     key-duplicates:
         level: error
     key-ordering: disable
+    line-length:
+        level: error
+        max: 120
     new-line-at-end-of-file:
         level: error
     new-lines:
+        level: error
         type: unix
+    octal-values:
+        forbid-explicit-octal: true
+        forbid-implicit-octal: true
         level: error
     trailing-spaces:
         level: error
@@ -56,7 +60,3 @@ rules:
             - "true"
             - "false"
         check-keys: true
-    octal-values:
-        forbid-explicit-octal: true
-        forbid-implicit-octal: true
-        level: error

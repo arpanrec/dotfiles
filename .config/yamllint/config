@@ -27,10 +27,10 @@ rules:
     comments:
         level: error
         min-spaces-from-content: 1
-    comments-indentation:
-        level: warning
+    comments-indentation: false
     document-end: disable
-    document-start: enable
+    document-start:
+        level: error
     empty-lines:
         level: error
         max: 3

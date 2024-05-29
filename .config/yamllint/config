@@ -11,6 +11,7 @@ yaml-files:
     - "*.yml"
     - ".yamllint"
 rules:
+    anchors: enable
     braces:
         level: error
         max-spaces-inside: 1
@@ -26,18 +27,22 @@ rules:
     comments:
         level: error
         min-spaces-from-content: 1
-    comments-indentation: false
+    comments-indentation:
+        level: warning
+    document-end: disable
     document-start: enable
     empty-lines:
         level: error
         max: 3
+    empty-values: disable
+    float-values: disable
     hyphens:
         level: error
     indentation:
         check-multi-line-strings: false
         indent-sequences: consistent
         level: error
-        spaces: 2
+        spaces: 4
     key-duplicates:
         level: error
     key-ordering: disable
@@ -53,6 +58,7 @@ rules:
         forbid-explicit-octal: true
         forbid-implicit-octal: true
         level: error
+    quoted-strings: disable
     trailing-spaces:
         level: error
     truthy:

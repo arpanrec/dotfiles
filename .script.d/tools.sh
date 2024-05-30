@@ -15,10 +15,6 @@ install_neovim() {
 
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
-    if [ "$(id -u)" -eq 0 ]; then
-        export NEOVIM_INSTALL_DIR=${NEOVIM_INSTALL_DIR:-"/usr/local"}
-    fi
-
     NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
     NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.9.5"}"
     echo "Neovim version is ${NEOVIM_VERSION}"
@@ -42,23 +38,6 @@ install_neovim() {
 
 }
 
-which_python() {
-    declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10"
-        "python3.9" "python3.8" "python3.7" "python3.6")
-
-    for python_version in "${PYTHON_VERSIONS[@]}"; do
-        if command -v "${python_version}" &>/dev/null; then
-            echo "${python_version}"
-            return
-        fi
-    done
-
-    echo "Supported Python version not found, Only Python3.6+ >< 4 is supported"
-    exit 1
-}
-
-echo "Installing tools"
-
 echo "Installing Rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
 
@@ -75,8 +54,6 @@ if command -v cargo &>/dev/null; then
         cargo install "${cargo_package}"
     done
 fi
-
-# curl -sSL https://install.python-poetry.org | $(which_python) -
 
 declare -a npm_packages=("@bitwarden/cli" "neovim")
 if command -v npm &>/dev/null; then

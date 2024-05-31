@@ -10,12 +10,6 @@ if [[ -z $* ]]; then
 
     __install_tags=()
 
-    read -n1 -r -p "Enter \"Y\" to track dotfiles from 'https://github.com/arpanrec/dotfiles' (Press any other key to Skip*) : " install_dotfiles
-    echo ""
-    if [[ ${install_dotfiles} == "Y" || ${install_dotfiles} == "y" ]]; then
-        __install_tags+=('dotfiles')
-    fi
-
     read -n1 -r -p 'Enter "Y" to install Telegram (Press any other key to Skip*) : ' install_telegram_desktop
     echo ""
     if [[ $install_telegram_desktop == "Y" || $install_telegram_desktop == "y" ]]; then

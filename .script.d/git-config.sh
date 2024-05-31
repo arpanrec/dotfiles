@@ -125,7 +125,7 @@ touch "${HOME}/.gitignore"
 echo "git config --global color.ui auto"
 git config --global color.ui auto
 
-echo "Press a for arpan git config"
+echo "Press a for arpanrec git config from https://github.com/arpanrec/dotfiles/blob/main/.gitconfig"
 echo "Press d for dummy git config"
 echo "Press any other key to setup gitconfig interactively"
 read -r -n1 __symlink_gitconfig

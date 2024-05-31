@@ -1,199 +1,199 @@
 {
-    "[ansible]": {
-        "editor.autoIndent": "advanced",
-        "editor.detectIndentation": false,
-        "editor.quickSuggestions": {
-            "comments": true,
-            "other": true,
-            "strings": true
-        },
-        "prettier.singleQuote": false
-    },
-    "[dockerfile]": {
-        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-    },
-    "[github-actions-workflow]": {
-        "prettier.singleQuote": false
-    },
-    "[ignore]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
-    },
-    "[java]": {
-        "breadcrumbs.showArrays": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always"
-        },
-        "editor.defaultFormatter": "redhat.java",
-        "editor.maxTokenizationLineLength": 20000,
-        "editor.suggest.snippetsPreventQuickSuggestions": false,
-        "outline.showVariables": true
-    },
-    "[json]": {
-        "files.insertFinalNewline": false,
-        "files.trimFinalNewlines": true
-    },
-    "[lua]": {
-        "editor.defaultFormatter": "sumneko.lua"
-    },
-    "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-    },
-    "[python]": {
-        "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always"
-        },
-        "editor.defaultFormatter": "ms-python.black-formatter",
-        "editor.wordBasedSuggestions": "off"
-    },
-    "[shellscript]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
-    },
-    "[terraform]": {
-        "editor.defaultFormatter": "hashicorp.terraform"
-    },
-    "[xml]": {
-        "editor.defaultFormatter": "redhat.vscode-xml"
-    },
-    "[yaml]": {
-        "prettier.singleQuote": false
-    },
-    "ansible.ansible.path": "ansible",
-    "ansible.ansible.useFullyQualifiedCollectionNames": true,
-    "ansible.lightspeed.enabled": false,
-    "ansible.lightspeed.suggestions.enabled": false,
-    "ansible.validation.enabled": true,
-    "ansible.validation.lint.enabled": true,
-    "ansible.validation.lint.path": "ansible-lint",
-    "ansibleServer.trace.server": "messages",
-    "black-formatter.args": ["--line-length", "120"],
-    "diffEditor.ignoreTrimWhitespace": false,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[ansible]": {
+    "editor.autoIndent": "advanced",
     "editor.detectIndentation": false,
-    "editor.fontFamily": "'Cascadia Code', 'Hack Nerd Font', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
-    "editor.formatOnSave": false,
-    "editor.indentSize": "tabSize",
-    "editor.inlineSuggest.enabled": true,
-    "editor.insertSpaces": true,
-    "editor.minimap.enabled": false,
-    "editor.mouseWheelZoom": true,
-    "editor.suggestSelection": "first",
-    "editor.tabSize": 2,
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 120,
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false,
-    "files.associations": {
-        "**/*.tf": "terraform",
-        "**/.ansible-lint": "yaml",
-        "**/.yamllint": "yaml",
-        "**/.yamlfmt": "yaml",
-        "**/ansible.cfg": "ini",
-        "**/ansible/**/*.yaml": "ansible",
-        "**/ansible/**/*.yml": "ansible",
-        "**/requirements-dev.in": "pip-requirements",
-        "**/requirements-dev.txt": "pip-requirements",
-        "**/requirements.txt": "pip-requirements",
-        "**/tasks/**/*.yaml": "ansible",
-        "**/tasks/**/*.yml": "ansible",
-        ".git/config": "gitconfig",
-        "site*.yaml": "ansible",
-        "site*.yml": "ansible"
+    "editor.quickSuggestions": {
+      "comments": true,
+      "other": true,
+      "strings": true
     },
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.env/**": true,
-        "**/.factorypath": true,
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/.idea/**": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.trunk/**": true,
-        "**/.venv/**": true,
-        "**/.vscode/**": true,
-        "**/ENV/**": true,
-        "**/__pycache__/**": true,
-        "**/env.bak/**": true,
-        "**/env/**": true,
-        "**/node_modules/**": true,
-        "**/venv.bak/**": true,
-        "**/venv/**": true
+    "prettier.singleQuote": false
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[github-actions-workflow]": {
+    "prettier.singleQuote": false
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[java]": {
+    "breadcrumbs.showArrays": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "always"
     },
-    "files.trimTrailingWhitespace": false,
-    "files.watcherExclude": {
-        "**/.classpath": true,
-        "**/.env/**": true,
-        "**/.factorypath": true,
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/.idea/**": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.trunk/**": true,
-        "**/.venv/**": true,
-        "**/.vscode/**": true,
-        "**/ENV/**": true,
-        "**/__pycache__/**": true,
-        "**/env.bak/**": true,
-        "**/env/**": true,
-        "**/node_modules/**": true,
-        "**/venv.bak/**": true,
-        "**/venv/**": true
+    "editor.defaultFormatter": "redhat.java",
+    "editor.maxTokenizationLineLength": 20000,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "outline.showVariables": true
+  },
+  "[json]": {
+    "files.insertFinalNewline": false,
+    "files.trimFinalNewlines": true
+  },
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.ruff": "always"
     },
-    "git.autofetch": true,
-    "git.confirmSync": false,
-    "git.enableSmartCommit": true,
-    "git.ignoreLegacyWarning": true,
-    "git.openDiffOnClick": true,
-    "git.openRepositoryInParentFolders": "always",
-    "github.copilot.enable": {
-        "*": true,
-        "ansible": true,
-        "markdown": true,
-        "plaintext": true,
-        "scminput": false,
-        "shellscript": true,
-        "yaml": true
-    },
-    "githubPullRequests.createOnPublishBranch": "never",
-    "githubPullRequests.pullBranch": "never",
-    "html.format.wrapLineLength": 120,
-    "java.autobuild.enabled": true,
-    "java.checkstyle.autocheck": true,
-    "java.completion.enabled": true,
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.format.settings.profile": "GoogleStyle",
-    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m",
-    "java.project.importOnFirstTimeStartup": "automatic",
-    "liveServer.settings.donotShowInfoMsg": true,
-    "liveServer.settings.donotVerifyTags": true,
-    "maven.dependency.enableConflictDiagnostics": true,
-    "prettier.printWidth": 120,
-    "prettier.requireConfig": false,
-    "prettier.singleQuote": true,
-    "prettier.tabWidth": 2,
-    "prettier.useEditorConfig": true,
-    "prettier.useTabs": false,
-    "redhat.telemetry.enabled": false,
-    "security.workspace.trust.untrustedFiles": "open",
-    "telemetry.telemetryLevel": "off",
-    "terminal.integrated.env.linux": {
-        "DEBUG": "true"
-    },
-    "terminal.integrated.fontFamily": "'Hack Nerd Font'",
-    "terminal.integrated.persistentSessionScrollback": 1000,
-    "update.showReleaseNotes": false,
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "window.zoomLevel": 1,
-    "workbench.colorTheme": "GitHub Dark Default",
-    "workbench.editor.enablePreview": false,
-    "workbench.editorAssociations": {
-        "*.ipynb": "default"
-    },
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.startupEditor": "none",
-    "yaml.customTags": ["!vault"],
-    "yaml.format.enable": false,
-    "yaml.format.printWidth": 120
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.wordBasedSuggestions": "off"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[yaml]": {
+    "prettier.singleQuote": false
+  },
+  "ansible.ansible.path": "ansible",
+  "ansible.ansible.useFullyQualifiedCollectionNames": true,
+  "ansible.lightspeed.enabled": false,
+  "ansible.lightspeed.suggestions.enabled": false,
+  "ansible.validation.enabled": true,
+  "ansible.validation.lint.enabled": true,
+  "ansible.validation.lint.path": "ansible-lint",
+  "ansibleServer.trace.server": "messages",
+  "black-formatter.args": ["--line-length", "120"],
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.detectIndentation": false,
+  "editor.fontFamily": "'Cascadia Code', 'Hack Nerd Font', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.formatOnSave": false,
+  "editor.indentSize": "tabSize",
+  "editor.inlineSuggest.enabled": true,
+  "editor.insertSpaces": true,
+  "editor.minimap.enabled": false,
+  "editor.mouseWheelZoom": true,
+  "editor.suggestSelection": "first",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.associations": {
+    "**/*.tf": "terraform",
+    "**/.ansible-lint": "yaml",
+    "**/.yamllint": "yaml",
+    "**/.yamlfmt": "yaml",
+    "**/ansible.cfg": "ini",
+    "**/ansible/**/*.yaml": "ansible",
+    "**/ansible/**/*.yml": "ansible",
+    "**/requirements-dev.in": "pip-requirements",
+    "**/requirements-dev.txt": "pip-requirements",
+    "**/requirements.txt": "pip-requirements",
+    "**/tasks/**/*.yaml": "ansible",
+    "**/tasks/**/*.yml": "ansible",
+    ".git/config": "gitconfig",
+    "site*.yaml": "ansible",
+    "site*.yml": "ansible"
+  },
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.env/**": true,
+    "**/.factorypath": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.idea/**": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.trunk/**": true,
+    "**/.venv/**": true,
+    "**/.vscode/**": true,
+    "**/ENV/**": true,
+    "**/__pycache__/**": true,
+    "**/env.bak/**": true,
+    "**/env/**": true,
+    "**/node_modules/**": true,
+    "**/venv.bak/**": true,
+    "**/venv/**": true
+  },
+  "files.trimTrailingWhitespace": false,
+  "files.watcherExclude": {
+    "**/.classpath": true,
+    "**/.env/**": true,
+    "**/.factorypath": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.idea/**": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.trunk/**": true,
+    "**/.venv/**": true,
+    "**/.vscode/**": true,
+    "**/ENV/**": true,
+    "**/__pycache__/**": true,
+    "**/env.bak/**": true,
+    "**/env/**": true,
+    "**/node_modules/**": true,
+    "**/venv.bak/**": true,
+    "**/venv/**": true
+  },
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.ignoreLegacyWarning": true,
+  "git.openDiffOnClick": true,
+  "git.openRepositoryInParentFolders": "always",
+  "github.copilot.enable": {
+    "*": true,
+    "ansible": true,
+    "markdown": true,
+    "plaintext": true,
+    "scminput": false,
+    "shellscript": true,
+    "yaml": true
+  },
+  "githubPullRequests.createOnPublishBranch": "never",
+  "githubPullRequests.pullBranch": "never",
+  "html.format.wrapLineLength": 120,
+  "java.autobuild.enabled": true,
+  "java.checkstyle.autocheck": true,
+  "java.completion.enabled": true,
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.format.settings.profile": "GoogleStyle",
+  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m",
+  "java.project.importOnFirstTimeStartup": "automatic",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.donotVerifyTags": true,
+  "maven.dependency.enableConflictDiagnostics": true,
+  "prettier.printWidth": 120,
+  "prettier.requireConfig": false,
+  "prettier.singleQuote": true,
+  "prettier.tabWidth": 2,
+  "prettier.useEditorConfig": true,
+  "prettier.useTabs": false,
+  "redhat.telemetry.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "telemetry.telemetryLevel": "off",
+  "terminal.integrated.env.linux": {
+    "DEBUG": "true"
+  },
+  "terminal.integrated.fontFamily": "'Hack Nerd Font'",
+  "terminal.integrated.persistentSessionScrollback": 1000,
+  "update.showReleaseNotes": false,
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.editor.enablePreview": false,
+  "workbench.editorAssociations": {
+    "*.ipynb": "default"
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.startupEditor": "none",
+  "yaml.customTags": ["!vault"],
+  "yaml.format.enable": false,
+  "yaml.format.printWidth": 120
 }

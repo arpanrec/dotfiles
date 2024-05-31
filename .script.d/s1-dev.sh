@@ -28,9 +28,9 @@ echo "-------------------------------------------------"
 echo "Changing the makeflags for $nc cores."
 TOTALMEM=$(grep -i 'memtotal' /proc/meminfo | grep -o '[[:digit:]]*')
 if [[ $TOTALMEM -gt 8000000 ]]; then
-    sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
-    echo "Changing the compression settings for $nc cores."
-    sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+  sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+  echo "Changing the compression settings for $nc cores."
+  sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 fi
 
 #Add parallel downloading
@@ -58,17 +58,17 @@ EOT
 pacman -Sy archlinux-keyring --noconfirm
 
 grep "keyserver hkp://keyserver.ubuntu.com" \
-    /etc/pacman.d/gnupg/gpg.conf ||
-    echo "keyserver hkp://keyserver.ubuntu.com" >>/etc/pacman.d/gnupg/gpg.conf
+  /etc/pacman.d/gnupg/gpg.conf ||
+  echo "keyserver hkp://keyserver.ubuntu.com" >>/etc/pacman.d/gnupg/gpg.conf
 
 pacman -Syu --noconfirm
 
 ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'dhcpcd' 'networkmanager'
-    'openssh' 'git' 'vim' 'base' 'base-devel' 'linux' 'linux-firmware' 'lvm2' 'exfatprogs')
+  'openssh' 'git' 'vim' 'base' 'base-devel' 'linux' 'linux-firmware' 'lvm2' 'exfatprogs')
 
 ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' 'unzip' 'pigz' 'wget' 'ntfs-3g'
-    'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
-    'libxcrypt-compat')
+  'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
+  'libxcrypt-compat')
 
 ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git')
 
@@ -92,7 +92,7 @@ ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
 
 # 'raw-thumbnailer' not found, 'kimageformats' not found
 ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'kdesdk-thumbnailers'
-    'ffmpegthumbs' 'ark' 'gvfs')
+  'ffmpegthumbs' 'ark' 'gvfs')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 ALL_PAKGS+=('kvantum' 'materia-kde')
@@ -122,15 +122,15 @@ ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-p
 
 # 'kcodecs' removed from arch
 ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly'
-    'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg'
-    'ffmpeg2theora' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')
+  'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg'
+  'ffmpeg2theora' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')
 
 # Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver
 ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau' 'lib32-mesa' 'libvdpau-va-gl'
-    'mesa-utils')
+  'mesa-utils')
 
 MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    # 'cups' 'bluetooth' 'sshd'
+  # 'cups' 'bluetooth' 'sshd'
 )
 
 echo "--------------------------------------------------"
@@ -140,13 +140,13 @@ proc_type=$(grep vendor /proc/cpuinfo | uniq | awk '{print $3}')
 echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
-    echo "Installing Intel microcode"
-    ALL_PAKGS+=('intel-ucode' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
-    ;;
+  echo "Installing Intel microcode"
+  ALL_PAKGS+=('intel-ucode' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
+  ;;
 AuthenticAMD)
-    echo "Installing AMD microcode"
-    ALL_PAKGS+=('amd-ucode' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
-    ;;
+  echo "Installing AMD microcode"
+  ALL_PAKGS+=('amd-ucode' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+  ;;
 esac
 
 echo "--------------------------------------------------"
@@ -155,15 +155,15 @@ echo "--------------------------------------------------"
 
 if lspci | grep -E "NVIDIA|GeForce"; then
 
-    echo "-----------------------------------------------------------"
-    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
-    echo "-----------------------------------------------------------"
+  echo "-----------------------------------------------------------"
+  echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+  echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('nvidia' 'nvidia-utils' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl')
-    echo "Adding nvidia drivers to be installed"
+  ALL_PAKGS+=('nvidia' 'nvidia-utils' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl')
+  echo "Adding nvidia drivers to be installed"
 
-    mkdir -p "/etc/pacman.d/hooks"
-    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+  mkdir -p "/etc/pacman.d/hooks"
+  cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
 [Trigger]
 Operation=Install
 Operation=Upgrade
@@ -180,42 +180,42 @@ When=PostTransaction
 NeedsTargets
 Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 EOT
-    echo "Nvidia pacman hook installed /etc/pacman.d/hooks/nvidia.hook"
-    cat /etc/pacman.d/hooks/nvidia.hook
+  echo "Nvidia pacman hook installed /etc/pacman.d/hooks/nvidia.hook"
+  cat /etc/pacman.d/hooks/nvidia.hook
 
-    mkdir /etc/udev/rules.d/ -p
-    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
+  mkdir /etc/udev/rules.d/ -p
+  cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
 ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
 EOT
 
-    echo "Nvidia pudev rule installed /etc/udev/rules.d/99-nvidia.rules"
-    cat /etc/udev/rules.d/99-nvidia.rules
+  echo "Nvidia pudev rule installed /etc/udev/rules.d/99-nvidia.rules"
+  cat /etc/udev/rules.d/99-nvidia.rules
 
 fi
 
 if lspci | grep -E "Radeon|Advanced Micro Devices"; then
 
-    echo "-----------------------------------------------------------"
-    echo "                    Setting AMD Drivers                    "
-    echo "-----------------------------------------------------------"
+  echo "-----------------------------------------------------------"
+  echo "                    Setting AMD Drivers                    "
+  echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+  ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
 
 fi
 
 if lspci | grep -E "Integrated Graphics Controller"; then
 
-    echo "-----------------------------------------------------------"
-    echo "                   Setting Intel Drivers                   "
-    echo "-----------------------------------------------------------"
+  echo "-----------------------------------------------------------"
+  echo "                   Setting Intel Drivers                   "
+  echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
+  ALL_PAKGS+=('libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
 
 fi
 
 ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa'
-    'pipewire-jack' 'lib32-pipewire' 'lib32-pipewire-jack'
-    'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf' 'lib32-pipewire-v4l2')
+  'pipewire-jack' 'lib32-pipewire' 'lib32-pipewire-jack'
+  'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf' 'lib32-pipewire-v4l2')
 
 echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "
@@ -236,7 +236,7 @@ echo "--------------------------------------------------------------------------
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*
 grub-install --target=x86_64-efi --bootloader-id=Archlinux \
-    --efi-directory=/efi --root-directory=/ --recheck
+  --efi-directory=/efi --root-directory=/ --recheck
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "------------------------------------------"
@@ -253,11 +253,11 @@ echo "-------------------------------------------------------"
 
 echo " Adding user makemyarch_build_user"
 id -u makemyarch_build_user &>/dev/null ||
-    useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
+  useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
 echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers.d/10-makemyarch_build_user
 
 if ! command -v yay &>/dev/null; then
-    sudo -H -u makemyarch_build_user bash -c '
+  sudo -H -u makemyarch_build_user bash -c '
     set -e
     rm -rf ~/yay
     git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
@@ -287,8 +287,8 @@ echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
-    echo "Enable Service: ${MAN_SERVICE}"
-    systemctl enable "$MAN_SERVICE"
+  echo "Enable Service: ${MAN_SERVICE}"
+  systemctl enable "$MAN_SERVICE"
 done
 
 echo "Completed"

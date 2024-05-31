@@ -1,68 +1,68 @@
 ---
 extends: default
 ignore:
-    - venv
-    - .venv
-    - env
-    - .env
-    - node_modules
+  - venv
+  - .venv
+  - env
+  - .env
+  - node_modules
 yaml-files:
-    - "*.yaml"
-    - "*.yml"
-    - ".yamllint"
+  - "*.yaml"
+  - "*.yml"
+  - ".yamllint"
 rules:
-    anchors: enable
-    braces:
-        level: error
-        max-spaces-inside: 1
-    brackets:
-        level: error
-        max-spaces-inside: 1
-    colons:
-        level: error
-        max-spaces-after: -1
-    commas:
-        level: error
-        max-spaces-after: -1
-    comments:
-        level: error
-        min-spaces-from-content: 1
-    comments-indentation: false
-    document-end: disable
-    document-start:
-        level: error
-    empty-lines:
-        level: error
-        max: 3
-    empty-values: disable
-    float-values: disable
-    hyphens:
-        level: error
-    indentation:
-        check-multi-line-strings: false
-        indent-sequences: consistent
-        level: error
-        spaces: 2
-    key-duplicates:
-        level: error
-    key-ordering: disable
-    line-length:
-        level: error
-        max: 120
-    new-line-at-end-of-file:
-        level: error
-    new-lines:
-        level: error
-        type: unix
-    octal-values:
-        forbid-explicit-octal: true
-        forbid-implicit-octal: true
-        level: error
-    quoted-strings: disable
-    trailing-spaces:
-        level: error
-    truthy:
-        allowed-values:
-            - "true"
-            - "false"
-        check-keys: true
+  anchors: enable
+  braces:
+    level: error
+    max-spaces-inside: 1
+  brackets:
+    level: error
+    max-spaces-inside: 1
+  colons:
+    level: error
+    max-spaces-after: -1
+  commas:
+    level: error
+    max-spaces-after: -1
+  comments:
+    level: error
+    min-spaces-from-content: 1
+  comments-indentation: false
+  document-end: disable
+  document-start:
+    level: error
+  empty-lines:
+    level: error
+    max: 3
+  empty-values: disable
+  float-values: disable
+  hyphens:
+    level: error
+  indentation:
+    check-multi-line-strings: false
+    indent-sequences: consistent
+    level: error
+    spaces: 2
+  key-duplicates:
+    level: error
+  key-ordering: disable
+  line-length:
+    level: error
+    max: 120
+  new-line-at-end-of-file:
+    level: error
+  new-lines:
+    level: error
+    type: unix
+  octal-values:
+    forbid-explicit-octal: true
+    forbid-implicit-octal: true
+    level: error
+  quoted-strings: disable
+  trailing-spaces:
+    level: error
+  truthy:
+    allowed-values:
+      - "true"
+      - "false"
+    check-keys: true

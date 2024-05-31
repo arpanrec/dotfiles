@@ -1,0 +1,25 @@
+[advice]
+	detachedHead = false
+[fetch]
+	prune = false
+[pull]
+	rebase = false
+[core]
+	autocrlf = false
+	filemode = true
+	ignorecase = false
+	safecrlf = true
+	eol = lf
+	editor = vim
+	pager = less
+	excludesFile = ~/.gitignore
+[push]
+	followTags = true
+[init]
+	defaultBranch = main
+[credential]
+	helper = store --file=\"${HOME}/.git-credentials\"
+[color]
+	ui = auto
+[commit]
+	gpgsign = true

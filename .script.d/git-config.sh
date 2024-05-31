@@ -134,18 +134,9 @@ echo ""
 case ${__symlink_gitconfig} in
 
 a | A)
-    echo "git config --global user.name arpan"
-    git config --global user.name arpan
-
-    echo "git config --global user.email arpan.rec@gmail.com"
-    git config --global user.email arpan.rec@gmail.com
-
-    echo "git config --global commit.gpgsign true"
-    git config --global commit.gpgsign true
-
-    echo "git config --global user.signingkey 1B0D9C73D1221DB0DB64592912086B524AF4FD70"
-    git config --global user.signingkey 1B0D9C73D1221DB0DB64592912086B524AF4FD70
-
+    raw_url="https://raw.githubusercontent.com/arpanrec/dotfiles/main/.gitconfig"
+    echo "Downloading gitconfig from ${raw_url} to ${HOME}/.gitconfig"
+    curl -sSL "${raw_url}" -o "${HOME}/.gitconfig"
     ;;
 
 d | D)

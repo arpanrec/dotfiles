@@ -40,7 +40,7 @@ Usage:
 EOF
 }
 
-help_dotfiles_install() {
+install_dotfiles_help() {
     main_help
     cat <<EOF
 
@@ -79,7 +79,7 @@ help_dotfiles_install() {
 EOF
 }
 
-read_dotfiles_directory() {
+install_dotfiles_read_dotfiles_directory() {
     echo "Enter the dotfiles directory (default: ${HOME}/.dotfiles)"
     read -r -p "Press enter to use default: " dotfiles_directory_input
     if [[ -n "${dotfiles_directory_input}" ]]; then
@@ -89,7 +89,7 @@ read_dotfiles_directory() {
     fi
 }
 
-read_gitrepo_from_user() {
+install_dotfiles_read_gitrepo_from_user() {
 
     git_protocol="https"
     git_remote_host="github.com"
@@ -134,7 +134,7 @@ read_gitrepo_from_user() {
 
 }
 
-check_existing_branch() {
+install_dotfiles_check_existing_branch() {
     if [[ -d "${DOTFILES_DIR}" ]]; then
         if branch_name=$(git --git-dir "${DOTFILES_DIR}" rev-parse --abbrev-ref HEAD); then
             echo "${branch_name}"
@@ -144,8 +144,8 @@ check_existing_branch() {
     fi
 }
 
-get_preferred_branch() {
-    existing_branch=$(check_existing_branch)
+install_dotfiles_get_preferred_branch() {
+    existing_branch=$(install_dotfiles_check_existing_branch)
     if [[ -z "${existing_branch}" ]]; then
         if default_branch=$(git ls-remote --symref "${DOTFILES_GIT_REPO}" HEAD |
             awk '{print $2}' | sed 's/refs\/heads\///g' | head -1); then
@@ -158,8 +158,8 @@ get_preferred_branch() {
     fi
 }
 
-read_branch_from_user() {
-    preferred_branch=$(get_preferred_branch)
+install_dotfiles_read_branch_from_user() {
+    preferred_branch=$(install_dotfiles_get_preferred_branch)
     echo "Preferred branch is: ${preferred_branch}"
     read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
     echo ""
@@ -182,7 +182,7 @@ read_branch_from_user() {
     fi
 }
 
-pre_install_dotfiles() {
+install_dotfiles_pre() {
     echo "Setting up dotfiles"
 
     if [[ "${DOTFILES_CLEAN_INSTALL}" == "true" ]]; then
@@ -201,26 +201,26 @@ pre_install_dotfiles() {
 
     if [[ -z "${DOTFILES_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
-            read_dotfiles_directory
+            install_dotfiles_read_dotfiles_directory
         else
             echo "Dotfiles directory is not set and running in silent mode"
-            help_dotfiles_install
+            install_dotfiles_help
             exit 1
         fi
     fi
 
     if [[ -z "${DOTFILES_BRANCH}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
-            read_branch_from_user
+            install_dotfiles_read_branch_from_user
         else
-            preferred_branch=$(get_preferred_branch)
+            preferred_branch=$(install_dotfiles_get_preferred_branch)
             export DOTFILES_BRANCH="${preferred_branch}"
         fi
     fi
 
 }
 
-new_install() {
+install_dotfiles_new() {
     doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     echo "Cloning dotfiles"
     git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
@@ -233,7 +233,7 @@ new_install() {
     ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
 }
 
-existing_install_update() {
+install_dotfiles_update_existing() {
     doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     echo "Repository already cloned in ${DOTFILES_DIR}"
 
@@ -252,7 +252,7 @@ existing_install_update() {
     echo "Fetching all branches and pruning"
     ${doconfig_cmd} fetch --all --prune
 
-    current_branch=$(check_existing_branch)
+    current_branch=$(install_dotfiles_check_existing_branch)
 
     if [[ "${current_branch}" != "${DOTFILES_BRANCH}" ]]; then
         echo "Current branch is ${current_branch}, changing to ${DOTFILES_BRANCH}"
@@ -268,7 +268,7 @@ existing_install_update() {
     ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
 }
 
-post_install_dotfiles() {
+install_dotfiles_post() {
     doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     ## Set status.showUntrackedFiles to no
     echo "Setting status.showUntrackedFiles to no"
@@ -308,11 +308,11 @@ install_dotfiles_args_parse() {
             export DOTFILES_CLEAN_INSTALL="true"
             ;;
         h)
-            help_dotfiles_install
+            install_dotfiles_help
             exit 0
             ;;
         *)
-            help_dotfiles_install
+            install_dotfiles_help
             exit 1
             ;;
         esac
@@ -332,14 +332,14 @@ install_dotfiles_args_parse() {
 }
 
 install_dotfiles() {
-    pre_install_dotfiles
+    install_dotfiles_pre
 
     if [[ ! -d "${DOTFILES_DIR}" ]]; then
-        new_install
+        install_dotfiles_new
     else
-        existing_install_update
+        install_dotfiles_update_existing
     fi
-    post_install_dotfiles
+    install_dotfiles_post
 }
 
 main_options_parse() {
@@ -391,7 +391,7 @@ main() {
 
     if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
-            read_gitrepo_from_user
+            install_dotfiles_read_gitrepo_from_user
         else
             echo "Dotfiles git repository is not set and running in silent mode"
             main_help

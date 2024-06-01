@@ -53,9 +53,7 @@ ssh-install() {
             bw_field_ssh_passphrase=$(bw get item "${bw_item_id}" --pretty | jq ".fields[] | select(.name == \"${bw_field_name_ssh_passphrase}\") | .value" -r)
             ssh-keygen -y -P "${bw_field_ssh_passphrase}" -f "${HOME}/.ssh/${ssh_key_file}" >"${HOME}/.ssh/${ssh_key_file}.pub"
         fi
-
     fi
-
 }
 
 pre_pro=(bw)

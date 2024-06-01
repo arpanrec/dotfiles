@@ -36,21 +36,16 @@ if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: 
     export PATH="${HOME}/.script.d/bin:${PATH}"
 fi
 
-unamestr=$(uname)
-if [ -f "${HOME}/.env" ]; then
-    if [ "$unamestr" = 'Linux' ]; then
-        export "$(grep -v '^#' "${HOME}/.env" | xargs -d '\n')"
-    elif [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
-        export "$(grep -v '^#' "${HOME}/.env" | xargs -0)"
-    fi
+if [ -f "${HOME}/.profile" ]; then
+    # shellcheck source=/dev/null
+    source "${HOME}/.profile"
 fi
 
-if [ -d "${HOME}/.env.d" ]; then
-    for secret_file in "${HOME}"/.env.d/*; do
-        if [ "$unamestr" = 'Linux' ]; then
-            export "$(grep -v '^#' "${secret_file}" | xargs -d '\n')"
-        elif [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
-            export "$(grep -v '^#' "${secret_file}" | xargs -0)"
+if [ -d "${HOME}/.profile.d" ]; then
+    for profile_file in "${HOME}"/.profile.d/*.sh; do
+        if [ -r "${profile_file}" ]; then
+            # shellcheck source=/dev/null
+            source "${profile_file}"
         fi
     done
 fi

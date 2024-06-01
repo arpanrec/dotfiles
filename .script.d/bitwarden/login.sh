@@ -14,8 +14,8 @@ __get_current_status() {
     echo "${__ss}"
 }
 
-BW_API_KEY_FILE="${BW_API_KEY_FILE:-"${HOME}/.env"}"
-BW_API_SESSION_FILE="${BW_API_SESSION_FILE:-"${HOME}/.env"}"
+BW_API_KEY_FILE="${BW_API_KEY_FILE:-"${HOME}/.profile"}"
+BW_API_SESSION_FILE="${BW_API_SESSION_FILE:-"${HOME}/.profile"}"
 
 current_status=$(__get_current_status)
 
@@ -42,8 +42,8 @@ if [ "${current_status}" == "unauthenticated" ]; then
             if [ "${__save_apikeys_in_secrets}" == "Y" ] || [ "${__save_apikeys_in_secrets}" == "y" ]; then
 
                 tee -a "${BW_API_KEY_FILE}" <<EOF >/dev/null
-BW_CLIENTID=${__bw_client_id}
-BW_CLIENTSECRET=${__bw_client_secret}
+export BW_CLIENTID=${__bw_client_id}
+export BW_CLIENTSECRET=${__bw_client_secret}
 EOF
             fi
         else
@@ -78,7 +78,7 @@ if [ "${current_status}" == "locked" ]; then
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then
         tee -a "${BW_API_SESSION_FILE}" <<EOF >/dev/null
-BW_SESSION=${__bw_session_id}
+export BW_SESSION=${__bw_session_id}
 EOF
     fi
 fi

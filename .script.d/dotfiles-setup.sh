@@ -7,22 +7,18 @@ export DOTFILES_CLEAN_INSTALL="${DOTFILES_CLEAN_INSTALL:-}"
 export DOTFILES_BRANCH="${DOTFILES_BRANCH:-}"
 export DOTFILES_SILENT_INSTALL="${DOTFILES_SILENT_INSTALL:-}"
 
-help() {
+main_help() {
     cat <<EOF
 Setup dotfiles sync with git for new systems.
 
 Usage:
 
-    dotfiles-setup-new.sh [OPTIONS] install_dotfiles
+    dotfiles-setup-new.sh [OPTIONS] [OPERATION] [ARGUMENTS]
 
-    Environment variables can be used to set default values.
+    Operations:
+        install_dotfiles
 
-    -o Path
-            Dotfiles directory.
-            ENV: DOTFILES_DIR
-            Example:
-                    "-o /home/user/.dotfiles"
-                    "export DOTFILES_DIR=/home/user/.dotfiles"
+    Environment variables can be used to set default values for options and arguments.
 
     -r URL
             Dotfiles git repository.
@@ -32,21 +28,6 @@ Usage:
                     "-r git@github.com:arpanrec/dotfiles.git"
                     "export DOTFILES_GIT_REPO=git@github.com:arpanrec/dotfiles.git"
 
-    -b Branch
-            Dotfiles git repository branch.
-            Default: Curent branch or default branch of the repository. if '-c' is passed, default branch will be used.
-            ENV: DOTFILES_BRANCH
-            Example:
-                    "-b main"
-                    "export DOTFILES_BRANCH=main"
-
-    -c
-            If -c is passed, the script will remove the existing dotfiles directory.
-            ENV: DOTFILES_CLEAN_INSTALL
-            Example:
-                    "-c"
-                    "export DOTFILES_CLEAN_INSTALL=true"
-
     -s
             If -s is passed, the script will not prompt for any input.
             ENV: DOTFILES_SILENT_INSTALL
@@ -54,7 +35,47 @@ Usage:
                     "-s"
                     "export DOTFILES_SILENT_INSTALL=true"
 
-    -h Show this help message.
+    -h
+            Show this help message.
+EOF
+}
+
+help_dotfiles_install() {
+    main_help
+    cat <<EOF
+
+    OPERATION: install_dotfiles
+    Setup git bare repository for dotfiles sync with home directory.
+
+    Usage:
+
+        dotfiles-setup-new.sh [OPTIONS] install_dotfiles [ARGUMENTS]
+
+        Arguments:
+            -o Path
+                    Dotfiles directory.
+                    ENV: DOTFILES_DIR
+                    Example:
+                            "-o /home/user/.dotfiles"
+                            "export DOTFILES_DIR=/home/user/.dotfiles"
+
+            -b Branch
+                    Dotfiles git repository branch.
+                    Default: Curent branch or default branch of the repository. if '-c' is passed, default branch will be used.
+                    ENV: DOTFILES_BRANCH
+                    Example:
+                            "-b main"
+                            "export DOTFILES_BRANCH=main"
+
+            -c
+                    If -c is passed, the script will remove the existing dotfiles directory.
+                    ENV: DOTFILES_CLEAN_INSTALL
+                    Example:
+                            "-c"
+                            "export DOTFILES_CLEAN_INSTALL=true"
+
+            -h
+                    Show this help message.
 EOF
 }
 
@@ -183,15 +204,7 @@ pre_install_dotfiles() {
             read_dotfiles_directory
         else
             echo "Dotfiles directory is not set and running in silent mode"
-            exit 1
-        fi
-    fi
-
-    if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
-            read_gitrepo_from_user
-        else
-            echo "Dotfiles git repository is not set and running in silent mode"
+            help_dotfiles_install
             exit 1
         fi
     fi
@@ -270,6 +283,54 @@ post_install_dotfiles() {
     ${doconfig_cmd} status
 }
 
+install_dotfiles_args_parse() {
+    while getopts "o:cb:h" opt; do
+        case "${opt}" in
+        o)
+            if [[ -n "${DOTFILES_DIR}" ]]; then
+                echo "Exit Error: DOTFILES_DIR or -o is already set to ${DOTFILES_DIR}"
+                exit 1
+            fi
+            export DOTFILES_DIR="${OPTARG}"
+            ;;
+        b)
+            if [[ -n "${DOTFILES_BRANCH}" ]]; then
+                echo "Exit Error: DOTFILES_BRANCH or -b is already set to ${DOTFILES_BRANCH}"
+                exit 1
+            fi
+            export DOTFILES_BRANCH="${OPTARG}"
+            ;;
+        c)
+            if [[ -n "${DOTFILES_CLEAN_INSTALL}" ]]; then
+                echo "Exit Error: DOTFILES_CLEAN_INSTALL or -c is already set to ${DOTFILES_CLEAN_INSTALL}"
+                exit 1
+            fi
+            export DOTFILES_CLEAN_INSTALL="true"
+            ;;
+        h)
+            help_dotfiles_install
+            exit 0
+            ;;
+        *)
+            help_dotfiles_install
+            exit 1
+            ;;
+        esac
+    done
+
+    declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL")
+
+    for variable in "${boolean_variables[@]}"; do
+        if [[ -n "${!variable}" ]]; then
+            if [[ "${!variable}" == "true" ]]; then
+                export "${variable}"="true"
+            else
+                export "${variable}"="false"
+            fi
+        fi
+    done
+}
+
 install_dotfiles() {
     pre_install_dotfiles
 
@@ -281,88 +342,77 @@ install_dotfiles() {
     post_install_dotfiles
 }
 
+main_options_parse() {
+    while getopts "r:sh" opt; do
+        case "${opt}" in
+        r)
+            if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
+                echo "Exit Error: DOTFILES_GIT_REPO or -r is already set to ${DOTFILES_GIT_REPO}"
+                exit 1
+            fi
+
+            export DOTFILES_GIT_REPO="${OPTARG}"
+            ;;
+        s)
+            if [[ -n "${DOTFILES_SILENT_INSTALL}" ]]; then
+                echo "Exit Error: DOTFILES_SILENT_INSTALL or -s is already set to ${DOTFILES_SILENT_INSTALL}"
+                exit 1
+            fi
+            export DOTFILES_SILENT_INSTALL="true"
+            ;;
+        h)
+            main_help
+            exit 0
+            ;;
+        *)
+            main_help
+            exit 1
+            ;;
+        esac
+    done
+
+    declare -a boolean_variables=("DOTFILES_SILENT_INSTALL")
+
+    for variable in "${boolean_variables[@]}"; do
+        if [[ -n "${!variable}" ]]; then
+            if [[ "${!variable}" == "true" ]]; then
+                export "${variable}"="true"
+            else
+                export "${variable}"="false"
+            fi
+        fi
+    done
+
+}
+
 main() {
+    main_options_parse "${@}"
+    shift $(("${OPTIND}" - 1))
+
+    if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            read_gitrepo_from_user
+        else
+            echo "Dotfiles git repository is not set and running in silent mode"
+            main_help
+            exit 1
+        fi
+    fi
+
     for action in "${@}"; do
         case "${action}" in
         install_dotfiles)
+            install_dotfiles_args_parse "${@}"
+            shift $(("${OPTIND}" - 1))
             install_dotfiles
             ;;
         *)
             echo "Invalid option: ${action}."
-            help
+            main_help
             exit 1
             ;;
         esac
     done
 }
-
-while getopts "o:r:cb:sh" opt; do
-    case "${opt}" in
-    o)
-        echo "Setting dotfiles directory to ${OPTARG}"
-        if [[ -n "${DOTFILES_DIR}" ]]; then
-            echo "Exit Error: DOTFILES_DIR is already set to ${DOTFILES_DIR}"
-            exit 1
-        fi
-        export DOTFILES_DIR="${OPTARG}"
-        ;;
-    r)
-        echo "Setting dotfiles git repository to ${OPTARG}"
-        if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
-            echo "Exit Error: DOTFILES_GIT_REPO is already set to ${DOTFILES_GIT_REPO}"
-            exit 1
-        fi
-
-        export DOTFILES_GIT_REPO="${OPTARG}"
-        ;;
-    b)
-        echo "Setting dotfiles git branch to ${OPTARG}"
-        if [[ -n "${DOTFILES_BRANCH}" ]]; then
-            echo "Exit Error: DOTFILES_BRANCH is already set to ${DOTFILES_BRANCH}"
-            exit 1
-        fi
-        export DOTFILES_BRANCH="${OPTARG}"
-        ;;
-    c)
-        echo "If dotfiles directory exists, it will be removed"
-        if [[ -n "${DOTFILES_CLEAN_INSTALL}" ]]; then
-            echo "Exit Error: DOTFILES_CLEAN_INSTALL is already set to ${DOTFILES_CLEAN_INSTALL}"
-            exit 1
-        fi
-        export DOTFILES_CLEAN_INSTALL="true"
-        ;;
-    s)
-        echo "No prompt for input"
-        if [[ -n "${DOTFILES_SILENT_INSTALL}" ]]; then
-            echo "Exit Error: DOTFILES_SILENT_INSTALL is already set to ${DOTFILES_SILENT_INSTALL}"
-            exit 1
-        fi
-        export DOTFILES_SILENT_INSTALL="true"
-        ;;
-    h)
-        help
-        exit 0
-        ;;
-    *)
-        echo "Invalid option: -${opt}."
-        help
-        exit 1
-        ;;
-    esac
-done
-
-declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL" "DOTFILES_SILENT_INSTALL")
-
-for variable in "${boolean_variables[@]}"; do
-    if [[ -n "${!variable}" ]]; then
-        if [[ "${!variable}" == "true" ]]; then
-            export "${variable}"="true"
-        else
-            export "${variable}"="false"
-        fi
-    fi
-done
-
-shift $((OPTIND - 1))
 
 main "${@}"

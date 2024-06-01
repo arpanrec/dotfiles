@@ -7,7 +7,7 @@ return {
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp" },
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim", config = true },
+        { "folke/neodev.nvim",                   config = true },
         { "hrsh7th/vscode-langservers-extracted" },
     },
     config = function()
@@ -199,7 +199,7 @@ return {
             settings = {
                 json = {
                     schemas = {
-                        { fileMatch = { "package.json" }, url = "https://json.schemastore.org/package.json" },
+                        { fileMatch = { "package.json" },   url = "https://json.schemastore.org/package.json" },
                         { fileMatch = { "tsconfig*.json" }, url = "https://json.schemastore.org/tsconfig.json" },
                         {
                             fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },

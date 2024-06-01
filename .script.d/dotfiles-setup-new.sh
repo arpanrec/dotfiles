@@ -122,7 +122,7 @@ check_existing_branch() {
     fi
 }
 
-get_preffred_branch() {
+get_preferred_branch() {
     existing_branch=$(check_existing_branch)
     if [[ -z "${existing_branch}" ]]; then
         if default_branch=$(git ls-remote --symref "${DOTFILES_GIT_REPO}" HEAD |
@@ -137,8 +137,8 @@ get_preffred_branch() {
 }
 
 read_branch_from_user() {
-    preffred_branch=$(get_preffred_branch)
-    echo "Preffred branch is: ${preffred_branch}"
+    preferred_branch=$(get_preferred_branch)
+    echo "Preferred branch is: ${preferred_branch}"
     read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
     if [[ "${decision_if_change_branch}" == "y" ]]; then
         echo "Fetching available branches"
@@ -155,12 +155,26 @@ read_branch_from_user() {
         fi
         export DOTFILES_BRANCH="${branch_name}"
     else
-        export DOTFILES_BRANCH="${preffred_branch}"
+        export DOTFILES_BRANCH="${preferred_branch}"
     fi
 }
 
 pre_install_dotfiles() {
     echo "Setting up dotfiles"
+
+    if [[ "${DOTFILES_CLEAN_INSTALL}" == "true" ]]; then
+        echo "Removing existing dotfiles directory if exists"
+        rm -rf "${DOTFILES_DIR}"
+    else
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]] && [[ -d "${DOTFILES_DIR}" ]]; then
+            read -r -n1 -p "Reset all dotfiles? (default: N) [y/N]: " decision_if_reset
+            echo ""
+            if [[ "${decision_if_reset}" == "y" ]]; then
+                echo "Removing existing dotfiles directory if exists"
+                rm -rf "${DOTFILES_DIR}"
+            fi
+        fi
+    fi
 
     if [[ -z "${DOTFILES_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
@@ -184,24 +198,11 @@ pre_install_dotfiles() {
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
             read_branch_from_user
         else
-            preffred_branch=$(get_preffred_branch)
-            export DOTFILES_BRANCH="${preffred_branch}"
+            preferred_branch=$(get_preferred_branch)
+            export DOTFILES_BRANCH="${preferred_branch}"
         fi
     fi
 
-    if [[ "${DOTFILES_CLEAN_INSTALL}" == "true" ]]; then
-        echo "Removing existing dotfiles directory if exists"
-        rm -rf "${DOTFILES_DIR}"
-    else
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
-            read -r -n1 -p "Reset all dotfiles? (default: N) [y/N]: " decision_if_reset
-            echo ""
-            if [[ "${decision_if_reset}" == "y" ]]; then
-                echo "Removing existing dotfiles directory if exists"
-                rm -rf "${DOTFILES_DIR}"
-            fi
-        fi
-    fi
 }
 
 new_install() {

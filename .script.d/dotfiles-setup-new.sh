@@ -34,7 +34,7 @@ Usage:
 
     -b Branch
             Dotfiles git repository branch.
-            Default: Curent branch or default branch of the repository.
+            Default: Curent branch or default branch of the repository. if '-c' is passed, default branch will be used.
             ENV: DOTFILES_BRANCH
             Example:
                     "-b main"
@@ -58,6 +58,16 @@ Usage:
 EOF
 }
 
+read_dotfiles_directory() {
+    echo "Enter the dotfiles directory (default: ${HOME}/.dotfiles)"
+    read -r -p "Press enter to use default: " dotfiles_directory_input
+    if [[ -n "${dotfiles_directory_input}" ]]; then
+        export DOTFILES_DIR="${dotfiles_directory_input}"
+    else
+        export DOTFILES_DIR="${HOME}/.dotfiles"
+    fi
+}
+
 read_gitrepo_from_user() {
 
     git_protocol="https"
@@ -67,6 +77,7 @@ read_gitrepo_from_user() {
 
     read -r -n1 -p "Use ssh remote? Current remote protocol is ${git_protocol}. (default: N) [y/N]: " \
         decision_if_change_remote_ssh
+    echo ""
     if [[ "${decision_if_change_remote_ssh}" == "y" ]]; then
         git_protocol="ssh"
     fi
@@ -102,16 +113,6 @@ read_gitrepo_from_user() {
 
 }
 
-read_dotfiles_directory() {
-    echo "Enter the dotfiles directory (default: ${HOME}/.dotfiles)"
-    read -r -p "Press enter to use default: " dotfiles_directory_input
-    if [[ -n "${dotfiles_directory_input}" ]]; then
-        export DOTFILES_DIR="${dotfiles_directory_input}"
-    else
-        export DOTFILES_DIR="${HOME}/.dotfiles"
-    fi
-}
-
 check_existing_branch() {
     if [[ -d "${DOTFILES_DIR}" ]]; then
         if branch_name=$(git --git-dir "${DOTFILES_DIR}" rev-parse --abbrev-ref HEAD); then
@@ -140,6 +141,7 @@ read_branch_from_user() {
     preferred_branch=$(get_preferred_branch)
     echo "Preferred branch is: ${preferred_branch}"
     read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
+    echo ""
     if [[ "${decision_if_change_branch}" == "y" ]]; then
         echo "Fetching available branches"
         available_branches=$(git ls-remote --heads "${DOTFILES_GIT_REPO}" | awk '{print $2}' | sed 's/refs\/heads\///g')

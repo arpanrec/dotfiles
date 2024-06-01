@@ -37,17 +37,16 @@ if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: 
 fi
 
 # shellcheck source=/dev/null
-if [ -f "${HOME}/.secrets" ]; then
-    source "${HOME}/.secrets"
+if [ -f "${HOME}/.env" ]; then
+    source "${HOME}/.env"
 fi
 
-for secret_file in ~/.secrets.d/*.sh; do
-    ## Pickup any file ends with .sh
-    # shellcheck source=/dev/null
-    chmod +x "${secret_file}"
-    # shellcheck source=/dev/null
-    source "${secret_file}"
-done
+if [ -d "${HOME}/.env.d" ]; then
+    for secret_file in "${HOME}"/.env.d/*; do
+        # shellcheck source=/dev/null
+        source "${secret_file}"
+    done
+fi
 
 if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "${PATH}" =~ /var/lib/snapd/snap/bin: ]]; then
     export PATH="/var/lib/snapd/snap/bin:${PATH}"

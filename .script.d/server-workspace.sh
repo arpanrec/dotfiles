@@ -6,6 +6,21 @@ if [[ $(id -u) -eq 0 ]]; then
   exit 1
 fi
 
+which_os_python() {
+  declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10"
+    "python3.9" "python3.8" "python3.7" "python3.6")
+
+  for python_version in "${PYTHON_VERSIONS[@]}"; do
+    if command -v "${python_version}" &>/dev/null; then
+      echo "${python_version}"
+      return
+    fi
+  done
+
+  echo "Supported Python version not found, Only Python3.6+ >< 4 is supported"
+  exit 1
+}
+
 if [[ -z $* ]]; then
 
   __install_tags=()
@@ -104,26 +119,24 @@ if [[ -z $* ]]; then
 
 fi
 
-__server_workspace_venv_directory="${HOME}/.tmp/server_workspace_venv"
+rm -rf "${HOME}/.tmp/server_workspace_venv"
+_server_workspace_venv_directory="${HOME}/.tmp/sw_venv"
 
 # shellcheck source=/dev/null
 if [[ -z ${VIRTUAL_ENV} ]]; then
   export PATH="${HOME}/.local/bin:${PATH}"
-  echo "Updating Python packages"
-  # "$(readlink -f "$(which python3)")" -m pip install testresources wheel setuptools pip virtualenv --user --upgrade
-  echo "Pip Packages installed"
-  if [[ ! -d "${__server_workspace_venv_directory}" ]]; then
-    "$(readlink -f "$(which python3)")" -m venv "${__server_workspace_venv_directory}"
+  if [[ ! -d "${_server_workspace_venv_directory}" ]]; then
+    $(readlink -f "$(which "$(which_os_python)")") -m venv "${_server_workspace_venv_directory}"
   fi
-  if [[ -f "${__server_workspace_venv_directory}/local/bin/activate" ]]; then
-    source "${__server_workspace_venv_directory}/local/bin/activate"
+  if [[ -f "${_server_workspace_venv_directory}/local/bin/activate" ]]; then
+    source "${_server_workspace_venv_directory}/local/bin/activate"
   else
-    source "${__server_workspace_venv_directory}/bin/activate"
+    source "${_server_workspace_venv_directory}/bin/activate"
   fi
 fi
 
 echo ""
-echo "Python :: $(python3 --version)"
+echo "Python :: $(python --version)"
 echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
 pip3 install setuptools-rust pip wheel setuptools --upgrade
@@ -165,7 +178,7 @@ all:
         localhost:
             ansible_connection: local
             ansible_become: false
-            ansible_python_interpreter: "$(which python3)"
+            ansible_python_interpreter: "$(which python)"
 EOF
 
 cd "${HOME}/.tmp" || exit 1

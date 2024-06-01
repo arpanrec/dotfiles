@@ -34,6 +34,7 @@ Usage:
 
     -b Branch
             Dotfiles git repository branch.
+            Default: Curent branch or default branch of the repository.
             ENV: DOTFILES_BRANCH
             Example:
                     "-b main"
@@ -121,19 +122,23 @@ check_existing_branch() {
     fi
 }
 
-read_branch_from_user() {
-
-    default_branch=$(check_existing_branch)
-    if [[ -z "${default_branch}" ]]; then
-        echo "No git repository found in ${DOTFILES_DIR}"
+get_preffred_branch() {
+    existing_branch=$(check_existing_branch)
+    if [[ -z "${existing_branch}" ]]; then
         if default_branch=$(git ls-remote --symref "${DOTFILES_GIT_REPO}" HEAD |
             awk '{print $2}' | sed 's/refs\/heads\///g' | head -1); then
-            echo "Default branch of ${DOTFILES_GIT_REPO} is ${default_branch}"
+            echo "${default_branch}"
         else
             exit 1
         fi
+    else
+        echo "${existing_branch}"
     fi
-    echo "Current branch is: ${default_branch}"
+}
+
+read_branch_from_user() {
+    preffred_branch=$(get_preffred_branch)
+    echo "Preffred branch is: ${preffred_branch}"
     read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
     if [[ "${decision_if_change_branch}" == "y" ]]; then
         echo "Fetching available branches"
@@ -150,7 +155,7 @@ read_branch_from_user() {
         fi
         export DOTFILES_BRANCH="${branch_name}"
     else
-        export DOTFILES_BRANCH="${default_branch}"
+        export DOTFILES_BRANCH="${preffred_branch}"
     fi
 }
 
@@ -179,8 +184,8 @@ pre_install_dotfiles() {
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
             read_branch_from_user
         else
-            echo "Dotfiles branch is not set and running in silent mode"
-            exit 1
+            preffred_branch=$(get_preffred_branch)
+            export DOTFILES_BRANCH="${preffred_branch}"
         fi
     fi
 

@@ -36,15 +36,22 @@ if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: 
     export PATH="${HOME}/.script.d/bin:${PATH}"
 fi
 
-# shellcheck source=/dev/null
+unamestr=$(uname)
 if [ -f "${HOME}/.env" ]; then
-    source "${HOME}/.env"
+    if [ "$unamestr" = 'Linux' ]; then
+        export "$(grep -v '^#' "${HOME}/.env" | xargs -d '\n')"
+    elif [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
+        export "$(grep -v '^#' "${HOME}/.env" | xargs -0)"
+    fi
 fi
 
 if [ -d "${HOME}/.env.d" ]; then
     for secret_file in "${HOME}"/.env.d/*; do
-        # shellcheck source=/dev/null
-        source "${secret_file}"
+        if [ "$unamestr" = 'Linux' ]; then
+            export "$(grep -v '^#' "${secret_file}" | xargs -d '\n')"
+        elif [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
+            export "$(grep -v '^#' "${secret_file}" | xargs -0)"
+        fi
     done
 fi
 

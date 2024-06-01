@@ -153,7 +153,7 @@ read_branch_from_user() {
     fi
 }
 
-install_dotfiles() {
+pre_install_dotfiles() {
     echo "Setting up dotfiles"
 
     if [[ -z "${DOTFILES_DIR}" ]]; then
@@ -195,6 +195,22 @@ install_dotfiles() {
                 rm -rf "${DOTFILES_DIR}"
             fi
         fi
+    fi
+}
+
+install_dotfiles() {
+    pre_install_dotfiles
+
+    if [[ ! -d "${DOTFILES_DIR}" ]]; then
+        echo "Cloning dotfiles"
+        git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
+        git --git-dir="${DOTFILES_DIR}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+        echo "Fetching all branches"
+        git --git-dir="${DOTFILES_DIR}" fetch --all
+
+        echo "Setting upstream to origin/${DOTFILES_BRANCH}"
+        git --git-dir="${DOTFILES_DIR}" branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
     fi
 }
 

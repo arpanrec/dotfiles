@@ -200,17 +200,18 @@ pre_install_dotfiles() {
 
 install_dotfiles() {
     pre_install_dotfiles
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
 
     if [[ ! -d "${DOTFILES_DIR}" ]]; then
         echo "Cloning dotfiles"
         git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
-        git --git-dir="${DOTFILES_DIR}" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+        ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
         echo "Fetching all branches"
-        git --git-dir="${DOTFILES_DIR}" fetch --all
+        ${doconfig_cmd} fetch --all
 
         echo "Setting upstream to origin/${DOTFILES_BRANCH}"
-        git --git-dir="${DOTFILES_DIR}" branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+        ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
     fi
 }
 

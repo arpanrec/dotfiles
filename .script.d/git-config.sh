@@ -117,10 +117,10 @@ echo "git config --global credential.helper store --file=\${HOME}/.git-credentia
 git config --global credential.helper 'store --file="${HOME}/.git-credentials"'
 touch "${HOME}/.git-credentials"
 
-echo "git config --global core.excludesFile '~/.gitexcludes'"
+echo "git config --global core.excludesFile '~/.gitignore'"
 # shellcheck disable=SC2088
-git config --global core.excludesFile '~/.gitexcludes'
-touch "${HOME}/.gitexcludes"
+git config --global core.excludesFile '~/.gitignore'
+touch "${HOME}/.gitignore"
 
 echo "git config --global color.ui auto"
 git config --global color.ui auto
@@ -137,9 +137,9 @@ a | A)
     raw_url="https://raw.githubusercontent.com/arpanrec/dotfiles/main/.gitconfig"
     echo "Downloading gitconfig from ${raw_url} to ${HOME}/.gitconfig"
     curl -sSL "${raw_url}" -o "${HOME}/.gitconfig"
-    excludes_raw_url="https://raw.githubusercontent.com/arpanrec/dotfiles/main/.gitexcludes"
-    echo "Downloading gitexcludes from ${excludes_raw_url} to ${HOME}/.gitexcludes"
-    curl -sSL "${excludes_raw_url}" -o "${HOME}/.gitexcludes"
+    excludes_raw_url="https://raw.githubusercontent.com/arpanrec/dotfiles/main/.gitignore"
+    echo "Downloading gitignore from ${excludes_raw_url} to ${HOME}/.gitignore"
+    curl -sSL "${excludes_raw_url}" -o "${HOME}/.gitignore"
     ;;
 
 d | D)

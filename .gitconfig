@@ -12,7 +12,7 @@
     eol = lf
     editor = vim
     pager = less
-	excludesFile = ~/.gitexcludes
+	excludesFile = ~/.gitignore
 [push]
     followTags = true
 [init]

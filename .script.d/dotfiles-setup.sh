@@ -1,146 +1,368 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-# Check if git is installed
-if ! command -v git &>/dev/null; then
-    echo "git could not be found"
-    exit
-fi
+export DOTFILES_DIR="${DOTFILES_DIR:-}"
+export DOTFILES_GIT_REPO="${DOTFILES_GIT_REPO:-}"
+export DOTFILES_CLEAN_INSTALL="${DOTFILES_CLEAN_INSTALL:-}"
+export DOTFILES_BRANCH="${DOTFILES_BRANCH:-}"
+export DOTFILES_SILENT_INSTALL="${DOTFILES_SILENT_INSTALL:-}"
 
-# Check if jq is installed
-if ! command -v jq &>/dev/null; then
-    echo "jq could not be found"
-    exit
-fi
+help() {
+    cat <<EOF
+Setup dotfiles sync with git for new systems.
 
-__dotfiles_directory="${HOME}/.dotfiles"
-__dotfiles_repo="arpanrec/dotfiles"
-__dotfiles_git_ssh_remote="git@github.com:${__dotfiles_repo}.git"
-__dotfiles_git_https_remote="https://github.com/${__dotfiles_repo}.git"
-__dotfiles_git_remote="${__dotfiles_git_https_remote}"
+Usage:
 
-echo "GitHub repository: ${__dotfiles_repo}"
-echo "Dotfiles directory: ${__dotfiles_directory}"
+    dotfiles-setup-new.sh [OPTIONS] install_dotfiles
 
-## Remote selection
-read -r -n1 -p "Current remote is HTTPS: ${__dotfiles_git_https_remote}, Want to use SSH: ${__dotfiles_git_ssh_remote}? (default: N) [y/N]: " __dotfiles_decision_if_change_remote_ssh
-echo ""
+    Environment variables can be used to set default values.
 
-if [[ "${__dotfiles_decision_if_change_remote_ssh}" == "y" ]]; then
-    __dotfiles_git_remote="${__dotfiles_git_ssh_remote}"
-fi
+    -o Path
+            Dotfiles directory.
+            ENV: DOTFILES_DIR
+            Example:
+                    "-o /home/user/.dotfiles"
+                    "export DOTFILES_DIR=/home/user/.dotfiles"
 
-echo "Selected remote: ${__dotfiles_git_remote}"
+    -r URL
+            Dotfiles git repository.
+            ENV: DOTFILES_GIT_REPO
+            Example:
+                    "-r https://github.com/arpanrec/dotfiles.git"
+                    "-r git@github.com:arpanrec/dotfiles.git"
+                    "export DOTFILES_GIT_REPO=git@github.com:arpanrec/dotfiles.git"
 
-## Branch selection
-echo "Fetching default branch"
-__dotfiles_git_branch=$(curl -sL \
-    -H "Accept: application/vnd.github+json" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/${__dotfiles_repo}" | jq -r '.default_branch')
-echo "Current branch is: ${__dotfiles_git_branch}"
+    -b Branch
+            Dotfiles git repository branch.
+            Default: Curent branch or default branch of the repository. if '-c' is passed, default branch will be used.
+            ENV: DOTFILES_BRANCH
+            Example:
+                    "-b main"
+                    "export DOTFILES_BRANCH=main"
 
-echo "Fetching available branches"
-__dotfiles_available_branches=$(curl -sL \
-    -H "Accept: application/vnd.github+json" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    "https://api.github.com/repos/${__dotfiles_repo}/branches" | jq -r '.[].name')
-printf "Available branches: \n\n%s\n\n" "${__dotfiles_available_branches}"
+    -c
+            If -c is passed, the script will remove the existing dotfiles directory.
+            ENV: DOTFILES_CLEAN_INSTALL
+            Example:
+                    "-c"
+                    "export DOTFILES_CLEAN_INSTALL=true"
 
-read -r -n1 -p "Want change the current branch? (default: N) [y/N]: " __dotfiles_decision_if_change_branch
-echo ""
+    -s
+            If -s is passed, the script will not prompt for any input.
+            ENV: DOTFILES_SILENT_INSTALL
+            Example:
+                    "-s"
+                    "export DOTFILES_SILENT_INSTALL=true"
 
-if [[ "${__dotfiles_decision_if_change_branch}" == "y" ]]; then
-    echo "Enter the branch number followed by enter key"
-    select __dotfiles_git_branch in ${__dotfiles_available_branches}; do
-        break
-    done
+    -h Show this help message.
+EOF
+}
 
-    if [[ -z "${__dotfiles_git_branch}" ]]; then
-        echo "No branch selected, exiting"
-        exit 1
+read_dotfiles_directory() {
+    echo "Enter the dotfiles directory (default: ${HOME}/.dotfiles)"
+    read -r -p "Press enter to use default: " dotfiles_directory_input
+    if [[ -n "${dotfiles_directory_input}" ]]; then
+        export DOTFILES_DIR="${dotfiles_directory_input}"
+    else
+        export DOTFILES_DIR="${HOME}/.dotfiles"
     fi
-fi
+}
 
-echo "Selected branch: ${__dotfiles_git_branch}"
+read_gitrepo_from_user() {
 
-## Dotfiles directory
-# read -r -p "Enter the dotfiles directory (default: ~/.dotfiles): " __dotfiles_directory
-# echo ""
+    git_protocol="https"
+    git_remote_host="github.com"
+    git_repo_path="arpanrec/dotfiles"
+    ssh_git_user="git"
 
-# if [[ -z "${__dotfiles_directory}" ]]; then
-#     __dotfiles_directory="${HOME}/.dotfiles"
-# fi
+    read -r -n1 -p "Use ssh remote? Current remote protocol is ${git_protocol}. (default: N) [y/N]: " \
+        decision_if_change_remote_ssh
+    echo ""
+    if [[ "${decision_if_change_remote_ssh}" == "y" ]]; then
+        git_protocol="ssh"
+    fi
 
-# echo "Selected dotfiles directory: ${__dotfiles_directory}"
+    echo "Enter the git remote host (default: ${git_remote_host})"
+    echo "Example: github.com, gitlab.com, example.com:22, gitea.com:8080"
+    read -r -p "Press enter to use default: " git_remote_host_input
+    if [[ -n "${git_remote_host_input}" ]]; then
+        git_remote_host="${git_remote_host_input}"
+    fi
 
-## Reset all dotfiles
-read -r -n1 -p 'Reset all dotfiles? (default: N) [y/N]: ' __dotfiles_decision_if_reset
-echo ""
+    echo "Enter the git repository path (default: ${git_repo_path})"
+    echo "Example: arpanrec/dotfiles, user/dotfiles, gl_group/subgroup/dotfiles"
+    read -r -p "Press enter to use default: " git_repo_path_input
+    if [[ -n "${git_repo_path_input}" ]]; then
+        git_repo_path="${git_repo_path_input}"
+    fi
 
-if [[ "${__dotfiles_decision_if_reset}" == "y" ]]; then
-    echo "Resetting all dotfiles"
-    rm -rf "${__dotfiles_directory}"
-fi
+    if [[ "${git_protocol}" == "ssh" ]]; then
 
-__doconfig="git --git-dir=${__dotfiles_directory} --work-tree=${HOME}"
+        echo "Enter the ssh git user (default: ${ssh_git_user})"
+        read -r -p "Press enter to use default: " ssh_git_user_input
+        if [[ -n "${ssh_git_user_input}" ]]; then
+            ssh_git_user="${ssh_git_user_input}"
+        fi
 
-## Check if repo is already cloned
-if [[ ! -d "${__dotfiles_directory}" ]]; then
+        export DOTFILES_GIT_REPO="${ssh_git_user}@${git_remote_host}:${git_repo_path}.git"
+    else
+        export DOTFILES_GIT_REPO="${git_protocol}://${git_remote_host}/${git_repo_path}.git"
+    fi
+
+    echo "Selected git repository: ${DOTFILES_GIT_REPO}"
+
+}
+
+check_existing_branch() {
+    if [[ -d "${DOTFILES_DIR}" ]]; then
+        if branch_name=$(git --git-dir "${DOTFILES_DIR}" rev-parse --abbrev-ref HEAD); then
+            echo "${branch_name}"
+        else
+            exit 1
+        fi
+    fi
+}
+
+get_preferred_branch() {
+    existing_branch=$(check_existing_branch)
+    if [[ -z "${existing_branch}" ]]; then
+        if default_branch=$(git ls-remote --symref "${DOTFILES_GIT_REPO}" HEAD |
+            awk '{print $2}' | sed 's/refs\/heads\///g' | head -1); then
+            echo "${default_branch}"
+        else
+            exit 1
+        fi
+    else
+        echo "${existing_branch}"
+    fi
+}
+
+read_branch_from_user() {
+    preferred_branch=$(get_preferred_branch)
+    echo "Preferred branch is: ${preferred_branch}"
+    read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
+    echo ""
+    if [[ "${decision_if_change_branch}" == "y" ]]; then
+        echo "Fetching available branches"
+        available_branches=$(git ls-remote --heads "${DOTFILES_GIT_REPO}" | awk '{print $2}' | sed 's/refs\/heads\///g')
+        printf "Available branches: \n\n%s\n\n" "${available_branches}"
+        echo "Enter the branch number followed by enter key"
+        select branch_name in ${available_branches}; do
+            break
+        done
+
+        if [[ -z "${branch_name}" ]]; then
+            echo "No branch selected, exiting"
+            exit 1
+        fi
+        export DOTFILES_BRANCH="${branch_name}"
+    else
+        export DOTFILES_BRANCH="${preferred_branch}"
+    fi
+}
+
+pre_install_dotfiles() {
+    echo "Setting up dotfiles"
+
+    if [[ "${DOTFILES_CLEAN_INSTALL}" == "true" ]]; then
+        echo "Removing existing dotfiles directory if exists"
+        rm -rf "${DOTFILES_DIR}"
+    else
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]] && [[ -d "${DOTFILES_DIR}" ]]; then
+            read -r -n1 -p "Reset all dotfiles? (default: N) [y/N]: " decision_if_reset
+            echo ""
+            if [[ "${decision_if_reset}" == "y" ]]; then
+                echo "Removing existing dotfiles directory if exists"
+                rm -rf "${DOTFILES_DIR}"
+            fi
+        fi
+    fi
+
+    if [[ -z "${DOTFILES_DIR}" ]]; then
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            read_dotfiles_directory
+        else
+            echo "Dotfiles directory is not set and running in silent mode"
+            exit 1
+        fi
+    fi
+
+    if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            read_gitrepo_from_user
+        else
+            echo "Dotfiles git repository is not set and running in silent mode"
+            exit 1
+        fi
+    fi
+
+    if [[ -z "${DOTFILES_BRANCH}" ]]; then
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            read_branch_from_user
+        else
+            preferred_branch=$(get_preferred_branch)
+            export DOTFILES_BRANCH="${preferred_branch}"
+        fi
+    fi
+
+}
+
+new_install() {
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     echo "Cloning dotfiles"
-    git clone --bare "${__dotfiles_git_remote}" "${__dotfiles_directory}" --branch "${__dotfiles_git_branch}"
-    ${__doconfig} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
+    ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
     echo "Fetching all branches"
-    ${__doconfig} fetch --all
+    ${doconfig_cmd} fetch --all
 
-    echo "Setting upstream to origin/${__dotfiles_git_branch}"
-    ${__doconfig} branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
-else
+    echo "Setting upstream to origin/${DOTFILES_BRANCH}"
+    ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+}
 
-    echo "Repository already cloned in ${__dotfiles_directory}"
+existing_install_update() {
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    echo "Repository already cloned in ${DOTFILES_DIR}"
 
-    __dotfiles_current_remote=$(${__doconfig} remote get-url origin)
+    current_remote=$(${doconfig_cmd} remote get-url origin)
 
-    if [[ "${__dotfiles_current_remote}" != "${__dotfiles_git_remote}" ]]; then
-        echo "Current remote is ${__dotfiles_current_remote}, changing to ${__dotfiles_git_remote}"
-        ${__doconfig} remote set-url origin "${__dotfiles_git_remote}"
+    if [[ "${current_remote}" != "${DOTFILES_GIT_REPO}" ]]; then
+        echo "Current remote is ${current_remote}, changing to ${DOTFILES_GIT_REPO}"
+        ${doconfig_cmd} remote set-url origin "${DOTFILES_GIT_REPO}"
     else
-        echo "Current remote is already ${__dotfiles_git_remote}"
+        echo "Current remote is already ${DOTFILES_GIT_REPO}"
     fi
 
     echo "Setting remote origin fetch to +refs/heads/*:refs/remotes/origin/*"
-    ${__doconfig} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
     echo "Fetching all branches and pruning"
-    ${__doconfig} fetch --all --prune
+    ${doconfig_cmd} fetch --all --prune
 
-    ## Change branch if required
-    __dotfiles_current_branch=$(${__doconfig} branch --show-current)
+    current_branch=$(check_existing_branch)
 
-    if [[ "${__dotfiles_current_branch}" != "${__dotfiles_git_branch}" ]]; then
-        echo "Current branch is ${__dotfiles_current_branch}, changing to ${__dotfiles_git_branch}"
-        __dotfiles_stash_name=$(date +%s)
-        echo "Stashing changes with message: ${__dotfiles_stash_name}"
-        ${__doconfig} stash push -m "${__dotfiles_stash_name}"
-        ${__doconfig} checkout "${__dotfiles_git_branch}"
+    if [[ "${current_branch}" != "${DOTFILES_BRANCH}" ]]; then
+        echo "Current branch is ${current_branch}, changing to ${DOTFILES_BRANCH}"
+        dotfiles_stash_name="dotfiles-stash-$(date +%s)"
+        echo "Stashing changes with message: ${dotfiles_stash_name}"
+        ${doconfig_cmd} stash push -m "${dotfiles_stash_name}"
+        ${doconfig_cmd} checkout "${DOTFILES_BRANCH}"
     else
-        echo "Current branch is already ${__dotfiles_git_branch}"
+        echo "Current branch is already ${DOTFILES_BRANCH}"
     fi
 
-    echo "Setting upstream to origin/${__dotfiles_git_branch}"
-    ${__doconfig} branch --set-upstream-to=origin/"${__dotfiles_git_branch}" "${__dotfiles_git_branch}"
+    echo "Setting upstream to origin/${DOTFILES_BRANCH}"
+    ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+}
 
-fi
+post_install_dotfiles() {
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    ## Set status.showUntrackedFiles to no
+    echo "Setting status.showUntrackedFiles to no"
+    ${doconfig_cmd} config --local status.showUntrackedFiles no
 
-## Set status.showUntrackedFiles to no
-echo "Setting status.showUntrackedFiles to no"
-${__doconfig} config --local status.showUntrackedFiles no
+    ## Add alias to rc files
+    echo "alias dotfiles='git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
+    echo "alias dotfiles='git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
+    echo "alias dotfiles='git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
 
-## Add alias to rc files
-echo "alias dotfiles='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
-echo "alias dotfiles='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
-echo "alias dotfiles='git --git-dir=${__dotfiles_directory} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
+    ## Check status
+    ${doconfig_cmd} status
+}
 
-## Check status
-${__doconfig} status
+install_dotfiles() {
+    pre_install_dotfiles
+
+    if [[ ! -d "${DOTFILES_DIR}" ]]; then
+        new_install
+    else
+        existing_install_update
+    fi
+    post_install_dotfiles
+}
+
+main() {
+    for action in "${@}"; do
+        case "${action}" in
+        install_dotfiles)
+            install_dotfiles
+            ;;
+        *)
+            echo "Invalid option: ${action}."
+            help
+            exit 1
+            ;;
+        esac
+    done
+}
+
+while getopts "o:r:cb:sh" opt; do
+    case "${opt}" in
+    o)
+        echo "Setting dotfiles directory to ${OPTARG}"
+        if [[ -n "${DOTFILES_DIR}" ]]; then
+            echo "Exit Error: DOTFILES_DIR is already set to ${DOTFILES_DIR}"
+            exit 1
+        fi
+        export DOTFILES_DIR="${OPTARG}"
+        ;;
+    r)
+        echo "Setting dotfiles git repository to ${OPTARG}"
+        if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
+            echo "Exit Error: DOTFILES_GIT_REPO is already set to ${DOTFILES_GIT_REPO}"
+            exit 1
+        fi
+
+        export DOTFILES_GIT_REPO="${OPTARG}"
+        ;;
+    b)
+        echo "Setting dotfiles git branch to ${OPTARG}"
+        if [[ -n "${DOTFILES_BRANCH}" ]]; then
+            echo "Exit Error: DOTFILES_BRANCH is already set to ${DOTFILES_BRANCH}"
+            exit 1
+        fi
+        export DOTFILES_BRANCH="${OPTARG}"
+        ;;
+    c)
+        echo "If dotfiles directory exists, it will be removed"
+        if [[ -n "${DOTFILES_CLEAN_INSTALL}" ]]; then
+            echo "Exit Error: DOTFILES_CLEAN_INSTALL is already set to ${DOTFILES_CLEAN_INSTALL}"
+            exit 1
+        fi
+        export DOTFILES_CLEAN_INSTALL="true"
+        ;;
+    s)
+        echo "No prompt for input"
+        if [[ -n "${DOTFILES_SILENT_INSTALL}" ]]; then
+            echo "Exit Error: DOTFILES_SILENT_INSTALL is already set to ${DOTFILES_SILENT_INSTALL}"
+            exit 1
+        fi
+        export DOTFILES_SILENT_INSTALL="true"
+        ;;
+    h)
+        help
+        exit 0
+        ;;
+    *)
+        echo "Invalid option: -${opt}."
+        help
+        exit 1
+        ;;
+    esac
+done
+
+declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL" "DOTFILES_SILENT_INSTALL")
+
+for variable in "${boolean_variables[@]}"; do
+    if [[ -n "${!variable}" ]]; then
+        if [[ "${!variable}" == "true" ]]; then
+            export "${variable}"="true"
+        else
+            export "${variable}"="false"
+        fi
+    fi
+done
+
+shift $((OPTIND - 1))
+
+main "${@}"

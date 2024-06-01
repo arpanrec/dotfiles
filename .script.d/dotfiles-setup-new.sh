@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -exuo pipefail
+set -euo pipefail
 
 export DOTFILES_DIR="${DOTFILES_DIR:-}"
 export DOTFILES_GIT_REPO="${DOTFILES_GIT_REPO:-}"
@@ -124,8 +124,8 @@ check_existing_branch() {
 read_branch_from_user() {
 
     default_branch=$(check_existing_branch)
-    echo "Current branch is: ${default_branch}"
     if [[ -z "${default_branch}" ]]; then
+        echo "No git repository found in ${DOTFILES_DIR}"
         if default_branch=$(git ls-remote --symref "${DOTFILES_GIT_REPO}" HEAD |
             awk '{print $2}' | sed 's/refs\/heads\///g' | head -1); then
             echo "Default branch of ${DOTFILES_GIT_REPO} is ${default_branch}"
@@ -133,9 +133,23 @@ read_branch_from_user() {
             exit 1
         fi
     fi
-    read -r -p "Enter the default branch (default: ${default_branch}): " default_branch_input
-    if [[ -n "${default_branch_input}" ]]; then
-        default_branch="${default_branch_input}"
+    read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
+    if [[ "${decision_if_change_branch}" == "y" ]]; then
+        echo "Fetching available branches"
+        available_branches=$(git ls-remote --heads "${DOTFILES_GIT_REPO}" | awk '{print $2}' | sed 's/refs\/heads\///g')
+        printf "Available branches: \n\n%s\n\n" "${available_branches}"
+        echo "Enter the branch number followed by enter key"
+        select branch_name in ${available_branches}; do
+            break
+        done
+
+        if [[ -z "${branch_name}" ]]; then
+            echo "No branch selected, exiting"
+            exit 1
+        fi
+        export DOTFILES_BRANCH="${branch_name}"
+    else
+        export DOTFILES_BRANCH="${default_branch}"
     fi
 }
 
@@ -166,6 +180,20 @@ install_dotfiles() {
         else
             echo "Dotfiles branch is not set and running in silent mode"
             exit 1
+        fi
+    fi
+
+    if [[ "${DOTFILES_CLEAN_INSTALL}" == "true" ]]; then
+        echo "Removing existing dotfiles directory if exists"
+        rm -rf "${DOTFILES_DIR}"
+    else
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            read -r -n1 -p "Reset all dotfiles? (default: N) [y/N]: " decision_if_reset
+            echo ""
+            if [[ "${decision_if_reset}" == "y" ]]; then
+                echo "Removing existing dotfiles directory if exists"
+                rm -rf "${DOTFILES_DIR}"
+            fi
         fi
     fi
 }

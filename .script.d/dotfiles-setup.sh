@@ -407,7 +407,6 @@ main() {
             install_dotfiles
             ;;
         *)
-            echo "Invalid option: ${action}."
             main_help
             exit 1
             ;;

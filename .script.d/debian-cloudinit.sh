@@ -11,28 +11,28 @@ export CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-cloudinit}
 export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-cloudinit}
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
-  echo "CLOUD_INIT_USE_SSH_PUB is not set"
-  exit 1
+    echo "CLOUD_INIT_USE_SSH_PUB is not set"
+    exit 1
 fi
 
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
-  echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false)"
-  exit 1
+    echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false)"
+    exit 1
 fi
 
 if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
-  echo "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false)"
-  exit 1
+    echo "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false)"
+    exit 1
 fi
 
 if [ "$(id -u)" -ne 0 ]; then
-  echo "Please run as root"
-  exit 1
+    echo "Please run as root"
+    exit 1
 fi
 
 if [ "${HOME}" != "/root" ]; then
-  echo "HOME is not set to /root"
-  exit 1
+    echo "HOME is not set to /root"
+    exit 1
 fi
 
 deactivate || true
@@ -48,7 +48,7 @@ mkdir -p "${CLOUD_INIT_ANSIBLE_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_COLLECTI
 echo "${CLOUD_INIT_USE_SSH_PUB}" >"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
 
 if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
-  cat "/root/.ssh/authorized_keys" >>"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
+    cat "/root/.ssh/authorized_keys" >>"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
 fi
 
 apt update

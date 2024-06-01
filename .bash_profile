@@ -3,5 +3,5 @@
 # Get the aliases and functions
 # shellcheck source=/dev/null
 if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
+    . ~/.bashrc
 fi

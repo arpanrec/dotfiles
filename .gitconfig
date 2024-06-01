@@ -1,29 +1,29 @@
 [advice]
-  detachedHead = false
+    detachedHead = false
 [fetch]
-  prune = false
+    prune = false
 [pull]
-  rebase = false
+    rebase = false
 [core]
-  autocrlf = false
-  filemode = true
-  ignorecase = false
-  safecrlf = true
-  eol = lf
-  editor = vim
-  pager = less
-  excludesFile = ~/.gitignore
+    autocrlf = false
+    filemode = true
+    ignorecase = false
+    safecrlf = true
+    eol = lf
+    editor = vim
+    pager = less
+    excludesFile = ~/.gitignore
 [push]
-  followTags = true
+    followTags = true
 [init]
-  defaultBranch = main
+    defaultBranch = main
 [credential]
-  helper = store --file=\"${HOME}/.git-credentials\"
+    helper = store --file=\"${HOME}/.git-credentials\"
 [color]
-  ui = auto
+    ui = auto
 [commit]
-  gpgsign = true
+    gpgsign = true
 [user]
-  name = arpan
-  email = arpan.rec@gmail.com
-  signingkey = 1B0D9C73D1221DB0DB64592912086B524AF4FD70
+    name = arpan
+    email = arpan.rec@gmail.com
+    signingkey = 1B0D9C73D1221DB0DB64592912086B524AF4FD70

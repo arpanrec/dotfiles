@@ -17,91 +17,91 @@ export LC_ALL=en_US.UTF8
 export LD_LIBRARY_PATH=${HOME}/.local/lib64:${HOME}/.local/lib:${LD_LIBRARY_PATH}
 
 if ! [[ "${PATH}" =~ /usr/local/bin: ]]; then
-  export PATH="/usr/local/bin:${PATH}"
+    export PATH="/usr/local/bin:${PATH}"
 fi
 
 if ! [[ "${PATH}" =~ /usr/local/sbin: ]]; then
-  export PATH="/usr/local/sbin:${PATH}"
+    export PATH="/usr/local/sbin:${PATH}"
 fi
 
 if ! [[ "${PATH}" =~ /sbin: ]]; then
-  export PATH="/sbin:${PATH}"
+    export PATH="/sbin:${PATH}"
 fi
 
 if ! [[ "${PATH}" =~ /usr/sbin: ]]; then
-  export PATH="/usr/sbin:${PATH}"
+    export PATH="/usr/sbin:${PATH}"
 fi
 
 if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: ]]; then
-  export PATH="${HOME}/.script.d/bin:${PATH}"
+    export PATH="${HOME}/.script.d/bin:${PATH}"
 fi
 
 # shellcheck source=/dev/null
 if [ -f "${HOME}/.secrets" ]; then
-  source "${HOME}/.secrets"
+    source "${HOME}/.secrets"
 fi
 
 for secret_file in ~/.secrets.d/*.sh; do
-  ## Pickup any file ends with .sh
-  # shellcheck source=/dev/null
-  chmod +x "${secret_file}"
-  # shellcheck source=/dev/null
-  source "${secret_file}"
+    ## Pickup any file ends with .sh
+    # shellcheck source=/dev/null
+    chmod +x "${secret_file}"
+    # shellcheck source=/dev/null
+    source "${secret_file}"
 done
 
 if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "${PATH}" =~ /var/lib/snapd/snap/bin: ]]; then
-  export PATH="/var/lib/snapd/snap/bin:${PATH}"
+    export PATH="/var/lib/snapd/snap/bin:${PATH}"
 fi
 
 if [[ -d "${HOME}/.local/share/JetBrains/Toolbox/scripts" ]] &&
-  [[ ! "${PATH}" =~ ${HOME}/.local/share/JetBrains/Toolbox/scripts: ]]; then
-  export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:${PATH}"
+    [[ ! "${PATH}" =~ ${HOME}/.local/share/JetBrains/Toolbox/scripts: ]]; then
+    export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:${PATH}"
 fi
 
 if [ -f "${HOME}/.local/share/go/bin/go" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/go/bin: ]]; then
-  export PATH="${HOME}/.local/share/go/bin:${PATH}"
+    export PATH="${HOME}/.local/share/go/bin:${PATH}"
 fi
 
 export GOPATH="${HOME}/go"
 
 if [[ ! "${PATH}" =~ ${HOME}/go/bin: ]]; then
-  export PATH="${HOME}/go/bin:${PATH}"
+    export PATH="${HOME}/go/bin:${PATH}"
 fi
 
 if [ -f "${HOME}/.local/share/node/bin/node" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/node/bin: ]]; then
-  export PATH="${HOME}/.local/share/node/bin:${PATH}"
+    export PATH="${HOME}/.local/share/node/bin:${PATH}"
 fi
 
 if [ -f "${HOME}/.pre.jdk.env.sh" ]; then
-  # shellcheck source=/dev/null
-  source "${HOME}/.pre.jdk.env.sh"
+    # shellcheck source=/dev/null
+    source "${HOME}/.pre.jdk.env.sh"
 fi
 
 if [ -f "${HOME}/.jdk.env.sh" ]; then
-  # shellcheck source=/dev/null
-  source "${HOME}/.jdk.env.sh"
+    # shellcheck source=/dev/null
+    source "${HOME}/.jdk.env.sh"
 fi
 
 if [[ -f "${HOME}/.local/share/coursier/bin/cs" ]] && [[ ! "${PATH}" =~ ${HOME}/.local/share/coursier/bin: ]]; then
-  export PATH="${HOME}/.local/share/coursier/bin:${PATH}"
+    export PATH="${HOME}/.local/share/coursier/bin:${PATH}"
 fi
 
 if [[ ! "${PATH}" =~ ${HOME}/.local/bin: ]]; then
-  export PATH="${HOME}/.local/bin:${PATH}"
+    export PATH="${HOME}/.local/bin:${PATH}"
 fi
 
 if [[ ! "${PATH}" =~ ${HOME}/bin: ]]; then
-  export PATH="${HOME}/bin:${PATH}"
+    export PATH="${HOME}/bin:${PATH}"
 fi
 
 if [[ -f "${HOME}/.cargo/bin/cargo" ]] && [[ ! "${PATH}" =~ ${HOME}/.cargo/bin: ]]; then
-  export PATH="${HOME}/.cargo/bin:${PATH}"
-  # shellcheck source=/dev/null
-  source "${HOME}/.cargo/env"
+    export PATH="${HOME}/.cargo/bin:${PATH}"
+    # shellcheck source=/dev/null
+    source "${HOME}/.cargo/env"
 fi
 
 if [[ -f "${HOME}/.pulumi/bin/pulumi" ]] && [[ ! "${PATH}" =~ ${HOME}/.pulumi/bin: ]]; then
-  export PATH="${HOME}/.pulumi/bin:${PATH}"
+    export PATH="${HOME}/.pulumi/bin:${PATH}"
 fi
 
 GPG_TTY=$(tty)
@@ -111,11 +111,11 @@ export GPG_TTY
 # gpg-connect-agent updatestartuptty /bye >/dev/null
 
 if hash vim &>/dev/null; then
-  export EDITOR=vim
+    export EDITOR=vim
 fi
 
 if [[ -f "/usr/bin/ksshaskpass" ]]; then
-  export SSH_ASKPASS="/usr/bin/ksshaskpass"
-  export SH_ASKPASS_REQUIRE=prefer
-  export GIT_ASKPASS="/usr/bin/ksshaskpass"
+    export SSH_ASKPASS="/usr/bin/ksshaskpass"
+    export SH_ASKPASS_REQUIRE=prefer
+    export GIT_ASKPASS="/usr/bin/ksshaskpass"
 fi

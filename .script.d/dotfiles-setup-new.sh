@@ -212,6 +212,39 @@ install_dotfiles() {
 
         echo "Setting upstream to origin/${DOTFILES_BRANCH}"
         ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+    else
+
+        echo "Repository already cloned in ${DOTFILES_DIR}"
+
+        current_remote=$(${doconfig_cmd} remote get-url origin)
+
+        if [[ "${current_remote}" != "${DOTFILES_GIT_REPO}" ]]; then
+            echo "Current remote is ${current_remote}, changing to ${DOTFILES_GIT_REPO}"
+            ${doconfig_cmd} remote set-url origin "${DOTFILES_GIT_REPO}"
+        else
+            echo "Current remote is already ${DOTFILES_GIT_REPO}"
+        fi
+
+        echo "Setting remote origin fetch to +refs/heads/*:refs/remotes/origin/*"
+        ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+        echo "Fetching all branches and pruning"
+        ${doconfig_cmd} fetch --all --prune
+
+        current_branch=$(check_existing_branch)
+
+        if [[ "${current_branch}" != "${DOTFILES_BRANCH}" ]]; then
+            echo "Current branch is ${current_branch}, changing to ${DOTFILES_BRANCH}"
+            dotfiles_stash_name="dotfiles-stash-$(date +%s)"
+            echo "Stashing changes with message: ${dotfiles_stash_name}"
+            ${doconfig_cmd} stash push -m "${dotfiles_stash_name}"
+            ${doconfig_cmd} checkout "${DOTFILES_BRANCH}"
+        else
+            echo "Current branch is already ${DOTFILES_BRANCH}"
+        fi
+
+        echo "Setting upstream to origin/${DOTFILES_BRANCH}"
+        ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
     fi
 }
 

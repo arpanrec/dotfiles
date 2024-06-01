@@ -133,6 +133,7 @@ read_branch_from_user() {
             exit 1
         fi
     fi
+    echo "Current branch is: ${default_branch}"
     read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
     if [[ "${decision_if_change_branch}" == "y" ]]; then
         echo "Fetching available branches"
@@ -269,7 +270,7 @@ install_dotfiles() {
     else
         existing_install_update
     fi
-    install_dotfiles
+    post_install_dotfiles
 }
 
 main() {

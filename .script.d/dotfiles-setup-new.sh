@@ -198,54 +198,78 @@ pre_install_dotfiles() {
     fi
 }
 
+new_install() {
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    echo "Cloning dotfiles"
+    git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
+    ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    echo "Fetching all branches"
+    ${doconfig_cmd} fetch --all
+
+    echo "Setting upstream to origin/${DOTFILES_BRANCH}"
+    ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+}
+
+existing_install_update() {
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    echo "Repository already cloned in ${DOTFILES_DIR}"
+
+    current_remote=$(${doconfig_cmd} remote get-url origin)
+
+    if [[ "${current_remote}" != "${DOTFILES_GIT_REPO}" ]]; then
+        echo "Current remote is ${current_remote}, changing to ${DOTFILES_GIT_REPO}"
+        ${doconfig_cmd} remote set-url origin "${DOTFILES_GIT_REPO}"
+    else
+        echo "Current remote is already ${DOTFILES_GIT_REPO}"
+    fi
+
+    echo "Setting remote origin fetch to +refs/heads/*:refs/remotes/origin/*"
+    ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+    echo "Fetching all branches and pruning"
+    ${doconfig_cmd} fetch --all --prune
+
+    current_branch=$(check_existing_branch)
+
+    if [[ "${current_branch}" != "${DOTFILES_BRANCH}" ]]; then
+        echo "Current branch is ${current_branch}, changing to ${DOTFILES_BRANCH}"
+        dotfiles_stash_name="dotfiles-stash-$(date +%s)"
+        echo "Stashing changes with message: ${dotfiles_stash_name}"
+        ${doconfig_cmd} stash push -m "${dotfiles_stash_name}"
+        ${doconfig_cmd} checkout "${DOTFILES_BRANCH}"
+    else
+        echo "Current branch is already ${DOTFILES_BRANCH}"
+    fi
+
+    echo "Setting upstream to origin/${DOTFILES_BRANCH}"
+    ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+}
+
+post_install_dotfiles() {
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    ## Set status.showUntrackedFiles to no
+    echo "Setting status.showUntrackedFiles to no"
+    ${doconfig_cmd} config --local status.showUntrackedFiles no
+
+    ## Add alias to rc files
+    echo "alias dotfiles='git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}'" >>"${HOME}/.bashrc"
+    echo "alias dotfiles='git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}'" >>"${HOME}/.zshrc"
+    echo "alias dotfiles='git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}'" >>"${HOME}/.aliasrc"
+
+    ## Check status
+    ${doconfig_cmd} status
+}
+
 install_dotfiles() {
     pre_install_dotfiles
-    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
 
     if [[ ! -d "${DOTFILES_DIR}" ]]; then
-        echo "Cloning dotfiles"
-        git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
-        ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-
-        echo "Fetching all branches"
-        ${doconfig_cmd} fetch --all
-
-        echo "Setting upstream to origin/${DOTFILES_BRANCH}"
-        ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+        new_install
     else
-
-        echo "Repository already cloned in ${DOTFILES_DIR}"
-
-        current_remote=$(${doconfig_cmd} remote get-url origin)
-
-        if [[ "${current_remote}" != "${DOTFILES_GIT_REPO}" ]]; then
-            echo "Current remote is ${current_remote}, changing to ${DOTFILES_GIT_REPO}"
-            ${doconfig_cmd} remote set-url origin "${DOTFILES_GIT_REPO}"
-        else
-            echo "Current remote is already ${DOTFILES_GIT_REPO}"
-        fi
-
-        echo "Setting remote origin fetch to +refs/heads/*:refs/remotes/origin/*"
-        ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-
-        echo "Fetching all branches and pruning"
-        ${doconfig_cmd} fetch --all --prune
-
-        current_branch=$(check_existing_branch)
-
-        if [[ "${current_branch}" != "${DOTFILES_BRANCH}" ]]; then
-            echo "Current branch is ${current_branch}, changing to ${DOTFILES_BRANCH}"
-            dotfiles_stash_name="dotfiles-stash-$(date +%s)"
-            echo "Stashing changes with message: ${dotfiles_stash_name}"
-            ${doconfig_cmd} stash push -m "${dotfiles_stash_name}"
-            ${doconfig_cmd} checkout "${DOTFILES_BRANCH}"
-        else
-            echo "Current branch is already ${DOTFILES_BRANCH}"
-        fi
-
-        echo "Setting upstream to origin/${DOTFILES_BRANCH}"
-        ${doconfig_cmd} branch --set-upstream-to=origin/"${DOTFILES_BRANCH}" "${DOTFILES_BRANCH}"
+        existing_install_update
     fi
+    install_dotfiles
 }
 
 main() {

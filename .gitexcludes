@@ -1,0 +1,16 @@
+foo*
+bar*
+yoo*
+deez*
+.env
+env
+.venv
+venv
+node_modules
+*.env
+*.venv
+*.env.*
+*.venv.*
+*.log
+.vscode
+.idea

@@ -202,7 +202,7 @@ install_dotfiles_get_preferred_branch() {
 install_dotfiles_read_branch_from_user() {
     preferred_branch=$(install_dotfiles_get_preferred_branch)
     echo "Preferred branch is: ${preferred_branch}"
-    read -r -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
+    read -r -n1 -p "Want to change the current branch? (default: N) [y/N]: " decision_if_change_branch
     echo ""
     if [[ "${decision_if_change_branch}" == "y" ]]; then
         echo "Fetching available branches"

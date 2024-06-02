@@ -28,14 +28,6 @@ Usage:
 
     Environment variables can be used to set default values for options and arguments.
 
-    -r URL
-            Dotfiles git repository.
-            ENV: DOTFILES_GIT_REPO
-            Example:
-                    "-r https://github.com/arpanrec/dotfiles.git"
-                    "-r git@github.com:arpanrec/dotfiles.git"
-                    "export DOTFILES_GIT_REPO=git@github.com:arpanrec/dotfiles.git"
-
     -s
             If -s is passed, the script will not prompt for any input.
             ENV: DOTFILES_SILENT_INSTALL
@@ -67,6 +59,14 @@ install_dotfiles_help() {
         dotfiles-setup.sh [OPTIONS] install_dotfiles [ARGUMENTS]
 
         Arguments:
+            -r URL
+                    Dotfiles git repository.
+                    ENV: DOTFILES_GIT_REPO
+                    Example:
+                            "-r https://github.com/arpanrec/dotfiles.git"
+                            "-r git@github.com:arpanrec/dotfiles.git"
+                            "export DOTFILES_GIT_REPO=git@github.com:arpanrec/dotfiles.git"
+
             -o Path
                     Dotfiles directory.
                     ENV: DOTFILES_DIR
@@ -333,8 +333,15 @@ install_dotfiles_post() {
 }
 
 install_dotfiles_args_parse() {
-    while getopts "o:cb:h" opt; do
+    while getopts "r:o:cb:h" opt; do
         case "${opt}" in
+        r)
+            if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
+                echo "Exit Error: DOTFILES_GIT_REPO or -r is already set to ${DOTFILES_GIT_REPO}"
+                exit 1
+            fi
+            export DOTFILES_GIT_REPO="${OPTARG}"
+            ;;
         o)
             if [[ -n "${DOTFILES_DIR}" ]]; then
                 echo "Exit Error: DOTFILES_DIR or -o is already set to ${DOTFILES_DIR}"
@@ -392,16 +399,8 @@ install_dotfiles() {
 }
 
 main_options_parse() {
-    while getopts "r:skh" opt; do
+    while getopts "skh" opt; do
         case "${opt}" in
-        r)
-            if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
-                echo "Exit Error: DOTFILES_GIT_REPO or -r is already set to ${DOTFILES_GIT_REPO}"
-                exit 1
-            fi
-
-            export DOTFILES_GIT_REPO="${OPTARG}"
-            ;;
         s)
             if [[ -n "${DOTFILES_SILENT_INSTALL}" ]]; then
                 echo "Exit Error: DOTFILES_SILENT_INSTALL or -s is already set to ${DOTFILES_SILENT_INSTALL}"

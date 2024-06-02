@@ -464,9 +464,21 @@ backup_dotfiles_args_parse() {
 dotfiles_backup_cp() {
     set -euo pipefail
     file_name="${1}"
-    mkdir -p "${DOTFILES_BACKUP_DIR}/$(dirname "${file_name}" || echo)"
-    echo "Backing up ${file_name} to ${DOTFILES_BACKUP_DIR}/${file_name}"
-    cp "${file_name}" "${DOTFILES_BACKUP_DIR}/${file_name}" || exit 255
+    source_file="${HOME}/${file_name}"
+    dest_file="${DOTFILES_BACKUP_DIR}/${file_name}"
+
+    if [[ -d "${source_file}" ]]; then
+        return
+    fi
+
+    if [[ ! -f "${source_file}" ]]; then
+        echo "File not found: ${source_file}"
+        return
+    fi
+
+    mkdir -p "$(dirname "${dest_file}")"
+    echo "Backing up ${source_file} to ${dest_file}"
+    cp "${source_file}" "${dest_file}" || exit 255
 }
 
 export -f dotfiles_backup_cp
@@ -476,6 +488,8 @@ backup_dotfiles() {
         echo "Install dotfiles before backup"
         exit 1
     fi
+    temp_clone_dir="/tmp/dotfiles-backup-$(date +%s)"
+    mkdir -p "${temp_clone_dir}"
     if [[ -z "${DOTFILES_BACKUP_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
             echo "Enter the backup directory, Default: ${HOME}/.dotfiles-backup"
@@ -491,12 +505,13 @@ backup_dotfiles() {
             exit 1
         fi
     fi
+    mkdir -p "${DOTFILES_BACKUP_DIR}"
 
     echo "Backing up dotfiles to ${DOTFILES_BACKUP_DIR}"
-    local doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
-    mkdir -p "${DOTFILES_BACKUP_DIR}"
-    cd "${HOME}" || exit 1
-    ${doconfig_cmd} ls-files | xargs -n 1 -I {} bash -c 'dotfiles_backup_cp "{}"'
+    local doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${temp_clone_dir}"
+    cd "${temp_clone_dir}" || exit 1
+    ${doconfig_cmd} reset --hard HEAD
+    ${doconfig_cmd} ls-files | xargs -I {} bash -c 'dotfiles_backup_cp "{}"'
 }
 
 main() {
@@ -522,6 +537,7 @@ main() {
             backup_dotfiles
             ;;
         *)
+            echo "Invalid operation: ${1}"
             main_help
             exit 1
             ;;

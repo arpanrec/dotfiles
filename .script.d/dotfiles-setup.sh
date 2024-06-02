@@ -464,6 +464,14 @@ backup_dotfiles_args_parse() {
 dotfiles_backup_cp() {
     set -euo pipefail
     file_name="${1}"
+    if [[ -d "${file_name}" ]]; then
+        return
+    fi
+    if [[ ! -f "${file_name}" ]]; then
+        echo "File not found: ${file_name}"
+        return
+    fi
+
     mkdir -p "${DOTFILES_BACKUP_DIR}/$(dirname "${file_name}" || echo)"
     echo "Backing up ${file_name} to ${DOTFILES_BACKUP_DIR}/${file_name}"
     cp "${file_name}" "${DOTFILES_BACKUP_DIR}/${file_name}" || exit 255

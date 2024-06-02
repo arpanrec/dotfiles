@@ -12,6 +12,7 @@ export DOTFILES_RESET="${DOTFILES_RESET:-}"
 
 main_help() {
     cat <<EOF
+
 -----------------------------------------------
 -----------------------------------------------
 Setup dotfiles sync with git for new systems.
@@ -26,7 +27,7 @@ Usage:
         install_dotfiles
         backup_dotfiles
 
-    Environment variables can be used to set default values for options and arguments.
+    Options:
 
     -s
             If -s is passed, the script will not prompt for any input.
@@ -100,7 +101,7 @@ backup_dotfiles_help() {
     cat <<EOF
 
     OPERATION: backup_dotfiles
-    Backup dotfiles to a directory.
+    Backup current dotfiles which are tracked by the git repository before reseting the state of home directory.
 
     Usage:
 
@@ -471,6 +472,10 @@ dotfiles_backup_cp() {
 export -f dotfiles_backup_cp
 
 backup_dotfiles() {
+    if [[ "${DOTFILES_INSTALL_COMPLETE}" != "true" ]]; then
+        echo "Install dotfiles before backup"
+        exit 1
+    fi
     if [[ -z "${DOTFILES_BACKUP_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
             echo "Enter the backup directory, Default: ${HOME}/.dotfiles-backup"
@@ -510,10 +515,6 @@ main() {
             export DOTFILES_INSTALL_COMPLETE=true
             ;;
         backup_dotfiles)
-            if [[ "${DOTFILES_INSTALL_COMPLETE}" != "true" ]]; then
-                echo "Install dotfiles before backup"
-                exit 1
-            fi
             shift
             local OPTIND=1
             backup_dotfiles_args_parse "${@}"

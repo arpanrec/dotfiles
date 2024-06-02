@@ -323,7 +323,6 @@ install_dotfiles_post() {
 }
 
 install_dotfiles_args_parse() {
-    OPTIND=1
     while getopts "o:cb:h" opt; do
         case "${opt}" in
         o)
@@ -383,7 +382,6 @@ install_dotfiles() {
 }
 
 main_options_parse() {
-    OPTIND=1
     while getopts "r:skh" opt; do
         case "${opt}" in
         r)
@@ -433,7 +431,6 @@ main_options_parse() {
 }
 
 backup_dotfiles_args_parse() {
-    OPTIND=1
     while getopts "o:h" opt; do
         case "${opt}" in
         o)
@@ -485,7 +482,7 @@ backup_dotfiles() {
 }
 
 main() {
-    OPTIND=1
+    local OPTIND=1
     main_options_parse "${@}"
     shift $(("${OPTIND}" - 1))
 
@@ -503,7 +500,7 @@ main() {
         case "${1}" in
         install_dotfiles)
             shift
-            OPTIND=1
+            local OPTIND=1
             install_dotfiles_args_parse "${@}"
             shift $(("${OPTIND}" - 1))
             install_dotfiles
@@ -515,7 +512,7 @@ main() {
                 exit 1
             fi
             shift
-            OPTIND=1
+            local OPTIND=1
             backup_dotfiles_args_parse "${@}"
             shift $(("${OPTIND}" - 1))
             backup_dotfiles

@@ -12,6 +12,7 @@ export DOTFILES_RESET="${DOTFILES_RESET:-}"
 
 main_help() {
     cat <<EOF
+
 -----------------------------------------------
 -----------------------------------------------
 Setup dotfiles sync with git for new systems.
@@ -26,15 +27,7 @@ Usage:
         install_dotfiles
         backup_dotfiles
 
-    Environment variables can be used to set default values for options and arguments.
-
-    -r URL
-            Dotfiles git repository.
-            ENV: DOTFILES_GIT_REPO
-            Example:
-                    "-r https://github.com/arpanrec/dotfiles.git"
-                    "-r git@github.com:arpanrec/dotfiles.git"
-                    "export DOTFILES_GIT_REPO=git@github.com:arpanrec/dotfiles.git"
+    Options:
 
     -s
             If -s is passed, the script will not prompt for any input.
@@ -45,6 +38,7 @@ Usage:
     
     -k
             If -k is passed, the script will reset all dotfiles.
+            This will make the repo HEAD to current state of home directory
             ENV: DOTFILES_RESET
             Example:
                     "-k"
@@ -67,6 +61,14 @@ install_dotfiles_help() {
         dotfiles-setup.sh [OPTIONS] install_dotfiles [ARGUMENTS]
 
         Arguments:
+            -r URL
+                    Dotfiles git repository.
+                    ENV: DOTFILES_GIT_REPO
+                    Example:
+                            "-r https://github.com/arpanrec/dotfiles.git"
+                            "-r git@github.com:arpanrec/dotfiles.git"
+                            "export DOTFILES_GIT_REPO=git@github.com:arpanrec/dotfiles.git"
+
             -o Path
                     Dotfiles directory.
                     ENV: DOTFILES_DIR
@@ -99,7 +101,7 @@ backup_dotfiles_help() {
     cat <<EOF
 
     OPERATION: backup_dotfiles
-    Backup dotfiles to a directory.
+    Backup current dotfiles which are tracked by the git repository before reseting the state of home directory.
 
     Usage:
 
@@ -228,10 +230,10 @@ install_dotfiles_pre() {
         echo "Removing existing dotfiles directory if exists"
         rm -rf "${DOTFILES_DIR}"
     else
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]] && [[ -d "${DOTFILES_DIR}" ]]; then
-            read -r -n1 -p "Reset all dotfiles? (default: N) [y/N]: " decision_if_reset
+        if [[ "${DOTFILES_SILENT_INSTALL}" != "true" ]] && [[ -d "${DOTFILES_DIR}" ]]; then
+            read -r -n1 -p "Clean Install? (default: N) [y/N]: " decision_if_clean_install
             echo ""
-            if [[ "${decision_if_reset}" == "y" ]]; then
+            if [[ "${decision_if_clean_install}" == "y" ]]; then
                 echo "Removing existing dotfiles directory if exists"
                 rm -rf "${DOTFILES_DIR}"
             fi
@@ -239,17 +241,17 @@ install_dotfiles_pre() {
     fi
 
     if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+        if [[ "${DOTFILES_SILENT_INSTALL}" != "true" ]]; then
             install_dotfiles_read_gitrepo_from_user
         else
             echo "Dotfiles git repository is not set and running in silent mode"
-            main_help
+            install_dotfiles_help
             exit 1
         fi
     fi
 
     if [[ -z "${DOTFILES_DIR}" ]]; then
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+        if [[ "${DOTFILES_SILENT_INSTALL}" != "true" ]]; then
             install_dotfiles_read_dotfiles_directory
         else
             echo "Dotfiles directory is not set and running in silent mode"
@@ -259,7 +261,7 @@ install_dotfiles_pre() {
     fi
 
     if [[ -z "${DOTFILES_BRANCH}" ]]; then
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+        if [[ "${DOTFILES_SILENT_INSTALL}" != "true" ]]; then
             install_dotfiles_read_branch_from_user
         else
             preferred_branch=$(install_dotfiles_get_preferred_branch)
@@ -270,7 +272,7 @@ install_dotfiles_pre() {
 }
 
 install_dotfiles_new() {
-    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    local doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     echo "Cloning dotfiles"
     git clone --bare "${DOTFILES_GIT_REPO}" "${DOTFILES_DIR}" --branch "${DOTFILES_BRANCH}"
     ${doconfig_cmd} config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
@@ -283,7 +285,7 @@ install_dotfiles_new() {
 }
 
 install_dotfiles_update_existing() {
-    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    local doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     echo "Repository already cloned in ${DOTFILES_DIR}"
 
     current_remote=$(${doconfig_cmd} remote get-url origin)
@@ -318,7 +320,7 @@ install_dotfiles_update_existing() {
 }
 
 install_dotfiles_post() {
-    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    local doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     ## Set status.showUntrackedFiles to no
     echo "Setting status.showUntrackedFiles to no"
     ${doconfig_cmd} config --local status.showUntrackedFiles no
@@ -333,8 +335,15 @@ install_dotfiles_post() {
 }
 
 install_dotfiles_args_parse() {
-    while getopts "o:cb:h" opt; do
+    while getopts "r:o:cb:h" opt; do
         case "${opt}" in
+        r)
+            if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
+                echo "Exit Error: DOTFILES_GIT_REPO or -r is already set to ${DOTFILES_GIT_REPO}"
+                exit 1
+            fi
+            export DOTFILES_GIT_REPO="${OPTARG}"
+            ;;
         o)
             if [[ -n "${DOTFILES_DIR}" ]]; then
                 echo "Exit Error: DOTFILES_DIR or -o is already set to ${DOTFILES_DIR}"
@@ -367,17 +376,16 @@ install_dotfiles_args_parse() {
         esac
     done
 
-    declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL")
-
-    for variable in "${boolean_variables[@]}"; do
-        if [[ -n "${!variable}" ]]; then
-            if [[ "${!variable}" == "true" ]]; then
-                export "${variable}"="true"
-            else
-                export "${variable}"="false"
-            fi
-        fi
-    done
+    # declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL")
+    # for variable in "${boolean_variables[@]}"; do
+    #     if [[ -n "${!variable}" ]]; then
+    #         if [[ "${!variable}" == "true" ]]; then
+    #             export "${variable}"="true"
+    #         else
+    #             export "${variable}"="false"
+    #         fi
+    #     fi
+    # done
 }
 
 install_dotfiles() {
@@ -392,16 +400,8 @@ install_dotfiles() {
 }
 
 main_options_parse() {
-    while getopts "r:skh" opt; do
+    while getopts "skh" opt; do
         case "${opt}" in
-        r)
-            if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
-                echo "Exit Error: DOTFILES_GIT_REPO or -r is already set to ${DOTFILES_GIT_REPO}"
-                exit 1
-            fi
-
-            export DOTFILES_GIT_REPO="${OPTARG}"
-            ;;
         s)
             if [[ -n "${DOTFILES_SILENT_INSTALL}" ]]; then
                 echo "Exit Error: DOTFILES_SILENT_INSTALL or -s is already set to ${DOTFILES_SILENT_INSTALL}"
@@ -427,17 +427,16 @@ main_options_parse() {
         esac
     done
 
-    declare -a boolean_variables=("DOTFILES_SILENT_INSTALL" "DOTFILES_RESET")
-
-    for variable in "${boolean_variables[@]}"; do
-        if [[ -n "${!variable}" ]]; then
-            if [[ "${!variable}" == "true" ]]; then
-                export "${variable}"="true"
-            else
-                export "${variable}"="false"
-            fi
-        fi
-    done
+    # declare -a boolean_variables=("DOTFILES_SILENT_INSTALL" "DOTFILES_RESET")
+    # for variable in "${boolean_variables[@]}"; do
+    #     if [[ -n "${!variable}" ]]; then
+    #         if [[ "${!variable}" == "true" ]]; then
+    #             export "${variable}"="true"
+    #         else
+    #             export "${variable}"="false"
+    #         fi
+    #     fi
+    # done
 }
 
 backup_dotfiles_args_parse() {
@@ -473,6 +472,10 @@ dotfiles_backup_cp() {
 export -f dotfiles_backup_cp
 
 backup_dotfiles() {
+    if [[ "${DOTFILES_INSTALL_COMPLETE}" != "true" ]]; then
+        echo "Install dotfiles before backup"
+        exit 1
+    fi
     if [[ -z "${DOTFILES_BACKUP_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
             echo "Enter the backup directory, Default: ${HOME}/.dotfiles-backup"
@@ -490,7 +493,7 @@ backup_dotfiles() {
     fi
 
     echo "Backing up dotfiles to ${DOTFILES_BACKUP_DIR}"
-    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    local doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     mkdir -p "${DOTFILES_BACKUP_DIR}"
     cd "${HOME}" || exit 1
     ${doconfig_cmd} ls-files | xargs -n 1 -I {} bash -c 'dotfiles_backup_cp "{}"'
@@ -512,10 +515,6 @@ main() {
             export DOTFILES_INSTALL_COMPLETE=true
             ;;
         backup_dotfiles)
-            if [[ "${DOTFILES_INSTALL_COMPLETE}" != "true" ]]; then
-                echo "Install dotfiles before backup"
-                exit 1
-            fi
             shift
             local OPTIND=1
             backup_dotfiles_args_parse "${@}"
@@ -528,6 +527,20 @@ main() {
             ;;
         esac
     done
+
+    if [[ "${DOTFILES_INSTALL_COMPLETE}" == "true" ]]; then
+        echo "Dotfiles setup complete"
+    fi
+
+    if [[ "${DOTFILES_SILENT_INSTALL}" != "true" ]] && [[ "${DOTFILES_RESET}" != "true" ]] &&
+        [[ "${DOTFILES_RESET}" != "false" ]]; then
+        echo "Reset all dotfiles? this will make the repo HEAD to current state of home directory"
+        read -r -n1 -p "Reset all dotfiles? (default: N) [y/N]: " decision_if_reset
+        echo ""
+        if [[ "${decision_if_reset}" == "y" ]]; then
+            export DOTFILES_RESET="true"
+        fi
+    fi
 
     if [[ "${DOTFILES_INSTALL_COMPLETE}" == "true" ]] && [[ "${DOTFILES_RESET}" == "true" ]]; then
         echo "Resetting to dotfiles"

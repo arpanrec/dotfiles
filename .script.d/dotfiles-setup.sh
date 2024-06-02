@@ -7,6 +7,8 @@ export DOTFILES_CLEAN_INSTALL="${DOTFILES_CLEAN_INSTALL:-}"
 export DOTFILES_BRANCH="${DOTFILES_BRANCH:-}"
 export DOTFILES_SILENT_INSTALL="${DOTFILES_SILENT_INSTALL:-}"
 export DOTFILES_BACKUP_DIR="${DOTFILES_BACKUP_DIR:-}"
+export DOTFILES_INSTALL_COMPLETE=false
+export DOTFILES_RESET="${DOTFILES_RESET:-}"
 
 main_help() {
     cat <<EOF
@@ -18,7 +20,7 @@ Setup dotfiles sync with git for new systems.
 
 Usage:
 
-    dotfiles-setup-new.sh [OPTIONS] [OPERATION] [ARGUMENTS]
+    dotfiles-setup.sh [OPTIONS] [OPERATION] [ARGUMENTS]
 
     Operations:
         install_dotfiles
@@ -40,6 +42,13 @@ Usage:
             Example:
                     "-s"
                     "export DOTFILES_SILENT_INSTALL=true"
+    
+    -k
+            If -k is passed, the script will reset all dotfiles.
+            ENV: DOTFILES_RESET
+            Example:
+                    "-k"
+                    "export DOTFILES_RESET=true"
 
     -h
             Show this help message.
@@ -55,7 +64,7 @@ install_dotfiles_help() {
 
     Usage:
 
-        dotfiles-setup-new.sh [OPTIONS] install_dotfiles [ARGUMENTS]
+        dotfiles-setup.sh [OPTIONS] install_dotfiles [ARGUMENTS]
 
         Arguments:
             -o Path
@@ -94,7 +103,7 @@ backup_dotfiles_help() {
 
     Usage:
 
-        dotfiles-setup-new.sh [OPTIONS] backup_dotfiles [ARGUMENTS]
+        dotfiles-setup.sh [OPTIONS] backup_dotfiles [ARGUMENTS]
 
         Arguments:
             -o Path
@@ -315,9 +324,7 @@ install_dotfiles_post() {
 
 install_dotfiles_args_parse() {
     OPTIND=1
-    echo "Args: ${*}"
     while getopts "o:cb:h" opt; do
-        echo "Opt: ${opt}"
         case "${opt}" in
         o)
             if [[ -n "${DOTFILES_DIR}" ]]; then
@@ -377,7 +384,7 @@ install_dotfiles() {
 
 main_options_parse() {
     OPTIND=1
-    while getopts "r:sh" opt; do
+    while getopts "r:skh" opt; do
         case "${opt}" in
         r)
             if [[ -n "${DOTFILES_GIT_REPO}" ]]; then
@@ -394,6 +401,13 @@ main_options_parse() {
             fi
             export DOTFILES_SILENT_INSTALL="true"
             ;;
+        k)
+            if [[ -n "${DOTFILES_RESET}" ]]; then
+                echo "Exit Error: DOTFILES_RESET or -k is already set to ${DOTFILES_RESET}"
+                exit 1
+            fi
+            export DOTFILES_RESET="true"
+            ;;
         h)
             main_help
             exit 0
@@ -405,7 +419,7 @@ main_options_parse() {
         esac
     done
 
-    declare -a boolean_variables=("DOTFILES_SILENT_INSTALL")
+    declare -a boolean_variables=("DOTFILES_SILENT_INSTALL" "DOTFILES_RESET")
 
     for variable in "${boolean_variables[@]}"; do
         if [[ -n "${!variable}" ]]; then
@@ -457,6 +471,17 @@ backup_dotfiles() {
             exit 1
         fi
     fi
+
+    echo "Backing up dotfiles to ${DOTFILES_BACKUP_DIR}"
+    doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
+    mkdir -p "${DOTFILES_BACKUP_DIR}"
+    cd "${HOME}" || exit 1
+    ${doconfig_cmd} ls-files | xargs -I {} bash -c """
+        file_dir=\$(dirname {})
+        mkdir -p ${DOTFILES_BACKUP_DIR}/\${file_dir}
+        echo 'Backing up {} to ${DOTFILES_BACKUP_DIR}/{}'
+        cp {} ${DOTFILES_BACKUP_DIR}/{}
+    """
 }
 
 main() {
@@ -480,12 +505,15 @@ main() {
             shift
             OPTIND=1
             install_dotfiles_args_parse "${@}"
-            echo "Args: ${*}"
-            echo "OPTIND: ${OPTIND}"
             shift $(("${OPTIND}" - 1))
             install_dotfiles
+            export DOTFILES_INSTALL_COMPLETE=true
             ;;
         backup_dotfiles)
+            if [[ "${DOTFILES_INSTALL_COMPLETE}" != "true" ]]; then
+                echo "Install dotfiles before backup"
+                exit 1
+            fi
             shift
             OPTIND=1
             backup_dotfiles_args_parse "${@}"

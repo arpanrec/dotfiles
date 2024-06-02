@@ -374,7 +374,7 @@ install_dotfiles_args_parse() {
         esac
     done
 
-    declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL")
+    declare -a boolean_variables=("DOTFILES_CLEAN_INSTALL" "DOTFILES_RESET")
 
     for variable in "${boolean_variables[@]}"; do
         if [[ -n "${!variable}" ]]; then
@@ -426,7 +426,7 @@ main_options_parse() {
         esac
     done
 
-    declare -a boolean_variables=("DOTFILES_SILENT_INSTALL" "DOTFILES_RESET")
+    declare -a boolean_variables=("DOTFILES_SILENT_INSTALL")
 
     for variable in "${boolean_variables[@]}"; do
         if [[ -n "${!variable}" ]]; then

@@ -65,8 +65,13 @@ fi
 
 export GOPATH="${HOME}/go"
 
-if [[ ! "${PATH}" =~ ${HOME}/go/bin: ]]; then
+if [[ ! "${PATH}" =~ ${GOPATH}/bin: ]]; then
     export PATH="${HOME}/go/bin:${PATH}"
+fi
+
+if command -v go &>/dev/null; then
+    GOROOT=$(go env GOROOT)
+    export GOROOT
 fi
 
 if [ -f "${HOME}/.local/share/node/bin/node" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/node/bin: ]]; then

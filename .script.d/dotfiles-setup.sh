@@ -6,10 +6,15 @@ export DOTFILES_GIT_REPO="${DOTFILES_GIT_REPO:-}"
 export DOTFILES_CLEAN_INSTALL="${DOTFILES_CLEAN_INSTALL:-}"
 export DOTFILES_BRANCH="${DOTFILES_BRANCH:-}"
 export DOTFILES_SILENT_INSTALL="${DOTFILES_SILENT_INSTALL:-}"
+export DOTFILES_BACKUP_DIR="${DOTFILES_BACKUP_DIR:-}"
 
 main_help() {
     cat <<EOF
+-----------------------------------------------
+-----------------------------------------------
 Setup dotfiles sync with git for new systems.
+-----------------------------------------------
+-----------------------------------------------
 
 Usage:
 
@@ -17,6 +22,7 @@ Usage:
 
     Operations:
         install_dotfiles
+        backup_dotfiles
 
     Environment variables can be used to set default values for options and arguments.
 
@@ -73,6 +79,30 @@ install_dotfiles_help() {
                     Example:
                             "-c"
                             "export DOTFILES_CLEAN_INSTALL=true"
+
+            -h
+                    Show this help message.
+EOF
+}
+
+backup_dotfiles_help() {
+    main_help
+    cat <<EOF
+
+    OPERATION: backup_dotfiles
+    Backup dotfiles to a directory.
+
+    Usage:
+
+        dotfiles-setup-new.sh [OPTIONS] backup_dotfiles [ARGUMENTS]
+
+        Arguments:
+            -o Path
+                    Backup directory.
+                    ENV: DOTFILES_BACKUP_DIR
+                    Example:
+                            "-d /home/user/.dotfiles"
+                            "export DOTFILES_BACKUP_DIR=/home/user/.dotfiles"
 
             -h
                     Show this help message.
@@ -284,7 +314,10 @@ install_dotfiles_post() {
 }
 
 install_dotfiles_args_parse() {
+    OPTIND=1
+    echo "Args: ${*}"
     while getopts "o:cb:h" opt; do
+        echo "Opt: ${opt}"
         case "${opt}" in
         o)
             if [[ -n "${DOTFILES_DIR}" ]]; then
@@ -343,6 +376,7 @@ install_dotfiles() {
 }
 
 main_options_parse() {
+    OPTIND=1
     while getopts "r:sh" opt; do
         case "${opt}" in
         r)
@@ -382,10 +416,51 @@ main_options_parse() {
             fi
         fi
     done
+}
 
+backup_dotfiles_args_parse() {
+    OPTIND=1
+    while getopts "o:h" opt; do
+        case "${opt}" in
+        o)
+            if [[ -n "${DOTFILES_BACKUP_DIR}" ]]; then
+                echo "Exit Error: DOTFILES_BACKUP_DIR or -o is already set to ${DOTFILES_BACKUP_DIR}"
+                exit 1
+            fi
+            export DOTFILES_BACKUP_DIR="${OPTARG}"
+            ;;
+        h)
+            backup_dotfiles_help
+            exit 0
+            ;;
+        *)
+            backup_dotfiles_help
+            exit 1
+            ;;
+        esac
+    done
+}
+
+backup_dotfiles() {
+    if [[ -z "${DOTFILES_BACKUP_DIR}" ]]; then
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            echo "Enter the backup directory, Default: ${HOME}/.dotfiles-backup"
+            read -r -p "Press enter to use default: " backup_directory_input
+            if [[ -n "${backup_directory_input}" ]]; then
+                export DOTFILES_BACKUP_DIR="${backup_directory_input}"
+            else
+                export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles-backup"
+            fi
+        else
+            echo "Backup directory is not set and running in silent mode"
+            backup_dotfiles_help
+            exit 1
+        fi
+    fi
 }
 
 main() {
+    OPTIND=1
     main_options_parse "${@}"
     shift $(("${OPTIND}" - 1))
 
@@ -399,12 +474,23 @@ main() {
         fi
     fi
 
-    for action in "${@}"; do
-        case "${action}" in
+    while [[ "${#}" -gt 0 ]]; do
+        case "${1}" in
         install_dotfiles)
+            shift
+            OPTIND=1
             install_dotfiles_args_parse "${@}"
+            echo "Args: ${*}"
+            echo "OPTIND: ${OPTIND}"
             shift $(("${OPTIND}" - 1))
             install_dotfiles
+            ;;
+        backup_dotfiles)
+            shift
+            OPTIND=1
+            backup_dotfiles_args_parse "${@}"
+            shift $(("${OPTIND}" - 1))
+            backup_dotfiles
             ;;
         *)
             main_help

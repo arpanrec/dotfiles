@@ -238,6 +238,16 @@ install_dotfiles_pre() {
         fi
     fi
 
+    if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
+        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
+            install_dotfiles_read_gitrepo_from_user
+        else
+            echo "Dotfiles git repository is not set and running in silent mode"
+            main_help
+            exit 1
+        fi
+    fi
+
     if [[ -z "${DOTFILES_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
             install_dotfiles_read_dotfiles_directory
@@ -490,16 +500,6 @@ main() {
     local OPTIND=1
     main_options_parse "${@}"
     shift $(("${OPTIND}" - 1))
-
-    if [[ -z "${DOTFILES_GIT_REPO}" ]]; then
-        if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
-            install_dotfiles_read_gitrepo_from_user
-        else
-            echo "Dotfiles git repository is not set and running in silent mode"
-            main_help
-            exit 1
-        fi
-    fi
 
     while [[ "${#}" -gt 0 ]]; do
         case "${1}" in

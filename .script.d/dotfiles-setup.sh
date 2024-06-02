@@ -452,6 +452,16 @@ backup_dotfiles_args_parse() {
     done
 }
 
+dotfiles_backup_cp() {
+    set -euo pipefail
+    file_name="${1}"
+    mkdir -p "${DOTFILES_BACKUP_DIR}/$(dirname "${file_name}" || echo)"
+    echo "Backing up ${file_name} to ${DOTFILES_BACKUP_DIR}/${file_name}"
+    cp "${file_name}" "${DOTFILES_BACKUP_DIR}/${file_name}" || exit 255
+}
+
+export -f dotfiles_backup_cp
+
 backup_dotfiles() {
     if [[ -z "${DOTFILES_BACKUP_DIR}" ]]; then
         if [[ -z "${DOTFILES_SILENT_INSTALL}" ]]; then
@@ -473,12 +483,7 @@ backup_dotfiles() {
     doconfig_cmd="git --git-dir=${DOTFILES_DIR} --work-tree=${HOME}"
     mkdir -p "${DOTFILES_BACKUP_DIR}"
     cd "${HOME}" || exit 1
-    ${doconfig_cmd} ls-files | xargs -I {} bash -c """
-        file_dir=\$(dirname {})
-        mkdir -p ${DOTFILES_BACKUP_DIR}/\${file_dir}
-        echo 'Backing up {} to ${DOTFILES_BACKUP_DIR}/{}'
-        cp {} ${DOTFILES_BACKUP_DIR}/{}
-    """
+    ${doconfig_cmd} ls-files | xargs -n 1 -I {} bash -c 'dotfiles_backup_cp "{}"'
 }
 
 main() {
@@ -523,6 +528,11 @@ main() {
             ;;
         esac
     done
+
+    if [[ "${DOTFILES_INSTALL_COMPLETE}" == "true" ]] && [[ "${DOTFILES_RESET}" == "true" ]]; then
+        echo "Resetting to dotfiles"
+        git --git-dir="${DOTFILES_DIR}" --work-tree="${HOME}" reset --hard HEAD
+    fi
 }
 
 main "${@}"

@@ -530,6 +530,7 @@ main() {
             backup_dotfiles
             ;;
         *)
+            echo "Invalid operation: ${1}"
             main_help
             exit 1
             ;;

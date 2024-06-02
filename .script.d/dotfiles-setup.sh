@@ -243,7 +243,7 @@ install_dotfiles_pre() {
             install_dotfiles_read_gitrepo_from_user
         else
             echo "Dotfiles git repository is not set and running in silent mode"
-            main_help
+            install_dotfiles_help
             exit 1
         fi
     fi

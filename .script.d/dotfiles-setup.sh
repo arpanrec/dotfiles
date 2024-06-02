@@ -110,10 +110,11 @@ backup_dotfiles_help() {
         Arguments:
             -o Path
                     Backup directory.
+                    Backup directory and dotfiles directory cannot be same
                     ENV: DOTFILES_BACKUP_DIR
                     Example:
-                            "-d /home/user/.dotfiles"
-                            "export DOTFILES_BACKUP_DIR=/home/user/.dotfiles"
+                            "-d /home/user/.dotfiles_bak"
+                            "export DOTFILES_BACKUP_DIR=/home/user/.dotfiles_bak"
 
             -h
                     Show this help message.
@@ -505,6 +506,12 @@ backup_dotfiles() {
             exit 1
         fi
     fi
+
+    if [[ "${DOTFILES_BACKUP_DIR}" == "${DOTFILES_DIR}" ]]; then
+        echo "Backup directory and dotfiles directory cannot be same"
+        exit 1
+    fi
+
     mkdir -p "${DOTFILES_BACKUP_DIR}"
 
     echo "Backing up dotfiles to ${DOTFILES_BACKUP_DIR}"

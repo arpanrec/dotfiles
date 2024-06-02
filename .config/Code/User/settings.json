@@ -15,6 +15,12 @@
     "[github-actions-workflow]": {
         "prettier.singleQuote": false
     },
+    "[go.mod]": {
+        "editor.defaultFormatter": "golang.go"
+    },
+    "[go]": {
+        "editor.defaultFormatter": "golang.go"
+    },
     "[ignore]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"
     },
@@ -44,6 +50,9 @@
         },
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.wordBasedSuggestions": "off"
+    },
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
     },
     "[shellscript]": {
         "editor.defaultFormatter": "foxundermoon.shell-format"

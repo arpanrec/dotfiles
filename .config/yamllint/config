@@ -62,6 +62,7 @@ rules:
     trailing-spaces:
         level: error
     truthy:
+        level: error
         allowed-values:
             - "true"
             - "false"

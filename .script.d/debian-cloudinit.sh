@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 export CLOUD_INIT_USE_SSH_PUB=${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
 
 export DEBIAN_FRONTEND=noninteractive
@@ -56,6 +56,8 @@ apt install -y python3-venv python3-pip
 python3 -m venv "${CLOUD_INIT_ANSIBLE_DIR}/venv"
 # shellcheck source=/dev/null
 source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
+pip install --upgrade pip
+pip install wheel setuptools setuptools-rust --upgrade
 pip install ansible --upgrade
 
 # ansible-galaxy collection install arpanrec.nebula:5.2.4
@@ -99,12 +101,14 @@ deactivate
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
-    set -e
+    set -euo pipefail
     source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
         ansible-playbook arpanrec.nebula.server_workspace --tags all
     else
         ansible-playbook arpanrec.nebula.server_workspace --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
     fi
-    git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" reset --hard HEAD
+    bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dotfiles-setup.sh) -s -k \
+        install_dotfiles -r https://github.com/arpanrec/dotfiles.git -o ~/.dotfiles -b main -c \
+        backup_dotfiles -o ~/dotfiles-backup-$(date +%Y%m%d%H%M%S)
 '

@@ -55,7 +55,7 @@ if command -v cargo &>/dev/null; then
     done
 fi
 
-declare -a npm_packages=("@bitwarden/cli" "neovim")
+declare -a npm_packages=("@bitwarden/cli" "neovim" "yarn")
 if command -v npm &>/dev/null; then
 
     if command -v corepack &>/dev/null; then

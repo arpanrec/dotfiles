@@ -284,7 +284,6 @@ echo "--------------------------------------"
 
 username="${username:-arpan}"
 id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
-echo -e "password\npassword" | passwd "${username}"
 
 echo "--------------------------------------"
 echo "       Enable Mandatory Services      "

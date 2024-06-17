@@ -55,13 +55,13 @@ if command -v cargo &>/dev/null; then
     done
 fi
 
-declare -a npm_packages=("@bitwarden/cli" "neovim")
+declare -a npm_packages=("@bitwarden/cli" "neovim" "yarn" "pnpm")
 if command -v npm &>/dev/null; then
 
-    if command -v corepack &>/dev/null; then
-        echo "enable pnpm and yarn"
-        corepack enable pnpm yarn
-    fi
+    # if command -v corepack &>/dev/null; then
+    #     echo "enable pnpm and yarn"
+    #     corepack enable pnpm yarn
+    # fi
 
     echo "Installing npm packages"
     for npm_package in "${npm_packages[@]}"; do

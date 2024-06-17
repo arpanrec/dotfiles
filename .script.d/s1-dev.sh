@@ -244,7 +244,11 @@ echo "       heil wheel group in sudoers        "
 echo "------------------------------------------"
 
 # Add wheel no password rights
-sed -i 's/^#.*wheel.*ALL.*NOPASSWD.*ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/' /etc/sudoers
+mkdir -p /etc/sudoers.d
+echo "root ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1000-root
+echo "%sudo ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1100-sudo
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/1200-wheel
+
 grep wheel /etc/sudoers
 
 echo "-------------------------------------------------------"
@@ -280,7 +284,6 @@ echo "--------------------------------------"
 
 username="${username:-arpan}"
 id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
-echo -e "password\npassword" | passwd "${username}"
 
 echo "--------------------------------------"
 echo "       Enable Mandatory Services      "

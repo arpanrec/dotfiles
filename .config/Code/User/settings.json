@@ -126,7 +126,8 @@
         "**/env/**": true,
         "**/node_modules/**": true,
         "**/venv.bak/**": true,
-        "**/venv/**": true
+        "**/venv/**": true,
+        "**/vendor/**": true
     },
     "files.trimTrailingWhitespace": false,
     "files.watcherExclude": {
@@ -147,7 +148,8 @@
         "**/env/**": true,
         "**/node_modules/**": true,
         "**/venv.bak/**": true,
-        "**/venv/**": true
+        "**/venv/**": true,
+        "**/vendor/**": true
     },
     "git.autofetch": true,
     "git.confirmSync": false,

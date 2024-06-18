@@ -24,4 +24,6 @@
 [commit]
     gpgsign = true
 [user]
+    name = arpan.mandal
+    email = arpan.mandal@localhost
     signingkey = 915C3710CC0FF8596809A47BA6BF995657A291AC

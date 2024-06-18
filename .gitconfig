@@ -24,6 +24,4 @@
 [commit]
     gpgsign = true
 [user]
-    name = arpan
-    email = arpan.rec@gmail.com
-    signingkey = 1B0D9C73D1221DB0DB64592912086B524AF4FD70
+    signingkey = 915C3710CC0FF8596809A47BA6BF995657A291AC

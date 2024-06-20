@@ -109,5 +109,5 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
         bash <(curl -s https://raw.githubusercontent.com/arpanrec/netcli/main/web-run.sh) nebula serverworkspace \
         --raw "--tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi" -s
     fi
-    bash <(curl -s https://raw.githubusercontent.com/arpanrec/netcli/main/web-run.sh) dotfiles -r https://github.com/arpanrec/dotfiles.git -b main -d "${HOME}/.dotfiles" -s
+    bash <(curl -s https://raw.githubusercontent.com/arpanrec/netcli/main/web-run.sh) dotfiles -r https://github.com/arpanrec/dotfiles.git -b main -d "${HOME}/.dotfiles" -s --reset-head
 '

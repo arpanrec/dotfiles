@@ -102,13 +102,12 @@ chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
     set -euo pipefail
-    source "${CLOUD_INIT_ANSIBLE_DIR}/venv/bin/activate"
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-        ansible-playbook arpanrec.nebula.server_workspace --tags all
+        bash <(curl -s https://raw.githubusercontent.com/arpanrec/netcli/main/web-run.sh) nebula serverworkspace \
+        --raw "--tags all" -s
     else
-        ansible-playbook arpanrec.nebula.server_workspace --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
+        bash <(curl -s https://raw.githubusercontent.com/arpanrec/netcli/main/web-run.sh) nebula serverworkspace \
+        --raw "--tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi" -s
     fi
-    bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dotfiles-setup.sh) -s -k \
-        install_dotfiles -r https://github.com/arpanrec/dotfiles.git -o ~/.dotfiles -b main -c \
-        backup_dotfiles -o ~/dotfiles-backup-$(date +%Y%m%d%H%M%S)
+    bash <(curl -s https://raw.githubusercontent.com/arpanrec/netcli/main/web-run.sh) dotfiles -r https://github.com/arpanrec/dotfiles.git -b main -d "${HOME}/.dotfiles" -s
 '

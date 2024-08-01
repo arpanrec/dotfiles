@@ -1,13 +1,13 @@
 # shellcheck disable=SC2148
+if [[ -f "$HOME/.local/share/java/bin/java" ]] && [[ ! "$PATH" =~ $HOME/.local/share/java/bin: ]]; then
+    export PATH="$HOME/.local/share/java/bin:$PATH"
+    export JAVA_HOME="$HOME/.local/share/java"
+fi
+
 if [[ -f "$HOME/.local/share/graalvm/bin/java" ]] && [[ ! "$PATH" =~ $HOME/.local/share/graalvm/bin: ]]; then
     export PATH="$HOME/.local/share/graalvm/bin:$PATH"
     export GRAALVM_HOME="$HOME/.local/share/graalvm"
     export JAVA_HOME="$HOME/.local/share/graalvm"
-fi
-
-if [[ -f "$HOME/.local/share/java/bin/java" ]] && [[ ! "$PATH" =~ $HOME/.local/share/java/bin: ]]; then
-    export PATH="$HOME/.local/share/java/bin:$PATH"
-    export JAVA_HOME="$HOME/.local/share/java"
 fi
 
 if [[ -f "$HOME/.local/share/maven/bin/mvn" ]] && [[ ! "$PATH" =~ $HOME/.local/share/maven/bin: ]]; then

@@ -83,7 +83,7 @@ ALL_PAKGS+=('ccid' 'opensc' 'gimp' 'postgresql-libs')
 
 ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
 
-ALL_PAKGS+=('veracrypt' 'keepassxc')
+ALL_PAKGS+=('veracrypt' 'keepassxc' 'bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat')
 
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
@@ -91,7 +91,7 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-por
 
 ALL_PAKGS+=('kwalletmanager' 'kleopatra' 'partitionmanager' 'skanlite')
 
-ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera')
+ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera' 'lm_sensors' 'lsof' 'strace' 'tk' 'gnuplot')
 
 ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
 

@@ -39,7 +39,7 @@ install_neovim() {
 }
 
 echo "Installing Rust"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete --verbose
 
 echo "Sourcing cargo env"
 # shellcheck source=/dev/null

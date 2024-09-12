@@ -79,7 +79,7 @@ ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx')
 
 ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
 
-ALL_PAKGS+=('ccid' 'opensc')
+ALL_PAKGS+=('ccid' 'opensc' 'gimp' 'postgresql-libs')
 
 ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
 
@@ -272,7 +272,7 @@ if ! command -v yay &>/dev/null; then
     '
 fi
 
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4')
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin')
 
 PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 

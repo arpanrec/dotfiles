@@ -16,11 +16,7 @@ In this repository, you'll find my personal dotfiles for various applications an
 ## Installation
 
 ```bash
-rm -rf "${HOME}/.dotfiles"
-git clone --bare https://github.com/arpanrec/dotfiles.git "${HOME}/.dotfiles"
-git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config --local status.showUntrackedFiles no
-git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" checkout main --force
-git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config --local remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
 ```
 
 ## License

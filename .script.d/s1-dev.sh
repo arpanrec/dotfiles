@@ -70,10 +70,10 @@ ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' '
     'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
     'libxcrypt-compat')
 
-ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
+ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
     'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'git' 'openssl-1.1' 'realtime-privileges')
 
-ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git')
+ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 
 ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx')
 
@@ -131,12 +131,8 @@ ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-p
     'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')
 
 # Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver
-ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau' 'lib32-mesa' 'libvdpau-va-gl'
-    'mesa-utils')
-
-MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    # 'cups' 'bluetooth' 'sshd'
-)
+ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau'
+    'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -295,6 +291,10 @@ echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
+MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
+    'cups' 'bluetooth' # 'sshd'
+)
+
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
     echo "Enable Service: ${MAN_SERVICE}"
     systemctl enable "$MAN_SERVICE"
@@ -302,4 +302,6 @@ done
 
 echo "Completed"
 # shellcheck disable=SC2016
-echo 'Its a good idea to run pacman -R $(pacman -Qtdq) or yay -R $(yay -Qtdq)'
+echo "Set the password for user ${username} using 'passwd ${username}'."
+
+echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

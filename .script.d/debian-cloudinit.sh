@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+export CLOUD_INIT_USER=${CLOUD_INIT_USER:-cloudinit}
 export CLOUD_INIT_USE_SSH_PUB=${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
 
 export DEBIAN_FRONTEND=noninteractive
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-false}
 export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
-export CLOUD_INIT_USER=${CLOUD_INIT_USER:-cloudinit}
 export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
 export CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-cloudinit}
 export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-cloudinit}

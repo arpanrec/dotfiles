@@ -71,7 +71,7 @@ ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' '
     'libxcrypt-compat')
 
 ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
-    'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'git' 'openssl-1.1' 'realtime-privileges')
+    'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'git' 'openssl-1.1' 'realtime-privileges' 'tree-sitter')
 
 ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 

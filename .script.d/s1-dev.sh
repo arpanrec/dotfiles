@@ -272,7 +272,7 @@ if ! command -v yay &>/dev/null; then
     '
 fi
 
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin')
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin')
 
 PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 
@@ -285,14 +285,15 @@ echo "       Create User and Groups         "
 echo "--------------------------------------"
 
 username="${username:-arpan}"
-id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
+id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -m -d "/home/${username}" "${username}"
+sudo usermod -aG docker,wheel,nordvpn "${username}"
 
 echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
 MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    'cups' 'bluetooth' # 'sshd'
+    'cups' 'bluetooth' 'nordvpnd' # 'sshd'
 )
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do

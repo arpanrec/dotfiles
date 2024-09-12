@@ -119,8 +119,17 @@ if [[ -z $* ]]; then
 
 fi
 
-rm -rf "${HOME}/.tmp/server_workspace_venv"
-_server_workspace_venv_directory="${HOME}/.tmp/sw_venv"
+# deactivate || true
+export _server_workspace_tmp_dir="${_server_workspace_tmp_dir:-${HOME}/.tmp}"
+export DEFAULT_ROLES_PATH="${_server_workspace_tmp_dir}/roles"
+export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
+export ANSIBLE_COLLECTIONS_PATH="${_server_workspace_tmp_dir}/collections"
+export ANSIBLE_INVENTORY="${_server_workspace_tmp_dir}/server_workspace_inventory.yml"
+export MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${_server_workspace_tmp_dir}/server_workspace.json}"
+export _server_workspace_venv_directory="${_server_workspace_tmp_dir}/sw_venv"
+
+echo "Server Workspace :: ${_server_workspace_tmp_dir}"
+mkdir -p "${_server_workspace_tmp_dir}"
 
 # shellcheck source=/dev/null
 if [[ -z ${VIRTUAL_ENV} ]]; then
@@ -142,16 +151,18 @@ echo "Working dir :: ${PWD}"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible cryptography requests hvac --upgrade
+
 ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f
+
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git
 ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git
 ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git
 ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git
-ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git
 
-MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${HOME}/.tmp/server_workspace.json}"
+ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker
+
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"
 echo "Check if ${MMC_SERVER_WORKSPACE_JSON} exists"
 if [[ ! -f "${MMC_SERVER_WORKSPACE_JSON}" ]]; then
@@ -165,8 +176,6 @@ else
     echo "This file will be used as extra-vars"
 fi
 
-export ANSIBLE_INVENTORY="${HOME}/.tmp/server_workspace_inventory.yml"
-
 echo "Creating ${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" >/dev/null <<EOF
 ---
@@ -175,14 +184,15 @@ all:
         server_workspace:
             hosts:
                 localhost:
+            vars:
+                ansible_become: false
     hosts:
         localhost:
             ansible_connection: local
-            ansible_become: false
-            ansible_python_interpreter: "$(which python)"
+            ansible_python_interpreter: "$(which python3)"
 EOF
 
-cd "${HOME}/.tmp" || exit 1
+cd "${HOME}" || exit 1
 
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" \

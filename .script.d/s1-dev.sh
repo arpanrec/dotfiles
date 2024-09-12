@@ -146,11 +146,11 @@ echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
     echo "Installing Intel microcode"
-    ALL_PAKGS+=('intel-ucode' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
+    ALL_PAKGS+=('intel-ucode')
     ;;
 AuthenticAMD)
     echo "Installing AMD microcode"
-    ALL_PAKGS+=('amd-ucode' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('amd-ucode')
     ;;
 esac
 
@@ -158,7 +158,7 @@ echo "--------------------------------------------------"
 echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
 
-if lspci | grep -E "NVIDIA|GeForce"; then
+if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "NVIDIA|GeForce"; then
 
     echo "-----------------------------------------------------------"
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
@@ -198,17 +198,18 @@ EOT
 
 fi
 
-if lspci | grep -E "Radeon|Advanced Micro Devices"; then
+if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Radeon|Advanced Micro Devices"; then
 
     echo "-----------------------------------------------------------"
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk'
+        'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
 
 fi
 
-if lspci | grep -E "Integrated Graphics Controller"; then
+if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Integrated Graphics Controller|Intel Corporation"; then
 
     echo "-----------------------------------------------------------"
     echo "                   Setting Intel Drivers                   "

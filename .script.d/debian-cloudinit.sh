@@ -120,10 +120,5 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
             --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
     fi
 
-    rm -rf "${HOME}/.dotfiles"
-    git clone --bare https://github.com/arpanrec/dotfiles.git "${HOME}/.dotfiles"
-    git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config --local status.showUntrackedFiles no
-    git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" checkout main --force
-    git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config \
-        --local remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
 '

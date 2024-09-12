@@ -77,6 +77,8 @@ ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git')
 
 ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx')
 
+ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
+
 ALL_PAKGS+=('ccid' 'opensc')
 
 ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
@@ -89,13 +91,13 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-por
 
 ALL_PAKGS+=('kwalletmanager' 'kleopatra' 'partitionmanager' 'skanlite')
 
-ALL_PAKGS+=('spectacle' 'gwenview')
+ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera')
 
 ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
 
 # 'raw-thumbnailer' not found, 'kimageformats' not found
-ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'kdesdk-thumbnailers'
-    'ffmpegthumbs' 'ark' 'gvfs')
+ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats'
+    'kdesdk-thumbnailers' 'ffmpegthumbs' 'ark' 'gvfs')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 ALL_PAKGS+=('kvantum' 'materia-kde')

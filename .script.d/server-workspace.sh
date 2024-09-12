@@ -152,16 +152,16 @@ pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible cryptography requests hvac --upgrade
 
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git -f
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,1.0.1
 
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git
-ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git
-ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git
-ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git,9.4.0
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git,2.22.0
+ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git,8.2.1
+ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git,3.12.1
+ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git,1.6.0
+ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git,v0.11.1
 
-ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,,geerlingguy.docker
+ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,7.4.1,geerlingguy.docker
 
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"
 echo "Check if ${MMC_SERVER_WORKSPACE_JSON} exists"

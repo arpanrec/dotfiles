@@ -33,7 +33,8 @@ import_gpg_key() {
     echo "${INIT_GPG_KEY_CONTENT}" | gpg --import --batch --yes --pinentry-mode loopback --no-tty
 
     echo "GPG Encryption: Trusting GPG key"
-    echo -e "5\ny\n" | gpg --pinentry-mode loopback --no-tty --command-fd 0 --edit-key "${INIT_GPG_KEY_FINGERPRINT}" trust
+    echo -e "5\ny\n" | gpg --pinentry-mode loopback --no-tty --command-fd 0 \
+        --edit-key "${INIT_GPG_KEY_FINGERPRINT}" trust
 }
 
 echo "Check if bitwarden is unlocked"
@@ -46,7 +47,7 @@ fi
 
 declare -a bw_items=(
     # "PGP KEY - AB - 8B5DA775C63F6D456B3525A334D06AC4966B56C8" SECRET.asc
-    "PGP KEY 1B0D9C73D1221DB0DB64592912086B524AF4FD70" private.asc
+    "PGP KEY - 1B0D9C73D1221DB0DB64592912086B524AF4FD70" private.asc
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 2)); do

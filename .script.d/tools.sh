@@ -16,7 +16,7 @@ install_neovim() {
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
     NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
-    NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.9.5"}"
+    NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.10.1"}"
     echo "Neovim version is ${NEOVIM_VERSION}"
 
     mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
@@ -39,7 +39,7 @@ install_neovim() {
 }
 
 echo "Installing Rust"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -q -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete --verbose
 
 echo "Sourcing cargo env"
 # shellcheck source=/dev/null

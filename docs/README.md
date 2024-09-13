@@ -4,11 +4,20 @@
 
 This repository contains my dotfiles and scripts, which I use to set up and configure my development environment. These files are essential for my workflow and help me maintain a consistent environment across different machines.
 
-## [Installation](/docs/scripts.md#dotfiles-setup)
+Dotfiles are configuration files in Linux that start with a dot (e.g. .bashrc, .zshrc).
+They are used to customize and configure your system and applications.
+In this repository, you'll find my personal dotfiles for various applications and tools, including:
 
-## [Dotfiles](/docs/dotfiles.md)
+* Bash: [.bashrc](/.bashrc), [.bash_profile](/.bash_profile)
+* Zsh: [.zshrc](/.zshrc), [.p10k.zsh](/.p10k.zsh)
+* SSH: [.ssh/config](/.ssh/config)
+* And more...
 
-## [Scripts](/docs/scripts.md)
+## Installation
+
+```bash
+bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
+```
 
 ## License
 

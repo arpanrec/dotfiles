@@ -70,15 +70,20 @@ ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' '
     'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
     'libxcrypt-compat')
 
-ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git')
+ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
+    'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'git' 'openssl-1.1' 'realtime-privileges' 'tree-sitter')
+
+ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 
 ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx')
 
-ALL_PAKGS+=('ccid' 'opensc')
+ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
+
+ALL_PAKGS+=('ccid' 'opensc' 'gimp' 'postgresql-libs')
 
 ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
 
-ALL_PAKGS+=('veracrypt' 'keepassxc')
+ALL_PAKGS+=('veracrypt' 'keepassxc' 'bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat')
 
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
@@ -86,13 +91,13 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-por
 
 ALL_PAKGS+=('kwalletmanager' 'kleopatra' 'partitionmanager' 'skanlite')
 
-ALL_PAKGS+=('spectacle' 'gwenview')
+ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera' 'lm_sensors' 'lsof' 'strace' 'tk' 'gnuplot')
 
 ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
 
 # 'raw-thumbnailer' not found, 'kimageformats' not found
-ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'kdesdk-thumbnailers'
-    'ffmpegthumbs' 'ark' 'gvfs')
+ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats'
+    'kdesdk-thumbnailers' 'ffmpegthumbs' 'ark' 'gvfs')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 ALL_PAKGS+=('kvantum' 'materia-kde')
@@ -116,22 +121,18 @@ ALL_PAKGS+=('terminator' 'zsh')
 
 ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 
-ALL_PAKGS+=('thunderbird')
+ALL_PAKGS+=('thunderbird' 'bitwarden' 'signal-desktop' 'telegram-desktop')
 
 ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper')
 
-# 'kcodecs' removed from arch
+# 'kcodecs' 'ffmpeg2theora' removed from arch
 ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly'
     'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg'
-    'ffmpeg2theora' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')
+    'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')
 
 # Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver
-ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau' 'lib32-mesa' 'libvdpau-va-gl'
-    'mesa-utils')
-
-MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    # 'cups' 'bluetooth' 'sshd'
-)
+ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau'
+    'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -141,11 +142,11 @@ echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
     echo "Installing Intel microcode"
-    ALL_PAKGS+=('intel-ucode' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
+    ALL_PAKGS+=('intel-ucode')
     ;;
 AuthenticAMD)
     echo "Installing AMD microcode"
-    ALL_PAKGS+=('amd-ucode' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('amd-ucode')
     ;;
 esac
 
@@ -153,7 +154,7 @@ echo "--------------------------------------------------"
 echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
 
-if lspci | grep -E "NVIDIA|GeForce"; then
+if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "NVIDIA|GeForce"; then
 
     echo "-----------------------------------------------------------"
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
@@ -193,17 +194,18 @@ EOT
 
 fi
 
-if lspci | grep -E "Radeon|Advanced Micro Devices"; then
+if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Radeon|Advanced Micro Devices"; then
 
     echo "-----------------------------------------------------------"
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk'
+        'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
 
 fi
 
-if lspci | grep -E "Integrated Graphics Controller"; then
+if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Integrated Graphics Controller|Intel Corporation"; then
 
     echo "-----------------------------------------------------------"
     echo "                   Setting Intel Drivers                   "
@@ -213,8 +215,8 @@ if lspci | grep -E "Integrated Graphics Controller"; then
 
 fi
 
-ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa'
-    'pipewire-jack' 'lib32-pipewire' 'lib32-pipewire-jack'
+ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware'
+    'pipewire-jack' 'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils'
     'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf' 'lib32-pipewire-v4l2')
 
 echo "--------------------------------------------------"
@@ -270,7 +272,7 @@ if ! command -v yay &>/dev/null; then
     '
 fi
 
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4')
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin')
 
 PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 
@@ -283,11 +285,16 @@ echo "       Create User and Groups         "
 echo "--------------------------------------"
 
 username="${username:-arpan}"
-id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
+id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -m -d "/home/${username}" "${username}"
+sudo usermod -aG docker,wheel,nordvpn "${username}"
 
 echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
+
+MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
+    'cups' 'bluetooth' 'nordvpnd' # 'sshd'
+)
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
     echo "Enable Service: ${MAN_SERVICE}"
@@ -296,4 +303,6 @@ done
 
 echo "Completed"
 # shellcheck disable=SC2016
-echo 'Its a good idea to run pacman -R $(pacman -Qtdq) or yay -R $(yay -Qtdq)'
+echo "Set the password for user ${username} using 'passwd ${username}'."
+
+echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

@@ -154,7 +154,7 @@ echo "--------------------------------------------------"
 echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
 
-if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "NVIDIA|GeForce"; then
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
 
     echo "-----------------------------------------------------------"
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
@@ -194,7 +194,7 @@ EOT
 
 fi
 
-if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Radeon|Advanced Micro Devices"; then
+if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
 
     echo "-----------------------------------------------------------"
     echo "                    Setting AMD Drivers                    "
@@ -205,7 +205,7 @@ if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Radeon|Advanced Micro Devices"; th
 
 fi
 
-if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Integrated Graphics Controller|Intel Corporation"; then
+if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
 
     echo "-----------------------------------------------------------"
     echo "                   Setting Intel Drivers                   "

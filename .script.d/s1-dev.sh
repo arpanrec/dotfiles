@@ -75,7 +75,7 @@ ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninj
 
 ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 
-ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx' 'docker-compose' 'sshfs')
+ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs')
 
 ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
 

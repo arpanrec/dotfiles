@@ -80,7 +80,7 @@ ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx' 'docker-compose' 'sshf
 
 ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
 
-ALL_PAKGS+=('ccid' 'opensc' 'gimp' 'postgresql-libs')
+ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'gimp' 'postgresql-libs')
 
 ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
 
@@ -116,7 +116,8 @@ ALL_PAKGS+=('gtk-engine-murrine' 'gtk-engines' 'appmenu-gtk-module' 'webkit2gtk'
 # Extras
 ALL_PAKGS+=('hunspell-en_us' 'hunspell-en_gb') # For some spelling check
 ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs')       # For kde vault
-ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager-qt')
+ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager' 'yubikey-manager-qt'
+        '')
 
 ALL_PAKGS+=('terminator' 'zsh')
 

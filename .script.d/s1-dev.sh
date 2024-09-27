@@ -116,8 +116,7 @@ ALL_PAKGS+=('gtk-engine-murrine' 'gtk-engines' 'appmenu-gtk-module' 'webkit2gtk'
 # Extras
 ALL_PAKGS+=('hunspell-en_us' 'hunspell-en_gb') # For some spelling check
 ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs')       # For kde vault
-ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager' 'yubikey-manager-qt'
-        '')
+ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager' 'yubikey-manager-qt')
 
 ALL_PAKGS+=('terminator' 'zsh')
 

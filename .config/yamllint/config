@@ -42,7 +42,7 @@ rules:
         check-multi-line-strings: false
         indent-sequences: consistent
         level: error
-        spaces: 4
+        spaces: 2
     key-duplicates:
         level: error
     key-ordering: disable

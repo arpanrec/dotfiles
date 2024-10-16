@@ -78,7 +78,7 @@ ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 
 ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs' 'dosfstools')
 
-ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
+ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt' 'keyd')
 
 ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'gimp' 'postgresql-libs')
 

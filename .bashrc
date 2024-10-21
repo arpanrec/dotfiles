@@ -11,9 +11,6 @@ if [ -f /etc/bash.bashrc ]; then
 fi
 
 # shellcheck source=/dev/null
-[ -f "$HOME/.exporterrc" ] && source "$HOME/.exporterrc"
-
-# shellcheck source=/dev/null
 [ -f "$HOME/.aliasrc" ] && source "$HOME/.aliasrc"
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -127,6 +124,8 @@ if hash powerline-shell &>/dev/null && [[ ! -f "$BASH_IT/bash_it.sh" ]]; then
 fi
 
 # shellcheck source=/dev/null
+[ -f "$HOME/.exporterrc" ] && source "$HOME/.exporterrc"
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 if hash terraform &>/dev/null; then

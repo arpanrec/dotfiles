@@ -5,6 +5,11 @@ if [ -f "/etc/bashrc" ]; then
     source /etc/bashrc
 fi
 
+if [ -f "${HOME}/.profile" ]; then
+    # shellcheck source=/dev/null
+    source "${HOME}/.profile"
+fi
+
 # shellcheck source=/dev/null
 if [ -f /etc/bash.bashrc ]; then
     source /etc/bash.bashrc

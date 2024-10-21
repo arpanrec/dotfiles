@@ -37,11 +37,6 @@ if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: 
     export PATH="${HOME}/.script.d/bin:${PATH}"
 fi
 
-if [ -f "${HOME}/.profile" ]; then
-    # shellcheck source=/dev/null
-    source "${HOME}/.profile"
-fi
-
 if [ -d "${HOME}/.profile.d" ]; then
     for profile_file in "${HOME}"/.profile.d/*.sh; do
         if [ -r "${profile_file}" ]; then

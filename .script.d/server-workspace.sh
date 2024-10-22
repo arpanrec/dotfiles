@@ -150,10 +150,9 @@ echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install git+https://github.com/arpanrec/pylib.git@1.1.0
-pip3 install ansible cryptography requests hvac --upgrade
+pip3 install ansible hvac --upgrade
 
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,1.0.2
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,1.1.0
 
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git,9.4.0
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git,2.22.0

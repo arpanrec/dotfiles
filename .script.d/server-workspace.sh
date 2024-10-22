@@ -7,8 +7,7 @@ if [[ $(id -u) -eq 0 ]]; then
 fi
 
 which_os_python() {
-    declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10"
-        "python3.9" "python3.8" "python3.7" "python3.6")
+    declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10")
 
     for python_version in "${PYTHON_VERSIONS[@]}"; do
         if command -v "${python_version}" &>/dev/null; then

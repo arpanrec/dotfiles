@@ -7,6 +7,7 @@ if [[ $(id -u) -eq 0 ]]; then
 fi
 
 which_os_python() {
+    # Simply don't use python, /usr/bin/python etc, try to find the highest version of python3
     declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10")
 
     for python_version in "${PYTHON_VERSIONS[@]}"; do

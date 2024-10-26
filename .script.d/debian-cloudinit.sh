@@ -63,7 +63,7 @@ pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,1.3.0
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,1.6.0
 
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git,9.4.0
 ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git,2.22.2

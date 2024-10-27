@@ -19,6 +19,10 @@ In this repository, you'll find my personal dotfiles for various applications an
 bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
 ```
 
+## Scripts
+
+* [Debian](/docs/.script.d/server-workspace.md)
+
 ## License
 
 [`GLWTS`](/docs/LICENSE)

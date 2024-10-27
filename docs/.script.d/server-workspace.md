@@ -24,8 +24,6 @@ CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
 
 ## [Linode stack script](https://cloud.linode.com/stackscripts/1164660)
 
-In case of Linode `CLOUD_INIT_USER` is set to `LINODE_LISHUSERNAME` and `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true`. So that the root SSH keys are copied to the user and linode username is the VM username.
-
 ```bash
 #!/bin/bash
 # <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
@@ -35,7 +33,6 @@ echo "LINODE_ID=${LINODE_ID}" >> /etc/environment
 echo "LINODE_LISHUSERNAME=${LINODE_LISHUSERNAME}" >> /etc/environment
 echo "LINODE_RAM=${LINODE_RAM}" >> /etc/environment
 echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" >> /etc/environment
-echo "CLOUD_INIT_USER=${LINODE_LISHUSERNAME}" >> /etc/environment
 
 source /etc/environment
 

@@ -21,7 +21,8 @@ bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/d
 
 ## Scripts
 
-* [Debian - debian-cloudinit.sh](/docs/.script.d/server-workspace.md)
+* [Debian - debian-cloudinit.sh](/docs/.script.d/debian-cloudinit.md)
+* [Server Workspace - server-workspace.sh](/docs/.script.d/server-workspace.md)
 
 ## License
 

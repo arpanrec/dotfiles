@@ -37,6 +37,7 @@ return {
                 "gopls",
                 "marksman",
                 "bashls",
+                "rust-analyzer",
                 -- "pyright",
                 "ts_ls",
                 "jsonls",

@@ -86,118 +86,14 @@ return {
         -- import lspconfig plugin
         local lspconfig = require("lspconfig")
 
-        -- configure html server
-        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure css server
-        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure tailwindcss server
-        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure svelte server
-        lspconfig.svelte.setup({
-            capabilities = capabilities,
-            on_attach = function(client, bufnr)
-                on_attach(client, bufnr)
-                vim.api.nvim_create_autocmd("BufWritePost", {
-                    pattern = { "*.js", "*.ts" },
-                    callback = function(ctx)
-                        if client.name == "svelte" then
-                            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-                        end
-                    end,
-                })
-            end,
-        })
-
-        -- configure prisma orm server
-        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure graphql language server
-        lspconfig.graphql.setup({
+        -- configure rust_analyzer server
+        lspconfig.rust_analyzer.setup({
             capabilities = capabilities,
             on_attach = on_attach,
-            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-        })
-
-        -- configure emmet language server
-        lspconfig.emmet_ls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-        })
-
-        lspconfig.ts_ls.setup {
-            init_options = {
-                plugins = {
-                    {
-                        name = "@vue/typescript-plugin",
-                        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
-                        languages = { "javascript", "typescript", "vue" },
-                    },
-                },
+            settings = {
+                ['rust-analyzer'] = {},
             },
-            filetypes = {
-                "javascript",
-                "typescript",
-                "vue",
-            },
-        }
-
-        -- -- configure eslint language server removed and added to lint.lua
-        -- lspconfig.eslint.setup({
-        --     capabilities = capabilities,
-        --     on_attach = function(client, bufnr)
-        --         on_attach(client, bufnr)
-        --         vim.api.nvim_create_autocmd("BufWritePre", {
-        --             buffer = bufnr,
-        --             command = "EslintFixAll",
-        --         })
-        --     end,
-        --     settings = {
-        --         codeAction = {
-        --             disableRuleComment = {
-        --                 enable = true,
-        --                 location = "separateLine",
-        --             },
-        --             showDocumentation = {
-        --                 enable = true,
-        --             },
-        --         },
-        --         codeActionOnSave = {
-        --             enable = false,
-        --             mode = "all",
-        --         },
-        --         experimental = {
-        --             useFlatConfig = false,
-        --         },
-        --         format = false,
-        --         nodePath = "",
-        --         onIgnoredFiles = "off",
-        --         problems = {
-        --             shortenToSingleLine = false,
-        --         },
-        --         quiet = false,
-        --         rulesCustomizations = {},
-        --         run = "onType",
-        --         useESLintClass = false,
-        --         validate = "on",
-        --         workingDirectory = {
-        --             mode = "location",
-        --         },
-        --     },
-        -- })
-
-        local capabilities_cssls = vim.lsp.protocol.make_client_capabilities()
-        capabilities_cssls.textDocument.completion.completionItem.snippetSupport = true
-        lspconfig.cssls.setup({
-            capabilities = capabilities_cssls,
-            on_attach = on_attach,
         })
-
-        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach })
-        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         lspconfig.jsonls.setup({
             capabilities = capabilities,

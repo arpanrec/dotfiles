@@ -45,6 +45,8 @@ echo "Sourcing cargo env"
 # shellcheck source=/dev/null
 source "${HOME}/.cargo/env"
 
+rustup update
+
 declare -a cargo_packages=("ripgrep" "fd-find")
 
 if command -v cargo &>/dev/null; then

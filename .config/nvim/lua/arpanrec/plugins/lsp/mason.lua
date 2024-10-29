@@ -38,7 +38,7 @@ return {
                 "marksman",
                 "bashls",
                 -- "pyright",
-                "tsserver",
+                "ts_ls",
                 "jsonls",
                 "html",
                 "cssls",

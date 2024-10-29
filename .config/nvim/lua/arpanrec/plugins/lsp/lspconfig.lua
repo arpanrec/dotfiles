@@ -128,15 +128,22 @@ return {
             filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
 
-        lspconfig.tsserver.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = {
-                implicitProjectConfiguration = {
-                    checkJs = true,
+        lspconfig.ts_ls.setup {
+            init_options = {
+                plugins = {
+                    {
+                        name = "@vue/typescript-plugin",
+                        location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+                        languages = { "javascript", "typescript", "vue" },
+                    },
                 },
             },
-        })
+            filetypes = {
+                "javascript",
+                "typescript",
+                "vue",
+            },
+        }
 
         -- -- configure eslint language server removed and added to lint.lua
         -- lspconfig.eslint.setup({

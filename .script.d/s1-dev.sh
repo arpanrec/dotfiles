@@ -67,6 +67,7 @@ ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'dhcpcd' 'networkmanager'
     'openssh' 'git' 'vim' 'base' 'base-devel' 'linux' 'linux-firmware' 'lvm2' 'exfatprogs')
 
 ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' 'unzip' 'pigz' 'wget' 'ntfs-3g'
+    'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils'
     'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
     'libxcrypt-compat')
 
@@ -75,11 +76,11 @@ ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninj
 
 ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 
-ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx')
+ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs' 'dosfstools')
 
-ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt')
+ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt' 'keyd')
 
-ALL_PAKGS+=('ccid' 'opensc' 'gimp' 'postgresql-libs')
+ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'gimp' 'postgresql-libs')
 
 ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
 
@@ -115,7 +116,7 @@ ALL_PAKGS+=('gtk-engine-murrine' 'gtk-engines' 'appmenu-gtk-module' 'webkit2gtk'
 # Extras
 ALL_PAKGS+=('hunspell-en_us' 'hunspell-en_gb') # For some spelling check
 ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs')       # For kde vault
-ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager-qt')
+ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager' 'yubikey-manager-qt')
 
 ALL_PAKGS+=('terminator' 'zsh')
 
@@ -154,7 +155,7 @@ echo "--------------------------------------------------"
 echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
 
-if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "NVIDIA|GeForce"; then
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
 
     echo "-----------------------------------------------------------"
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
@@ -194,7 +195,7 @@ EOT
 
 fi
 
-if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Radeon|Advanced Micro Devices"; then
+if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
 
     echo "-----------------------------------------------------------"
     echo "                    Setting AMD Drivers                    "
@@ -205,7 +206,7 @@ if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Radeon|Advanced Micro Devices"; th
 
 fi
 
-if lspci | grep -A 2 -E "(VGA|3D)" | grep -E "Integrated Graphics Controller|Intel Corporation"; then
+if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
 
     echo "-----------------------------------------------------------"
     echo "                   Setting Intel Drivers                   "

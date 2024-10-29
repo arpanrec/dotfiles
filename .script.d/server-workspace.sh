@@ -7,8 +7,8 @@ if [[ $(id -u) -eq 0 ]]; then
 fi
 
 which_os_python() {
-    declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10"
-        "python3.9" "python3.8" "python3.7" "python3.6")
+    # Simply don't use python, /usr/bin/python etc, try to find the highest version of python3
+    declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10")
 
     for python_version in "${PYTHON_VERSIONS[@]}"; do
         if command -v "${python_version}" &>/dev/null; then
@@ -150,18 +150,13 @@ echo "Virtual Env :: ${VIRTUAL_ENV}"
 echo "Working dir :: ${PWD}"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible cryptography requests hvac --upgrade
+pip3 install ansible hvac --upgrade
 
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,1.0.1
-
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.general.git,9.4.0
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.crypto.git,2.22.0
-ansible-galaxy collection install git+https://github.com/ansible-collections/amazon.aws.git,8.2.1
-ansible-galaxy collection install git+https://github.com/ansible-collections/community.docker.git,3.12.1
-ansible-galaxy collection install git+https://github.com/ansible-collections/ansible.posix.git,1.6.0
-ansible-galaxy collection install git+https://github.com/kewlfft/ansible-aur.git,v0.11.1
-
-ansible-galaxy role install git+https://github.com/geerlingguy/ansible-role-docker.git,7.4.1,geerlingguy.docker
+export NEBULA_VERSION=1.9.0
+curl "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+    -o "/tmp/requirements-${NEBULA_VERSION}.yml"
+ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
+ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
 echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"
 echo "Check if ${MMC_SERVER_WORKSPACE_JSON} exists"

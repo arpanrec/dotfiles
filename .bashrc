@@ -5,13 +5,15 @@ if [ -f "/etc/bashrc" ]; then
     source /etc/bashrc
 fi
 
+# if [ -f "${HOME}/.profile" ]; then
+# shellcheck source=/dev/null
+# source "${HOME}/.profile"
+# fi
+
 # shellcheck source=/dev/null
 if [ -f /etc/bash.bashrc ]; then
     source /etc/bash.bashrc
 fi
-
-# shellcheck source=/dev/null
-[ -f "$HOME/.exporterrc" ] && source "$HOME/.exporterrc"
 
 # shellcheck source=/dev/null
 [ -f "$HOME/.aliasrc" ] && source "$HOME/.aliasrc"
@@ -127,6 +129,8 @@ if hash powerline-shell &>/dev/null && [[ ! -f "$BASH_IT/bash_it.sh" ]]; then
 fi
 
 # shellcheck source=/dev/null
+[ -f "$HOME/.exporterrc" ] && source "$HOME/.exporterrc"
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 if hash terraform &>/dev/null; then

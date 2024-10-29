@@ -1,5 +1,6 @@
 # shellcheck disable=SC2148
-export LANG=en_US.UTF-8
+
+export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF8"
 export LC_NUMERIC="en_US.UTF8"
 export LC_TIME="en_US.UTF8"
@@ -12,7 +13,7 @@ export LC_ADDRESS="en_US.UTF8"
 export LC_TELEPHONE="en_US.UTF8"
 export LC_MEASUREMENT="en_US.UTF8"
 export LC_IDENTIFICATION="en_US.UTF8"
-export LC_ALL=en_US.UTF8
+export LC_ALL="en_US.UTF8"
 
 export LD_LIBRARY_PATH=${HOME}/.local/lib64:${HOME}/.local/lib:${LD_LIBRARY_PATH}
 
@@ -34,20 +35,6 @@ fi
 
 if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: ]]; then
     export PATH="${HOME}/.script.d/bin:${PATH}"
-fi
-
-if [ -f "${HOME}/.profile" ]; then
-    # shellcheck source=/dev/null
-    source "${HOME}/.profile"
-fi
-
-if [ -d "${HOME}/.profile.d" ]; then
-    for profile_file in "${HOME}"/.profile.d/*.sh; do
-        if [ -r "${profile_file}" ]; then
-            # shellcheck source=/dev/null
-            source "${profile_file}"
-        fi
-    done
 fi
 
 if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "${PATH}" =~ /var/lib/snapd/snap/bin: ]]; then

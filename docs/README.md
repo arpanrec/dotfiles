@@ -1,6 +1,6 @@
 # My Dotfiles and Scripts Repository
 
-* Caution: If some of my choices trigger you always remember the legend named `xkcd` and his wisdom about workflow which can be found [here in 1172](https://xkcd.com/1172/). If you are too lazy to read, just know "My setup works for me".
+* Caution: If some of my choices trigger you, always remember the legend named `xkcd` and his wisdom about workflow which can be found [here in 1172](https://xkcd.com/1172/). If you are too lazy to read, just know "My setup works for me".
 
 This repository contains my dotfiles and scripts, which I use to set up and configure my development environment. These files are essential for my workflow and help me maintain a consistent environment across different machines.
 
@@ -18,6 +18,11 @@ In this repository, you'll find my personal dotfiles for various applications an
 ```bash
 bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
 ```
+
+## Scripts
+
+* [Debian - debian-cloudinit.sh](/docs/.script.d/debian-cloudinit.md)
+* [Server Workspace - server-workspace.sh](/docs/.script.d/server-workspace.md)
 
 ## License
 

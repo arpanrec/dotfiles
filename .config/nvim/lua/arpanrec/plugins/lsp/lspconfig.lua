@@ -91,7 +91,11 @@ return {
             capabilities = capabilities,
             on_attach = on_attach,
             settings = {
-                ['rust-analyzer'] = {},
+                ['rust-analyzer'] = {
+                    diagnostics = {
+                        enable = false,
+                    }
+                },
             },
         })
 

@@ -159,6 +159,7 @@ return {
             require("neodev").setup({})
         end
 
+        -- configure lua server
         lspconfig.lua_ls.setup({
             capabilities = capabilities,
             on_attach = on_attach,

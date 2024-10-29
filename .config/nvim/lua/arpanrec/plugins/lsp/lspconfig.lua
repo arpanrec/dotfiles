@@ -7,7 +7,7 @@ return {
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp" },
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim",                   config = true },
+        { "folke/neodev.nvim", config = true },
         { "hrsh7th/vscode-langservers-extracted" },
     },
     config = function()
@@ -91,14 +91,15 @@ return {
             capabilities = capabilities,
             on_attach = on_attach,
             settings = {
-                ['rust-analyzer'] = {
+                ["rust-analyzer"] = {
                     diagnostics = {
                         enable = false,
-                    }
+                    },
                 },
             },
         })
 
+        -- Configure jsonls
         lspconfig.jsonls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
@@ -106,7 +107,7 @@ return {
             settings = {
                 json = {
                     schemas = {
-                        { fileMatch = { "package.json" },   url = "https://json.schemastore.org/package.json" },
+                        { fileMatch = { "package.json" }, url = "https://json.schemastore.org/package.json" },
                         { fileMatch = { "tsconfig*.json" }, url = "https://json.schemastore.org/tsconfig.json" },
                         {
                             fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
@@ -141,6 +142,7 @@ return {
             },
         })
 
+        -- configure gopls
         lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure python server
@@ -180,8 +182,10 @@ return {
             },
         })
 
+        -- configure ansible server
         lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
 
+        -- configure yaml server
         lspconfig.yamlls.setup({
             capabilities = capabilities,
             filetypes = {
@@ -211,6 +215,7 @@ return {
             },
         })
 
+        -- configure markdown server
         lspconfig.marksman.setup({ capabilities = capabilities, on_attach = on_attach })
     end,
 }

@@ -101,9 +101,10 @@ all:
     hosts:
         localhost:
             ansible_connection: local
-            ansible_python_interpreter: "$(which python3)"
+            ansible_python_interpreter: "/usr/bin/python3"
 EOF
 
+#             ansible_python_interpreter: "$(which python3)"
 ansible-playbook arpanrec.nebula.cloudinit
 
 deactivate

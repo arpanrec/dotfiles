@@ -39,22 +39,22 @@ return {
                 "bashls",
                 "rust-analyzer",
                 -- "pyright",
-                "ts_ls",
+                -- "ts_ls",
                 "jsonls",
-                "html",
-                "cssls",
-                "tailwindcss",
-                "svelte",
-                "graphql",
-                "emmet_ls",
-                "prismals",
+                -- "html",
+                -- "cssls",
+                -- "tailwindcss",
+                -- "svelte",
+                -- "graphql",
+                -- "emmet_ls",
+                -- "prismals",
                 "ansiblels",
                 "yamlls",
-                "cssmodules_ls",
+                -- "cssmodules_ls",
                 "marksman",
                 -- DAP
                 -- Linter
-                "eslint", -- This is not useded for lsp, but for linting only
+                -- "eslint", -- This is not useded for lsp, but for linting only
                 -- Formatter
             },
 
@@ -67,7 +67,7 @@ return {
         mason_tool_installer.setup({
             ensure_installed = {
                 -- LSP
-                "css-variables-language-server",
+                -- "css-variables-language-server",
                 -- DAP
                 -- Linter
                 "luacheck",

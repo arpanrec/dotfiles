@@ -200,7 +200,8 @@ return {
                     schemas = {
                         ["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
                         ["https://json.schemastore.org/bamboo-spec.json"] = { "bamboo-specs/*.{yml,yaml}" },
-                        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
+                        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"]
+                        = {
                             "docker-compose*.{yml,yaml}",
                         },
                         ["http://json.schemastore.org/github-workflow.json"] = { ".github/workflows/*.{yml,yaml}" },

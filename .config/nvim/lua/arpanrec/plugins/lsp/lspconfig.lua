@@ -184,7 +184,7 @@ return {
         })
 
         -- configure ansible server
-        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
+        -- lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure yaml server
         lspconfig.yamlls.setup({
@@ -192,7 +192,7 @@ return {
             filetypes = {
                 "yaml",
                 "yaml.docker-compose",
-                "yaml.ansible",
+                -- "yaml.ansible",
             },
             on_attach = on_attach,
             settings = {

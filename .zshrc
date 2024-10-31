@@ -42,7 +42,7 @@ if hash kubectl &>/dev/null ; then
 fi
 
 if command -v bw &> /dev/null; then
-    eval "$(bw completion --shell zsh); compdef _bw bw;"
+        eval "$(bw completion --shell zsh 2>/dev/null); compdef _bw bw;" 2>/dev/null
 fi
 
 if command -v vault &> /dev/null; then

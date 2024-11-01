@@ -32,7 +32,9 @@ CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
 For Linode stack script `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true` by default, `CLOUD_INIT_IS_DEV_MACHINE` is set to `false` by default and `CLOUD_INIT_INSTALL_DOTFILES` is set to `true` by default.
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
 # <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
 # <UDF name="CLOUD_INIT_IS_DEV_MACHINE" Label="Install development tool chain" oneOf="true,false" default="false"/>
 # <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Install dotfiles" oneOf="true,false" default="true"/>

@@ -235,7 +235,7 @@ echo "--------------------------------------------------------------------------
 
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
-# We can test this script by creating a dummy shell(.sh) file and check with shell check.
+# We can test this script by creating a dummy shell(.sh) file and check with [shell check](https://www.shellcheck.net/).
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -euo pipefail

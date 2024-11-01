@@ -158,7 +158,7 @@ pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-export NEBULA_VERSION=1.9.1
+export NEBULA_VERSION=${NEBULA_VERSION:-latest}
 
 printf "\n\n================================================================================\n"
 echo "Installing nebula version ${NEBULA_VERSION}"

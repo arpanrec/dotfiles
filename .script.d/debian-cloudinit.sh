@@ -250,7 +250,7 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
     printf "\n\n================================================================================\n"
     echo "Installing/Reseting dotfiles"
     echo "--------------------------------------------------------------------------------"
-    bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
+    bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 '
 
 printf "\n\n================================================================================\n"

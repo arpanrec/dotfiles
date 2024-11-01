@@ -16,14 +16,14 @@ Variables:
 
 ```bash
 sudo -E -H -u root bash -c '/bin/bash <(curl \
-    -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit.sh)'
+    -s https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```
 
 or for development machine
 
 ```bash
 CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
-    bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit.sh)'
+    bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```
 
 ## [Linode stack script](https://cloud.linode.com/stackscripts/1164660)
@@ -41,6 +41,6 @@ echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" >> /etc/environment
 source /etc/environment
 
 sudo -E -H -u root bash -c '/bin/bash <(curl -s \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/debian-cloudinit.sh)'
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 
 ```

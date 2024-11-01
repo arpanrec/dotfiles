@@ -13,6 +13,7 @@ Variables:
 * `CLOUD_INIT_COPY_ROOT_SSH_KEYS` - Copy root SSH keys to the user. Default `false`.
 * `CLOUD_INIT_HOSTNAME` - Hostname for the machine. Default `cloudinit`.
 * `CLOUD_INIT_DOMAIN` - Domain name for the machine. Default `cloudinit`.
+* `CLOUD_INIT_INSTALL_DOTFILES` - Install dotfiles for the user. Default `true`.
 
 ```bash
 sudo -E -H -u root bash -c '/bin/bash <(curl \
@@ -28,10 +29,17 @@ CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
 
 ## [Linode stack script](https://cloud.linode.com/stackscripts/1164660)
 
+For Linode stack script `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true` by default, `CLOUD_INIT_IS_DEV_MACHINE` is set to `false` by default and `CLOUD_INIT_INSTALL_DOTFILES` is set to `true` by default.
+
 ```bash
 #!/bin/bash
 # <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
 # <UDF name="CLOUD_INIT_IS_DEV_MACHINE" Label="Install development tool chain" oneOf="true,false" default="false"/>
+# <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
+
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit-linode-stackscript: Starting"
+echo "--------------------------------------------------------------------------------"
 
 echo "LINODE_ID=${LINODE_ID}" >> /etc/environment
 echo "LINODE_LISHUSERNAME=${LINODE_LISHUSERNAME}" >> /etc/environment

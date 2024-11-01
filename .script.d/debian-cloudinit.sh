@@ -26,6 +26,7 @@ export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
 export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
 export CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-cloudinit}
 export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-cloudinit}
+export CLOUD_INIT_INSTALL_DOTFILES=${CLOUD_INIT_INSTALL_DOTFILES:-true}
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
     printf "\n\n================================================================================\n"
@@ -57,6 +58,17 @@ if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
 else
     printf "\n\n================================================================================\n"
     echo "debian-cloudinit: CLOUD_INIT_IS_DEV_MACHINE is set as ${CLOUD_INIT_IS_DEV_MACHINE}"
+    echo "--------------------------------------------------------------------------------"
+fi
+
+if [[ ! "${CLOUD_INIT_INSTALL_DOTFILES}" =~ ^true|false$ ]]; then
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: CLOUD_INIT_INSTALL_DOTFILES must be a boolean (true|false), exiting"
+    echo "--------------------------------------------------------------------------------"
+    exit 1
+else
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: CLOUD_INIT_INSTALL_DOTFILES is set as ${CLOUD_INIT_INSTALL_DOTFILES}"
     echo "--------------------------------------------------------------------------------"
 fi
 
@@ -252,10 +264,16 @@ echo "debian-cloudinit: Deactivating virtual environment at ${CLOUD_INIT_ANSIBLE
 echo "--------------------------------------------------------------------------------"
 deactivate
 
-printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Installing/Reseting dotfiles"
-echo "--------------------------------------------------------------------------------"
-bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Installing/Reseting dotfiles"
+    echo "--------------------------------------------------------------------------------"
+    bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+else
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Skipping dotfiles installation as `CLOUD_INIT_INSTALL_DOTFILES` is set to not true"
+    echo "--------------------------------------------------------------------------------"
+fi
 
 '
 

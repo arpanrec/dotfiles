@@ -35,7 +35,7 @@ For Linode stack script `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true` by defa
 #!/bin/bash
 # <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
 # <UDF name="CLOUD_INIT_IS_DEV_MACHINE" Label="Install development tool chain" oneOf="true,false" default="false"/>
-# <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
+# <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Install dotfiles" oneOf="true,false" default="true"/>
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit-linode-stackscript: Starting"

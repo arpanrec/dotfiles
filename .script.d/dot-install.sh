@@ -5,7 +5,7 @@ dotfiles_git_remote="https://github.com/arpanrec/dotfiles.git"
 dotfiles_dir="${HOME}/.dotfiles"
 
 printf "\n\n================================================================================\n"
-echo "dot-install: Installing dotfiles from ${dotfiles_git_remote}"
+echo "dot-install: Installing dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir}"
 echo "--------------------------------------------------------------------------------"
 
 if [ -f "${HOME}/.ssh/github.com" ]; then

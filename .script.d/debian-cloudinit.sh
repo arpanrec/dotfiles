@@ -223,36 +223,40 @@ echo "--------------------------------------------------------------------------
 
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
+# We can test this script by creating a dummy shell(.sh) file and check with shell check.
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
-    set -euo pipefail
+#!/usr/bin/env bash
+set -euo pipefail
 
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: Activating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+echo "--------------------------------------------------------------------------------"
+# shellcheck source=/dev/null
+source "${CLOUD_INIT_ANSIBLE_VENV_PATH}/bin/activate"
+
+if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Activating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+    echo "debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
     echo "--------------------------------------------------------------------------------"
-    source "${CLOUD_INIT_ANSIBLE_VENV_PATH}/bin/activate"
-
-    if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-        printf "\n\n================================================================================\n"
-        echo "debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
-        echo "--------------------------------------------------------------------------------"
-        ansible-playbook arpanrec.nebula.server_workspace --tags all
-    else
-        printf "\n\n================================================================================\n"
-        echo "debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace without java, go, terraform, vault, nodejs, bws, pulumi tags"
-        echo "--------------------------------------------------------------------------------"
-        ansible-playbook arpanrec.nebula.server_workspace --tags all \
-            --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
-    fi
-
+    ansible-playbook arpanrec.nebula.server_workspace --tags all
+else
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Deactivating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+    echo "debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace without java, go, terraform, vault, nodejs, bws, pulumi tags"
     echo "--------------------------------------------------------------------------------"
-    deactivate
+    ansible-playbook arpanrec.nebula.server_workspace --tags all \
+        --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
+fi
 
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Installing/Reseting dotfiles"
-    echo "--------------------------------------------------------------------------------"
-    bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: Deactivating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+echo "--------------------------------------------------------------------------------"
+deactivate
+
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: Installing/Reseting dotfiles"
+echo "--------------------------------------------------------------------------------"
+bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+
 '
 
 printf "\n\n================================================================================\n"

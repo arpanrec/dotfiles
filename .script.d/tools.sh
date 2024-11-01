@@ -7,21 +7,30 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 
 install_neovim() {
-    echo "Installing Neovim"
+    printf "\n\n================================================================================\n"
+    echo "tools: Installing Neovim"
+    echo "--------------------------------------------------------------------------------"
 
-    echo "Checking for CPU count"
+    printf "\n\n================================================================================\n"
+    echo "tools: Checking for CPU count"
+    echo "--------------------------------------------------------------------------------"
     CPUCOUNT=$(grep -c "^processor" /proc/cpuinfo)
-    echo "CPU count is ${CPUCOUNT}"
+    printf "\n\n================================================================================\n"
+    echo "tools: CPU count is ${CPUCOUNT}"
+    echo "--------------------------------------------------------------------------------"
 
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
     NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
     NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.10.2"}"
-    echo "Neovim version is ${NEOVIM_VERSION}"
-
+    printf "\n\n================================================================================\n"
+    echo "tools: Creating Neovim directories"
+    echo "--------------------------------------------------------------------------------"
     mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 
-    echo "Cloning Neovim to ${NEOVIM_GIT_CLONE_DIR}"
+    printf "\n\n================================================================================\n"
+    echo "tools: Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
+    echo "--------------------------------------------------------------------------------"
     git clone https://github.com/neovim/neovim.git --single-branch \
         --branch="${NEOVIM_VERSION}" --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
 
@@ -32,16 +41,22 @@ install_neovim() {
     rm -rf "${NEOVIM_INSTALL_DIR}/bin/nvim"
     rm -rf "${HOME}/.cache/nvim"
 
-    echo "Building Neovim"
+    printf "\n\n================================================================================\n"
+    echo "tools: Building Neovim"
+    echo "--------------------------------------------------------------------------------"
     make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}" -j"${CPUCOUNT}"
     make install
 
 }
 
-echo "Installing Rust"
+printf "\n\n================================================================================\n"
+echo "tools: Installing Rust"
+echo "--------------------------------------------------------------------------------"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete --verbose
 
-echo "Sourcing cargo env"
+printf "\n\n================================================================================\n"
+echo "tools: Setting up Rust environment"
+echo "--------------------------------------------------------------------------------"
 # shellcheck source=/dev/null
 source "${HOME}/.cargo/env"
 
@@ -50,9 +65,13 @@ rustup update
 declare -a cargo_packages=("ripgrep" "fd-find")
 
 if command -v cargo &>/dev/null; then
-    echo "Installing cargo packages"
+    printf "\n\n================================================================================\n"
+    echo "tools: Installing cargo packages"
+    echo "--------------------------------------------------------------------------------"
     for cargo_package in "${cargo_packages[@]}"; do
-        echo "Installing cargo package ${cargo_package}"
+        printf "\n\n================================================================================\n"
+        echo "tools: Installing cargo package ${cargo_package}"
+        echo "--------------------------------------------------------------------------------"
         cargo install "${cargo_package}"
     done
 fi
@@ -65,9 +84,13 @@ if command -v npm &>/dev/null; then
     #     corepack enable pnpm yarn
     # fi
 
-    echo "Installing npm packages"
+    printf "\n\n================================================================================\n"
+    echo "tools: Installing npm packages"
+    echo "--------------------------------------------------------------------------------"
     for npm_package in "${npm_packages[@]}"; do
-        echo "Installing npm package globally ${npm_package}"
+        printf "\n\n================================================================================\n"
+        echo "tools: Installing npm package ${npm_package}"
+        echo "--------------------------------------------------------------------------------"
         npm install -g "${npm_package}"
     done
 fi
@@ -81,9 +104,13 @@ declare -a go_packages=(
 )
 
 if command -v go &>/dev/null; then
-    echo "Installing go packages"
+    printf "\n\n================================================================================\n"
+    echo "tools: Installing go packages"
+    echo "--------------------------------------------------------------------------------"
     for go_package in "${go_packages[@]}"; do
-        echo "Installing go package ${go_package}"
+        printf "\n\n================================================================================\n"
+        echo "tools: Installing go package ${go_package}"
+        echo "--------------------------------------------------------------------------------"
         go install "${go_package}"
     done
 fi

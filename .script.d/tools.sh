@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -euo pipefail
 
 if [ "$(id -u)" -eq 0 ]; then
     echo "Root user detected!!!! Error"

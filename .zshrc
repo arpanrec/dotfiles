@@ -41,9 +41,10 @@ if hash kubectl &>/dev/null ; then
     source <(kubectl completion zsh)
 fi
 
-if command -v bw &> /dev/null; then
-        eval "$(bw completion --shell zsh 2>/dev/null); compdef _bw bw;" 2>/dev/null
-fi
+# Remove bw completion because it's slow
+# if command -v bw &> /dev/null; then
+#         eval "$(bw completion --shell zsh 2>/dev/null); compdef _bw bw;" 2>/dev/null
+# fi
 
 if command -v vault &> /dev/null; then
     autoload -U +X bashcompinit && bashcompinit

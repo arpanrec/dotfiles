@@ -105,43 +105,45 @@ else
     exit 1
 fi
 
-export CLOUD_INIT_ANSIBLE_DIR="${CLOUD_INIT_ANSIBLE_DIR:-"/tmp/cloudinit"}"
-export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${CLOUD_INIT_ANSIBLE_DIR}/roles}"
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
-export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${CLOUD_INIT_ANSIBLE_DIR}/collections}"
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${CLOUD_INIT_ANSIBLE_DIR}/inventory.yml}"
-export CLOUD_INIT_ANSIBLE_VENV_PATH="${CLOUD_INIT_ANSIBLE_DIR}/venv"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
+export NEBULA_VERSION=${NEBULA_VERSION:-"1.9.3"}
+export NEBULA_VENV_DIR="${NEBULA_TMP_DIR}/venv"
 
-# rm -rf "${CLOUD_INIT_ANSIBLE_DIR}"
-if [ -d "${CLOUD_INIT_ANSIBLE_DIR}" ]; then
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${NEBULA_TMP_DIR}/roles}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${NEBULA_TMP_DIR}/collections}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${NEBULA_TMP_DIR}/inventory.yml}"
+
+# rm -rf "${NEBULA_TMP_DIR}"
+if [ -d "${NEBULA_TMP_DIR}" ]; then
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Directory ${CLOUD_INIT_ANSIBLE_DIR} already exists, Changing ownership to root"
+    echo "debian-cloudinit: Directory ${NEBULA_TMP_DIR} already exists, Changing ownership to root"
     echo "--------------------------------------------------------------------------------"
-    chown -R root:root "${CLOUD_INIT_ANSIBLE_DIR}"
+    chown -R root:root "${NEBULA_TMP_DIR}"
 else
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Directory ${CLOUD_INIT_ANSIBLE_DIR} does not exist"
+    echo "debian-cloudinit: Directory ${NEBULA_TMP_DIR} does not exist"
     echo "--------------------------------------------------------------------------------"
 fi
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: Creating directories"
 echo "--------------------------------------------------------------------------------"
-mkdir -p "${CLOUD_INIT_ANSIBLE_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
+mkdir -p "${NEBULA_TMP_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Creating authorized_keys file at ${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
+echo "debian-cloudinit: Creating authorized_keys file at ${NEBULA_TMP_DIR}/authorized_keys"
 echo "--------------------------------------------------------------------------------"
-tee "${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys" <<EOF >/dev/null
+tee "${NEBULA_TMP_DIR}/authorized_keys" <<EOF >/dev/null
 ${CLOUD_INIT_USE_SSH_PUB}
 EOF
 
 if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Copying root's authorized_keys to ${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
+    echo "debian-cloudinit: Copying root's authorized_keys to ${NEBULA_TMP_DIR}/authorized_keys"
     echo "--------------------------------------------------------------------------------"
-    cat "/root/.ssh/authorized_keys" >>"${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys"
+    cat "/root/.ssh/authorized_keys" >>"${NEBULA_TMP_DIR}/authorized_keys"
 else
     printf "\n\n================================================================================\n"
     echo "debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding any extra keys to ${CLOUD_INIT_USER}"
@@ -154,22 +156,22 @@ echo "--------------------------------------------------------------------------
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget
 
-if [ ! -d "${CLOUD_INIT_ANSIBLE_VENV_PATH}" ]; then
+if [ ! -d "${NEBULA_VENV_DIR}" ]; then
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Creating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+    echo "debian-cloudinit: Creating virtual environment at ${NEBULA_VENV_DIR}"
     echo "--------------------------------------------------------------------------------"
-    python3 -m venv "${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+    python3 -m venv "${NEBULA_VENV_DIR}"
 else
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Virtual environment already exists at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+    echo "debian-cloudinit: Virtual environment already exists at ${NEBULA_VENV_DIR}"
     echo "--------------------------------------------------------------------------------"
 fi
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Activating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+echo "debian-cloudinit: Activating virtual environment at ${NEBULA_VENV_DIR}"
 echo "--------------------------------------------------------------------------------"
 # shellcheck source=/dev/null
-source "${CLOUD_INIT_ANSIBLE_VENV_PATH}/bin/activate"
+source "${NEBULA_VENV_DIR}/bin/activate"
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: Installing ansible and hvac using pip3"
@@ -177,8 +179,6 @@ echo "--------------------------------------------------------------------------
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
-
-export NEBULA_VERSION=${NEBULA_VERSION:-"1.9.1"}
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: Installing nebula version ${NEBULA_VERSION}"
@@ -210,7 +210,7 @@ all:
                 ansible_become: false
                 pv_cloud_init_user: ${CLOUD_INIT_USER}
                 pv_cloud_init_group: ${CLOUD_INIT_GROUP}
-                pv_cloud_init_authorized_keys: ${CLOUD_INIT_ANSIBLE_DIR}/authorized_keys
+                pv_cloud_init_authorized_keys: ${NEBULA_TMP_DIR}/authorized_keys
                 pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
                 pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
                 pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}
@@ -229,17 +229,17 @@ echo "--------------------------------------------------------------------------
 ansible-playbook arpanrec.nebula.cloudinit
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Deactivating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+echo "debian-cloudinit: Deactivating virtual environment at ${NEBULA_VENV_DIR}"
 echo "--------------------------------------------------------------------------------"
 
 deactivate
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Changing ownership of ${CLOUD_INIT_ANSIBLE_DIR} to ${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
+echo "debian-cloudinit: Changing ownership of ${NEBULA_TMP_DIR} to ${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 echo "debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace"
 echo "--------------------------------------------------------------------------------"
 
-chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
+chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}"
 
 # We can test this script by creating a dummy shell(.sh) file and check with [shell check](https://www.shellcheck.net/).
 # > man sudo
@@ -257,10 +257,10 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 set -euo pipefail
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Activating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+echo "debian-cloudinit: Activating virtual environment at ${NEBULA_VENV_DIR}"
 echo "--------------------------------------------------------------------------------"
 # shellcheck source=/dev/null
-source "${CLOUD_INIT_ANSIBLE_VENV_PATH}/bin/activate"
+source "${NEBULA_VENV_DIR}/bin/activate"
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     printf "\n\n================================================================================\n"
@@ -276,7 +276,7 @@ else
 fi
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Deactivating virtual environment at ${CLOUD_INIT_ANSIBLE_VENV_PATH}"
+echo "debian-cloudinit: Deactivating virtual environment at ${NEBULA_VENV_DIR}"
 echo "--------------------------------------------------------------------------------"
 deactivate
 
@@ -294,9 +294,9 @@ fi
 '
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Changing ownership of ${CLOUD_INIT_ANSIBLE_DIR} to root:root"
+echo "debian-cloudinit: Changing ownership of ${NEBULA_TMP_DIR} to root:root"
 echo "--------------------------------------------------------------------------------"
-chown -R root:root "${CLOUD_INIT_ANSIBLE_DIR}"
+chown -R root:root "${NEBULA_TMP_DIR}"
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: Completed"

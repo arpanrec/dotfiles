@@ -125,23 +125,23 @@ else
     echo "--------------------------------------------------------------------------------"
 fi
 
-# deactivate || true
-export SERVER_WORKSPACE_TMP_DIR="${SERVER_WORKSPACE_TMP_DIR:-${HOME}/.tmp}"
-export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${SERVER_WORKSPACE_TMP_DIR}/roles}"
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
-export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${SERVER_WORKSPACE_TMP_DIR}/collections}"
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${SERVER_WORKSPACE_TMP_DIR}/inventory.yml}"
-export SERVER_WORKSPACE_EXTRA_VARS_JSON="${SERVER_WORKSPACE_EXTRA_VARS_JSON:-${SERVER_WORKSPACE_TMP_DIR}/server_workspace.json}"
-export NEBULA_VERSION="${NEBULA_VERSION:-1.9.0}"
-export _server_workspace_venv_directory="${SERVER_WORKSPACE_TMP_DIR}/sw_venv"
 export PATH="${HOME}/.local/bin:${PATH}"
 
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-${HOME}/.tmp}"
+export NEBULA_VERSION="${NEBULA_VERSION:-1.9.3}"
+export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-${NEBULA_TMP_DIR}/venv}"
+export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-${NEBULA_TMP_DIR}/extra_vars.json}"
+
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${NEBULA_TMP_DIR}/roles}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${NEBULA_TMP_DIR}/collections}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${NEBULA_TMP_DIR}/inventory.yml}"
+
 printf "\n\n================================================================================\n"
-echo "server-workspace: Creating SERVER_WORKSPACE_TMP_DIR at ${SERVER_WORKSPACE_TMP_DIR}"
+echo "server-workspace: Creating NEBULA_TMP_DIR at ${NEBULA_TMP_DIR}"
 echo "--------------------------------------------------------------------------------"
-mkdir -p "${SERVER_WORKSPACE_TMP_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
-    "$(dirname "${ANSIBLE_INVENTORY}")" "$(dirname "${SERVER_WORKSPACE_EXTRA_VARS_JSON}")"
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
+    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 if [[ -z "${VIRTUAL_ENV+x}" ]]; then
     printf "\n\n================================================================================\n"
@@ -155,29 +155,29 @@ else
 fi
 
 # shellcheck source=/dev/null
-if [[ ! -d "${_server_workspace_venv_directory}" ]]; then
-    $(readlink -f "$(which "$(which_os_python)")") -m venv "${_server_workspace_venv_directory}"
+if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then
+    $(readlink -f "$(which "$(which_os_python)")") -m venv "${NEBULA_VENV_DIR}"
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Virtual Environment created at ${_server_workspace_venv_directory}"
+    echo "server-workspace: Virtual Environment created at ${NEBULA_VENV_DIR}"
     echo "--------------------------------------------------------------------------------"
 else
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Virtual Environment already exists at ${_server_workspace_venv_directory}"
+    echo "server-workspace: Virtual Environment already exists at ${NEBULA_VENV_DIR}"
     echo "--------------------------------------------------------------------------------"
 fi
 
-if [[ -f "${_server_workspace_venv_directory}/local/bin/activate" ]]; then
+if [[ -f "${NEBULA_VENV_DIR}/local/bin/activate" ]]; then
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Activating ${_server_workspace_venv_directory}/local/bin/activate"
+    echo "server-workspace: Activating ${NEBULA_VENV_DIR}/local/bin/activate"
     echo "--------------------------------------------------------------------------------"
     # shellcheck source=/dev/null
-    source "${_server_workspace_venv_directory}/local/bin/activate"
+    source "${NEBULA_VENV_DIR}/local/bin/activate"
 else
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Activating ${_server_workspace_venv_directory}/bin/activate"
+    echo "server-workspace: Activating ${NEBULA_VENV_DIR}/bin/activate"
     echo "--------------------------------------------------------------------------------"
     # shellcheck source=/dev/null
-    source "${_server_workspace_venv_directory}/bin/activate"
+    source "${NEBULA_VENV_DIR}/bin/activate"
 fi
 
 printf "\n\n================================================================================\n"
@@ -196,18 +196,18 @@ ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
 printf "\n\n================================================================================\n"
-echo "server-workspace: SERVER_WORKSPACE_EXTRA_VARS_JSON :: ${SERVER_WORKSPACE_EXTRA_VARS_JSON}"
+echo "server-workspace: NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 echo "--------------------------------------------------------------------------------"
-if [[ ! -f "${SERVER_WORKSPACE_EXTRA_VARS_JSON}" ]]; then
+if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Creating ${SERVER_WORKSPACE_EXTRA_VARS_JSON}"
+    echo "server-workspace: Creating ${NEBULA_EXTRA_VARS_JSON_FILE}"
     echo "--------------------------------------------------------------------------------"
-    echo "Creating directory $(dirname "${SERVER_WORKSPACE_EXTRA_VARS_JSON}")"
-    mkdir -p "$(dirname "${SERVER_WORKSPACE_EXTRA_VARS_JSON}")"
-    echo "{}" >"${SERVER_WORKSPACE_EXTRA_VARS_JSON}"
+    echo "Creating directory $(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
+    mkdir -p "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
+    echo "{}" >"${NEBULA_EXTRA_VARS_JSON_FILE}"
 else
     printf "\n\n================================================================================\n"
-    echo "server-workspace: ${SERVER_WORKSPACE_EXTRA_VARS_JSON} exists"
+    echo "server-workspace: ${NEBULA_EXTRA_VARS_JSON_FILE} exists"
     echo "--------------------------------------------------------------------------------"
 fi
 
@@ -232,8 +232,8 @@ EOF
 cd "${HOME}" || exit 1
 
 if [[ -n "${__ansible_tags+x}" && "${__ansible_tags+x}" != "," && -z $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${SERVER_WORKSPACE_EXTRA_VARS_JSON}" \
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
         --tags "${__ansible_tags::-1}"
 elif [[ -z "${__ansible_tags+x}" && -n $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${SERVER_WORKSPACE_EXTRA_VARS_JSON}" "$@"
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
 fi

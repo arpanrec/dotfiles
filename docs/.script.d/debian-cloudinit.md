@@ -15,7 +15,7 @@ Variables:
 * `CLOUD_INIT_INSTALL_DOTFILES` : Install dotfiles for the user. Default `true`.
 
 * `NEBULA_TMP_DIR` : Directory to clone the ansible playbook. Default `/tmp/cloudinit`.
-* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.9.1`.
+* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.9.3`.
 * `NEBULA_VENV_DIR` : Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
   
 * `DEFAULT_ROLES_PATH` : Directory to clone the ansible roles. Default `${NEBULA_TMP_DIR}/roles`.

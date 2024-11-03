@@ -6,6 +6,8 @@ fi
 
 export ZSH="$HOME/.oh-my-zsh"
 
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ENABLE_CORRECTION="false"
@@ -19,8 +21,6 @@ plugins=(fzf
     )
 
 autoload -U compinit && compinit
-
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 [[ ! -f "$ZSH/oh-my-zsh.sh" ]] || source "$ZSH/oh-my-zsh.sh"
 

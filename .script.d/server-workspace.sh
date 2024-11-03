@@ -2,7 +2,9 @@
 set -e
 
 if [[ $(id -u) -eq 0 ]]; then
-    echo "Root user detected!!!! Error"
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Root user detected, Please run this script as a non-root user, Exiting"
+    echo "--------------------------------------------------------------------------------"
     exit 1
 fi
 
@@ -16,8 +18,9 @@ which_os_python() {
             return
         fi
     done
-
-    echo "Supported Python version not found, Only Python3.6+ >< 4 is supported"
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
+    echo "--------------------------------------------------------------------------------"
     exit 1
 }
 
@@ -116,62 +119,93 @@ if [[ -z $* ]]; then
     fi
 
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
-
+else
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Running with custom tags :: $*"
+    echo "--------------------------------------------------------------------------------"
 fi
 
 # deactivate || true
-export _server_workspace_tmp_dir="${_server_workspace_tmp_dir:-${HOME}/.tmp}"
-export DEFAULT_ROLES_PATH="${_server_workspace_tmp_dir}/roles"
-export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
-export ANSIBLE_COLLECTIONS_PATH="${_server_workspace_tmp_dir}/collections"
-export ANSIBLE_INVENTORY="${_server_workspace_tmp_dir}/server_workspace_inventory.yml"
-export MMC_SERVER_WORKSPACE_JSON="${MMC_SERVER_WORKSPACE_JSON:-${_server_workspace_tmp_dir}/server_workspace.json}"
-export _server_workspace_venv_directory="${_server_workspace_tmp_dir}/sw_venv"
+export SERVER_WORKSPACE_TMP_DIR="${SERVER_WORKSPACE_TMP_DIR:-${HOME}/.tmp}"
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${SERVER_WORKSPACE_TMP_DIR}/roles}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${SERVER_WORKSPACE_TMP_DIR}/collections}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${SERVER_WORKSPACE_TMP_DIR}/inventory.yml}"
+export SERVER_WORKSPACE_EXTRA_VARS_JSON="${SERVER_WORKSPACE_EXTRA_VARS_JSON:-${SERVER_WORKSPACE_TMP_DIR}/server_workspace.json}"
+export NEBULA_VERSION="${NEBULA_VERSION:-1.9.0}"
+export _server_workspace_venv_directory="${SERVER_WORKSPACE_TMP_DIR}/sw_venv"
 
-echo "Server Workspace :: ${_server_workspace_tmp_dir}"
-mkdir -p "${_server_workspace_tmp_dir}"
+printf "\n\n================================================================================\n"
+echo "server-workspace: Creating SERVER_WORKSPACE_TMP_DIR at ${SERVER_WORKSPACE_TMP_DIR}"
+echo "--------------------------------------------------------------------------------"
+mkdir -p "${SERVER_WORKSPACE_TMP_DIR}"
 
 # shellcheck source=/dev/null
 if [[ -z ${VIRTUAL_ENV} ]]; then
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Creating Virtual Environment at ${_server_workspace_venv_directory}"
+    echo "--------------------------------------------------------------------------------"
     export PATH="${HOME}/.local/bin:${PATH}"
     if [[ ! -d "${_server_workspace_venv_directory}" ]]; then
         $(readlink -f "$(which "$(which_os_python)")") -m venv "${_server_workspace_venv_directory}"
+        printf "\n\n================================================================================\n"
+        echo "server-workspace: Virtual Environment created at ${_server_workspace_venv_directory}"
+        echo "--------------------------------------------------------------------------------"
+    else
+        printf "\n\n================================================================================\n"
+        echo "server-workspace: Virtual Environment already exists at ${_server_workspace_venv_directory}"
+        echo "--------------------------------------------------------------------------------"
     fi
     if [[ -f "${_server_workspace_venv_directory}/local/bin/activate" ]]; then
+        printf "\n\n================================================================================\n"
+        echo "server-workspace: Activating ${_server_workspace_venv_directory}/local/bin/activate"
+        echo "--------------------------------------------------------------------------------"
         source "${_server_workspace_venv_directory}/local/bin/activate"
     else
         source "${_server_workspace_venv_directory}/bin/activate"
+        printf "\n\n================================================================================\n"
+        echo "server-workspace: Activating ${_server_workspace_venv_directory}/bin/activate"
+        echo "--------------------------------------------------------------------------------"
     fi
+else
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Already in Virtual Environment :: ${VIRTUAL_ENV}"
+    echo "--------------------------------------------------------------------------------"
 fi
 
-echo ""
-echo "Python :: $(python --version)"
-echo "Virtual Env :: ${VIRTUAL_ENV}"
-echo "Working dir :: ${PWD}"
+printf "\n\n================================================================================\n"
+echo "server-workspace: Python :: $(python --version)"
+echo "server-workspace: Virtual Env :: ${VIRTUAL_ENV}"
+echo "server-workspace: Working dir :: ${PWD}"
+echo "--------------------------------------------------------------------------------"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-export NEBULA_VERSION=1.9.0
 curl "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
     -o "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
-echo "MMC_SERVER_WORKSPACE_JSON :: ${MMC_SERVER_WORKSPACE_JSON}"
-echo "Check if ${MMC_SERVER_WORKSPACE_JSON} exists"
-if [[ ! -f "${MMC_SERVER_WORKSPACE_JSON}" ]]; then
-    echo "Creating ${MMC_SERVER_WORKSPACE_JSON}"
-    echo "Creating directory $(dirname "${MMC_SERVER_WORKSPACE_JSON}")"
-    mkdir -p "$(dirname "${MMC_SERVER_WORKSPACE_JSON}")"
-    echo "{}" >"${MMC_SERVER_WORKSPACE_JSON}"
-    echo "File ${MMC_SERVER_WORKSPACE_JSON} created"
+printf "\n\n================================================================================\n"
+echo "server-workspace: SERVER_WORKSPACE_EXTRA_VARS_JSON :: ${SERVER_WORKSPACE_EXTRA_VARS_JSON}"
+echo "--------------------------------------------------------------------------------"
+if [[ ! -f "${SERVER_WORKSPACE_EXTRA_VARS_JSON}" ]]; then
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Creating ${SERVER_WORKSPACE_EXTRA_VARS_JSON}"
+    echo "--------------------------------------------------------------------------------"
+    echo "Creating directory $(dirname "${SERVER_WORKSPACE_EXTRA_VARS_JSON}")"
+    mkdir -p "$(dirname "${SERVER_WORKSPACE_EXTRA_VARS_JSON}")"
+    echo "{}" >"${SERVER_WORKSPACE_EXTRA_VARS_JSON}"
 else
-    echo "File ${MMC_SERVER_WORKSPACE_JSON} exists"
-    echo "This file will be used as extra-vars"
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: ${SERVER_WORKSPACE_EXTRA_VARS_JSON} exists"
+    echo "--------------------------------------------------------------------------------"
 fi
 
-echo "Creating ${ANSIBLE_INVENTORY}"
+printf "\n\n================================================================================\n"
+echo "server-workspace: Creating ansible inventory yaml file. ANSIBLE_INVENTORY :: ${ANSIBLE_INVENTORY}"
+echo "--------------------------------------------------------------------------------"
 tee "${ANSIBLE_INVENTORY}" >/dev/null <<EOF
 ---
 all:
@@ -190,8 +224,8 @@ EOF
 cd "${HOME}" || exit 1
 
 if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" \
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${SERVER_WORKSPACE_EXTRA_VARS_JSON}" \
         --tags "${__ansible_tags::-1}"
 elif [[ -z ${__ansible_tags} && -n $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${MMC_SERVER_WORKSPACE_JSON}" "$@"
+    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${SERVER_WORKSPACE_EXTRA_VARS_JSON}" "$@"
 fi

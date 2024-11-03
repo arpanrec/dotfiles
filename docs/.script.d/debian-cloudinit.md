@@ -58,6 +58,6 @@ echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" >> /etc/environment
 source /etc/environment
 
 sudo -E -H -u root bash -c '/bin/bash <(curl -s \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)' | tee -a /root/debian-cloudinit.log
 
 ```

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 if [[ $(id -u) -eq 0 ]]; then
     printf "\n\n================================================================================\n"
@@ -134,49 +134,57 @@ export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${SERVER_WORKSPACE_TMP_DIR}/inven
 export SERVER_WORKSPACE_EXTRA_VARS_JSON="${SERVER_WORKSPACE_EXTRA_VARS_JSON:-${SERVER_WORKSPACE_TMP_DIR}/server_workspace.json}"
 export NEBULA_VERSION="${NEBULA_VERSION:-1.9.0}"
 export _server_workspace_venv_directory="${SERVER_WORKSPACE_TMP_DIR}/sw_venv"
+export PATH="${HOME}/.local/bin:${PATH}"
 
 printf "\n\n================================================================================\n"
 echo "server-workspace: Creating SERVER_WORKSPACE_TMP_DIR at ${SERVER_WORKSPACE_TMP_DIR}"
 echo "--------------------------------------------------------------------------------"
-mkdir -p "${SERVER_WORKSPACE_TMP_DIR}"
+mkdir -p "${SERVER_WORKSPACE_TMP_DIR}" "${DEFAULT_ROLES_PATH}" \
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
+    "$(dirname "${ANSIBLE_INVENTORY}")" "$(dirname "${SERVER_WORKSPACE_EXTRA_VARS_JSON}")"
 
-# shellcheck source=/dev/null
-if [[ -z ${VIRTUAL_ENV} ]]; then
+if [[ -z "${VIRTUAL_ENV+x}" ]]; then
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Creating Virtual Environment at ${_server_workspace_venv_directory}"
+    echo "server-workspace: Virtual environment is not activated"
     echo "--------------------------------------------------------------------------------"
-    export PATH="${HOME}/.local/bin:${PATH}"
-    if [[ ! -d "${_server_workspace_venv_directory}" ]]; then
-        $(readlink -f "$(which "$(which_os_python)")") -m venv "${_server_workspace_venv_directory}"
-        printf "\n\n================================================================================\n"
-        echo "server-workspace: Virtual Environment created at ${_server_workspace_venv_directory}"
-        echo "--------------------------------------------------------------------------------"
-    else
-        printf "\n\n================================================================================\n"
-        echo "server-workspace: Virtual Environment already exists at ${_server_workspace_venv_directory}"
-        echo "--------------------------------------------------------------------------------"
-    fi
-    if [[ -f "${_server_workspace_venv_directory}/local/bin/activate" ]]; then
-        printf "\n\n================================================================================\n"
-        echo "server-workspace: Activating ${_server_workspace_venv_directory}/local/bin/activate"
-        echo "--------------------------------------------------------------------------------"
-        source "${_server_workspace_venv_directory}/local/bin/activate"
-    else
-        source "${_server_workspace_venv_directory}/bin/activate"
-        printf "\n\n================================================================================\n"
-        echo "server-workspace: Activating ${_server_workspace_venv_directory}/bin/activate"
-        echo "--------------------------------------------------------------------------------"
-    fi
 else
     printf "\n\n================================================================================\n"
-    echo "server-workspace: Already in Virtual Environment :: ${VIRTUAL_ENV}"
+    echo "server-workspace: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     echo "--------------------------------------------------------------------------------"
+    exit 1
+fi
+
+# shellcheck source=/dev/null
+if [[ ! -d "${_server_workspace_venv_directory}" ]]; then
+    $(readlink -f "$(which "$(which_os_python)")") -m venv "${_server_workspace_venv_directory}"
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Virtual Environment created at ${_server_workspace_venv_directory}"
+    echo "--------------------------------------------------------------------------------"
+else
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Virtual Environment already exists at ${_server_workspace_venv_directory}"
+    echo "--------------------------------------------------------------------------------"
+fi
+
+if [[ -f "${_server_workspace_venv_directory}/local/bin/activate" ]]; then
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Activating ${_server_workspace_venv_directory}/local/bin/activate"
+    echo "--------------------------------------------------------------------------------"
+    # shellcheck source=/dev/null
+    source "${_server_workspace_venv_directory}/local/bin/activate"
+else
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Activating ${_server_workspace_venv_directory}/bin/activate"
+    echo "--------------------------------------------------------------------------------"
+    # shellcheck source=/dev/null
+    source "${_server_workspace_venv_directory}/bin/activate"
 fi
 
 printf "\n\n================================================================================\n"
 echo "server-workspace: Python :: $(python --version)"
 echo "server-workspace: Virtual Env :: ${VIRTUAL_ENV}"
 echo "server-workspace: Working dir :: ${PWD}"
+echo "server-workspace: Installing ansible, hvac and arpanrec.nebula"
 echo "--------------------------------------------------------------------------------"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade

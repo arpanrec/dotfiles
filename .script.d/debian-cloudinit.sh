@@ -94,15 +94,15 @@ else
     echo "--------------------------------------------------------------------------------"
 fi
 
-if [[ -z ${VIRTUAL_ENV} ]]; then
+if [[ -z "${VIRTUAL_ENV+x}" ]]; then
     printf "\n\n================================================================================\n"
     echo "debian-cloudinit: Virtual environment is not activated"
     echo "--------------------------------------------------------------------------------"
 else
     printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Trying to deactivate virtual environment if already activated"
+    echo "debian-cloudinit: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     echo "--------------------------------------------------------------------------------"
-    deactivate
+    exit 1
 fi
 
 export CLOUD_INIT_ANSIBLE_DIR="${CLOUD_INIT_ANSIBLE_DIR:-"/tmp/cloudinit"}"
@@ -242,6 +242,16 @@ echo "--------------------------------------------------------------------------
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${CLOUD_INIT_ANSIBLE_DIR}"
 
 # We can test this script by creating a dummy shell(.sh) file and check with [shell check](https://www.shellcheck.net/).
+# > man sudo
+#      -E, --preserve-env
+#              Indicates to the security policy that the user wishes to preserve their existing environment variables.  The security policy may return an error if the user does not have permission to preserve the environment.
+#      -H, --set-home
+#              Request that the security policy set the HOME environment variable to the home directory specified by the target user's password database entry.  Depending on the policy, this may be the default behavior.
+#      -u user, --user=user
+#              Run the command as a user other than the default target user (usually root).  The user may be either a user name or a numeric user-ID (UID) prefixed with the ‘#’ character (e.g., ‘#0’ for UID 0).  When running commands as a UID, many shells require
+#              that the ‘#’ be escaped with a backslash (‘\’).  Some security policies may restrict UIDs to those listed in the password database.  The sudoers policy allows UIDs that are not in the password database as long as the targetpw option is not set.  Other
+#              security policies may not support this.
+
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -euo pipefail

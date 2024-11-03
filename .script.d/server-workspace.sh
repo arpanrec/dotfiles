@@ -138,10 +138,10 @@ fi
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-${HOME}/.tmp}"
-export NEBULA_VERSION="${NEBULA_VERSION:-1.9.3}"
-export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-${NEBULA_TMP_DIR}/venv}"
-export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-${NEBULA_TMP_DIR}/extra_vars.json}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.tmp"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.3"}"
+export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
+export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 
 printf "\n\n================================================================================\n"
 echo "server-workspace: NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
@@ -150,10 +150,10 @@ echo "server-workspace: NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
 echo "server-workspace: NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 echo "--------------------------------------------------------------------------------"
 
-export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${NEBULA_TMP_DIR}/roles}"
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
-export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${NEBULA_TMP_DIR}/collections}"
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${NEBULA_TMP_DIR}/inventory.yml}"
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
 printf "\n\n================================================================================\n"
 echo "server-workspace: DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"

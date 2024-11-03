@@ -38,7 +38,7 @@ else
     echo "--------------------------------------------------------------------------------"
 fi
 
-export CLOUD_INIT_USER="${CLOUD_INIT_USER:-cloudinit}"
+export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
 export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com"}"
 
 printf "\n\n================================================================================\n"
@@ -58,13 +58,13 @@ else
     echo "--------------------------------------------------------------------------------"
 fi
 
-export DEBIAN_FRONTEND=noninteractive
-export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-false}"
-export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-cloudinit}"
-export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-false}"
-export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-cloudinit}"
-export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-cloudinit}"
-export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-true}"
+export DEBIAN_FRONTEND="noninteractive"
+export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-"false"}"
+export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-"cloudinit"}"
+export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-"false"}"
+export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
+export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"cloudinit"}"
+export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
@@ -121,7 +121,7 @@ fi
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.3"}"
-export NEBULA_VENV_DIR="${NEBULA_TMP_DIR}/venv"
+export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
@@ -129,10 +129,10 @@ echo "debian-cloudinit: NEBULA_VERSION: ${NEBULA_VERSION}"
 echo "debian-cloudinit: NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
 echo "--------------------------------------------------------------------------------"
 
-export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${NEBULA_TMP_DIR}/roles}"
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
-export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${NEBULA_TMP_DIR}/collections}"
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${NEBULA_TMP_DIR}/inventory.yml}"
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
 printf "\n\n================================================================================\n"
 echo "debian-cloudinit: DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"

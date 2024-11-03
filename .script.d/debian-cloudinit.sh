@@ -94,16 +94,22 @@ else
     echo "--------------------------------------------------------------------------------"
 fi
 
-printf "\n\n================================================================================\n"
-echo "debian-cloudinit: Trying to deactivate virtual environment if already activated"
-echo "--------------------------------------------------------------------------------"
-deactivate || true
+if [[ -z ${VIRTUAL_ENV} ]]; then
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Virtual environment is not activated"
+    echo "--------------------------------------------------------------------------------"
+else
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Trying to deactivate virtual environment if already activated"
+    echo "--------------------------------------------------------------------------------"
+    deactivate
+fi
 
-export CLOUD_INIT_ANSIBLE_DIR="/tmp/cloudinit"
-export DEFAULT_ROLES_PATH="${CLOUD_INIT_ANSIBLE_DIR}/roles"
-export ANSIBLE_ROLES_PATH="${DEFAULT_ROLES_PATH}"
-export ANSIBLE_COLLECTIONS_PATH="${CLOUD_INIT_ANSIBLE_DIR}/collections"
-export ANSIBLE_INVENTORY="${CLOUD_INIT_ANSIBLE_DIR}/inventory.yml"
+export CLOUD_INIT_ANSIBLE_DIR="${CLOUD_INIT_ANSIBLE_DIR:-"/tmp/cloudinit"}"
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${CLOUD_INIT_ANSIBLE_DIR}/roles}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${CLOUD_INIT_ANSIBLE_DIR}/collections}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${CLOUD_INIT_ANSIBLE_DIR}/inventory.yml}"
 export CLOUD_INIT_ANSIBLE_VENV_PATH="${CLOUD_INIT_ANSIBLE_DIR}/venv"
 
 # rm -rf "${CLOUD_INIT_ANSIBLE_DIR}"

@@ -15,6 +15,13 @@ Variables:
 * `CLOUD_INIT_DOMAIN` - Domain name for the machine. Default `cloudinit`.
 * `CLOUD_INIT_INSTALL_DOTFILES` - Install dotfiles for the user. Default `true`.
 
+* `CLOUD_INIT_ANSIBLE_DIR` - Directory to clone the ansible playbook. Default `/tmp/cloudinit`.
+* `DEFAULT_ROLES_PATH` - Directory to clone the ansible roles. Default `${CLOUD_INIT_ANSIBLE_DIR}/roles`.
+* `ANSIBLE_ROLES_PATH` - Ansible roles path. Default `${DEFAULT_ROLES_PATH}`.
+* `ANSIBLE_COLLECTIONS_PATH` - Ansible collections path. Default `${CLOUD_INIT_ANSIBLE_DIR}/collections`.
+* `ANSIBLE_INVENTORY` - Ansible inventory file. Default `${CLOUD_INIT_ANSIBLE_DIR}/inventory.yml`.
+* `CLOUD_INIT_ANSIBLE_VENV_PATH` - Ansible virtual environment path. Default `${CLOUD_INIT_ANSIBLE_DIR}/venv`.
+
 ```bash
 sudo -E -H -u root bash -c '/bin/bash <(curl \
     -s https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'

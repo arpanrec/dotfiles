@@ -5,8 +5,46 @@ printf "\n\n====================================================================
 echo "debian-cloudinit: Starting debian cloudinit"
 echo "--------------------------------------------------------------------------------"
 
-export CLOUD_INIT_USER=${CLOUD_INIT_USER:-cloudinit}
-export CLOUD_INIT_USE_SSH_PUB=${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}
+if [[ -z "${VIRTUAL_ENV+x}" ]]; then
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Virtual environment is not activated"
+    echo "--------------------------------------------------------------------------------"
+else
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
+    echo "--------------------------------------------------------------------------------"
+    exit 1
+fi
+
+if [ "$(id -u)" -ne 0 ]; then
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Please run as root, exiting"
+    echo "--------------------------------------------------------------------------------"
+    exit 1
+else
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: Running as root"
+    echo "--------------------------------------------------------------------------------"
+fi
+
+if [ "${HOME}" != "/root" ]; then
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: HOME is not set to /root, exiting"
+    echo "--------------------------------------------------------------------------------"
+    exit 1
+else
+    printf "\n\n================================================================================\n"
+    echo "debian-cloudinit: debian-cloudinit: HOME is set to /root"
+    echo "--------------------------------------------------------------------------------"
+fi
+
+export CLOUD_INIT_USER="${CLOUD_INIT_USER:-cloudinit}"
+export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-'ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com'}"
+
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: CLOUD_INIT_USER: ${CLOUD_INIT_USER}"
+echo "debian-cloudinit: CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
+echo "--------------------------------------------------------------------------------"
 
 if [ -f /etc/environment ]; then
     printf "\n\n================================================================================\n"
@@ -21,12 +59,21 @@ else
 fi
 
 export DEBIAN_FRONTEND=noninteractive
-export CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-false}
-export CLOUD_INIT_GROUP=${CLOUD_INIT_GROUP:-cloudinit}
-export CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}
-export CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-cloudinit}
-export CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-cloudinit}
-export CLOUD_INIT_INSTALL_DOTFILES=${CLOUD_INIT_INSTALL_DOTFILES:-true}
+export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-false}"
+export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-cloudinit}"
+export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-false}"
+export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-cloudinit}"
+export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-cloudinit}"
+export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-true}"
+
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
+echo "debian-cloudinit: CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}"
+echo "debian-cloudinit: CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}"
+echo "debian-cloudinit: CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}"
+echo "debian-cloudinit: CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}"
+echo "debian-cloudinit: CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}"
+echo "--------------------------------------------------------------------------------"
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
     printf "\n\n================================================================================\n"
@@ -72,47 +119,27 @@ else
     echo "--------------------------------------------------------------------------------"
 fi
 
-if [ "$(id -u)" -ne 0 ]; then
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Please run as root, exiting"
-    echo "--------------------------------------------------------------------------------"
-    exit 1
-else
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Running as root"
-    echo "--------------------------------------------------------------------------------"
-fi
-
-if [ "${HOME}" != "/root" ]; then
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: HOME is not set to /root, exiting"
-    echo "--------------------------------------------------------------------------------"
-    exit 1
-else
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: debian-cloudinit: HOME is set to /root"
-    echo "--------------------------------------------------------------------------------"
-fi
-
-if [[ -z "${VIRTUAL_ENV+x}" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Virtual environment is not activated"
-    echo "--------------------------------------------------------------------------------"
-else
-    printf "\n\n================================================================================\n"
-    echo "debian-cloudinit: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
-    echo "--------------------------------------------------------------------------------"
-    exit 1
-fi
-
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
-export NEBULA_VERSION=${NEBULA_VERSION:-"1.9.3"}
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.3"}"
 export NEBULA_VENV_DIR="${NEBULA_TMP_DIR}/venv"
+
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
+echo "debian-cloudinit: NEBULA_VERSION: ${NEBULA_VERSION}"
+echo "debian-cloudinit: NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
+echo "--------------------------------------------------------------------------------"
 
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${NEBULA_TMP_DIR}/roles}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${NEBULA_TMP_DIR}/collections}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${NEBULA_TMP_DIR}/inventory.yml}"
+
+printf "\n\n================================================================================\n"
+echo "debian-cloudinit: DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"
+echo "debian-cloudinit: ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}"
+echo "debian-cloudinit: ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}"
+echo "debian-cloudinit: ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
+echo "--------------------------------------------------------------------------------"
 
 # rm -rf "${NEBULA_TMP_DIR}"
 if [ -d "${NEBULA_TMP_DIR}" ]; then
@@ -154,7 +181,7 @@ printf "\n\n====================================================================
 echo "debian-cloudinit: Installing dependencies, python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget"
 echo "--------------------------------------------------------------------------------"
 apt update
-apt install -y python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget
+apt install -y python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget jq
 
 if [ ! -d "${NEBULA_VENV_DIR}" ]; then
     printf "\n\n================================================================================\n"

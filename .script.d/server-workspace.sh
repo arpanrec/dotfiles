@@ -8,6 +8,17 @@ if [[ $(id -u) -eq 0 ]]; then
     exit 1
 fi
 
+if [[ -z "${VIRTUAL_ENV+x}" ]]; then
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Virtual environment is not activated"
+    echo "--------------------------------------------------------------------------------"
+else
+    printf "\n\n================================================================================\n"
+    echo "server-workspace: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
+    echo "--------------------------------------------------------------------------------"
+    exit 1
+fi
+
 which_os_python() {
     # Simply don't use python, /usr/bin/python etc, try to find the highest version of python3
     declare -a PYTHON_VERSIONS=("python3.13" "python3.12" "python3.11" "python3.10")
@@ -132,27 +143,30 @@ export NEBULA_VERSION="${NEBULA_VERSION:-1.9.3}"
 export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-${NEBULA_TMP_DIR}/venv}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-${NEBULA_TMP_DIR}/extra_vars.json}"
 
+printf "\n\n================================================================================\n"
+echo "server-workspace: NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
+echo "server-workspace: NEBULA_VERSION: ${NEBULA_VERSION}"
+echo "server-workspace: NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
+echo "server-workspace: NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}"
+echo "--------------------------------------------------------------------------------"
+
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-${NEBULA_TMP_DIR}/roles}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-${DEFAULT_ROLES_PATH}}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-${NEBULA_TMP_DIR}/collections}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-${NEBULA_TMP_DIR}/inventory.yml}"
 
 printf "\n\n================================================================================\n"
+echo "server-workspace: DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"
+echo "server-workspace: ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}"
+echo "server-workspace: ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}"
+echo "server-workspace: ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
+echo "--------------------------------------------------------------------------------"
+
+printf "\n\n================================================================================\n"
 echo "server-workspace: Creating NEBULA_TMP_DIR at ${NEBULA_TMP_DIR}"
 echo "--------------------------------------------------------------------------------"
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
-
-if [[ -z "${VIRTUAL_ENV+x}" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "server-workspace: Virtual environment is not activated"
-    echo "--------------------------------------------------------------------------------"
-else
-    printf "\n\n================================================================================\n"
-    echo "server-workspace: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
-    echo "--------------------------------------------------------------------------------"
-    exit 1
-fi
 
 # shellcheck source=/dev/null
 if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then

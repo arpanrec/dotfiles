@@ -5,7 +5,6 @@ And then setup user workspace using [server-workspace](/docs/.script.d/server-wo
 
 Variables:
 
-* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.9.1`.
 * `CLOUD_INIT_GROUP` : Group name for the user to be created. Default `cloudinit`.
 * `CLOUD_INIT_USER` : Username for the user to be created. Default `cloudinit`.
 * `CLOUD_INIT_USE_SSH_PUB` : Use SSH public key for the user, Default `ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com`.

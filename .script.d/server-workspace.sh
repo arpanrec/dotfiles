@@ -231,9 +231,9 @@ EOF
 
 cd "${HOME}" || exit 1
 
-if [[ -n ${__ansible_tags} && ${__ansible_tags} != "," && -z $* ]]; then
+if [[ -n "${__ansible_tags+x}" && "${__ansible_tags+x}" != "," && -z $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${SERVER_WORKSPACE_EXTRA_VARS_JSON}" \
         --tags "${__ansible_tags::-1}"
-elif [[ -z ${__ansible_tags} && -n $* ]]; then
+elif [[ -z "${__ansible_tags+x}" && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${SERVER_WORKSPACE_EXTRA_VARS_JSON}" "$@"
 fi

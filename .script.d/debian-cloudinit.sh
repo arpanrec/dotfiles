@@ -211,7 +211,7 @@ printf "\n\n====================================================================
 echo "$(date) debian-cloudinit: Installing nebula version ${NEBULA_VERSION}"
 echo "--------------------------------------------------------------------------------"
 
-curl "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
     -o "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
@@ -311,7 +311,7 @@ if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
     printf "\n\n================================================================================\n"
     echo "$(date) debian-cloudinit: Installing/Reseting dotfiles"
     echo "--------------------------------------------------------------------------------"
-    bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 else
     printf "\n\n================================================================================\n"
     echo "$(date) debian-cloudinit: Skipping dotfiles installation as `CLOUD_INIT_INSTALL_DOTFILES` is set to not true"

@@ -24,15 +24,15 @@ Variables:
 * `ANSIBLE_INVENTORY` : Ansible inventory file. Default `${NEBULA_TMP_DIR}/inventory.yml`.
 
 ```bash
-sudo -E -H -u root bash -c '/bin/bash <(curl \
-    -s https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
+sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```
 
 or for development machine
 
 ```bash
 CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
-    bash -c '/bin/bash <(curl -s https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
+    bash -c '/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```
 
 ## [Linode stack script](https://cloud.linode.com/stackscripts/1164660)
@@ -58,7 +58,7 @@ echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" | sudo tee -a /etc/environment
 
 source /etc/environment
 
-sudo -E -H -u root bash -c '/bin/bash <(curl -s \
+sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)' | tee -a /root/debian-cloudinit.log
 
 ```

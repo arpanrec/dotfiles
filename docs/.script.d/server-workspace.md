@@ -15,13 +15,13 @@ Setup workspace for development using [server workspace playbook](https://github
 * `ANSIBLE_INVENTORY`: Ansible YAML inventory file. Default `${NEBULA_TMP_DIR}/inventory`.
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh)
 ```
 
 For custom/silent install tags, extra-vars are optional
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
+bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
     --tags all,code \
     --extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
 ```

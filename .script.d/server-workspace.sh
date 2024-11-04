@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "$(id -u)" -eq 0 ]]; then
+if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     printf "\n\n================================================================================\n"
     echo "$(date) server-workspace: Root user detected, Please run this script as a non-root user, Exiting"
     echo "--------------------------------------------------------------------------------"
@@ -204,7 +204,7 @@ pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-curl "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
     -o "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"

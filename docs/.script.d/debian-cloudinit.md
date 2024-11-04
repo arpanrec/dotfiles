@@ -48,7 +48,7 @@ set -euo pipefail
 # <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Install dotfiles" oneOf="true,false" default="true"/>
 
 printf "\n\n================================================================================\n"
-echo "debian-cloudinit-linode-stackscript: Starting"
+echo "$(date) debian-cloudinit-linode-stackscript: Starting"
 echo "--------------------------------------------------------------------------------"
 
 echo "LINODE_ID=${LINODE_ID}" | sudo tee -a /etc/environment

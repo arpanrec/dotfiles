@@ -2,9 +2,8 @@
 set -euo pipefail
 
 log_message() {
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: $*"
-    echo "--------------------------------------------------------------------------------"
+    printf "\n\n================================================================================\n %s \
+debian-cloudinit: %s\n--------------------------------------------------------------------------------\n" "$(date)" "$*"
 }
 
 export -f log_message
@@ -33,10 +32,13 @@ else
 fi
 
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
-export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com"}"
+export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 \
+AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/\
+WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com"}"
 
-log_message "CLOUD_INIT_USER: ${CLOUD_INIT_USER}"
-log_message "CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
+log_message "
+CLOUD_INIT_USER: ${CLOUD_INIT_USER}
+CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
 if [ -f /etc/environment ]; then
     log_message "Sourcing /etc/environment"
@@ -54,12 +56,13 @@ export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
 export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"cloudinit"}"
 export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
 
-log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
-log_message "CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}"
-log_message "CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}"
-log_message "CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}"
-log_message "CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}"
-log_message "CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}"
+log_message "
+CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}
+CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}
+CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}
+CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}
+CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}
+CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}"
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
     log_message "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
@@ -93,19 +96,21 @@ export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.3"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}
 
-log_message "NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
-log_message "NEBULA_VERSION: ${NEBULA_VERSION}"
-log_message "NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
+log_message "
+NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
+NEBULA_VERSION: ${NEBULA_VERSION}
+NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
 
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
-log_message "DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"
-log_message "ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}"
-log_message "ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}"
-log_message "ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
+log_message "
+DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
+ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
+ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
 
 # rm -rf "${NEBULA_TMP_DIR}"
 if [ -d "${NEBULA_TMP_DIR}" ]; then
@@ -158,7 +163,7 @@ curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
-log_message "Creating inventory file at ${ANSIBLE_INVENTORY}"
+log_message Creating inventory file at "${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 ---
 all:
@@ -189,33 +194,21 @@ EOF
 
 #             ansible_python_interpreter: "$(which python3)"
 
-log_message "Running ansible-playbook arpanrec.nebula.cloudinit"
+log_message Running ansible-playbook arpanrec.nebula.cloudinit
 
-# ansible-playbook arpanrec.nebula.cloudinit
+ansible-playbook arpanrec.nebula.cloudinit
 
-log_message "Deactivating virtual environment at ${NEBULA_VENV_DIR}"
+log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 
 deactivate
 
-log_message "Changing ownership of ${NEBULA_TMP_DIR} ${NEBULA_VENV_DIR} ${DEFAULT_ROLES_PATH} \
-    ${ANSIBLE_ROLES_PATH} ${ANSIBLE_COLLECTIONS_PATH} $(dirname "${ANSIBLE_INVENTORY}") to \
-    ${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
-log_message "Running ansible-playbook arpanrec.nebula.server_workspace"
+log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")" to \
+    "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 
 chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
-
-# We can test this script by creating a dummy shell(.sh) file and check with [shell check](https://www.shellcheck.net/).
-# > man sudo
-#      -E, --preserve-env
-#              Indicates to the security policy that the user wishes to preserve their existing environment variables.  The security policy may return an error if the user does not have permission to preserve the environment.
-#      -H, --set-home
-#              Request that the security policy set the HOME environment variable to the home directory specified by the target user's password database entry.  Depending on the policy, this may be the default behavior.
-#      -u user, --user=user
-#              Run the command as a user other than the default target user (usually root).  The user may be either a user name or a numeric user-ID (UID) prefixed with the ‘#’ character (e.g., ‘#0’ for UID 0).  When running commands as a UID, many shells require
-#              that the ‘#’ be escaped with a backslash (‘\’).  Some security policies may restrict UIDs to those listed in the password database.  The sudoers policy allows UIDs that are not in the password database as long as the targetpw option is not set.  Other
-#              security policies may not support this.
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
@@ -225,6 +218,12 @@ log_message() {
     printf "\n\n================================================================================\n"
     echo "$(date) debian-cloudinit - user server workspace: $*"
     echo "--------------------------------------------------------------------------------"
+}
+
+log_message() {
+    printf "\n\n================================================================================\n %s \
+debian-cloudinit - user server workspace: \
+%s\n--------------------------------------------------------------------------------\n" "$(date)" "$*"
 }
 
 export -f log_message
@@ -255,11 +254,10 @@ fi
 
 '
 
-log_message "Changing ownership of ${NEBULA_TMP_DIR} ${NEBULA_VENV_DIR} ${DEFAULT_ROLES_PATH} \
-    ${ANSIBLE_ROLES_PATH} ${ANSIBLE_COLLECTIONS_PATH} $(dirname "${ANSIBLE_INVENTORY}") to root:root"
+log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")" to root:root
 
-chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
-    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 log_message "Completed"

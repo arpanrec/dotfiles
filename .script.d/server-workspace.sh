@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+log_message() {
+    printf "\n\n================================================================================\n %s \
+server-workspace: %s\n--------------------------------------------------------------------------------\n" "$(date)" "$*"
+}
+export -f log_message
+
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Root user detected, Please run this script as a non-root user, Exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Root user detected, Please run this script as a non-root user, Exiting"
     exit 1
 fi
 
 if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Virtual environment is not activated"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Virtual environment is not activated"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     exit 1
 fi
 
@@ -29,9 +29,7 @@ which_os_python() {
             return
         fi
     done
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
     exit 1
 }
 
@@ -131,9 +129,7 @@ if [[ -z $* ]]; then
 
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Running with custom tags :: $*"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Running with custom tags :: $*"
 fi
 
 export PATH="${HOME}/.local/bin:${PATH}"
@@ -143,63 +139,50 @@ export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.3"}"
 export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) server-workspace: NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
-echo "$(date) server-workspace: NEBULA_VERSION: ${NEBULA_VERSION}"
-echo "$(date) server-workspace: NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
-echo "$(date) server-workspace: NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}"
-echo "--------------------------------------------------------------------------------"
+log_message "
+NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
+NEBULA_VERSION: ${NEBULA_VERSION}
+NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
+NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) server-workspace: DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"
-echo "$(date) server-workspace: ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}"
-echo "$(date) server-workspace: ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}"
-echo "$(date) server-workspace: ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
-echo "--------------------------------------------------------------------------------"
+log_message "
+DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
+ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
+ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) server-workspace: Creating NEBULA_TMP_DIR at ${NEBULA_TMP_DIR}"
-echo "--------------------------------------------------------------------------------"
+log_message "Creating NEBULA_TMP_DIR at ${NEBULA_TMP_DIR}"
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 # shellcheck source=/dev/null
 if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then
     $(readlink -f "$(which "$(which_os_python)")") -m venv "${NEBULA_VENV_DIR}"
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Virtual Environment created at ${NEBULA_VENV_DIR}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Virtual Environment created at ${NEBULA_VENV_DIR}"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Virtual Environment already exists at ${NEBULA_VENV_DIR}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Virtual Environment already exists at ${NEBULA_VENV_DIR}"
 fi
 
 if [[ -f "${NEBULA_VENV_DIR}/local/bin/activate" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Activating ${NEBULA_VENV_DIR}/local/bin/activate"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Activating ${NEBULA_VENV_DIR}/local/bin/activate"
     # shellcheck source=/dev/null
     source "${NEBULA_VENV_DIR}/local/bin/activate"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Activating ${NEBULA_VENV_DIR}/bin/activate"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Activating ${NEBULA_VENV_DIR}/bin/activate"
     # shellcheck source=/dev/null
     source "${NEBULA_VENV_DIR}/bin/activate"
 fi
 
-printf "\n\n================================================================================\n"
-echo "$(date) server-workspace: Python :: $(python --version)"
-echo "$(date) server-workspace: Virtual Env :: ${VIRTUAL_ENV}"
-echo "$(date) server-workspace: Working dir :: ${PWD}"
-echo "$(date) server-workspace: Installing ansible, hvac and arpanrec.nebula"
-echo "--------------------------------------------------------------------------------"
+log_message "
+Python :: $(python --version)
+Virtual Env :: ${VIRTUAL_ENV}
+Working dir :: ${PWD}
+Installing ansible, hvac and arpanrec.nebula"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
@@ -209,25 +192,17 @@ curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) server-workspace: NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
-echo "--------------------------------------------------------------------------------"
+log_message "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Creating ${NEBULA_EXTRA_VARS_JSON_FILE}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Creating ${NEBULA_EXTRA_VARS_JSON_FILE}"
     echo "Creating directory $(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
     mkdir -p "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
     echo "{}" >"${NEBULA_EXTRA_VARS_JSON_FILE}"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: ${NEBULA_EXTRA_VARS_JSON_FILE} exists"
-    echo "--------------------------------------------------------------------------------"
+    log_message "${NEBULA_EXTRA_VARS_JSON_FILE} exists"
 fi
 
-printf "\n\n================================================================================\n"
-echo "$(date) server-workspace: Creating ansible inventory yaml file. ANSIBLE_INVENTORY :: ${ANSIBLE_INVENTORY}"
-echo "--------------------------------------------------------------------------------"
+log_message "Creating ansible inventory yaml file. ANSIBLE_INVENTORY :: ${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" >/dev/null <<EOF
 ---
 all:
@@ -251,8 +226,6 @@ if [[ -n "${__ansible_tags:-}" && "${__ansible_tags:-}" != "," && -z $* ]]; then
 elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) server-workspace: Not sure what to do, Exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Not sure what to do, Exiting"
     exit 1
 fi

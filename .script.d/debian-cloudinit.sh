@@ -215,8 +215,6 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -euo pipefail
 
-# shellcheck source=/dev/null
-
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     log_message "Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
     bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \

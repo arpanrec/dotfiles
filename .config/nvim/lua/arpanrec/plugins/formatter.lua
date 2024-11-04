@@ -21,7 +21,7 @@ return {
                 json = { "prettier" },
                 markdown = { "prettier" },
                 lua = { "stylua" },
-                python = { "black" },
+                python = { "isort", "black" },
                 ["yaml.ansible"] = { "prettier" },
                 yaml = { "prettier" },
             },

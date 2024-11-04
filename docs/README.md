@@ -13,15 +13,15 @@ In this repository, you'll find my personal dotfiles for various applications an
 * SSH: [.ssh/config](/.ssh/config)
 * And more...
 
-## Installation
+## [Installation](/.script.d/dot-install.sh)
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/arpanrec/dotfiles/main/.script.d/dot-install.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 ```
 
 ## Scripts
 
-* [Debian - debian-cloudinit.sh](/docs/.script.d/debian-cloudinit.md)
+* [Debian Cloudinit - debian-cloudinit.sh](/docs/.script.d/debian-cloudinit.md)
 * [Server Workspace - server-workspace.sh](/docs/.script.d/server-workspace.md)
 
 ## License

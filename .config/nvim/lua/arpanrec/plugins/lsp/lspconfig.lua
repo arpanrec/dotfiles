@@ -7,7 +7,7 @@ return {
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp" },
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim",                   config = true },
+        { "folke/neodev.nvim", config = true },
         { "hrsh7th/vscode-langservers-extracted" },
     },
     config = function()
@@ -86,112 +86,20 @@ return {
         -- import lspconfig plugin
         local lspconfig = require("lspconfig")
 
-        -- configure html server
-        lspconfig.html.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure css server
-        lspconfig.cssls.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure tailwindcss server
-        lspconfig.tailwindcss.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure svelte server
-        lspconfig.svelte.setup({
-            capabilities = capabilities,
-            on_attach = function(client, bufnr)
-                on_attach(client, bufnr)
-                vim.api.nvim_create_autocmd("BufWritePost", {
-                    pattern = { "*.js", "*.ts" },
-                    callback = function(ctx)
-                        if client.name == "svelte" then
-                            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-                        end
-                    end,
-                })
-            end,
-        })
-
-        -- configure prisma orm server
-        lspconfig.prismals.setup({ capabilities = capabilities, on_attach = on_attach })
-
-        -- configure graphql language server
-        lspconfig.graphql.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-        })
-
-        -- configure emmet language server
-        lspconfig.emmet_ls.setup({
-            capabilities = capabilities,
-            on_attach = on_attach,
-            filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-        })
-
-        lspconfig.tsserver.setup({
+        -- configure rust_analyzer server
+        lspconfig.rust_analyzer.setup({
             capabilities = capabilities,
             on_attach = on_attach,
             settings = {
-                implicitProjectConfiguration = {
-                    checkJs = true,
+                ["rust-analyzer"] = {
+                    diagnostics = {
+                        enable = false,
+                    },
                 },
             },
         })
 
-        -- -- configure eslint language server removed and added to lint.lua
-        -- lspconfig.eslint.setup({
-        --     capabilities = capabilities,
-        --     on_attach = function(client, bufnr)
-        --         on_attach(client, bufnr)
-        --         vim.api.nvim_create_autocmd("BufWritePre", {
-        --             buffer = bufnr,
-        --             command = "EslintFixAll",
-        --         })
-        --     end,
-        --     settings = {
-        --         codeAction = {
-        --             disableRuleComment = {
-        --                 enable = true,
-        --                 location = "separateLine",
-        --             },
-        --             showDocumentation = {
-        --                 enable = true,
-        --             },
-        --         },
-        --         codeActionOnSave = {
-        --             enable = false,
-        --             mode = "all",
-        --         },
-        --         experimental = {
-        --             useFlatConfig = false,
-        --         },
-        --         format = false,
-        --         nodePath = "",
-        --         onIgnoredFiles = "off",
-        --         problems = {
-        --             shortenToSingleLine = false,
-        --         },
-        --         quiet = false,
-        --         rulesCustomizations = {},
-        --         run = "onType",
-        --         useESLintClass = false,
-        --         validate = "on",
-        --         workingDirectory = {
-        --             mode = "location",
-        --         },
-        --     },
-        -- })
-
-        local capabilities_cssls = vim.lsp.protocol.make_client_capabilities()
-        capabilities_cssls.textDocument.completion.completionItem.snippetSupport = true
-        lspconfig.cssls.setup({
-            capabilities = capabilities_cssls,
-            on_attach = on_attach,
-        })
-
-        lspconfig.css_variables.setup({ capabilities = capabilities, on_attach = on_attach })
-        lspconfig.cssmodules_ls.setup({ capabilities = capabilities, on_attach = on_attach })
-
+        -- Configure jsonls
         lspconfig.jsonls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
@@ -199,7 +107,7 @@ return {
             settings = {
                 json = {
                     schemas = {
-                        { fileMatch = { "package.json" },   url = "https://json.schemastore.org/package.json" },
+                        { fileMatch = { "package.json" }, url = "https://json.schemastore.org/package.json" },
                         { fileMatch = { "tsconfig*.json" }, url = "https://json.schemastore.org/tsconfig.json" },
                         {
                             fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
@@ -234,6 +142,7 @@ return {
             },
         })
 
+        -- configure gopls
         lspconfig.gopls.setup({ capabilities = capabilities, on_attach = on_attach })
 
         -- configure python server
@@ -250,6 +159,7 @@ return {
             require("neodev").setup({})
         end
 
+        -- configure lua server
         lspconfig.lua_ls.setup({
             capabilities = capabilities,
             on_attach = on_attach,
@@ -273,14 +183,16 @@ return {
             },
         })
 
-        lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
+        -- configure ansible server
+        -- lspconfig.ansiblels.setup({ capabilities = capabilities, on_attach = on_attach })
 
+        -- configure yaml server
         lspconfig.yamlls.setup({
             capabilities = capabilities,
             filetypes = {
                 "yaml",
                 "yaml.docker-compose",
-                "yaml.ansible",
+                -- "yaml.ansible",
             },
             on_attach = on_attach,
             settings = {
@@ -288,7 +200,8 @@ return {
                     schemas = {
                         ["http://json.schemastore.org/gitlab-ci.json"] = { ".gitlab-ci.yml" },
                         ["https://json.schemastore.org/bamboo-spec.json"] = { "bamboo-specs/*.{yml,yaml}" },
-                        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
+                        ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"]
+                        = {
                             "docker-compose*.{yml,yaml}",
                         },
                         ["http://json.schemastore.org/github-workflow.json"] = { ".github/workflows/*.{yml,yaml}" },
@@ -304,6 +217,7 @@ return {
             },
         })
 
+        -- configure markdown server
         lspconfig.marksman.setup({ capabilities = capabilities, on_attach = on_attach })
     end,
 }

@@ -6,6 +6,8 @@ fi
 
 export ZSH="$HOME/.oh-my-zsh"
 
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ENABLE_CORRECTION="false"
@@ -19,8 +21,6 @@ plugins=(fzf
     )
 
 autoload -U compinit && compinit
-
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 [[ ! -f "$ZSH/oh-my-zsh.sh" ]] || source "$ZSH/oh-my-zsh.sh"
 
@@ -41,9 +41,10 @@ if hash kubectl &>/dev/null ; then
     source <(kubectl completion zsh)
 fi
 
-if command -v bw &> /dev/null; then
-    eval "$(bw completion --shell zsh); compdef _bw bw;"
-fi
+# Remove bw completion because it's slow
+# if command -v bw &> /dev/null; then
+#         eval "$(bw completion --shell zsh 2>/dev/null); compdef _bw bw;" 2>/dev/null
+# fi
 
 if command -v vault &> /dev/null; then
     autoload -U +X bashcompinit && bashcompinit

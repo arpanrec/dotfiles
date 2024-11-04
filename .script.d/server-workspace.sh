@@ -37,97 +37,135 @@ if [[ -z $* ]]; then
 
     __install_tags=()
 
-    read -n1 -r -p 'Enter "Y" to install node js (Press any other key to Skip*) : ' install_node_js
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install node js (Press any other key to Skip*) : ' install_node_js
     if [[ "${install_node_js}" == "Y" || "${install_node_js}" == "y" ]]; then
+        log_message "Nodejs installation selected"
         __install_tags+=('nodejs')
+    else
+        log_message "Skipping nodejs installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install go (Press any other key to Skip*) : ' install_go
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install go (Press any other key to Skip*) : ' install_go
     if [[ "${install_go}" == "Y" || "${install_go}" == "y" ]]; then
+        log_message "Go installation selected"
         __install_tags+=('go')
+    else
+        log_message "Skipping go installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Oracle JDK17 (Press any other key to Skip*) : ' install_java
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Oracle JDK17 (Press any other key to Skip*) : ' install_java
     if [[ "${install_java}" == "Y" || "${install_java}" == "y" ]]; then
+        log_message "Java installation selected"
         __install_tags+=('java')
+    else
+        log_message "Skipping Java installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to terminal tools (Press any other key to Skip*) : ' download_terminal
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to terminal tools (Press any other key to Skip*) : ' download_terminal
     if [[ "${download_terminal}" == "Y" || "${download_terminal}" == "y" ]]; then
+        log_message "Terminal tools installation selected"
         __install_tags+=('terminal')
+    else
+        log_message "Skipping terminal tools installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Vault (Press any other key to Skip*) : ' install_vault
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Vault (Press any other key to Skip*) : ' install_vault
     if [[ "${install_vault}" == "Y" || "${install_vault}" == "y" ]]; then
+        log_message "Vault installation selected"
         __install_tags+=('vault')
+    else
+        log_message "Skipping Vault installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Terraform (Press any other key to Skip*) : ' install_terraform
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Terraform (Press any other key to Skip*) : ' install_terraform
     if [[ "${install_terraform}" == "Y" || "${install_terraform}" == "y" ]]; then
+        log_message "Terraform installation selected"
         __install_tags+=('terraform')
+    else
+        log_message "Skipping Terraform installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install pulumi (Press any other key to Skip*) : ' install_pulumi
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install pulumi (Press any other key to Skip*) : ' install_pulumi
     if [[ "${install_pulumi}" == "Y" || "${install_pulumi}" == "y" ]]; then
+        log_message "Pulumi installation selected"
         __install_tags+=('pulumi')
+    else
+        log_message "Skipping Pulumi installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Bitwarden SDK (Press any other key to Skip*) : ' install_bitwarden_sdk
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Bitwarden SDK (Press any other key to Skip*) : ' install_bitwarden_sdk
     if [[ "${install_bitwarden_sdk}" == "Y" || "${install_bitwarden_sdk}" == "y" ]]; then
+        log_message "Bitwarden SDK installation selected"
         __install_tags+=('bws')
+    else
+        log_message "Skipping Bitwarden SDK installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Bitwarden (Press any other key to Skip*) : ' install_bitwarden_app_image
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Bitwarden (Press any other key to Skip*) : ' install_bitwarden_app_image
     if [[ "${install_bitwarden_app_image}" == "Y" || "${install_bitwarden_app_image}" == "y" ]]; then
+        log_message "Bitwarden installation selected"
         __install_tags+=('bitwarden_desktop')
+    else
+        log_message "Skipping Bitwarden installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Mattermost (Press any other key to Skip*) : ' install_mattermost
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Mattermost (Press any other key to Skip*) : ' install_mattermost
     if [[ "${install_mattermost}" == "Y" || "${install_mattermost}" == "y" ]]; then
+        log_message "Mattermost installation selected"
         __install_tags+=('mattermost_desktop')
+    else
+        log_message "Skipping Mattermost installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Telegram (Press any other key to Skip*) : ' install_telegram_desktop
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Telegram (Press any other key to Skip*) : ' install_telegram_desktop
     if [[ "${install_telegram_desktop}" == "Y" || "${install_telegram_desktop}" == "y" ]]; then
+        log_message "Telegram installation selected"
         __install_tags+=('telegram_desktop')
+    else
+        log_message "Skipping Telegram installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Postman (Press any other key to Skip*) : ' install_postman
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Postman (Press any other key to Skip*) : ' install_postman
     if [[ "${install_postman}" == "Y" || "${install_postman}" == "y" ]]; then
+        log_message "Postman installation selected"
         __install_tags+=('postman')
+    else
+        log_message "Skipping Postman installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install Visual Studio Code (Press any other key to Skip*) : ' install_vscode
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install Visual Studio Code (Press any other key to Skip*) : ' install_vscode
     if [[ "${install_vscode}" == "Y" || "${install_vscode}" == "y" ]]; then
+        log_message "Visual Studio Code installation selected"
         __install_tags+=('code')
+    else
+        log_message "Skipping Visual Studio Code installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to install gnome (Press any other key to Skip*) : ' install_gnome
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to install gnome (Press any other key to Skip*) : ' install_gnome
     if [[ "${install_gnome}" == "Y" || "${install_gnome}" == "y" ]]; then
+        log_message "Gnome installation selected"
         __install_tags+=('gnome')
+    else
+        log_message "Skipping Gnome installation"
     fi
 
-    read -n1 -r -p 'Enter "Y" to download themes (Press any other key to Skip*) : ' download_themes
-    echo ""
+    read -n1 -s -r -p 'Enter "Y" to download themes (Press any other key to Skip*) : ' download_themes
     if [[ "${download_themes}" == "Y" || "${download_themes}" == "y" ]]; then
+        log_message "Themes installation selected"
         __install_tags+=('themes')
+    else
+        log_message "Skipping Themes installation"
     fi
 
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
+    log_message "Running with default tags :: ${__ansible_tags::-1}"
+    read -n1 -s -r -p 'Press any key to continue or Ctrl+C to exit' continue_script
+    if [[ "${continue_script}" == "" ]]; then
+        log_message "Continuing with default tags :: ${__ansible_tags::-1}"
+    else
+        log_message "Exiting"
+        exit 1
+    fi
 else
     log_message "Running with custom tags :: $*"
 fi
@@ -156,7 +194,8 @@ ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
 ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
 ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
 
-log_message "Creating NEBULA_TMP_DIR at ${NEBULA_TMP_DIR}"
+log_message Creating NEBULA_TMP_DIR at "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
+    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 

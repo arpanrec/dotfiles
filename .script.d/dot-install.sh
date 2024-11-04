@@ -4,7 +4,7 @@ set -euo pipefail
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     printf "\n\n================================================================================\n"
     echo "$(date) dot-install: Root user detected, You are mad to run this script as root!"
-    echo "$(date) dot-install: If you really know your shii the press 'y' to continue"
+    echo "$(date) dot-install: If you really know your shit the press 'y' to continue"
     echo "$(date) dot-install: But you are going to regret it!"
     echo "--------------------------------------------------------------------------------"
     read -r -p "Are you sure you want to continue? [y/N] " response_root_user
@@ -15,8 +15,9 @@ if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
         exit 1
     fi
     printf "\n\n================================================================================\n"
-    echo "$(date) dot-install: Holy fuck, you went there, well lets see"
+    echo "$(date) dot-install: Holy fuck, you went there, i am gonna give you 5 second to think it through"
     echo "--------------------------------------------------------------------------------"
+    sleep 5s
 fi
 
 dotfiles_git_remote="https://github.com/arpanrec/dotfiles.git"

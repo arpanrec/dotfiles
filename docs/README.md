@@ -13,7 +13,7 @@ In this repository, you'll find my personal dotfiles for various applications an
 * SSH: [.ssh/config](/.ssh/config)
 * And more...
 
-## Installation
+## [Installation](/.script.d/dot-install.sh)
 
 ```bash
 bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)

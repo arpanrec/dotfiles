@@ -2,6 +2,12 @@
 set -euo pipefail
 
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
+    if [[ ! -t 1 ]]; then
+        printf "\n\n================================================================================\n"
+        echo "$(date) dot-install: Script is not running in interactive mode. Exiting."
+        echo "--------------------------------------------------------------------------------"
+        exit 1
+    fi
     printf "\n\n================================================================================\n"
     echo "$(date) dot-install: Root user detected, You are mad to run this script as root!"
     echo "$(date) dot-install: If you really know your shit the press 'y' to continue"
@@ -17,7 +23,10 @@ if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     printf "\n\n================================================================================\n"
     echo "$(date) dot-install: Holy fuck, you went there, i am gonna give you 5 second to think it through"
     echo "--------------------------------------------------------------------------------"
-    sleep 5s
+    for i in {5..1}; do
+        echo "$(date) dot-install: $i..."
+        sleep 1
+    done
 fi
 
 dotfiles_git_remote="https://github.com/arpanrec/dotfiles.git"

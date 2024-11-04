@@ -1,4 +1,4 @@
-# [Debian](/.script.d/debian-cloudinit.sh)
+# [Debian Cloudinit](/.script.d/debian-cloudinit.sh)
 
 Bootstrap a Debian machine with a user and some basic tools using [cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md).
 And then setup user workspace using [server-workspace](/docs/.script.d/server-workspace.md)

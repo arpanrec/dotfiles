@@ -221,7 +221,7 @@ chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
-set -euo pipefail
+set -exuo pipefail
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSL \

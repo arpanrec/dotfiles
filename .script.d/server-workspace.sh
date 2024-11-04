@@ -226,8 +226,15 @@ pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
-    -o "/tmp/requirements-${NEBULA_VERSION}.yml"
+if [[ ! -f "/tmp/requirements-${NEBULA_VERSION}.yml" ]]; then
+    log_message "Downloading requirements-${NEBULA_VERSION}.yml to /tmp"
+    curl -sSL \
+        "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+        -o "/tmp/requirements-${NEBULA_VERSION}.yml"
+else
+    log_message "requirements-${NEBULA_VERSION}.yml already exists"
+fi
+
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 

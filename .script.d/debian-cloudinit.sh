@@ -289,7 +289,7 @@ echo "--------------------------------------------------------------------------
 # shellcheck source=/dev/null
 source "${NEBULA_VENV_DIR}/bin/activate"
 
-if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
+if [ "${CLOUD_INIT_IS_DEV_MACHINE+x}" = true ]; then
     printf "\n\n================================================================================\n"
     echo "debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
     echo "--------------------------------------------------------------------------------"

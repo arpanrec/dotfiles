@@ -51,10 +51,10 @@ printf "\n\n====================================================================
 echo "debian-cloudinit-linode-stackscript: Starting"
 echo "--------------------------------------------------------------------------------"
 
-echo "LINODE_ID=${LINODE_ID}" >> /etc/environment
-echo "LINODE_LISHUSERNAME=${LINODE_LISHUSERNAME}" >> /etc/environment
-echo "LINODE_RAM=${LINODE_RAM}" >> /etc/environment
-echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" >> /etc/environment
+echo "LINODE_ID=${LINODE_ID}" | sudo tee -a /etc/environment
+echo "LINODE_LISHUSERNAME=${LINODE_LISHUSERNAME}" | sudo tee -a /etc/environment
+echo "LINODE_RAM=${LINODE_RAM}" | sudo tee -a /etc/environment
+echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" | sudo tee -a /etc/environment
 
 source /etc/environment
 

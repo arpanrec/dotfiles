@@ -215,30 +215,18 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -euo pipefail
 
-log_message() {
-    printf "\n\n================================================================================\n %s \
-debian-cloudinit - user server workspace: \
-%s\n--------------------------------------------------------------------------------\n\n" "$(date)" "$*"
-}
-
-export -f log_message
-
-log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
 # shellcheck source=/dev/null
-source "${NEBULA_VENV_DIR}/bin/activate"
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     log_message "Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
-    ansible-playbook arpanrec.nebula.server_workspace --tags all
+    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
+        --tags all
 else
     log_message "Running ansible-playbook arpanrec.nebula.server_workspace \
         without java, go, terraform, vault, nodejs, bws, pulumi tags"
-    ansible-playbook arpanrec.nebula.server_workspace --tags all \
-        --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
+    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
+        --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
 fi
-
-log_message "Deactivating virtual environment at ${NEBULA_VENV_DIR}"
-deactivate
 
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
     log_message "Installing/Reseting dotfiles"

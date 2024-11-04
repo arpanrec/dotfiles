@@ -10,11 +10,11 @@ if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     fi
     printf "\n\n================================================================================\n"
     echo "$(date) dot-install: Root user detected, You are mad to run this script as root!"
-    echo "$(date) dot-install: If you really know your shit the press 'y' to continue"
+    echo "$(date) dot-install: If you really know your shit then press 'y' to continue"
     echo "$(date) dot-install: But you are going to regret it!"
     echo "--------------------------------------------------------------------------------"
     read -r -p "Are you sure you want to continue? [y/N] " response_root_user
-    if [[ ! "$response_root_user" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    if [[ ! "$response_root_user" =~ ^([yY])$ ]]; then
         printf "\n\n================================================================================\n"
         echo "$(date) dot-install: Exiting script as root user detected"
         echo "--------------------------------------------------------------------------------"

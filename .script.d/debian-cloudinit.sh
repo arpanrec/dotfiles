@@ -83,14 +83,22 @@ if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
     log_message "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false), exiting"
     exit 1
 else
-    log_message "CLOUD_INIT_IS_DEV_MACHINE is set as ${CLOUD_INIT_IS_DEV_MACHINE}"
+    if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
+        log_message "server_workspace will be run with all tags in dev mode"
+    else
+        log_message "server_workspace will be run without java, go, terraform, vault, nodejs, bws, pulumi tags"
+    fi
 fi
 
 if [[ ! "${CLOUD_INIT_INSTALL_DOTFILES}" =~ ^true|false$ ]]; then
     log_message "CLOUD_INIT_INSTALL_DOTFILES must be a boolean (true|false), exiting"
     exit 1
 else
-    log_message "CLOUD_INIT_INSTALL_DOTFILES is set as ${CLOUD_INIT_INSTALL_DOTFILES}"
+    if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
+        log_message "Dotfiles will be installed/reset"
+    else
+        log_message "Dotfiles will not be installed/reset"
+    fi
 fi
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
@@ -216,21 +224,17 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 set -euo pipefail
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-    log_message "Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
-    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
+    bash <(curl -sSL \
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
         --tags all
 else
-    log_message "Running ansible-playbook arpanrec.nebula.server_workspace \
-        without java, go, terraform, vault, nodejs, bws, pulumi tags"
-    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
+    bash <(curl -sSL \
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
         --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
 fi
 
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
-    log_message "Installing/Reseting dotfiles"
     bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
-else
-    log_message "Skipping dotfiles installation as $(CLOUD_INIT_INSTALL_DOTFILES) is set to not true"
 fi
 
 '

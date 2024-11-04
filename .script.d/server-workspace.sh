@@ -8,7 +8,7 @@ if [[ "$(id -u)" -eq 0 ]]; then
     exit 1
 fi
 
-if [[ -z "${VIRTUAL_ENV+x}" ]]; then
+if [[ -z "${VIRTUAL_ENV:-}" ]]; then
     printf "\n\n================================================================================\n"
     echo "$(date) server-workspace: Virtual environment is not activated"
     echo "--------------------------------------------------------------------------------"
@@ -245,9 +245,14 @@ EOF
 
 cd "${HOME}" || exit 1
 
-if [[ -n "${__ansible_tags+x}" && "${__ansible_tags+x}" != "," && -z $* ]]; then
+if [[ -n "${__ansible_tags:-}" && "${__ansible_tags:-}" != "," && -z $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
         --tags "${__ansible_tags::-1}"
-elif [[ -z "${__ansible_tags+x}" && -n $* ]]; then
+elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
+else
+    printf "\n\n================================================================================\n"
+    echo "$(date) server-workspace: Not sure what to do, Exiting"
+    echo "--------------------------------------------------------------------------------"
+    exit 1
 fi

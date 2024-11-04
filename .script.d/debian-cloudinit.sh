@@ -167,8 +167,15 @@ pip3 install ansible hvac --upgrade
 
 log_message "Installing nebula version ${NEBULA_VERSION}"
 
-curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
-    -o "/tmp/requirements-${NEBULA_VERSION}.yml"
+if [[ ! -f "/tmp/requirements-${NEBULA_VERSION}.yml" ]]; then
+    log_message "Downloading requirements-${NEBULA_VERSION}.yml to /tmp"
+    curl -sSL \
+        "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+        -o "/tmp/requirements-${NEBULA_VERSION}.yml"
+else
+    log_message "requirements-${NEBULA_VERSION}.yml already exists"
+fi
+
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
@@ -177,12 +184,6 @@ tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 ---
 all:
     children:
-        server_workspace:
-            hosts:
-                localhost:
-            vars:
-                ansible_user: ${CLOUD_INIT_USER}
-                ansible_become: false
         cloudinit:
             hosts:
                 localhost:
@@ -215,13 +216,12 @@ log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DE
     "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")" to \
     "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 
-chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
-    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
-set -euo pipefail
+set -exuo pipefail
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSL \

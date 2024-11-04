@@ -1,61 +1,49 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Starting debian cloudinit"
-echo "--------------------------------------------------------------------------------"
+log_message() {
+    printf "\n\n================================================================================\n"
+    echo "$(date) debian-cloudinit: $*"
+    echo "--------------------------------------------------------------------------------"
+}
+
+export -f log_message
+
+log_message "Starting debian cloudinit"
 
 if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Virtual environment is not activated"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Virtual environment is not activated"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     exit 1
 fi
 
 if [ "$(id -u)" -ne 0 ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Please run as root, exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Please run as root, exiting"
     exit 1
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Running as root"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Running as root"
 fi
 
 if [ "${HOME}" != "/root" ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: HOME is not set to /root, exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "HOME is not set to /root, exiting"
     exit 1
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: debian-cloudinit: HOME is set to /root"
-    echo "--------------------------------------------------------------------------------"
+    log_message "debian-cloudinit: HOME is set to /root"
 fi
 
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
 export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com"}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: CLOUD_INIT_USER: ${CLOUD_INIT_USER}"
-echo "$(date) debian-cloudinit: CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
-echo "--------------------------------------------------------------------------------"
+log_message "CLOUD_INIT_USER: ${CLOUD_INIT_USER}"
+log_message "CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
 if [ -f /etc/environment ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Sourcing /etc/environment"
+    log_message "Sourcing /etc/environment"
     # shellcheck source=/dev/null
     source /etc/environment
-    echo "--------------------------------------------------------------------------------"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: File /etc/environment does not exist"
-    echo "--------------------------------------------------------------------------------"
+    log_message "File /etc/environment does not exist"
 fi
 
 export DEBIAN_FRONTEND="noninteractive"
@@ -66,159 +54,111 @@ export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
 export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"cloudinit"}"
 export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
-echo "$(date) debian-cloudinit: CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}"
-echo "$(date) debian-cloudinit: CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}"
-echo "$(date) debian-cloudinit: CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}"
-echo "$(date) debian-cloudinit: CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}"
-echo "$(date) debian-cloudinit: CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}"
-echo "--------------------------------------------------------------------------------"
+log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
+log_message "CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}"
+log_message "CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}"
+log_message "CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}"
+log_message "CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}"
+log_message "CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}"
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_USE_SSH_PUB is not set, exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
     exit 1
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
 fi
 
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false), exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false), exiting"
     exit 1
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS is set as ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set as ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
 fi
 
 if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false), exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false), exiting"
     exit 1
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_IS_DEV_MACHINE is set as ${CLOUD_INIT_IS_DEV_MACHINE}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_IS_DEV_MACHINE is set as ${CLOUD_INIT_IS_DEV_MACHINE}"
 fi
 
 if [[ ! "${CLOUD_INIT_INSTALL_DOTFILES}" =~ ^true|false$ ]]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_INSTALL_DOTFILES must be a boolean (true|false), exiting"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_INSTALL_DOTFILES must be a boolean (true|false), exiting"
     exit 1
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_INSTALL_DOTFILES is set as ${CLOUD_INIT_INSTALL_DOTFILES}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_INSTALL_DOTFILES is set as ${CLOUD_INIT_INSTALL_DOTFILES}"
 fi
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.3"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
-echo "$(date) debian-cloudinit: NEBULA_VERSION: ${NEBULA_VERSION}"
-echo "$(date) debian-cloudinit: NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
-echo "--------------------------------------------------------------------------------"
+log_message "NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}"
+log_message "NEBULA_VERSION: ${NEBULA_VERSION}"
+log_message "NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}"
 
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"
-echo "$(date) debian-cloudinit: ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}"
-echo "$(date) debian-cloudinit: ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}"
-echo "$(date) debian-cloudinit: ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
-echo "--------------------------------------------------------------------------------"
+log_message "DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}"
+log_message "ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}"
+log_message "ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}"
+log_message "ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
 
 # rm -rf "${NEBULA_TMP_DIR}"
 if [ -d "${NEBULA_TMP_DIR}" ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Directory ${NEBULA_TMP_DIR} already exists, Changing ownership to root"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Directory ${NEBULA_TMP_DIR} already exists, Changing ownership to root"
     chown -R root:root "${NEBULA_TMP_DIR}"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Directory ${NEBULA_TMP_DIR} does not exist"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Directory ${NEBULA_TMP_DIR} does not exist"
 fi
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Creating directories"
-echo "--------------------------------------------------------------------------------"
+log_message "Creating directories"
 mkdir -p "${NEBULA_TMP_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Creating authorized_keys file at ${NEBULA_TMP_DIR}/authorized_keys"
-echo "--------------------------------------------------------------------------------"
+log_message "Creating authorized_keys file at ${NEBULA_TMP_DIR}/authorized_keys"
 tee "${NEBULA_TMP_DIR}/authorized_keys" <<EOF >/dev/null
 ${CLOUD_INIT_USE_SSH_PUB}
 EOF
 
 if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Copying root's authorized_keys to ${NEBULA_TMP_DIR}/authorized_keys"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Copying root's authorized_keys to ${NEBULA_TMP_DIR}/authorized_keys"
     cat "/root/.ssh/authorized_keys" >>"${NEBULA_TMP_DIR}/authorized_keys"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding any extra keys to ${CLOUD_INIT_USER}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding any extra keys to ${CLOUD_INIT_USER}"
 fi
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Installing dependencies, python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget"
-echo "--------------------------------------------------------------------------------"
+log_message "Installing dependencies, python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget"
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget jq
 
 if [ ! -d "${NEBULA_VENV_DIR}" ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Creating virtual environment at ${NEBULA_VENV_DIR}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"
     python3 -m venv "${NEBULA_VENV_DIR}"
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Virtual environment already exists at ${NEBULA_VENV_DIR}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Virtual environment already exists at ${NEBULA_VENV_DIR}"
 fi
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Activating virtual environment at ${NEBULA_VENV_DIR}"
-echo "--------------------------------------------------------------------------------"
+log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
 # shellcheck source=/dev/null
 source "${NEBULA_VENV_DIR}/bin/activate"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Installing ansible and hvac using pip3"
-echo "--------------------------------------------------------------------------------"
+log_message "Installing ansible and hvac using pip3"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Installing nebula version ${NEBULA_VERSION}"
-echo "--------------------------------------------------------------------------------"
+log_message "Installing nebula version ${NEBULA_VERSION}"
 
 curl -sSL "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
     -o "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Creating inventory file at ${ANSIBLE_INVENTORY}"
-echo "--------------------------------------------------------------------------------"
+log_message "Creating inventory file at ${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 ---
 all:
@@ -249,24 +189,22 @@ EOF
 
 #             ansible_python_interpreter: "$(which python3)"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Running ansible-playbook arpanrec.nebula.cloudinit"
-echo "--------------------------------------------------------------------------------"
+log_message "Running ansible-playbook arpanrec.nebula.cloudinit"
 
-ansible-playbook arpanrec.nebula.cloudinit
+# ansible-playbook arpanrec.nebula.cloudinit
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Deactivating virtual environment at ${NEBULA_VENV_DIR}"
-echo "--------------------------------------------------------------------------------"
+log_message "Deactivating virtual environment at ${NEBULA_VENV_DIR}"
 
 deactivate
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Changing ownership of ${NEBULA_TMP_DIR} to ${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
-echo "$(date) debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace"
-echo "--------------------------------------------------------------------------------"
+log_message "Changing ownership of ${NEBULA_TMP_DIR} ${NEBULA_VENV_DIR} ${DEFAULT_ROLES_PATH} \
+    ${ANSIBLE_ROLES_PATH} ${ANSIBLE_COLLECTIONS_PATH} $(dirname "${ANSIBLE_INVENTORY}") to \
+    ${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
+log_message "Running ansible-playbook arpanrec.nebula.server_workspace"
 
-chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}"
+chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
+    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 # We can test this script by creating a dummy shell(.sh) file and check with [shell check](https://www.shellcheck.net/).
 # > man sudo
@@ -283,48 +221,45 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -euo pipefail
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Activating virtual environment at ${NEBULA_VENV_DIR}"
-echo "--------------------------------------------------------------------------------"
+log_message() {
+    printf "\n\n================================================================================\n"
+    echo "$(date) debian-cloudinit - user server workspace: $*"
+    echo "--------------------------------------------------------------------------------"
+}
+
+export -f log_message
+
+log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
 # shellcheck source=/dev/null
 source "${NEBULA_VENV_DIR}/bin/activate"
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Running ansible-playbook arpanrec.nebula.server_workspace with all tags in dev mode"
     ansible-playbook arpanrec.nebula.server_workspace --tags all
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Running ansible-playbook arpanrec.nebula.server_workspace without java, go, terraform, vault, nodejs, bws, pulumi tags"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Running ansible-playbook arpanrec.nebula.server_workspace \
+        without java, go, terraform, vault, nodejs, bws, pulumi tags"
     ansible-playbook arpanrec.nebula.server_workspace --tags all \
         --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
 fi
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Deactivating virtual environment at ${NEBULA_VENV_DIR}"
-echo "--------------------------------------------------------------------------------"
+log_message "Deactivating virtual environment at ${NEBULA_VENV_DIR}"
 deactivate
 
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Installing/Reseting dotfiles"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Installing/Reseting dotfiles"
     bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 else
-    printf "\n\n================================================================================\n"
-    echo "$(date) debian-cloudinit: Skipping dotfiles installation as `CLOUD_INIT_INSTALL_DOTFILES` is set to not true"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Skipping dotfiles installation as $(CLOUD_INIT_INSTALL_DOTFILES) is set to not true"
 fi
 
 '
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Changing ownership of ${NEBULA_TMP_DIR} to root:root"
-echo "--------------------------------------------------------------------------------"
-chown -R root:root "${NEBULA_TMP_DIR}"
+log_message "Changing ownership of ${NEBULA_TMP_DIR} ${NEBULA_VENV_DIR} ${DEFAULT_ROLES_PATH} \
+    ${ANSIBLE_ROLES_PATH} ${ANSIBLE_COLLECTIONS_PATH} $(dirname "${ANSIBLE_INVENTORY}") to root:root"
 
-printf "\n\n================================================================================\n"
-echo "$(date) debian-cloudinit: Completed"
-echo "--------------------------------------------------------------------------------"
+chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
+    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+
+log_message "Completed"

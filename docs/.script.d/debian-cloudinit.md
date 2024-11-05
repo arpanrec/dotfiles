@@ -85,6 +85,9 @@ echo "CLOUD_INIT_INSTALL_DOTFILES=${CLOUD_INIT_INSTALL_DOTFILES:-true}" | sudo t
 sed -i '/^CLOUD_INIT_HOSTNAME=.*/d' /etc/environment
 echo "CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-${LINODE_LISHUSERNAME:-"cloudinit-debian-linode"}}" | sudo tee -a /etc/environment
 
+sed -i '/^CLOUD_INIT_DOMAIN=.*/d' /etc/environment
+echo "CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-"cloudinit-debian-linode"}" | sudo tee -a /etc/environment
+
 source /etc/environment
 
 sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \

@@ -42,7 +42,7 @@ CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
 For Linode stack script `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true` by default,
  `CLOUD_INIT_IS_DEV_MACHINE` is set to `false` by default and `CLOUD_INIT_INSTALL_DOTFILES` is set to `true` by default.
 
-You can also set `LINODE_WEB_SERVER_FQDN` which will be added to hosts file.
+You can also set `CLOUD_INIT_WEB_SERVER_FQDN` which will be added to hosts file.
 
 Available variables:
 

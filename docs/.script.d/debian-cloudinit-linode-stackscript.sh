@@ -4,7 +4,7 @@ set -euo pipefail
 # <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
 # <UDF name="CLOUD_INIT_IS_DEV_MACHINE" Label="Install development tool chain" oneOf="true,false" default="false"/>
 # <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Install dotfiles" oneOf="true,false" default="true"/>
-# <udf name="LINODE_WEB_SERVER_FQDN" label="Web server fully qualified domain name" example="example.com" />
+# <udf name="CLOUD_INIT_WEB_SERVER_FQDN" label="Web server fully qualified domain name" example="example.com" />
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -48,17 +48,17 @@ echo "CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-${LINODE_LISHUSERNAME:-"cloudin
 sed -i '/^CLOUD_INIT_DOMAIN=.*/d' /etc/environment
 echo "CLOUD_INIT_DOMAIN=${CLOUD_INIT_DOMAIN:-"cloudinit-debian-linode"}" | sudo tee -a /etc/environment
 
-if [ -z "${LINODE_WEB_SERVER_FQDN:-}" ]; then
-    echo "LINODE_WEB_SERVER_FQDN is not set"
+if [ -z "${CLOUD_INIT_WEB_SERVER_FQDN:-}" ]; then
+    echo "CLOUD_INIT_WEB_SERVER_FQDN is not set"
 else
-    echo "LINODE_WEB_SERVER_FQDN is set to ${LINODE_WEB_SERVER_FQDN}"
+    echo "CLOUD_INIT_WEB_SERVER_FQDN is set to ${CLOUD_INIT_WEB_SERVER_FQDN}"
 
-    sed -i '/^LINODE_WEB_SERVER_FQDN=.*/d' /etc/environment
-    echo "LINODE_WEB_SERVER_FQDN=${LINODE_WEB_SERVER_FQDN}" | sudo tee -a /etc/environment
+    sed -i '/^CLOUD_INIT_WEB_SERVER_FQDN=.*/d' /etc/environment
+    echo "CLOUD_INIT_WEB_SERVER_FQDN=${CLOUD_INIT_WEB_SERVER_FQDN}" | sudo tee -a /etc/environment
 
     IPADDR=$(/sbin/ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://')
     sed -i "/${IPADDR}.*/d" /etc/hosts
-    echo "${IPADDR} ${LINODE_WEB_SERVER_FQDN}" | sudo tee -a /etc/hosts
+    echo "${IPADDR} ${CLOUD_INIT_WEB_SERVER_FQDN}" | sudo tee -a /etc/hosts
 fi
 
 # shellcheck source=/dev/null

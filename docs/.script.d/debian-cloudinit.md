@@ -39,6 +39,13 @@ CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
 
 For Linode stack script `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true` by default, `CLOUD_INIT_IS_DEV_MACHINE` is set to `false` by default and `CLOUD_INIT_INSTALL_DOTFILES` is set to `true` by default.
 
+Available variables:
+
+* `LINODE_ID`: Example: `66627286`
+* `LINODE_LISHUSERNAME` Example: `linode66627286`
+* `LINODE_RAM`: Example: `2048`
+* `LINODE_DATACENTERID`: Example: `14`
+
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -51,10 +58,32 @@ printf "\n\n====================================================================
 echo "$(date) debian-cloudinit-linode-stackscript: Starting"
 echo "--------------------------------------------------------------------------------"
 
+touch /etc/environment
+source /etc/environment
+
+sed -i '/^LINODE_ID.*/d' /etc/environment
 echo "LINODE_ID=${LINODE_ID}" | sudo tee -a /etc/environment
+
+sed -i '/^LINODE_LISHUSERNAME.*/d' /etc/environment
 echo "LINODE_LISHUSERNAME=${LINODE_LISHUSERNAME}" | sudo tee -a /etc/environment
+
+sed -i '/^LINODE_RAM.*/d' /etc/environment
 echo "LINODE_RAM=${LINODE_RAM}" | sudo tee -a /etc/environment
+
+sed -i '/^LINODE_DATACENTERID.*/d' /etc/environment
 echo "LINODE_DATACENTERID=${LINODE_DATACENTERID}" | sudo tee -a /etc/environment
+
+sed -i '/^CLOUD_INIT_COPY_ROOT_SSH_KEYS.*/d' /etc/environment
+echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS=${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}" | sudo tee -a /etc/environment
+
+sed -i '/^CLOUD_INIT_IS_DEV_MACHINE.*/d' /etc/environment
+echo "CLOUD_INIT_IS_DEV_MACHINE=${CLOUD_INIT_IS_DEV_MACHINE:-false}" | sudo tee -a /etc/environment
+
+sed -i '/^CLOUD_INIT_INSTALL_DOTFILES.*/d' /etc/environment
+echo "CLOUD_INIT_INSTALL_DOTFILES=${CLOUD_INIT_INSTALL_DOTFILES:-true}" | sudo tee -a /etc/environment
+
+sed -i '/^CLOUD_INIT_HOSTNAME.*/d' /etc/environment
+echo "CLOUD_INIT_HOSTNAME=${CLOUD_INIT_HOSTNAME:-${LINODE_LISHUSERNAME:-"cloudinit-debian-linode"}}" | sudo tee -a /etc/environment
 
 source /etc/environment
 

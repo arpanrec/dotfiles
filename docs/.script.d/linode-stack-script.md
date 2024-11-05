@@ -1,6 +1,6 @@
 # [Linode Stack Script](/.script.d/linode-stack-script.sh)
 
-## [Public Script](https://cloud.linode.com/stackscripts/1164660)
+[Public Script](https://cloud.linode.com/stackscripts/1164660)
 
 Variables:
 

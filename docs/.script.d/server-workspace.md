@@ -22,6 +22,5 @@ For custom/silent install tags, extra-vars are optional
 
 ```bash
 bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
-    --tags all,code \
-    --extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
+    --tags all,code --extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
 ```

@@ -176,6 +176,7 @@ else
     log_message "requirements-${NEBULA_VERSION}.yml already exists"
 fi
 
+log_message "Installing roles and collections"
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
@@ -222,6 +223,8 @@ chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -exuo pipefail
+
+export ANSIBLE_INVENTORY="server-workspace-${ANSIBLE_INVENTORY"}"
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSL \

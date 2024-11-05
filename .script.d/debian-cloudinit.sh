@@ -224,7 +224,8 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -exuo pipefail
 
-export ANSIBLE_INVENTORY="server-workspace-${ANSIBLE_INVENTORY}"
+ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/server-workspace-inventory.yml"
+export ANSIBLE_INVENTORY
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSL \

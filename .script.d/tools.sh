@@ -1,36 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+log_message() {
+    printf "\n\n================================================================================\n %s \
+tools: %s\n--------------------------------------------------------------------------------\n\n" "$(date)" "$*"
+}
+
+export -f log_message
+
 if [ "$(id -u)" -eq 0 ]; then
     echo "Root user detected!!!! Error"
     exit 1
 fi
 
 install_neovim() {
-    printf "\n\n================================================================================\n"
-    echo "tools: Installing Neovim"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Installing Neovim"
 
-    printf "\n\n================================================================================\n"
-    echo "tools: Checking for CPU count"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Checking for CPU count"
     CPUCOUNT=$(grep -c "^processor" /proc/cpuinfo)
-    printf "\n\n================================================================================\n"
-    echo "tools: CPU count is ${CPUCOUNT}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "CPU count is ${CPUCOUNT}"
 
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
     NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
     NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.10.2"}"
-    printf "\n\n================================================================================\n"
-    echo "tools: Creating Neovim directories"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Creating Neovim directories"
     mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 
-    printf "\n\n================================================================================\n"
-    echo "tools: Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
     git clone https://github.com/neovim/neovim.git --single-branch \
         --branch="${NEOVIM_VERSION}" --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
 
@@ -41,22 +38,16 @@ install_neovim() {
     rm -rf "${NEOVIM_INSTALL_DIR}/bin/nvim"
     rm -rf "${HOME}/.cache/nvim"
 
-    printf "\n\n================================================================================\n"
-    echo "tools: Building Neovim"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Building Neovim"
     make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}" -j"${CPUCOUNT}"
     make install
 
 }
 
-printf "\n\n================================================================================\n"
-echo "tools: Installing Rust"
-echo "--------------------------------------------------------------------------------"
+log_message "Installing Rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile complete --verbose
 
-printf "\n\n================================================================================\n"
-echo "tools: Setting up Rust environment"
-echo "--------------------------------------------------------------------------------"
+log_message "Setting up Rust environment"
 # shellcheck source=/dev/null
 source "${HOME}/.cargo/env"
 
@@ -65,13 +56,9 @@ rustup update
 declare -a cargo_packages=("ripgrep" "fd-find")
 
 if command -v cargo &>/dev/null; then
-    printf "\n\n================================================================================\n"
-    echo "tools: Installing cargo packages"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Installing cargo packages"
     for cargo_package in "${cargo_packages[@]}"; do
-        printf "\n\n================================================================================\n"
-        echo "tools: Installing cargo package ${cargo_package}"
-        echo "--------------------------------------------------------------------------------"
+        log_message "Installing cargo package ${cargo_package}"
         cargo install "${cargo_package}"
     done
 fi
@@ -84,13 +71,9 @@ if command -v npm &>/dev/null; then
     #     corepack enable pnpm yarn
     # fi
 
-    printf "\n\n================================================================================\n"
-    echo "tools: Installing npm packages"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Installing npm packages"
     for npm_package in "${npm_packages[@]}"; do
-        printf "\n\n================================================================================\n"
-        echo "tools: Installing npm package ${npm_package}"
-        echo "--------------------------------------------------------------------------------"
+        log_message "Installing npm package ${npm_package}"
         npm install -g "${npm_package}"
     done
 fi
@@ -104,13 +87,9 @@ declare -a go_packages=(
 )
 
 if command -v go &>/dev/null; then
-    printf "\n\n================================================================================\n"
-    echo "tools: Installing go packages"
-    echo "--------------------------------------------------------------------------------"
+    log_message "Installing go packages"
     for go_package in "${go_packages[@]}"; do
-        printf "\n\n================================================================================\n"
-        echo "tools: Installing go package ${go_package}"
-        echo "--------------------------------------------------------------------------------"
+        log_message "Installing go package ${go_package}"
         go install "${go_package}"
     done
 fi

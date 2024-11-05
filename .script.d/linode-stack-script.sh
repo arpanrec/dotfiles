@@ -1,41 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Start Sync with readme
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Start Sync with readme
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Start Sync with readme
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Start Sync with readme
 export DEBIAN_FRONTEND=noninteractive
-
-touch /etc/environment
-
-# shellcheck source=/dev/null
-source /etc/environment
-
-declare -A env_vars=(
-    ["LINODE_ID"]="${LINODE_ID}"
-    ["LINODE_LISHUSERNAME"]="${LINODE_LISHUSERNAME}"
-    ["LINODE_RAM"]="${LINODE_RAM}"
-    ["LINODE_DATACENTERID"]="${LINODE_DATACENTERID}"
-    ["CLOUD_INIT_COPY_ROOT_SSH_KEYS"]="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}"
-    ["CLOUD_INIT_IS_DEV_MACHINE"]="${CLOUD_INIT_IS_DEV_MACHINE:-false}"
-    ["CLOUD_INIT_INSTALL_DOTFILES"]="${CLOUD_INIT_INSTALL_DOTFILES:-true}"
-    ["CLOUD_INIT_HOSTNAME"]="${CLOUD_INIT_HOSTNAME:-${LINODE_LISHUSERNAME:-cloudinit-debian-linode}}"
-    ["CLOUD_INIT_DOMAIN"]="${CLOUD_INIT_DOMAIN:-cloudinit-debian-linode}"
-    ["CLOUD_INIT_WEB_SERVER_FQDN"]="${CLOUD_INIT_WEB_SERVER_FQDN:-}"
-)
-
-for var in "${!env_vars[@]}"; do
-    sed -i "/^${var}=.*/d" /etc/environment
-    echo "${var}=${env_vars[$var]}" | sudo tee -a /etc/environment
-done
-
-# shellcheck source=/dev/null
-source /etc/environment
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End Sync with readme
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End Sync with readme
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End Sync with readme
-######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End Sync with readme
 
 mkdir -p /var/log/cloudinit-cron
 

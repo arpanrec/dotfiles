@@ -34,19 +34,3 @@ or for development machine
 CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```
-
-## [Linode StackScript](https://cloud.linode.com/stackscripts/1164660)
-
-[Source](/docs/.script.d/debian-cloudinit-linode-stackscript.sh)
-
-For Linode stack script `CLOUD_INIT_COPY_ROOT_SSH_KEYS` is set to `true` by default,
- `CLOUD_INIT_IS_DEV_MACHINE` is set to `false` by default and `CLOUD_INIT_INSTALL_DOTFILES` is set to `true` by default.
-
-You can also set `CLOUD_INIT_WEB_SERVER_FQDN` which will be added to hosts file.
-
-Available variables:
-
-* `LINODE_ID`: Example: `66627286`
-* `LINODE_LISHUSERNAME` Example: `linode66627286`
-* `LINODE_RAM`: Example: `2048`
-* `LINODE_DATACENTERID`: Example: `14`

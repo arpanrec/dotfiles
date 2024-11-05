@@ -23,6 +23,7 @@ bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/
 
 * [Debian Cloudinit - debian-cloudinit.sh](/docs/.script.d/debian-cloudinit.md)
 * [Server Workspace - server-workspace.sh](/docs/.script.d/server-workspace.md)
+* [Linode Stack Script - linode-stack-script.sh](/docs/.script.d/linode-stack-script.md)
 
 ## License
 

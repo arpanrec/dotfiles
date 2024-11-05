@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-######### Start actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
 export DEBIAN_FRONTEND=noninteractive
 
 touch /etc/environment
@@ -29,7 +32,10 @@ done
 
 # shellcheck source=/dev/null
 source /etc/environment
-######### End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
+######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
 
 mkdir -p /var/log/cloudinit-cron
 

@@ -82,7 +82,7 @@ ALL_PAKGS+=('terraform' 'pulumi' 'vault' 'go' 'terragrunt' 'keyd')
 
 ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'gimp' 'postgresql-libs')
 
-ALL_PAKGS+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
+ALL_PAKGS+=('firefox')
 
 ALL_PAKGS+=('veracrypt' 'keepassxc' 'bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat')
 

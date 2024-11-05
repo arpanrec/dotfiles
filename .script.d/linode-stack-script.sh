@@ -65,6 +65,7 @@ else
 fi
 
 exit 1
+log_message "Delegate to debian-cloudinit.sh"
 
 sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)' |

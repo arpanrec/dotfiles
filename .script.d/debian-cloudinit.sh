@@ -224,6 +224,10 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -exuo pipefail
 
+if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
+    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+fi
+
 ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/server-workspace-inventory.yml"
 export ANSIBLE_INVENTORY
 
@@ -235,10 +239,6 @@ else
     bash <(curl -sSL \
         https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
         --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
-fi
-
-if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
-    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 fi
 
 '

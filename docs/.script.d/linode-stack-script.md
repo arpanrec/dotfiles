@@ -62,6 +62,7 @@ source /etc/environment
 ######### >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> End actual script
 
 sudo -E -H -u root bash -c '/bin/bash <(curl -s \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh)' | tee -a /root/linode-stack-script.log
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh)' | 
+    tee -a /root/linode-stack-script.log
 
 ```

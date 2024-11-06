@@ -74,15 +74,15 @@ apt-get install -y fail2ban sendmail
 
 log_message "Installing postfix and rsyslog"
 apt-get install -y postfix rsyslog
-log_message "Setting up postfix"
-systemctl enable --now postfix
-log_message "Setting up rsyslog"
-systemctl enable --now rsyslog
+log_message "Enabling and starting postfix.service"
+systemctl enable --now postfix.service
+log_message "Enabling and starting rsyslog.service"
+systemctl enable --now rsyslog.service
 
 log_message "Installing cron"
 apt-get install -y cron
-log_message "Enabling and starting cron"
-systemctl enable --now cron
+log_message "Enabling and starting cron.service"
+systemctl enable --now cron.service
 
 log_message "Adding cron job to run linode-stack-script every day at 1 AM"
 

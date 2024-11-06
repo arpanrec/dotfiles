@@ -32,6 +32,15 @@ else
     log_message "debian-cloudinit: HOME is set to /root"
 fi
 
+if [ ! -f /etc/environment ]; then
+    log_message "Creating /etc/environment"
+    touch /etc/environment
+else
+    log_message "/etc/environment already exists, sourcing"
+    # shellcheck source=/dev/null
+    source /etc/environment
+fi
+
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
 export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 \
 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/\
@@ -40,14 +49,6 @@ WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com"}"
 log_message "
 CLOUD_INIT_USER: ${CLOUD_INIT_USER}
 CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
-
-if [ -f /etc/environment ]; then
-    log_message "Sourcing /etc/environment"
-    # shellcheck source=/dev/null
-    source /etc/environment
-else
-    log_message "File /etc/environment does not exist"
-fi
 
 export DEBIAN_FRONTEND="noninteractive"
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-"false"}"
@@ -146,10 +147,13 @@ else
 fi
 
 log_message "Installing dependencies, python3-venv python3-pip git curl ca-certificates \
-    gnupg tar unzip wget jq net-tools cron sudo"
+    gnupg tar unzip wget jq net-tools cron sudo vim"
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates \
-    gnupg tar unzip wget jq net-tools cron sudo
+    gnupg tar unzip wget jq net-tools cron sudo vim
+
+log_message "Setting vim as default editor"
+sed -i 's/EDITOR=.*$/EDITOR=vim/' /etc/environment
 
 if [ ! -d "${NEBULA_VENV_DIR}" ]; then
     log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"

@@ -25,7 +25,7 @@ log_message "Adding cron job"
 mkdir -p /var/log/linode-stack-script
 sudo crontab -l -u root | tee /tmp/root-crontab || true
 sed -i '/.*linode-stack-script.*/d' /tmp/root-crontab
-echo "*/1 * * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script.log'" | sudo tee -a /tmp/root-crontab
+echo "*/1 * * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" | sudo tee -a /tmp/root-crontab
 sudo crontab -u root /tmp/root-crontab
 
 if [ -z "${CLOUD_INIT_WEB_SERVER_FQDN:-}" ]; then
@@ -42,4 +42,4 @@ log_message "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.sc
 
 /bin/bash <(curl -sSL \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh) |
-    tee -a /var/log/linode-stack-script/linode-stack-script.log
+    tee -a /var/log/linode-stack-script/debian-cloudinit.log

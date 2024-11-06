@@ -42,8 +42,10 @@ if [ "${current_status}" == "unauthenticated" ]; then
             if [ "${__save_apikeys_in_secrets}" == "Y" ] || [ "${__save_apikeys_in_secrets}" == "y" ]; then
 
                 echo "Saving Client ID and Client Secret in ${BW_API_KEY_FILE}"
-                sed -i '/^BW_CLIENTID/d' "${BW_API_KEY_FILE}"
-                sed -i '/^BW_CLIENTSECRET/d' "${BW_API_KEY_FILE}"
+                if [ -f "${BW_API_KEY_FILE}" ]; then
+                    sed -i '/^BW_CLIENTID/d' "${BW_API_KEY_FILE}"
+                    sed -i '/^BW_CLIENTSECRET/d' "${BW_API_KEY_FILE}"
+                fi
                 echo "BW_CLIENTID=${__bw_client_id}" >>"${BW_API_KEY_FILE}"
                 echo "BW_CLIENTSECRET=${__bw_client_secret}" >>"${BW_API_KEY_FILE}"
             fi
@@ -78,7 +80,9 @@ if [ "${current_status}" == "locked" ]; then
     read -n1 -r -p "Set session id in ${BW_API_SESSION_FILE} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then
-        sed -i '/^BW_SESSION/d' "${BW_API_SESSION_FILE}"
+        if [ -f "${BW_API_SESSION_FILE}" ]; then
+            sed -i '/^BW_SESSION=/d' "${BW_API_SESSION_FILE}"
+        fi
         echo "BW_SESSION=${__bw_session_id}" >>"${BW_API_SESSION_FILE}"
     fi
 fi

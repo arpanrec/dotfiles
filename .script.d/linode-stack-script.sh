@@ -84,7 +84,8 @@ log_message "Adding cron job"
 mkdir -p /var/log/linode-stack-script
 crontab -l -u root | tee /tmp/root-crontab || true
 sed -i '/.*linode-stack-script.*/d' /tmp/root-crontab
-echo "0 */1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" | tee -a /tmp/root-crontab
+echo "0 */1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" |
+    tee -a /tmp/root-crontab
 crontab -u root /tmp/root-crontab
 
 if [ -z "${CLOUD_INIT_WEB_SERVER_FQDN:-}" ]; then

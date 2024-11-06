@@ -1,7 +1,7 @@
 -- luacheck: globals vim
 
 vim.g.mapleader = " "
-require("arpanrec.lazy")
-require("arpanrec.filetype")
-require("arpanrec.set")
-require("arpanrec.keymap")
+require("mainpkg.lazy")
+require("mainpkg.filetype")
+require("mainpkg.set")
+require("mainpkg.keymap")

@@ -21,7 +21,7 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({ { import = "arpanrec.plugins" }, { import = "arpanrec.plugins.lsp" } }, {
+require("lazy").setup({ { import = "mainpkg.plugins" }, { import = "mainpkg.plugins.lsp" } }, {
     defaults = {
         lazy = false, -- should plugins be lazy-loaded?
         version = nil,

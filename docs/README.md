@@ -4,7 +4,7 @@
 
 This repository contains my dotfiles and scripts, which I use to set up and configure my development environment. These files are essential for my workflow and help me maintain a consistent environment across different machines.
 
-Dotfiles are configuration files in Linux that start with a dot (e.g. .bashrc, .zshrc).
+Dotfiles are configuration files in Linux that start with a dot (e.g. `.bashrc`, `.zshrc`).
 They are used to customize and configure your system and applications.
 In this repository, you'll find my personal dotfiles for various applications and tools, including:
 

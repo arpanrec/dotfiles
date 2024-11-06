@@ -147,8 +147,8 @@ else
 fi
 
 log_message "Installing apt dependencies"
-apt update
-apt install -y python3-venv python3-pip git curl ca-certificates \
+apt-get update
+apt-get install -y python3-venv python3-pip git curl ca-certificates \
     gnupg tar unzip wget jq net-tools cron sudo vim
 
 log_message "Setting vim as default editor"

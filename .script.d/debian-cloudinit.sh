@@ -146,8 +146,7 @@ else
     log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding any extra keys to ${CLOUD_INIT_USER}"
 fi
 
-log_message "Installing dependencies, python3-venv python3-pip git curl ca-certificates \
-    gnupg tar unzip wget jq net-tools cron sudo vim"
+log_message "Installing apt dependencies"
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates \
     gnupg tar unzip wget jq net-tools cron sudo vim

@@ -27,6 +27,12 @@ else
     log_message "debian-cloudinit: HOME is set to /root"
 fi
 
+if [ -f /etc/environment ]; then
+    log_message "Reading /etc/environment"
+    # shellcheck source=/dev/null
+    source /etc/environment
+fi
+
 log_message "Installing packages"
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates \

@@ -15,7 +15,8 @@ export -f log_message
 
 log_message "debian-cloudinit-linode-stackscript: Starting"
 
-sudo apt update && sudo apt install -y python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget \
+sudo apt update
+sudo apt install -y python3-venv python3-pip git curl ca-certificates gnupg tar unzip wget \
     jq net-tools cron
 
 sudo systemctl enable --now cron

@@ -65,7 +65,13 @@ source /etc/environment
 log_message "Installing apt dependencies"
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates \
-    gnupg tar unzip wget jq net-tools cron sudo vim
+    gnupg tar unzip wget jq net-tools cron sudo vim rsyslog postfix
+
+log_message "Setting up postfix"
+systemctl enable --now postfix
+
+log_message "Setting up rsyslog"
+systemctl enable --now rsyslog
 
 log_message "Enabling and starting cron"
 systemctl enable --now cron

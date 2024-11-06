@@ -1,3 +1,3 @@
 -- luacheck: globals vim
 
-require("arpanrec")
+require("mainpkg")

@@ -62,23 +62,6 @@ log_message "Sourcing /etc/environment after setting environment variables"
 # shellcheck source=/dev/null
 source /etc/environment
 
-log_message "Installing apt dependencies"
-apt-get update
-apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools cron sudo vim
-
-log_message "Installing Python 3 venv and pip"
-apt-get install -y python3-venv python3-pip
-
-log_message "Installing fail2ban and sendmail"
-apt-get install -y fail2ban sendmail
-
-log_message "Installing postfix and rsyslog"
-apt-get install -y postfix rsyslog
-log_message "Enabling and starting postfix.service"
-systemctl enable --now postfix.service
-log_message "Enabling and starting rsyslog.service"
-systemctl enable --now rsyslog.service
-
 log_message "Installing cron"
 apt-get install -y cron
 log_message "Enabling and starting cron.service"

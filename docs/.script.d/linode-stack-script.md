@@ -27,6 +27,10 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
+apt update
+apt install -y python3-venv python3-pip git curl ca-certificates \
+    gnupg tar unzip wget jq net-tools cron sudo
+
 mkdir -p /var/log/linode-stack-script
 
 touch /etc/environment
@@ -49,16 +53,16 @@ declare -A env_vars=(
 
 for var in "${!env_vars[@]}"; do
     sed -i "/^${var}=.*/d" /etc/environment
-    echo "${var}=${env_vars[$var]}" | sudo tee -a /etc/environment
+    echo "${var}=${env_vars[$var]}" | tee -a /etc/environment
 done
 
 # shellcheck source=/dev/null
 source /etc/environment
 
-echo "Delegate to the script https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/linode-stack-script.md"
+echo "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/linode-stack-script.md"
 
-sudo -E -H -u root bash -c '/bin/bash <(curl -s \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh)' |
+/bin/bash <(curl -sSL \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) |
     tee -a /var/log/linode-stack-script/firstrun.log
 
 ```

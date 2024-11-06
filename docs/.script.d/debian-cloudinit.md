@@ -33,4 +33,5 @@ or for development machine
 ```bash
 CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
+
 ```

@@ -27,11 +27,6 @@ else
     log_message "debian-cloudinit: HOME is set to /root"
 fi
 
-log_message "Installing apt dependencies"
-apt update
-apt install -y python3-venv python3-pip git curl ca-certificates \
-    gnupg tar unzip wget jq net-tools cron sudo vim
-
 log_message "Setting up environment"
 
 if [ ! -f /etc/environment ]; then
@@ -63,8 +58,14 @@ for var in "${!env_vars[@]}"; do
     echo "${var}=${env_vars[$var]}" | tee -a /etc/environment
 done
 
+log_message "Sourcing /etc/environment"
 # shellcheck source=/dev/null
 source /etc/environment
+
+log_message "Installing apt dependencies"
+apt update
+apt install -y python3-venv python3-pip git curl ca-certificates \
+    gnupg tar unzip wget jq net-tools cron sudo vim
 
 log_message "Enabling and starting cron"
 systemctl enable --now cron
@@ -89,8 +90,6 @@ fi
 
 log_message "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/debian-cloudinit.md"
 
-/bin/bash <(curl -sSL \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh) |
-    tee -a /var/log/linode-stack-script/debian-cloudinit.log
+/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)
 
 log_message "Completed"

@@ -27,6 +27,8 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
+echo "Starting Linode Stack Script"
+
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates \
     gnupg tar unzip wget jq net-tools cron sudo
@@ -34,7 +36,6 @@ apt install -y python3-venv python3-pip git curl ca-certificates \
 mkdir -p /var/log/linode-stack-script
 
 touch /etc/environment
-
 # shellcheck source=/dev/null
 source /etc/environment
 
@@ -64,5 +65,7 @@ echo "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/
 /bin/bash <(curl -sSL \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) |
     tee -a /var/log/linode-stack-script/firstrun.log
+
+echo "Completed Linode Stack Script"
 
 ```

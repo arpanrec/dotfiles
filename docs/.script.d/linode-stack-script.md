@@ -1,8 +1,8 @@
 # [Linode Stack Script](/.script.d/linode-stack-script.sh)
 
-[Public Script](https://cloud.linode.com/stackscripts/1164660)
+[Public Script: 1164660](https://cloud.linode.com/stackscripts/1164660)
 
-Specific script for Linode to setup a new machine. It also adds it self to root crontab to run on every day.
+Specific script for Linode to set up a new machine. It also adds itself to root crontab to run on every day.
 Every time it will pull the script from [GitHub](https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh).
 
 Variables:
@@ -18,3 +18,16 @@ Variables from Linode:
 * `LINODE_LISHUSERNAME` Example: `linode66627286`
 * `LINODE_RAM`: Example: `2048`
 * `LINODE_DATACENTERID`: Example: `14`
+
+## Validate
+
+Make sure the script is the same as the one in the repository.
+
+```bash
+curl -sSL --output /tmp/linode-stack-script-github.sh \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh
+curl -sSL --request GET --header 'accept: application/json' \
+     --url https://api.linode.com/v4/linode/stackscripts/1164660 |
+    jq -r -c -j '.script' | tee /tmp/linode-stack-script-linode.sh
+diff /tmp/linode-stack-script-github.sh /tmp/linode-stack-script-linode.sh
+```

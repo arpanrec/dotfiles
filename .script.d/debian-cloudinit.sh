@@ -9,7 +9,7 @@ debian-cloudinit: \
 
 export -f log_message
 
-log_message "Starting debian cloudinit"
+log_message "Starting"
 
 if [[ -z "${VIRTUAL_ENV:-}" ]]; then
     log_message "Virtual environment is not activated"

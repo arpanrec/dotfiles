@@ -8,6 +8,8 @@ tools: %s\n---------------------------------------------------------------------
 
 export -f log_message
 
+log_message "Starting"
+
 if [ "$(id -u)" -eq 0 ]; then
     echo "Root user detected!!!! Error"
     exit 1
@@ -96,4 +98,4 @@ fi
 
 install_neovim
 
-exit 0
+log_message "Completed"

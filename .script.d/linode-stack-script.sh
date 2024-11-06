@@ -11,7 +11,7 @@ linode-stack-script: \
 
 export -f log_message
 
-log_message "debian-cloudinit-linode-stackscript: Starting"
+log_message "Starting"
 
 if [ "$(id -u)" -ne 0 ]; then
     log_message "Please run as root, exiting"
@@ -65,3 +65,5 @@ log_message "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.sc
 /bin/bash <(curl -sSL \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh) |
     tee -a /var/log/linode-stack-script/debian-cloudinit.log
+
+log_message "Completed"

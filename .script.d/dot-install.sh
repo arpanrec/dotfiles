@@ -8,6 +8,8 @@ dot-install: %s\n---------------------------------------------------------------
 
 export -f log_message
 
+log_message "Starting"
+
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     if [[ ! -t 1 ]]; then
 
@@ -57,3 +59,5 @@ git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" checkout main --force
 log_message "Adding remote origin with fetch refspec"
 git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config \
     --local remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+log_message "Completed"

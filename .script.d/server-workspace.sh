@@ -7,6 +7,8 @@ server-workspace: %s\n----------------------------------------------------------
 }
 export -f log_message
 
+log_message "Starting"
+
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     log_message "Root user detected, Please run this script as a non-root user, Exiting"
     exit 1
@@ -275,3 +277,5 @@ else
     log_message "Not sure what to do, Exiting"
     exit 1
 fi
+
+log_message "Completed"

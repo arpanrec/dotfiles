@@ -182,8 +182,10 @@ else
     log_message "requirements-${NEBULA_VERSION}.yml already exists"
 fi
 
-log_message "Installing roles and collections"
+log_message "Installing roles and collections dependencies"
 ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
+
+log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
 log_message Creating inventory file at "${ANSIBLE_INVENTORY}"

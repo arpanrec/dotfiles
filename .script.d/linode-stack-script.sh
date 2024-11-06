@@ -28,9 +28,11 @@ else
 fi
 
 if [ -f /etc/environment ]; then
-    log_message "Reading /etc/environment"
+    log_message "Sourcing /etc/environment"
     # shellcheck source=/dev/null
     source /etc/environment
+else
+    log_message "File /etc/environment does not exist"
 fi
 
 log_message "Installing packages"

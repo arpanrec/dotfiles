@@ -14,8 +14,8 @@ __get_current_status() {
     echo "${__ss}"
 }
 
-BW_API_KEY_FILE="${BW_API_KEY_FILE:-"${HOME}/.profile"}"
-BW_API_SESSION_FILE="${BW_API_SESSION_FILE:-"${HOME}/.profile"}"
+BW_API_KEY_FILE="${BW_API_KEY_FILE:-"${HOME}/.env"}"
+BW_API_SESSION_FILE="${BW_API_SESSION_FILE:-"${HOME}/.env"}"
 
 current_status=$(__get_current_status)
 
@@ -41,10 +41,11 @@ if [ "${current_status}" == "unauthenticated" ]; then
             echo ""
             if [ "${__save_apikeys_in_secrets}" == "Y" ] || [ "${__save_apikeys_in_secrets}" == "y" ]; then
 
-                tee -a "${BW_API_KEY_FILE}" <<EOF >/dev/null
-export BW_CLIENTID=${__bw_client_id}
-export BW_CLIENTSECRET=${__bw_client_secret}
-EOF
+                echo "Saving Client ID and Client Secret in ${BW_API_KEY_FILE}"
+                sed -i '/^BW_CLIENTID/d' "${BW_API_KEY_FILE}"
+                sed -i '/^BW_CLIENTSECRET/d' "${BW_API_KEY_FILE}"
+                echo "BW_CLIENTID=${__bw_client_id}" >>"${BW_API_KEY_FILE}"
+                echo "BW_CLIENTSECRET=${__bw_client_secret}" >>"${BW_API_KEY_FILE}"
             fi
         else
             echo "Client ID and Client Secret found in environment, Possibly from ${BW_API_KEY_FILE}"
@@ -77,9 +78,8 @@ if [ "${current_status}" == "locked" ]; then
     read -n1 -r -p "Set session id in ${BW_API_SESSION_FILE} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then
-        tee -a "${BW_API_SESSION_FILE}" <<EOF >/dev/null
-export BW_SESSION=${__bw_session_id}
-EOF
+        sed -i '/^BW_SESSION/d' "${BW_API_SESSION_FILE}"
+        echo "BW_SESSION=${__bw_session_id}" >>"${BW_API_SESSION_FILE}"
     fi
 fi
 

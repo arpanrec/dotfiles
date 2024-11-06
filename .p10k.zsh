@@ -106,8 +106,8 @@
 
     # =========================[ Line #2 ]=========================
     newline                 # \n
-    public_ip             # public IP address
-    ip                    # ip address and bandwidth usage for a specified network interface
+    # public_ip             # public IP address
+    # ip                    # ip address and bandwidth usage for a specified network interface
     # proxy                 # system-wide http/https/ftp proxy
     # battery               # internal battery
     # wifi                  # wifi speed

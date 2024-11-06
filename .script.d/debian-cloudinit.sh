@@ -153,7 +153,8 @@ apt install -y python3-venv python3-pip git curl ca-certificates \
     gnupg tar unzip wget jq net-tools cron sudo vim
 
 log_message "Setting vim as default editor"
-sed -i 's/EDITOR=.*$/EDITOR=vim/' /etc/environment
+sed -i 's/EDITOR=.*/d' /etc/environment
+echo "EDITOR=vim" | tee -a /etc/environment
 
 if [ ! -d "${NEBULA_VENV_DIR}" ]; then
     log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"

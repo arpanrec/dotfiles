@@ -103,7 +103,7 @@ else
 fi
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.4"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.5"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}
 
 log_message "

@@ -5,7 +5,7 @@ Setup workspace for development using [server workspace playbook](https://github
 ## Variables
 
 * `NEBULA_TMP_DIR`: Temporary directory to download the playbook. Default `${HOME}/.tmp`.
-* `NEBULA_VERSION`: Version of the nebula playbook to be used. Default `1.9.4`.
+* `NEBULA_VERSION`: Version of the nebula playbook to be used. Default `1.9.5`.
 * `NEBULA_VENV_DIR`: Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
 * `NEBULA_EXTRA_VARS_JSON_FILE`: Extra vars for the playbook in JSON format. Default `${NEBULA_TMP_DIR}/extra_vars.json`.
 

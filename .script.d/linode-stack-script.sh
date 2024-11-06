@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
+#
+#
+# Stack Script at: https://cloud.linode.com/stackscripts/1164660
+# Source: https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh
+# Docs: https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/linode-stack-script.md
+#
+#
 export DEBIAN_FRONTEND=noninteractive
+
+# <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>
+# <UDF name="CLOUD_INIT_IS_DEV_MACHINE" Label="Install development tool chain" oneOf="true,false" default="false"/>
+# <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Install dotfiles" oneOf="true,false" default="true"/>
+# <udf name="CLOUD_INIT_WEB_SERVER_FQDN" label="Web server fully qualified domain name" example="example.com" default=""/>
 
 log_message() {
     printf "\n\n================================================================================\n %s \
@@ -27,18 +38,44 @@ else
     log_message "debian-cloudinit: HOME is set to /root"
 fi
 
-if [ -f /etc/environment ]; then
-    log_message "Sourcing /etc/environment"
-    # shellcheck source=/dev/null
-    source /etc/environment
-else
-    log_message "File /etc/environment does not exist"
-fi
-
-log_message "Installing packages"
+log_message "Installing dependencies"
 apt update
 apt install -y python3-venv python3-pip git curl ca-certificates \
     gnupg tar unzip wget jq net-tools cron sudo
+
+log_message "Setting up environment"
+
+if [ ! -f /etc/environment ]; then
+    log_message "Creating /etc/environment"
+    touch /etc/environment
+else
+    log_message "/etc/environment already exists, sourcing"
+    # shellcheck source=/dev/null
+    source /etc/environment
+fi
+
+log_message "Setting up environment variables in /etc/environment"
+
+declare -A env_vars=(
+    ["LINODE_ID"]="${LINODE_ID}"
+    ["LINODE_LISHUSERNAME"]="${LINODE_LISHUSERNAME}"
+    ["LINODE_RAM"]="${LINODE_RAM}"
+    ["LINODE_DATACENTERID"]="${LINODE_DATACENTERID}"
+    ["CLOUD_INIT_COPY_ROOT_SSH_KEYS"]="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-true}"
+    ["CLOUD_INIT_IS_DEV_MACHINE"]="${CLOUD_INIT_IS_DEV_MACHINE:-false}"
+    ["CLOUD_INIT_INSTALL_DOTFILES"]="${CLOUD_INIT_INSTALL_DOTFILES:-true}"
+    ["CLOUD_INIT_HOSTNAME"]="${CLOUD_INIT_HOSTNAME:-${LINODE_LISHUSERNAME:-cloudinit-debian-linode}}"
+    ["CLOUD_INIT_DOMAIN"]="${CLOUD_INIT_DOMAIN:-cloudinit-debian-linode}"
+    ["CLOUD_INIT_WEB_SERVER_FQDN"]="${CLOUD_INIT_WEB_SERVER_FQDN:-}"
+)
+
+for var in "${!env_vars[@]}"; do
+    sed -i "/^${var}=.*/d" /etc/environment
+    echo "${var}=${env_vars[$var]}" | tee -a /etc/environment
+done
+
+# shellcheck source=/dev/null
+source /etc/environment
 
 log_message "Enabling and starting cron"
 systemctl enable --now cron

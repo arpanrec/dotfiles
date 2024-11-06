@@ -27,6 +27,8 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
+mkdir -p /var/log/linode-stack-script
+
 touch /etc/environment
 
 # shellcheck source=/dev/null
@@ -53,10 +55,10 @@ done
 # shellcheck source=/dev/null
 source /etc/environment
 
-echo "Delegate to the script https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh"
+echo "Delegate to the script https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/linode-stack-script.md"
 
 sudo -E -H -u root bash -c '/bin/bash <(curl -s \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh)' |
-    tee -a /root/linode-stack-script.log
+    tee -a /var/log/linode-stack-script/firstrun.log
 
 ```

@@ -22,7 +22,7 @@ Variables from Linode:
 ## Linode Stack Script
 
 ```bash
-/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 # <UDF name="CLOUD_INIT_COPY_ROOT_SSH_KEYS" Label="Copy Root SSH Keys to current user" oneOf="true,false" default="true"/>

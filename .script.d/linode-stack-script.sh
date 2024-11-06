@@ -58,25 +58,33 @@ for var in "${!env_vars[@]}"; do
     echo "${var}=${env_vars[$var]}" | tee -a /etc/environment
 done
 
-log_message "Sourcing /etc/environment"
+log_message "Sourcing /etc/environment after setting environment variables"
 # shellcheck source=/dev/null
 source /etc/environment
 
 log_message "Installing apt dependencies"
 apt-get update
-apt-get install -y python3-venv python3-pip git curl ca-certificates \
-    gnupg tar unzip wget jq net-tools cron sudo vim rsyslog postfix fail2ban sendmail
+apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools cron sudo vim
 
+log_message "Installing Python 3 venv and pip"
+apt-get install -y python3-venv python3-pip
+
+log_message "Installing fail2ban and sendmail"
+apt-get install -y fail2ban sendmail
+
+log_message "Installing postfix and rsyslog"
+apt-get install -y postfix rsyslog
 log_message "Setting up postfix"
 systemctl enable --now postfix
-
 log_message "Setting up rsyslog"
 systemctl enable --now rsyslog
 
+log_message "Installing cron"
+apt-get install -y cron
 log_message "Enabling and starting cron"
 systemctl enable --now cron
 
-log_message "Adding cron job"
+log_message "Adding cron job to run linode-stack-script every day at 1 AM"
 
 log_message "Dumping root crontab to /tmp/root-crontab"
 crontab -l -u root | tee /tmp/root-crontab || true

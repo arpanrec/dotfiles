@@ -102,54 +102,6 @@ else
     fi
 fi
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.6"}"
-export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}
-
-log_message "
-NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
-NEBULA_VERSION: ${NEBULA_VERSION}
-NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
-
-Creating directories"
-
-mkdir -p "${NEBULA_TMP_DIR}"
-
-export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
-export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
-
-log_message "
-DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
-ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
-ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
-ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
-
-# rm -rf "${NEBULA_TMP_DIR}"
-if [ -d "${NEBULA_TMP_DIR}" ]; then
-    log_message "Directory ${NEBULA_TMP_DIR} already exists, Changing ownership to root"
-    chown -R root:root "${NEBULA_TMP_DIR}"
-else
-    log_message "Directory ${NEBULA_TMP_DIR} does not exist"
-fi
-
-log_message "Creating directories"
-mkdir -p "${NEBULA_TMP_DIR}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
-    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
-
-log_message "Creating authorized_keys file at ${NEBULA_TMP_DIR}/authorized_keys"
-tee "${NEBULA_TMP_DIR}/authorized_keys" <<EOF >/dev/null
-${CLOUD_INIT_USE_SSH_PUB}
-EOF
-
-if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
-    log_message "Copying root's authorized_keys to ${NEBULA_TMP_DIR}/authorized_keys"
-    cat "/root/.ssh/authorized_keys" >>"${NEBULA_TMP_DIR}/authorized_keys"
-else
-    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding any extra keys to ${CLOUD_INIT_USER}"
-fi
-
 log_message "Installing apt dependencies"
 apt-get update
 apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools sudo
@@ -173,6 +125,61 @@ log_message "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
 
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.6"}"
+export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by python3 -m venv
+export AUTHORIZED_KEYS_FILE="${AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
+export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
+log_message "
+NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
+NEBULA_VERSION: ${NEBULA_VERSION}
+NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
+AUTHORIZED_KEYS_FILE: ${AUTHORIZED_KEYS_FILE}
+NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
+
+Creating directories if not exists and changing ownership to root:root"
+
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
+chown -R root:root "${NEBULA_TMP_DIR}" "$(dirname "${AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
+
+log_message "Creating authorized_keys file at ${AUTHORIZED_KEYS_FILE}"
+tee "${AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
+${CLOUD_INIT_USE_SSH_PUB}
+EOF
+
+if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
+    log_message "Copying root's authorized_keys to ${AUTHORIZED_KEYS_FILE}"
+    cat "/root/.ssh/authorized_keys" >>"${AUTHORIZED_KEYS_FILE}"
+else
+    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding
+ any extra keys to ${CLOUD_INIT_USER}"
+fi
+
+if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
+    log_message "Downloading nebula ansible requirements ${NEBULA_VERSION} file to ${NEBULA_REQUIREMENTS_FILE}"
+    curl -sSL \
+        "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+        -o "${NEBULA_REQUIREMENTS_FILE}"
+else
+    log_message "${NEBULA_REQUIREMENTS_FILE} already exists"
+fi
+
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
+
+log_message "
+DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
+ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
+ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}
+
+Creating directories if not exists and changing ownership to root:root"
+
+mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
+    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+
 if [ ! -d "${NEBULA_VENV_DIR}" ]; then
     log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"
     python3 -m venv "${NEBULA_VENV_DIR}"
@@ -191,17 +198,8 @@ pip3 install ansible hvac --upgrade
 
 log_message "Installing nebula version ${NEBULA_VERSION}"
 
-if [[ ! -f "/tmp/requirements-${NEBULA_VERSION}.yml" ]]; then
-    log_message "Downloading requirements-${NEBULA_VERSION}.yml to /tmp"
-    curl -sSL \
-        "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
-        -o "/tmp/requirements-${NEBULA_VERSION}.yml"
-else
-    log_message "requirements-${NEBULA_VERSION}.yml already exists"
-fi
-
 log_message "Installing roles and collections dependencies"
-ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
+ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 
 log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
@@ -219,7 +217,7 @@ all:
                 ansible_become: false
                 pv_cloud_init_user: ${CLOUD_INIT_USER}
                 pv_cloud_init_group: ${CLOUD_INIT_GROUP}
-                pv_cloud_init_authorized_keys: ${NEBULA_TMP_DIR}/authorized_keys
+                pv_cloud_init_authorized_keys: ${AUTHORIZED_KEYS_FILE}
                 pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
                 pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
                 pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}

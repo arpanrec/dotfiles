@@ -24,7 +24,37 @@ if [ "${HOME}" != "/root" ]; then
     log_message "HOME is not set to /root, exiting"
     exit 1
 else
-    log_message "debian-cloudinit: HOME is set to /root"
+    log_message "HOME is set to /root"
+fi
+
+# Exit if LINODE_ID, LINODE_LISHUSERNAME, LINODE_RAM, LINODE_DATACENTERID are not set
+
+if [ -z "${LINODE_ID:-}" ]; then
+    log_message "LINODE_ID is not set, exiting"
+    exit 1
+else
+    log_message "LINODE_ID is set to ${LINODE_ID}"
+fi
+
+if [ -z "${LINODE_LISHUSERNAME:-}" ]; then
+    log_message "LINODE_LISHUSERNAME is not set, exiting"
+    exit 1
+else
+    log_message "LINODE_LISHUSERNAME is set to ${LINODE_LISHUSERNAME}"
+fi
+
+if [ -z "${LINODE_RAM:-}" ]; then
+    log_message "LINODE_RAM is not set, exiting"
+    exit 1
+else
+    log_message "LINODE_RAM is set to ${LINODE_RAM}"
+fi
+
+if [ -z "${LINODE_DATACENTERID:-}" ]; then
+    log_message "LINODE_DATACENTERID is not set, exiting"
+    exit 1
+else
+    log_message "LINODE_DATACENTERID is set to ${LINODE_DATACENTERID}"
 fi
 
 log_message "Setting up environment"

@@ -159,11 +159,12 @@ mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE
 chown -R root:root "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
     "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY}")"
 
-if [ ! -d "${NEBULA_VENV_DIR}" ]; then
+if [ -d "${NEBULA_VENV_DIR}" ]; then
+    log_message "Virtual environment already exists at ${NEBULA_VENV_DIR}"
+else
+
     log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"
     python3 -m venv "${NEBULA_VENV_DIR}"
-else
-    log_message "Virtual environment already exists at ${NEBULA_VENV_DIR}"
 fi
 
 log_message "Creating authorized_keys file at ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"

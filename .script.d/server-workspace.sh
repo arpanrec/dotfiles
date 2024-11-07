@@ -178,12 +178,14 @@ export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.tmp"}"
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.6"}"
 export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
+export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
 log_message "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
 NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
-NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}"
+NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}
+NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}"
 
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
@@ -228,16 +230,17 @@ pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-if [[ ! -f "/tmp/requirements-${NEBULA_VERSION}.yml" ]]; then
-    log_message "Downloading requirements-${NEBULA_VERSION}.yml to /tmp"
+if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
+    log_message "Downloading ${NEBULA_REQUIREMENTS_FILE}"
+    mkdir -p "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
     curl -sSL \
         "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
-        -o "/tmp/requirements-${NEBULA_VERSION}.yml"
+        -o "${NEBULA_REQUIREMENTS_FILE}"
 else
-    log_message "requirements-${NEBULA_VERSION}.yml already exists"
+    log_message "Requirements file ${NEBULA_REQUIREMENTS_FILE} exists"
 fi
 
-ansible-galaxy install -r "/tmp/requirements-${NEBULA_VERSION}.yml"
+ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
 log_message "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"

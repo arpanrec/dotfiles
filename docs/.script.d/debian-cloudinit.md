@@ -3,6 +3,7 @@
 Bootstrap a Debian machine with a user and some basic tools using [cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md).
 And then setup user workspace using [server-workspace](/docs/.script.d/server-workspace.md)
 
+Any variable ends with `_FILE` will be written to a file and the directory will be created if it does not exist, also ownership will be changed to the root user.S
 Variables:
 
 * `CLOUD_INIT_GROUP` : Group name for the user to be created. Default `cloudinit`.

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export DEBIAN_FRONTEND="noninteractive"
+
 log_message() {
     printf "\n\n================================================================================\n %s \
 debian-cloudinit: \
@@ -50,7 +52,6 @@ log_message "
 CLOUD_INIT_USER: ${CLOUD_INIT_USER}
 CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
-export DEBIAN_FRONTEND="noninteractive"
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-"false"}"
 export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-"cloudinit"}"
 export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-"false"}"
@@ -100,6 +101,17 @@ else
     else
         log_message "Dotfiles will not be installed/reset"
     fi
+fi
+
+log_message "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
+export CLOUD_INIT_LOCK_FILE="/tmp/debian-cloudinit.lock"
+
+if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
+    log_message "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
+    exit 1
+else
+    log_message "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
+    touch "${CLOUD_INIT_LOCK_FILE}"
 fi
 
 log_message "Installing apt dependencies"
@@ -272,5 +284,8 @@ log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DE
 
 chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
     "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+
+log_message "Deletiing lock file ${CLOUD_INIT_LOCK_FILE}"
+rm -f "${CLOUD_INIT_LOCK_FILE}"
 
 log_message "Completed"

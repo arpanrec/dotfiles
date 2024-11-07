@@ -140,28 +140,40 @@ echo "EDITOR=vim" | tee -a /etc/environment
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.6"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by python3 -m venv
-export AUTHORIZED_KEYS_FILE="${AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
+export NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
+export NEBULA_CLOUDINIT_ANSIBLE_INVENTORY="${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
+
 log_message "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
-NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
-AUTHORIZED_KEYS_FILE: ${AUTHORIZED_KEYS_FILE}
+NEBULA_VENV_DIR: ${NEBULA_VENV_DIR} 
+NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE: ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}
 NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
+NEBULA_CLOUDINIT_ANSIBLE_INVENTORY: ${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY}
 
 Creating directories if not exists and changing ownership to root:root"
 
-mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
-chown -R root:root "${NEBULA_TMP_DIR}" "$(dirname "${AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
+    "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY}")"
+chown -R root:root "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
+    "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY}")"
 
-log_message "Creating authorized_keys file at ${AUTHORIZED_KEYS_FILE}"
-tee "${AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
+if [ ! -d "${NEBULA_VENV_DIR}" ]; then
+    log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"
+    python3 -m venv "${NEBULA_VENV_DIR}"
+else
+    log_message "Virtual environment already exists at ${NEBULA_VENV_DIR}"
+fi
+
+log_message "Creating authorized_keys file at ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
+tee "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
 ${CLOUD_INIT_USE_SSH_PUB}
 EOF
 
 if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
-    log_message "Copying root's authorized_keys to ${AUTHORIZED_KEYS_FILE}"
-    cat "/root/.ssh/authorized_keys" >>"${AUTHORIZED_KEYS_FILE}"
+    log_message "Copying root's authorized_keys to ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
+    cat "/root/.ssh/authorized_keys" >>"${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
 else
     log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding
  any extra keys to ${CLOUD_INIT_USER}"
@@ -176,28 +188,44 @@ else
     log_message "${NEBULA_REQUIREMENTS_FILE} already exists"
 fi
 
+log_message Creating inventory file at "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY}"
+tee "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY}" <<EOF >/dev/null
+---
+all:
+    children:
+        cloudinit:
+            hosts:
+                localhost:
+            vars:
+                ansible_user: root
+                ansible_become: false
+                pv_cloud_init_user: ${CLOUD_INIT_USER}
+                pv_cloud_init_group: ${CLOUD_INIT_GROUP}
+                pv_cloud_init_authorized_keys: ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}
+                pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
+                pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
+                pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}
+    hosts:
+        localhost:
+            ansible_connection: local
+            ansible_python_interpreter: "/usr/bin/python3"
+EOF
+
+#             ansible_python_interpreter: "$(which python3)"
+
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
-export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
 log_message "
 DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
 ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
 ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
-ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}
 
 Creating directories if not exists and changing ownership to root:root"
 
-mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
-    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
-
-if [ ! -d "${NEBULA_VENV_DIR}" ]; then
-    log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"
-    python3 -m venv "${NEBULA_VENV_DIR}"
-else
-    log_message "Virtual environment already exists at ${NEBULA_VENV_DIR}"
-fi
+mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
+chown -R root:root "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
 
 log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
 # shellcheck source=/dev/null
@@ -216,31 +244,6 @@ ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
-log_message Creating inventory file at "${ANSIBLE_INVENTORY}"
-tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
----
-all:
-    children:
-        cloudinit:
-            hosts:
-                localhost:
-            vars:
-                ansible_user: root
-                ansible_become: false
-                pv_cloud_init_user: ${CLOUD_INIT_USER}
-                pv_cloud_init_group: ${CLOUD_INIT_GROUP}
-                pv_cloud_init_authorized_keys: ${AUTHORIZED_KEYS_FILE}
-                pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
-                pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
-                pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}
-    hosts:
-        localhost:
-            ansible_connection: local
-            ansible_python_interpreter: "/usr/bin/python3"
-EOF
-
-#             ansible_python_interpreter: "$(which python3)"
-
 log_message Running ansible-playbook arpanrec.nebula.cloudinit
 
 ansible-playbook arpanrec.nebula.cloudinit
@@ -249,13 +252,6 @@ log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 
 deactivate
 
-log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")" to \
-    "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
-
-chown -R "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
-
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -exuo pipefail
@@ -263,9 +259,6 @@ set -exuo pipefail
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
     bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 fi
-
-ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/server-workspace-inventory.yml"
-export ANSIBLE_INVENTORY
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSL \
@@ -280,10 +273,10 @@ fi
 '
 
 log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")" to root:root
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" to root:root
 
 chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
 
 log_message "Deletiing lock file ${CLOUD_INIT_LOCK_FILE}"
 rm -f "${CLOUD_INIT_LOCK_FILE}"

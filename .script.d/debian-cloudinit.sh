@@ -247,7 +247,7 @@ ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebu
 
 log_message Running ansible-playbook arpanrec.nebula.cloudinit
 
-ansible-playbook arpanrec.nebula.cloudinit
+ansible-playbook -i "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}" arpanrec.nebula.cloudinit
 
 log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 

@@ -8,8 +8,8 @@ alias la='ls -A'
 alias l='ls -CF'
 alias df="sudo df -h"
 
-# alias ssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-# alias sftp="sftp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+alias nssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+alias nsftp="sftp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 # Office System local zsh shell
 alias zzx='exec ${HOME}/.local/bin/zsh -l'

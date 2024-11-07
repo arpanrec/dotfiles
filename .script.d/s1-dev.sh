@@ -149,6 +149,10 @@ AuthenticAMD)
     echo "Installing AMD microcode"
     ALL_PAKGS+=('amd-ucode')
     ;;
+*)
+    echo "Unknown processor type"
+    exit 1
+    ;;
 esac
 
 echo "--------------------------------------------------"

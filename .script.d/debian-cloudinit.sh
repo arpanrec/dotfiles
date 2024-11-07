@@ -103,8 +103,8 @@ else
     fi
 fi
 
-log_message "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
 export CLOUD_INIT_LOCK_FILE="/tmp/debian-cloudinit.lock"
+log_message "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
     log_message "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"

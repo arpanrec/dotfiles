@@ -17,11 +17,13 @@ Variables:
 * `NEBULA_TMP_DIR` : Directory to clone the ansible playbook. Default `/tmp/cloudinit`.
 * `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.9.6`.
 * `NEBULA_VENV_DIR` : Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
+* `NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE` : Authorized keys file for the user. Default `${NEBULA_TMP_DIR}/authorized_keys`.
+* `NEBULA_REQUIREMENTS_FILE` : Ansible requirements file. Default `${NEBULA_TMP_DIR}/requirements.yml`.
+* `NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE` : Ansible inventory file. Default `${NEBULA_TMP_DIR}/inventory.yml`.
   
 * `DEFAULT_ROLES_PATH` : Directory to clone the ansible roles. Default `${NEBULA_TMP_DIR}/roles`.
 * `ANSIBLE_ROLES_PATH` : Ansible roles path. Default `${DEFAULT_ROLES_PATH}`.
 * `ANSIBLE_COLLECTIONS_PATH` : Ansible collections path. Default `${NEBULA_TMP_DIR}/collections`.
-* `ANSIBLE_INVENTORY` : Ansible inventory file. Default `${NEBULA_TMP_DIR}/inventory.yml`.
 
 ```bash
 sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \

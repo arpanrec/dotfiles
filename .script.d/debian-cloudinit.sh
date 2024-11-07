@@ -121,15 +121,15 @@ apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools su
 log_message "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip
 
-log_message "Installing fail2ban and sendmail"
-apt-get install -y fail2ban sendmail
-
 log_message "Installing postfix and rsyslog"
 apt-get install -y postfix rsyslog
 log_message "Enabling and starting postfix.service"
 systemctl enable --now postfix.service
 log_message "Enabling and starting rsyslog.service"
 systemctl enable --now rsyslog.service
+
+log_message "Installing fail2ban and sendmail"
+apt-get install -y fail2ban sendmail
 
 log_message "Installing vim"
 apt-get install -y vim

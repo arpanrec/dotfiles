@@ -325,7 +325,7 @@ EOF
 
 log_message "Setting permissions for /etc/update-motd.d/10-neofetch"
 chmod +x /etc/update-motd.d/10-neofetch
-chown root:root /etc/update-motd.d/10-neofetchS
+chown root:root /etc/update-motd.d/10-neofetch
 
 log_message "Creating /etc/motd"
 

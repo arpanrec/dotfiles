@@ -347,11 +347,12 @@ function install_fastfetch() {
         fastfetch_url="https://github.com/fastfetch-cli/fastfetch/releases/download/${fastfetch_version}/fastfetch-linux-${fastfetch_architecture}.deb"
         log_message "Downloading fastfetch ${fastfetch_version} from ${fastfetch_url}"
         if [ -f "/tmp/fastfetch-linux-${fastfetch_architecture}.deb" ]; then
-            log_message "Removing existing /tmp/fastfetch-linux-${fastfetch_architecture}.deb"
-            rm -f "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
+            log_message "fastfetch ${fastfetch_version} already downloaded"
+        else
+            curl -sSL "${fastfetch_url}" -o "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
+            log_message "Installing fastfetch ${fastfetch_version}"
         fi
-        curl -sSL "${fastfetch_url}" -o "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
-        log_message "Installing fastfetch ${fastfetch_version}"
+
         dpkg -i "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
     else
         log_message "fastfetch already installed"

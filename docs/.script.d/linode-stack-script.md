@@ -2,7 +2,8 @@
 
 [Public Script: 1164660](https://cloud.linode.com/stackscripts/1164660)
 
-Specific script for Linode to set up a new machine. It also adds itself to root crontab to run on every day.
+Specific script for Linode to set up a new machine using [debian-cloudinit](/docs/.script.d/debian-cloudinit.md) script.
+It also adds itself to root crontab to run on every day.
 Every time it will pull the script from [GitHub](https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh).
 
 Variables:

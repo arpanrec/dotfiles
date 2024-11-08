@@ -53,7 +53,7 @@ CLOUD_INIT_USER: ${CLOUD_INIT_USER}
 CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-"false"}"
-export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-"cloudinit"}"
+export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-"${CLOUD_INIT_USER:-"cloudinit"}"}"
 export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-"false"}"
 export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
 export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"cloudinit"}"
@@ -162,10 +162,15 @@ else
     python3 -m venv "${NEBULA_VENV_DIR}"
 fi
 
-mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_VENV_DIR}")" \
     "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
-chown -R root:root "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
-    "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
+
+log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
+    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")" to root:root
+chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
+    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
 
 log_message "Creating authorized_keys file at ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
 tee "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
@@ -245,13 +250,26 @@ ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
 ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
 
-log_message Running ansible-playbook arpanrec.nebula.cloudinit
+log_message Running ansible-playbook arpanrec.nebula.cloudinit with inventory file \
+    "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}"
 
 ansible-playbook -i "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}" arpanrec.nebula.cloudinit
 
 log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 
 deactivate
+
+log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
+    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")" to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
+chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
+    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
+
+log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" to \
+    "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
+chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
+    "${ANSIBLE_COLLECTIONS_PATH}"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
@@ -272,12 +290,6 @@ else
 fi
 
 '
-
-log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" to root:root
-
-chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" "${DEFAULT_ROLES_PATH}" \
-    "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
 
 log_message "Deletiing lock file ${CLOUD_INIT_LOCK_FILE}"
 rm -f "${CLOUD_INIT_LOCK_FILE}"

@@ -122,7 +122,7 @@ log_message "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip
 
 log_message "Installing rsyslog"
-apt-get install -y syslog
+apt-get install -y rsyslog
 log_message "Enabling and starting rsyslog.service"
 systemctl enable --now rsyslog.service
 

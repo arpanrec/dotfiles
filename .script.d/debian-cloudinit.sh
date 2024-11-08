@@ -295,7 +295,7 @@ fi
 
 '
 
-log_message "Deletiing lock file ${CLOUD_INIT_LOCK_FILE}"
+log_message "Removing lock file ${CLOUD_INIT_LOCK_FILE}"
 rm -f "${CLOUD_INIT_LOCK_FILE}"
 
 log_message "Completed"

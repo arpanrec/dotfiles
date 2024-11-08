@@ -314,13 +314,54 @@ if [ -f /etc/update-motd.d/10-uname ]; then
     rm -f /etc/update-motd.d/10-uname
 fi
 
-log_message "Installing neofetch"
-apt-get install -y neofetch
+function install_fastfetch() {
+    fastfetch_version="2.29.0"
+    log_message "Installing fastfetch"
+
+    if command -v fastfetch &>/dev/null; then
+        fastfetch_installed_version="$(fastfetch --version | awk '{print $2}')"
+        if [ "${fastfetch_installed_version}" = "${fastfetch_version}" ]; then
+            log_message "fastfetch ${fastfetch_version} already installed"
+            return
+        else
+            log_message "fastfetch ${fastfetch_installed_version} installed, upgrading to ${fastfetch_version}"
+            log_message "Removing existing fastfetch"
+            apt-get purge -y fastfetch
+        fi
+    fi
+
+    if ! command -v fastfetch &>/dev/null; then
+        system_architecture="$(uname -m)"
+        case "${system_architecture}" in
+        x86_64)
+            fastfetch_architecture="amd64"
+            ;;
+        aarch64)
+            fastfetch_architecture="aarch64"
+            ;;
+        *)
+            log_message "Unsupported system architecture ${system_architecture}, exiting"
+            exit 1
+            ;;
+        esac
+        fastfetch_url="https://github.com/fastfetch-cli/fastfetch/releases/download/${fastfetch_version}/fastfetch-linux-${fastfetch_architecture}.deb"
+        log_message "Downloading fastfetch ${fastfetch_version} from ${fastfetch_url}"
+        if [ -f "/tmp/fastfetch-linux-${fastfetch_architecture}.deb" ]; then
+            log_message "Removing existing /tmp/fastfetch-linux-${fastfetch_architecture}.deb"
+            rm -f "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
+        fi
+        curl -sSL "${fastfetch_url}" -o "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
+        log_message "Installing fastfetch ${fastfetch_version}"
+        dpkg -i "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
+    else
+        log_message "fastfetch already installed"
+    fi
+}
 
 log_message "Creating /etc/update-motd.d/10-neofetch"
 tee /etc/update-motd.d/10-neofetch <<EOF >/dev/null
 #!/bin/bash
-neofetch || true
+fastfetch || true
 EOF
 
 log_message "Setting permissions for /etc/update-motd.d/10-neofetch"

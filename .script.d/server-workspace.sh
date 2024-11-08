@@ -9,6 +9,16 @@ export -f log_message
 
 log_message "Starting"
 
+export SERVER_WORKSPACE_LOCK_FILE="/tmp/server-workspace.lock"
+
+if [[ -f "${SERVER_WORKSPACE_LOCK_FILE}" ]]; then
+    log_message "Lock file ${SERVER_WORKSPACE_LOCK_FILE} exists, Exiting"
+    exit 1
+else
+    log_message "Creating lock file ${SERVER_WORKSPACE_LOCK_FILE}"
+    touch "${SERVER_WORKSPACE_LOCK_FILE}"
+fi
+
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     log_message "Root user detected, Please run this script as a non-root user, Exiting"
     exit 1
@@ -280,5 +290,8 @@ else
     log_message "Not sure what to do, Exiting"
     exit 1
 fi
+
+log_message "Removing lock file ${SERVER_WORKSPACE_LOCK_FILE}"
+rm -f "${SERVER_WORKSPACE_LOCK_FILE}"
 
 log_message "Completed"

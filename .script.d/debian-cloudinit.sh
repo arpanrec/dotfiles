@@ -350,9 +350,8 @@ function install_fastfetch() {
             log_message "fastfetch ${fastfetch_version} already downloaded"
         else
             curl -sSL "${fastfetch_url}" -o "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
-            log_message "Installing fastfetch ${fastfetch_version}"
         fi
-
+        log_message "Installing fastfetch ${fastfetch_version}"
         dpkg -i "/tmp/fastfetch-linux-${fastfetch_architecture}.deb"
     else
         log_message "fastfetch already installed"

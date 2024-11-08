@@ -309,6 +309,26 @@ fi
 
 '
 
+tee /etc/motd <<EOF >/dev/null
+############################################################
+#                First of all, if you are not me,          #
+#                Get the fuck out of here or               #
+#                fuck around and find out                  #
+############################################################
+#                STOP! You’ve reached the peak             #
+#               of your questionable life choices          #
+############################################################
+#       Hey, fancy seeing *you* here.                      #
+#       Remember, every command you type                   #
+#       reminds the server it deserves a better user.      #
+#                                                          #
+#       Please don’t mess things up (again).               #
+#       And if you do, IT knows.                           #
+############################################################
+#        Type ‘exit’ to repent.                            #
+############################################################
+EOF
+
 log_message "Removing lock file ${CLOUD_INIT_LOCK_FILE}"
 rm -f "${CLOUD_INIT_LOCK_FILE}"
 

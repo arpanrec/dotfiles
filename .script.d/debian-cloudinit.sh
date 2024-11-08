@@ -277,8 +277,8 @@ log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
-log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" to \
-    "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "$(dirname "${ANSIBLE_INVENTORY}")"
+log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
+    "$(dirname "${ANSIBLE_INVENTORY}")" to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 

@@ -11,6 +11,7 @@ Variables:
 * `CLOUD_INIT_IS_DEV_MACHINE` : Install development tools. Default `false`.
 * `CLOUD_INIT_INSTALL_DOTFILES` : Install dotfiles for the user. Default `true`.
 * `CLOUD_INIT_WEB_SERVER_FQDN` : Web server fully qualified domain name. Default `""`.
+* `CLOUD_INIT_INSTALL_DOCKER` : Install docker. Default `false`.
 
 Variables from Linode:
 
@@ -29,6 +30,7 @@ set -euo pipefail
 # <UDF name="CLOUD_INIT_IS_DEV_MACHINE" Label="Install development tool chain" oneOf="true,false" default="false"/>
 # <UDF name="CLOUD_INIT_INSTALL_DOTFILES" Label="Install dotfiles" oneOf="true,false" default="true"/>
 # <udf name="CLOUD_INIT_WEB_SERVER_FQDN" label="Web server fully qualified domain name" example="example.com" default=""/>
+# <UDF name="CLOUD_INIT_INSTALL_DOCKER" Label="Install Docker" oneOf="true,false" default="false"/>
 
 /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) |
     tee -a /root/linode-stack-script.log

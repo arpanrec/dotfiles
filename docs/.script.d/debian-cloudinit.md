@@ -14,6 +14,7 @@ Variables:
 * `CLOUD_INIT_HOSTNAME` : Hostname for the machine. Default `cloudinit`.
 * `CLOUD_INIT_DOMAIN` : Domain name for the machine. Default `cloudinit`.
 * `CLOUD_INIT_INSTALL_DOTFILES` : Install dotfiles for the user. Default `true`.
+* `CLOUD_INIT_INSTALL_DOCKER` : Install docker. Default `false`.
 
 * `NEBULA_TMP_DIR` : Directory to clone the ansible playbook. Default `/tmp/cloudinit`.
 * `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.10.0`.

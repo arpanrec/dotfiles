@@ -58,6 +58,7 @@ export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-"false"}"
 export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
 export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"cloudinit"}"
 export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
+export CLOUD_INIT_INSTALL_DOCKER="${CLOUD_INIT_INSTALL_DOCKER:-"false"}"
 
 log_message "
 CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}
@@ -65,7 +66,8 @@ CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}
 CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}
 CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}
 CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}
-CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}"
+CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}
+CLOUD_INIT_INSTALL_DOCKER: ${CLOUD_INIT_INSTALL_DOCKER}"
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
     log_message "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
@@ -100,6 +102,17 @@ else
         log_message "Dotfiles will be installed/reset"
     else
         log_message "Dotfiles will not be installed/reset"
+    fi
+fi
+
+if [[ ! "${CLOUD_INIT_INSTALL_DOCKER}" =~ ^true|false$ ]]; then
+    log_message "CLOUD_INIT_INSTALL_DOCKER must be a boolean (true|false), exiting"
+    exit 1
+else
+    if [ "${CLOUD_INIT_INSTALL_DOCKER}" = true ]; then
+        log_message "Docker will be installed"
+    else
+        log_message "Docker will not be installed"
     fi
 fi
 
@@ -241,6 +254,7 @@ all:
                 pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
                 pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
                 pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}
+                pv_cloud_init_install_docker: ${CLOUD_INIT_INSTALL_DOCKER}
     hosts:
         localhost:
             ansible_connection: local

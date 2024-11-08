@@ -129,7 +129,7 @@ fi
 
 log_message "Installing apt dependencies"
 apt-get update
-apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools sudo
+apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools sudo bash
 
 log_message "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip

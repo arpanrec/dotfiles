@@ -3,7 +3,7 @@
 Bootstrap a Debian machine with a user and some basic tools using [cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md).
 And then setup user workspace using [server-workspace](/docs/.script.d/server-workspace.md)
 
-Any variable ends with `_FILE` will be written to a file and the directory will be created if it does not exist, also ownership will be changed to the root user.S
+Any variable ends with `_FILE` will be written to a file and the directory will be created if it does not exist, also ownership will be changed to the root user.
 Variables:
 
 * `CLOUD_INIT_GROUP` : Group name for the user to be created. Default `cloudinit`.
@@ -20,11 +20,11 @@ Variables:
 * `NEBULA_VENV_DIR` : Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
 * `NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE` : Authorized keys file for the user. Default `${NEBULA_TMP_DIR}/authorized_keys`.
 * `NEBULA_REQUIREMENTS_FILE` : Ansible requirements file. Default `${NEBULA_TMP_DIR}/requirements.yml`.
-* `NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE` : Ansible inventory file. Default `${NEBULA_TMP_DIR}/inventory.yml`.
   
 * `DEFAULT_ROLES_PATH` : Directory to clone the ansible roles. Default `${NEBULA_TMP_DIR}/roles`.
 * `ANSIBLE_ROLES_PATH` : Ansible roles path. Default `${DEFAULT_ROLES_PATH}`.
 * `ANSIBLE_COLLECTIONS_PATH` : Ansible collections path. Default `${NEBULA_TMP_DIR}/collections`.
+* `ANSIBLE_INVENTORY` : Ansible inventory. Default `${NEBULA_TMP_DIR}/inventory.yml`.
 
 ```bash
 sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \

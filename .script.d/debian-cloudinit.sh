@@ -323,6 +323,10 @@ tee /etc/update-motd.d/10-neofetch <<EOF >/dev/null
 neofetch || true
 EOF
 
+log_message "Setting permissions for /etc/update-motd.d/10-neofetch"
+chmod +x /etc/update-motd.d/10-neofetch
+chown root:root /etc/update-motd.d/10-neofetchS
+
 log_message "Creating /etc/motd"
 
 tee /etc/motd <<EOF >/dev/null

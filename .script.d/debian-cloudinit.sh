@@ -121,10 +121,8 @@ apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools su
 log_message "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip
 
-log_message "Installing postfix and rsyslog"
-apt-get install -y postfix rsyslog
-log_message "Enabling and starting postfix.service"
-systemctl enable --now postfix.service
+log_message "Installing rsyslog"
+apt-get install -y syslog
 log_message "Enabling and starting rsyslog.service"
 systemctl enable --now rsyslog.service
 
@@ -142,7 +140,6 @@ export NEBULA_VERSION="${NEBULA_VERSION:-"1.9.6"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
 export NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
-export NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE="${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
 log_message "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
@@ -150,7 +147,6 @@ NEBULA_VERSION: ${NEBULA_VERSION}
 NEBULA_VENV_DIR: ${NEBULA_VENV_DIR} 
 NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE: ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}
 NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
-NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE: ${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}
 
 Creating directories if not exists and changing ownership to root:root"
 
@@ -163,14 +159,13 @@ else
 fi
 
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
-    "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
+    "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
-    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")" to root:root
+    to root:root
 chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
-    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
+    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 log_message "Creating authorized_keys file at ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
 tee "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
@@ -194,8 +189,43 @@ else
     log_message "${NEBULA_REQUIREMENTS_FILE} already exists"
 fi
 
-log_message Creating inventory file at "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}"
-tee "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}" <<EOF >/dev/null
+export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
+export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
+export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
+export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
+
+log_message "
+DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
+ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
+ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}
+
+Creating directories if not exists and changing ownership to root:root"
+
+mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
+    "$(dirname "${ANSIBLE_INVENTORY}")"
+chown -R root:root "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
+    "$(dirname "${ANSIBLE_INVENTORY}")"
+
+log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
+# shellcheck source=/dev/null
+source "${NEBULA_VENV_DIR}/bin/activate"
+
+log_message "Installing ansible and hvac using pip3"
+pip3 install --upgrade pip
+pip3 install setuptools-rust wheel setuptools --upgrade
+pip3 install ansible hvac --upgrade
+
+log_message "Installing nebula version ${NEBULA_VERSION}"
+
+log_message "Installing roles and collections dependencies"
+ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
+
+log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
+ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
+
+log_message Creating inventory file at "${ANSIBLE_INVENTORY}"
+tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 ---
 all:
     children:
@@ -219,41 +249,9 @@ EOF
 
 #             ansible_python_interpreter: "$(which python3)"
 
-export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
-export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
-export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
+log_message Running ansible-playbook arpanrec.nebula.cloudinit
 
-log_message "
-DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
-ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
-ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
-
-Creating directories if not exists and changing ownership to root:root"
-
-mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
-chown -R root:root "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}"
-
-log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
-# shellcheck source=/dev/null
-source "${NEBULA_VENV_DIR}/bin/activate"
-
-log_message "Installing ansible and hvac using pip3"
-pip3 install --upgrade pip
-pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible hvac --upgrade
-
-log_message "Installing nebula version ${NEBULA_VERSION}"
-
-log_message "Installing roles and collections dependencies"
-ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
-
-log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
-ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
-
-log_message Running ansible-playbook arpanrec.nebula.cloudinit with inventory file \
-    "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}"
-
-ansible-playbook -i "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}" arpanrec.nebula.cloudinit
+ansible-playbook arpanrec.nebula.cloudinit
 
 log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 
@@ -261,15 +259,14 @@ deactivate
 
 log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
-    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")" to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
+    to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
-    "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
+    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" to \
-    "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
+    "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}" "$(dirname "${ANSIBLE_INVENTORY}")"
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
-    "${ANSIBLE_COLLECTIONS_PATH}"
+    "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash

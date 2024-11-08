@@ -162,7 +162,7 @@ else
     python3 -m venv "${NEBULA_VENV_DIR}"
 fi
 
-mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_VENV_DIR}")" \
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
     "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" "$(dirname "${NEBULA_CLOUDINIT_ANSIBLE_INVENTORY_FILE}")"
 
 log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \

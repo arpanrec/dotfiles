@@ -358,15 +358,16 @@ function install_fastfetch() {
     fi
 }
 
-log_message "Creating /etc/update-motd.d/10-neofetch"
-tee /etc/update-motd.d/10-neofetch <<EOF >/dev/null
+install_fastfetch
+log_message "Creating /etc/update-motd.d/10-osinfo-debian-cloudinit"
+tee /etc/update-motd.d/10-osinfo-debian-cloudinit <<EOF >/dev/null
 #!/bin/bash
 fastfetch || true
 EOF
 
-log_message "Setting permissions for /etc/update-motd.d/10-neofetch"
-chmod +x /etc/update-motd.d/10-neofetch
-chown root:root /etc/update-motd.d/10-neofetch
+log_message "Setting permissions for /etc/update-motd.d/10-osinfo-debian-cloudinit"
+chmod +x /etc/update-motd.d/10-osinfo-debian-cloudinit
+chown root:root /etc/update-motd.d/10-osinfo-debian-cloudinit
 
 log_message "Creating /etc/motd"
 

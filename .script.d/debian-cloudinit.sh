@@ -309,6 +309,22 @@ fi
 
 '
 
+if [ -f /etc/update-motd.d/10-uname ]; then
+    log_message "Removing /etc/update-motd.d/10-uname"
+    rm -f /etc/update-motd.d/10-uname
+fi
+
+log_message "Installing neofetch"
+apt-get install -y neofetch
+
+log_message "Creating /etc/update-motd.d/10-neofetch"
+tee /etc/update-motd.d/10-neofetch <<EOF >/dev/null
+#!/bin/bash
+neofetch || true
+EOF
+
+log_message "Creating /etc/motd"
+
 tee /etc/motd <<EOF >/dev/null
 ############################################################
 #                First of all, if you are not me,          #

@@ -57,6 +57,15 @@ else
     log_message "LINODE_DATACENTERID is set to ${LINODE_DATACENTERID}"
 fi
 
+export LINODE_STACK_SCRIPT_LOCK_FILE="/tmp/linode-stack-script.lock"
+if [ -f "${LINODE_STACK_SCRIPT_LOCK_FILE}" ]; then
+    log_message "Lock file ${LINODE_STACK_SCRIPT_LOCK_FILE} exists, exiting"
+    exit 1
+else
+    log_message "Creating lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
+    touch "${LINODE_STACK_SCRIPT_LOCK_FILE}"
+fi
+
 log_message "Setting up environment"
 
 if [ ! -f /etc/environment ]; then
@@ -125,5 +134,8 @@ fi
 log_message "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/debian-cloudinit.md"
 
 /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)
+
+log_message "Removing lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
+rm -f "${LINODE_STACK_SCRIPT_LOCK_FILE}"
 
 log_message "Completed"

@@ -268,6 +268,13 @@ log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
+ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/server-workspace-inventory.yml"
+export ANSIBLE_INVENTORY
+
+log_message ANSIBLE_INVENTORY for server_workspace: "${ANSIBLE_INVENTORY}"
+
+log_message "Running server_workspace playbook as ${CLOUD_INIT_USER}"
+
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -exuo pipefail

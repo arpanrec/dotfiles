@@ -15,6 +15,14 @@ if [ "$(id -u)" -eq 0 ]; then
     exit 1
 fi
 
+TOOLS_INSTALL_LOCK_FILE="/tmp/tools-install.lock"
+if [ -f "${TOOLS_INSTALL_LOCK_FILE}" ]; then
+    log_message "Lock file exists at ${TOOLS_INSTALL_LOCK_FILE}. Exiting"
+    exit 1
+else
+    touch "${TOOLS_INSTALL_LOCK_FILE}"
+fi
+
 install_neovim() {
     log_message "Installing Neovim"
 
@@ -97,5 +105,8 @@ if command -v go &>/dev/null; then
 fi
 
 install_neovim
+
+log_message "Removing lock file at ${TOOLS_INSTALL_LOCK_FILE}"
+rm -f "${TOOLS_INSTALL_LOCK_FILE}"
 
 log_message "Completed"

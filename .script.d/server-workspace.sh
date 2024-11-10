@@ -243,7 +243,7 @@ pip3 install ansible hvac --upgrade
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     log_message "Downloading ${NEBULA_REQUIREMENTS_FILE}"
     mkdir -p "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
-    curl -sSL \
+    curl -sSL --connect-timeout 10 --max-time 10 \
         "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
         -o "${NEBULA_REQUIREMENTS_FILE}"
 else

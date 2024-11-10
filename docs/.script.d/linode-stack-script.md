@@ -33,7 +33,8 @@ set -euo pipefail
 # <UDF name="CLOUD_INIT_INSTALL_DOCKER" Label="Install Docker" oneOf="true,false" default="false"/>
 # <udf name="CLOUD_INIT_WEB_SERVER_FQDN" label="Web server fully qualified domain name" example="example.com" default=""/>
 
-/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) |
+/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) |
     tee -a /root/linode-stack-script.log
 
 ```

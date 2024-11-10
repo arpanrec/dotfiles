@@ -16,7 +16,8 @@ In this repository, you'll find my personal dotfiles for various applications an
 ## [Installation](/.script.d/dot-install.sh)
 
 ```bash
-bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 ```
 
 ## Scripts

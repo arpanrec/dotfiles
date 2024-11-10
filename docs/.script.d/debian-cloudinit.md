@@ -28,7 +28,7 @@ Variables:
 * `ANSIBLE_INVENTORY` : Ansible inventory. Default `${NEBULA_TMP_DIR}/inventory.yml`.
 
 ```bash
-sudo -E -H -u root bash -c '/bin/bash <(curl -sSL \
+sudo -E -H -u root bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```
 
@@ -36,6 +36,7 @@ or for development machine
 
 ```bash
 CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
-    bash -c '/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
+    bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 
 ```

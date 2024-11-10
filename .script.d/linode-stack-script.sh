@@ -115,7 +115,7 @@ log_message "Removing existing linode-stack-script cron job"
 sed -i '/.*linode-stack-script.*/d' /tmp/root-crontab
 
 log_message "Adding new linode-stack-script cron job"
-echo "0 1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" |
+echo "0 1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" |
     tee -a /tmp/root-crontab
 
 log_message "Installing new crontab"
@@ -133,7 +133,8 @@ fi
 
 log_message "Delegate to https://github.com/arpanrec/dotfiles/blob/main/docs/.script.d/debian-cloudinit.md"
 
-/bin/bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)
+/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)
 
 log_message "Removing lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
 rm -f "${LINODE_STACK_SCRIPT_LOCK_FILE}"

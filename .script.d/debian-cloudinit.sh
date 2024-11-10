@@ -195,7 +195,7 @@ fi
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     log_message "Downloading nebula ansible requirements ${NEBULA_VERSION} file to ${NEBULA_REQUIREMENTS_FILE}"
-    curl -sSL \
+    curl -sSL --connect-timeout 10 --max-time 10 \
         "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
         -o "${NEBULA_REQUIREMENTS_FILE}"
 else
@@ -294,15 +294,16 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 set -exuo pipefail
 
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
-    bash <(curl -sSL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
+    bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)
 fi
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-    bash <(curl -sSL \
+    bash <(curl -sSL --connect-timeout 10 --max-time 10 \
         https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
         --tags all
 else
-    bash <(curl -sSL \
+    bash <(curl -sSL --connect-timeout 10 --max-time 10 \
         https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
         --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
 fi
@@ -350,7 +351,7 @@ function install_fastfetch() {
             log_message "fastfetch ${fastfetch_version} already downloaded to ${download_location}"
         else
             log_message "Downloading fastfetch ${fastfetch_version} from ${fastfetch_url} to ${download_location}"
-            curl -sSL "${fastfetch_url}" -o "${download_location}"
+            curl -sSL --connect-timeout 10 --max-time 10 "${fastfetch_url}" -o "${download_location}"
         fi
         log_message "Installing fastfetch ${fastfetch_version} from ${download_location}"
         dpkg -i "${download_location}"

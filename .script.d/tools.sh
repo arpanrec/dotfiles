@@ -94,6 +94,7 @@ declare -a go_packages=(
     "github.com/mikefarah/yq/v4@latest"
     "github.com/minio/mc@latest"
     "github.com/jesseduffield/lazygit@latest"
+    "github.com/tursodatabase/turso-cli/cmd/turso@latest"
 )
 
 if command -v go &>/dev/null; then

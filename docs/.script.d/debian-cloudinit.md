@@ -35,7 +35,7 @@ sudo -E -H -u root bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-tim
 or for development machine
 
 ```bash
-CLOUD_INIT_IS_DEV_MACHINE=true sudo -E -H -u root \
+CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 

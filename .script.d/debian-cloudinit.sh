@@ -144,8 +144,8 @@ apt-get install -y fail2ban sendmail
 log_message "Installing vim"
 apt-get install -y vim
 log_message "Setting vim as default editor"
-sed -i '/^EDITOR=.*/d' /etc/environment
-echo "EDITOR=vim" | tee -a /etc/environment
+sed -i '/^export EDITOR=.*/d' /etc/environment
+echo "export EDITOR=vim" | tee -a /etc/environment
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.10.5"}"

@@ -144,6 +144,7 @@ apt-get install -y fail2ban sendmail
 log_message "Installing vim"
 apt-get install -y vim
 log_message "Setting vim as default editor"
+sed -i '/^EDITOR=.*/d' /etc/environment
 sed -i '/^export EDITOR=.*/d' /etc/environment
 echo "export EDITOR=vim" | tee -a /etc/environment
 

@@ -149,7 +149,7 @@ sed -i '/^export EDITOR=.*/d' /etc/environment
 echo "export EDITOR=vim" | tee -a /etc/environment
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.10.5"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.10.10"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
 export NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"

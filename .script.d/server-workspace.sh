@@ -251,7 +251,7 @@ else
 fi
 
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
-ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
+ansible-galaxy collection install arpanrec.nebula:"${NEBULA_VERSION}"
 
 log_message "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then

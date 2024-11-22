@@ -38,9 +38,7 @@ if [ ! -f /etc/environment ]; then
     log_message "Creating /etc/environment"
     touch /etc/environment
 else
-    log_message "/etc/environment already exists, sourcing"
-    # shellcheck source=/dev/null
-    source /etc/environment
+    log_message "/etc/environment already exists"
 fi
 
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
@@ -52,10 +50,17 @@ log_message "
 CLOUD_INIT_USER: ${CLOUD_INIT_USER}
 CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
+current_hostname="$(hostname)"
+
+if [ "${current_hostname}" == "localhost" ]; then
+    export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
+else
+    export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"${current_hostname}"}"
+fi
+
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-"false"}"
 export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-"${CLOUD_INIT_USER:-"cloudinit"}"}"
 export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-"false"}"
-export CLOUD_INIT_HOSTNAME="${CLOUD_INIT_HOSTNAME:-"cloudinit"}"
 export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"cloudinit"}"
 export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
 export CLOUD_INIT_INSTALL_DOCKER="${CLOUD_INIT_INSTALL_DOCKER:-"false"}"
@@ -235,7 +240,7 @@ log_message "Installing roles and collections dependencies"
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 
 log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
-ansible-galaxy collection install "git+https://github.com/arpanrec/arpanrec.nebula.git,${NEBULA_VERSION}"
+ansible-galaxy collection install arpanrec.nebula:"${NEBULA_VERSION}"
 
 log_message Creating inventory file at "${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null

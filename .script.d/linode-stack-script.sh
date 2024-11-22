@@ -72,9 +72,7 @@ if [ ! -f /etc/environment ]; then
     log_message "Creating /etc/environment"
     touch /etc/environment
 else
-    log_message "/etc/environment already exists, sourcing"
-    # shellcheck source=/dev/null
-    source /etc/environment
+    log_message "/etc/environment already exists"
 fi
 
 log_message "Setting up environment variables in /etc/environment"

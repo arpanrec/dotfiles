@@ -1,10 +1,8 @@
 -- luacheck: globals vim
 
--- if ~/.ssh/id_rsa_gitlab is not present, then use https
-
 local railbow_del_url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git"
 
-if vim.fn.filereadable(vim.fn.expand("~/.ssh/id_rsa_gitlab")) == 1 then
+if vim.fn.filereadable(vim.fn.expand("~/.ssh/gitlab.com")) == 1 then
     railbow_del_url = "git@gitlab.com:HiPhish/rainbow-delimiters.nvim.git"
 end
 

@@ -81,7 +81,7 @@ chmod 700 "${HOME}/.ssh"
 declare -a bw_items=(
     "GitHub - arpanrec" github.com OPENSSH_KEY_PASSPHRASE
     "OPENSSH ID_ECDSA" id_ecdsa OPENSSH_KEY_PASSPHRASE
-    "GitLab - arpanrec" id_rsa_gitlab OPENSSH_KEY_PASSPHRASE
+    "GitLab - arpanrec" gitlab.com OPENSSH_KEY_PASSPHRASE
     "Linode - arpanrecme" linode_ssh_key OPENSSH_KEY_PASSPHRASE
 )
 

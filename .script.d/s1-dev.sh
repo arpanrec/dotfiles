@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 echo "Starting s1-dev setup"
 
 echo "--------------------------------------"
@@ -76,7 +76,8 @@ ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninj
 
 ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
 
-ALL_PAKGS+=('docker' 'criu' 'docker-scan' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs' 'dosfstools')
+# 'docker-scan' not found
+ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs' 'dosfstools')
 
 ALL_PAKGS+=('keyd')
 

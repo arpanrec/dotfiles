@@ -72,9 +72,9 @@ ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' '
     'libxcrypt-compat')
 
 ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
-    'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'git' 'openssl-1.1' 'realtime-privileges' 'tree-sitter')
+    'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'openssl-1.1' 'realtime-privileges' 'tree-sitter')
 
-ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'git' 'shellcheck')
+ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'shellcheck')
 
 # 'docker-scan' not found
 ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs' 'dosfstools')
@@ -166,7 +166,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('nvidia' 'nvidia-utils' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl')
+    ALL_PAKGS+=('nvidia' 'nvidia-utils' 'nvidia-settings' 'nvidia-prime'
+        'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl' 'nvidia-container-toolkit')
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"

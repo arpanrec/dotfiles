@@ -291,7 +291,7 @@ echo "--------------------------------------"
 echo "       Create User and Groups         "
 echo "--------------------------------------"
 
-username="${username:-arpan}"
+username="${username:-user1}"
 id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -m -d "/home/${username}" "${username}"
 sudo usermod -aG docker,wheel,nordvpn "${username}"
 

@@ -8,7 +8,7 @@ Variables:
 
 * `CLOUD_INIT_GROUP` : Group name for the user to be created. Default `cloudinit`.
 * `CLOUD_INIT_USER` : Username for the user to be created. Default `cloudinit`.
-* `CLOUD_INIT_USE_SSH_PUB` : Use SSH public key for the user, Default `ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk= arpan.rec@gmail.com`.
+* `CLOUD_INIT_USE_SSH_PUB` : Use SSH public key for the user, Default `ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk=`.
 * `CLOUD_INIT_IS_DEV_MACHINE` : Install development tools. Default `false`.
 * `CLOUD_INIT_COPY_ROOT_SSH_KEYS` : Copy root SSH keys to the user. Default `false`.
 * `CLOUD_INIT_HOSTNAME` : Hostname for the machine. Default `cloudinit`.

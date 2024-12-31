@@ -83,6 +83,7 @@ declare -a bw_items=(
     "OPENSSH ID_ECDSA" id_ecdsa OPENSSH_KEY_PASSPHRASE
     "GitLab - arpanrec" gitlab.com OPENSSH_KEY_PASSPHRASE
     "Linode - arpanrecme" linode_ssh_key OPENSSH_KEY_PASSPHRASE
+    "Router - BLR Flat" r1-tpla9v6.key OPENSSH_KEY_PASSPHRASE
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 3)); do

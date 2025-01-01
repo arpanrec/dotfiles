@@ -38,5 +38,12 @@ or for development machine
 CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
+```
 
+or for development machine with a domain
+
+```bash
+CLOUD_INIT_DOMAIN=blr-home.arpanrec.com CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
+    bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/debian-cloudinit.sh)'
 ```

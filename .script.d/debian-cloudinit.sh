@@ -136,7 +136,8 @@ else
     fi
 fi
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/root/.tmp/cloudinit"}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/cloudinit/.tmp"}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR%/}" # Remove trailing slash if exists
 export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/debian-cloudinit.lock"
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then

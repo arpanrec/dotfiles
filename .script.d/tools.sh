@@ -33,7 +33,7 @@ install_neovim() {
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
     NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
-    NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.10.2"}"
+    NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.10.3"}"
     log_message "Creating Neovim directories"
     mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 
@@ -63,15 +63,13 @@ source "${HOME}/.cargo/env"
 
 rustup update
 
-cargo install cargo-binstall
-
-declare -a cargo_packages=("cargo-binstall" "ripgrep" "fd-find")
+declare -a cargo_packages=("cargo-binstall" "fd-find" "ripgrep")
 
 if command -v cargo &>/dev/null; then
     log_message "Installing cargo packages"
     for cargo_package in "${cargo_packages[@]}"; do
         log_message "Installing cargo package ${cargo_package}"
-        cargo binstall "${cargo_package}"
+        cargo install "${cargo_package}"
     done
 fi
 

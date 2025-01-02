@@ -63,13 +63,15 @@ source "${HOME}/.cargo/env"
 
 rustup update
 
-declare -a cargo_packages=("ripgrep" "fd-find")
+cargo install cargo-binstall
+
+declare -a cargo_packages=("cargo-binstall" "ripgrep" "fd-find")
 
 if command -v cargo &>/dev/null; then
     log_message "Installing cargo packages"
     for cargo_package in "${cargo_packages[@]}"; do
         log_message "Installing cargo package ${cargo_package}"
-        cargo install "${cargo_package}"
+        cargo binstall "${cargo_package}"
     done
 fi
 

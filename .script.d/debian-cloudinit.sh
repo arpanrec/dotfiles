@@ -136,7 +136,8 @@ else
     fi
 fi
 
-export CLOUD_INIT_LOCK_FILE="/tmp/debian-cloudinit.lock"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/root/.tmp/cloudinit"}"
+export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/debian-cloudinit.lock"
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
     log_message "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
@@ -168,7 +169,7 @@ sed -i '/^EDITOR=.*/d' /etc/environment
 sed -i '/^export EDITOR=.*/d' /etc/environment
 echo "export EDITOR=vim" | tee -a /etc/environment
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/tmp/cloudinit"}"
+
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.11.5"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
 export NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
@@ -366,7 +367,7 @@ function install_fastfetch() {
             ;;
         esac
         fastfetch_url="https://github.com/fastfetch-cli/fastfetch/releases/download/${fastfetch_version}/fastfetch-linux-${fastfetch_architecture}.deb"
-        download_location="/tmp/fastfetch-linux-${fastfetch_version}-${fastfetch_architecture}.deb"
+        download_location="${NEBULA_TMP_DIR}/fastfetch-linux-${fastfetch_version}-${fastfetch_architecture}.deb"
         if [ -f "${download_location}" ]; then
             log_message "fastfetch ${fastfetch_version} already downloaded to ${download_location}"
         else

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 
 log_message() {
     printf "\n\n================================================================================\n %s \
@@ -65,14 +65,9 @@ rustup update
 
 cargo install cargo-binstall
 
-declare -a cargo_packages=("cargo-binstall" "fd-find" "ripgrep")
-
 if command -v cargo &>/dev/null; then
     log_message "Installing cargo packages"
-    for cargo_package in "${cargo_packages[@]}"; do
-        log_message "Installing cargo package ${cargo_package}"
-        yes yes | cargo binstall "${cargo_package}"
-    done
+    echo y | cargo binstall "cargo-binstall" "fd-find" "ripgrep" --force
 fi
 
 declare -a npm_packages=("@bitwarden/cli" "neovim" "yarn" "pnpm")

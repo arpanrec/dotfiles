@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 log_message() {
     printf "\n\n================================================================================\n %s \
@@ -63,7 +63,8 @@ source "${HOME}/.cargo/env"
 
 rustup update
 
-cargo install cargo-binstall
+curl -L --proto '=https' --tlsv1.2 -sSf \
+    https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
 if command -v cargo &>/dev/null; then
     log_message "Installing cargo packages"

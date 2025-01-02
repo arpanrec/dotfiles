@@ -18,6 +18,7 @@ if [[ -f "${SERVER_WORKSPACE_LOCK_FILE}" ]]; then
     exit 1
 else
     log_message "Creating lock file ${SERVER_WORKSPACE_LOCK_FILE}"
+    mkdir -p "$(dirname "${SERVER_WORKSPACE_LOCK_FILE}")"
     touch "${SERVER_WORKSPACE_LOCK_FILE}"
 fi
 

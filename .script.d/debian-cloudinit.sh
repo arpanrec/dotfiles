@@ -144,6 +144,7 @@ if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L 
     exit 1
 else
     log_message "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
+    mkdir -p "$(dirname "${CLOUD_INIT_LOCK_FILE}")"
     touch "${CLOUD_INIT_LOCK_FILE}"
 fi
 

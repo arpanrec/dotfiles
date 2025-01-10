@@ -25,4 +25,6 @@ alias yd='youtube-dl -f best --verbose --external-downloader axel --external-dow
 
 ## Docker
 # remove all docker containers
-alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -f'
+alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -af --volumes'
+
+alias myip='curl ipinfo.io/ip'

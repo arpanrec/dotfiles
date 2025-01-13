@@ -46,7 +46,7 @@ if [ "${HOME}" != "/root" ]; then
     log_message "HOME is not set to /root, exiting"
     exit 1
 else
-    log_message "debian-cloudinit: HOME is set to /root"
+    log_message "HOME is set to /root"
 fi
 
 if [ ! -f /etc/environment ]; then
@@ -174,14 +174,14 @@ echo "export EDITOR=vim" | tee -a /etc/environment
 
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.11.5"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
-export NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
+export NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
 log_message "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
 NEBULA_VENV_DIR: ${NEBULA_VENV_DIR} 
-NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE: ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}
+NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE: ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}
 NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
 
 Creating directories if not exists and changing ownership to root:root"
@@ -194,23 +194,23 @@ else
     python3 -m venv "${NEBULA_VENV_DIR}"
 fi
 
-mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" \
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" \
     "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
+    "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
     to root:root
 chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
+    "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
-log_message "Creating authorized_keys file at ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
-tee "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
+log_message "Creating authorized_keys file at ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
+tee "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
 ${CLOUD_INIT_USE_SSH_PUB}
 EOF
 
 if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
-    log_message "Copying root's authorized_keys to ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
-    cat "/root/.ssh/authorized_keys" >>"${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}"
+    log_message "Copying root's authorized_keys to ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
+    cat "/root/.ssh/authorized_keys" >>"${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
 else
     log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding
  any extra keys to ${CLOUD_INIT_USER}"
@@ -273,7 +273,7 @@ all:
                 ansible_become: false
                 pv_cloud_init_user: ${CLOUD_INIT_USER}
                 pv_cloud_init_group: ${CLOUD_INIT_GROUP}
-                pv_cloud_init_authorized_keys: ${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}
+                pv_cloud_init_authorized_keys: ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}
                 pv_cloud_init_is_dev_machine: ${CLOUD_INIT_IS_DEV_MACHINE}
                 pv_cloud_init_hostname: ${CLOUD_INIT_HOSTNAME}
                 pv_cloud_init_domain: ${CLOUD_INIT_DOMAIN}
@@ -295,10 +295,10 @@ log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 deactivate
 
 log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
+    "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
     to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
-    "$(dirname "${NEBULA_CLOUDINIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
+    "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
     "$(dirname "${ANSIBLE_INVENTORY}")" to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"

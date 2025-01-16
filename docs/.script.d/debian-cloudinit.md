@@ -17,7 +17,7 @@ Variables:
 * `CLOUD_INIT_INSTALL_DOCKER` : Install docker. Default `false`.
 
 * `NEBULA_TMP_DIR` : Directory to clone the ansible playbook. Default `/tmp/cloudinit`.
-* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.11.6`.
+* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.11.7`.
 * `NEBULA_VENV_DIR` : Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
 * `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` : Authorized keys file for the user. Default `${NEBULA_TMP_DIR}/authorized_keys`.
 * `NEBULA_REQUIREMENTS_FILE` : Ansible requirements file. Default `${NEBULA_TMP_DIR}/requirements.yml`.

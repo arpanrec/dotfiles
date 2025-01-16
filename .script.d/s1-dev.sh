@@ -98,7 +98,7 @@ ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera' 'lm_sensors' 'lsof' 'strace'
 ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
 
 # 'raw-thumbnailer' not found
-ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats'
+ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6'
     'kdesdk-thumbnailers' 'ffmpegthumbs' 'ark' 'gvfs' 'icoutils' 'taglib' 'qt6-imageformats' 'kimageformats' 'libheif')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur

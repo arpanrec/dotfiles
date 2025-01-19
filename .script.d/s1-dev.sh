@@ -97,7 +97,6 @@ ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera' 'lm_sensors' 'lsof' 'strace'
 
 ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
 
-# 'raw-thumbnailer' not found
 ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6'
     'kdesdk-thumbnailers' 'ffmpegthumbs' 'ark' 'gvfs' 'icoutils' 'taglib' 'qt6-imageformats' 'kimageformats' 'libheif')
 
@@ -123,11 +122,10 @@ ALL_PAKGS+=('terminator' 'zsh')
 
 ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 
-ALL_PAKGS+=('thunderbird' 'bitwarden' 'signal-desktop' 'telegram-desktop')
+ALL_PAKGS+=('flatpak' 'flatpak-kcm' 'malcontent' 'discover')
 
 ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper')
 
-# 'kcodecs' 'ffmpeg2theora' removed from arch
 ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly'
     'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg'
     'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')

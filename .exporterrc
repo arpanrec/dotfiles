@@ -118,3 +118,8 @@ if [[ -f "/usr/bin/ksshaskpass" ]]; then
     export SH_ASKPASS_REQUIRE=prefer
     export GIT_ASKPASS="/usr/bin/ksshaskpass"
 fi
+
+# Miniconda
+if [[ -d "${HOME}/.miniconda3" ]]; then
+    export PATH="${HOME}/.miniconda3/bin:${PATH}"
+fi

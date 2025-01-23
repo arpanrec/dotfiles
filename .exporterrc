@@ -123,3 +123,6 @@ fi
 if [[ -d "${HOME}/.miniconda3" ]]; then
     export PATH="${HOME}/.miniconda3/bin:${PATH}"
 fi
+if [[ -d "${HOME}/miniconda3" ]]; then
+    export PATH="${HOME}/miniconda3/bin:${PATH}"
+fi

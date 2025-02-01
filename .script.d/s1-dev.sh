@@ -298,7 +298,7 @@ echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
 MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    'cups' 'bluetooth' 'nordvpnd' # 'sshd'
+    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' # 'sshd'
 )
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do

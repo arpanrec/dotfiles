@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+.#!/usr/bin/env bash
 set -euo pipefail
 echo "Starting s1-dev setup"
 
@@ -69,7 +69,7 @@ ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'dhcpcd' 'networkmanager'
 ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' 'unzip' 'pigz' 'wget' 'ntfs-3g'
     'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils'
     'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
-    'libxcrypt-compat')
+    'libxcrypt-compat' 'power-profiles-daemon')
 
 ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
     'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'openssl-1.1' 'realtime-privileges' 'tree-sitter')

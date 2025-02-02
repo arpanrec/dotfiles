@@ -1,4 +1,4 @@
-.#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 echo "Starting s1-dev setup"
 

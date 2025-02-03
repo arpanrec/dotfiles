@@ -218,8 +218,8 @@ pacman -S --needed --noconfirm "${ALL_PAKGS[@]}"
 echo "--------------------------------------------------"
 echo '         Setting Root Password to "root"        '
 echo "--------------------------------------------------"
-getent group sudo || groupadd sudo
-getent group wheel || groupadd wheel
+getent group sudo || groupadd --system sudo
+getent group wheel || groupadd --system wheel
 echo -e "root\nroot" | passwd
 
 echo "-----------------------------------------------------------------------------------"

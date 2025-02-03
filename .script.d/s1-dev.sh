@@ -63,7 +63,7 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 
 pacman -Syu --noconfirm
 
-ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux-lts' 'linux-lts-headers' 'linux-firmware' 'dkms' 'dhcpcd'
+ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'dkms' 'dhcpcd'
     'networkmanager' 'dhclient')
 
 ALL_PAKGS=('lvm2' 'exfatprogs' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools')
@@ -154,7 +154,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     # 'nvidia-utils'
-    ALL_PAKGS+=('nvidia-lts' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl'
+    ALL_PAKGS+=('nvidia' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl'
         'nvidia-container-toolkit')
     echo "Adding nvidia drivers to be installed"
 

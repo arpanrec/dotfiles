@@ -80,8 +80,6 @@ ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' '
 # 'docker-scan' not found
 ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 
-ALL_PAKGS+=('gimp' 'qbittorrent')
-
 ALL_PAKGS+=('bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
 ALL_PAKGS+=('veracrypt' 'keepassxc' 'cryptsetup')
@@ -123,6 +121,8 @@ ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-me
     'mesa-utils')
 
 ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges') # VMware Workstation dependencies
+
+ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"

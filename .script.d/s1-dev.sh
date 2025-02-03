@@ -35,10 +35,10 @@ fi
 
 #Add parallel downloading
 sed -i 's/^#Para/Para/' /etc/pacman.conf
-
+sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
 #Enable multilib
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
 
 echo "--------------------------------------"
 echo "             Set Host Name            "
@@ -52,7 +52,7 @@ echo s1-dev | tee /etc/hostname
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   s1-dev s1-dev.localdomain
+127.0.1.1   s1-dev s1-dev.blr-home.arpanrec.com
 EOT
 
 pacman -Sy archlinux-keyring --noconfirm
@@ -63,76 +63,66 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 
 pacman -Syu --noconfirm
 
-ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'dhcpcd' 'networkmanager'
-    'openssh' 'git' 'vim' 'base' 'base-devel' 'linux' 'linux-firmware' 'lvm2' 'exfatprogs')
+ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'dkms' 'dhcpcd'
+    'networkmanager' 'dhclient')
 
-ALL_PAKGS+=('base' 'base-devel' 'linux' 'linux-firmware' 'linux-headers' 'zip' 'unzip' 'pigz' 'wget' 'ntfs-3g'
-    'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils'
-    'curlftpfs' 'dhcpcd' 'networkmanager' 'dhclient' 'ufw' 'p7zip' 'unrar' 'jq' 'unarchiver' 'lzop' 'lrzip' 'curl'
-    'libxcrypt-compat' 'power-profiles-daemon')
+ALL_PAKGS=('lvm2' 'exfatprogs' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools')
 
-ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'python-pynvim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'dkms'
-    'gtkmm3' 'pcsclite' 'swtpm' 'wget' 'openssl-1.1' 'realtime-privileges' 'tree-sitter')
+ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
+    'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('bash-completion' 'python-pip' 'rclone' 'rsync' 'shellcheck')
+ALL_PAKGS+=('python-pip')
+
+ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim')
+
+ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')
 
 # 'docker-scan' not found
-ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'sshfs' 'btrfs-progs' 'dosfstools')
+ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 
-ALL_PAKGS+=('keyd')
+ALL_PAKGS+=('gimp' 'qbittorrent')
 
-ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'gimp' 'postgresql-libs')
+ALL_PAKGS+=('bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-ALL_PAKGS+=('firefox')
-
-ALL_PAKGS+=('veracrypt' 'keepassxc' 'bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat')
+ALL_PAKGS+=('veracrypt' 'keepassxc' 'cryptsetup')
 
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
-ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole')
-
-ALL_PAKGS+=('kwalletmanager' 'kleopatra' 'partitionmanager' 'skanlite')
-
-ALL_PAKGS+=('spectacle' 'gwenview' 'kcalc' 'kamera' 'lm_sensors' 'lsof' 'strace' 'tk' 'gnuplot')
-
-ALL_PAKGS+=('packagekit-qt5' 'qbittorrent' 'kdialog')
-
+ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
+    'kleopatra' 'discover' 'partitionmanager' 'skanlite')
 ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6'
-    'kdesdk-thumbnailers' 'ffmpegthumbs' 'ark' 'gvfs' 'icoutils' 'taglib' 'qt6-imageformats' 'kimageformats' 'libheif')
-
+    'kdesdk-thumbnailers' 'ark' 'icoutils' 'qt6-imageformats' 'kimageformats' 'kio-gdrive'
+    'spectacle' 'gwenview' 'kcalc' 'kamera' 'tk' 'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde' 'qt5-declarative'
+    'qt5-x11extras' 'kdecoration')
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
-ALL_PAKGS+=('kvantum' 'materia-kde')
-
-ALL_PAKGS+=('qt5-declarative' 'qt5-x11extras' 'kdecoration' 'print-manager')
-
-ALL_PAKGS+=('networkmanager-openvpn' 'libnma')
-
-# GTK Themes Support
 # materia-gtk-theme this is required for some of the themes like prof and sweet
 # gtk-engine-murrine and gtk-engines is required by materia-gtk-theme
 # adapta-gtk-theme Gtk+ theme based on Material Design
 ALL_PAKGS+=('gtk-engine-murrine' 'gtk-engines' 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme')
-
-# Extras
-ALL_PAKGS+=('hunspell-en_us' 'hunspell-en_gb') # For some spelling check
-ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs')       # For kde vault
-ALL_PAKGS+=('texlive-core' 'libwmf' 'scour' 'pstoedit' 'fig2dev' 'yubikey-manager' 'yubikey-manager-qt')
-
-ALL_PAKGS+=('terminator' 'zsh')
+ALL_PAKGS+=('networkmanager-openvpn' 'libnma')
+ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
 
 ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
+ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack' 'lib32-pipewire'
+    'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
+    'lib32-pipewire-v4l2')
 
-ALL_PAKGS+=('flatpak' 'flatpak-kcm' 'malcontent' 'discover')
+ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'yubikey-manager' 'yubikey-manager-qt')
 
-ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper')
+#  'restic' 'duplicity'
+ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync')
+
+ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper' 'print-manager')
 
 ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly'
-    'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg'
-    'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc')
+    'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg' 'libmpeg2'
+    'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'libheif' 'taglib' 'ffmpegthumbs')
 
 # Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver
-ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau'
-    'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
+ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau' 'lib32-mesa' 'libvdpau-va-gl'
+    'mesa-utils')
+
+ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges') # VMware Workstation dependencies
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -164,8 +154,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('nvidia' 'nvidia-utils' 'nvidia-settings' 'nvidia-prime'
-        'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl' 'nvidia-container-toolkit')
+    ALL_PAKGS+=('nvidia' 'nvidia-utils' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl'
+        'nvidia-container-toolkit')
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"
@@ -205,8 +195,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk'
-        'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
 
 fi
 
@@ -219,10 +208,6 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
     ALL_PAKGS+=('libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
 
 fi
-
-ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware'
-    'pipewire-jack' 'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils'
-    'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf' 'lib32-pipewire-v4l2')
 
 echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "

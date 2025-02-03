@@ -2,7 +2,7 @@
 alias dotfiles='git --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 alias dotfiles-lazygit='lazygit --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 
-alias chrome-p1='google-chrome-stable --user-data-dir="${HOME}/.local/share/chome-user-data-dir/p1"'
+alias chrome-p1='google-chrome-stable --user-data-dir="${HOME}/.local/share/chome-user-data-dir/p1" >/dev/null 2>&1 & disown'
 
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -alrhtF"

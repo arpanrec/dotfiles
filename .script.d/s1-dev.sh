@@ -90,8 +90,8 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-por
     'kleopatra' 'discover' 'partitionmanager' 'skanlite')
 ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6'
     'kdesdk-thumbnailers' 'ark' 'icoutils' 'qt6-imageformats' 'kimageformats' 'kio-gdrive'
-    'spectacle' 'gwenview' 'kcalc' 'kamera' 'tk' 'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde' 'qt5-declarative'
-    'qt5-x11extras' 'kdecoration')
+    'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk' 'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde'
+    'qt5-declarative' 'qt5-x11extras' 'kdecoration')
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet
 # gtk-engine-murrine and gtk-engines is required by materia-gtk-theme

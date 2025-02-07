@@ -66,7 +66,8 @@ pacman -Syu --noconfirm
 ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'dkms' 'dhcpcd'
     'networkmanager' 'dhclient')
 
-ALL_PAKGS=('lvm2' 'exfatprogs' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools')
+# exfatprogs is replaced by exfat-utils
+ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfat-utils')
 
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')

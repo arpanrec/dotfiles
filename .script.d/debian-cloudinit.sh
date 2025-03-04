@@ -149,6 +149,19 @@ else
     touch "${CLOUD_INIT_LOCK_FILE}"
 fi
 
+log_message "Installing locales and setting timezone"
+sudo apt-get update
+sudo apt-get install -y locales tzdata
+
+log_message "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
+sudo timedatectl set-timezone Asia/Kolkata
+echo "LANG=en_US.UTF-8" | sudo tee /etc/default/locale >/dev/null 2>&1
+echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/default/locale >/dev/null 2>&1
+sudo sed -i '/^en_US.UTF-8 UTF-8$/d' /etc/locale.gen >/dev/null 2>&1
+echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen >/dev/null 2>&1
+sudo locale -a
+sudo locale-gen
+
 log_message "Installing apt dependencies"
 apt-get update
 apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools sudo bash
@@ -170,7 +183,6 @@ log_message "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 sed -i '/^export EDITOR=.*/d' /etc/environment
 echo "export EDITOR=vim" | tee -a /etc/environment
-
 
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.11.16"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`

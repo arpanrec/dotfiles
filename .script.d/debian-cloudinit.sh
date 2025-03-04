@@ -150,17 +150,18 @@ else
 fi
 
 log_message "Installing locales and setting timezone"
-sudo apt-get update
-sudo apt-get install -y locales tzdata
+apt-get update
+apt-get install -y locales tzdata
 
 log_message "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
-sudo timedatectl set-timezone Asia/Kolkata
-echo "LANG=en_US.UTF-8" | sudo tee /etc/default/locale >/dev/null 2>&1
-echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/default/locale >/dev/null 2>&1
-sudo sed -i '/^en_US.UTF-8 UTF-8$/d' /etc/locale.gen >/dev/null 2>&1
-echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen >/dev/null 2>&1
-sudo locale -a
-sudo locale-gen
+timedatectl set-timezone Asia/Kolkata
+echo "LANG=en_US.UTF-8" | tee /etc/default/locale >/dev/null 2>&1
+echo "LC_ALL=en_US.UTF-8" | tee -a /etc/default/locale >/dev/null 2>&1
+sed -i '/^en_US.UTF-8 UTF-8$/d' /etc/locale.gen >/dev/null 2>&1
+echo "en_US.UTF-8 UTF-8" | tee -a /etc/locale.gen >/dev/null 2>&1
+locale -a
+locale-gen
+localectl set-locale LANG=en_US.UTF-8
 
 log_message "Installing apt dependencies"
 apt-get update

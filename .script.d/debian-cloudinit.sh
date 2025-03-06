@@ -165,7 +165,7 @@ localectl set-locale LANG=en_US.UTF-8
 
 log_message "Installing apt dependencies"
 apt-get update
-apt-get install -y git curl ca-certificates gnupg tar unzip wget sudo bash
+apt-get install -y git curl ca-certificates gnupg2 tar unzip wget sudo bash
 
 log_message "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip

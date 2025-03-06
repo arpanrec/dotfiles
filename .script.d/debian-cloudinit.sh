@@ -165,18 +165,10 @@ localectl set-locale LANG=en_US.UTF-8
 
 log_message "Installing apt dependencies"
 apt-get update
-apt-get install -y git curl ca-certificates gnupg tar unzip wget jq net-tools sudo bash
+apt-get install -y git curl ca-certificates gnupg tar unzip wget sudo bash
 
 log_message "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip
-
-log_message "Installing rsyslog"
-apt-get install -y rsyslog
-log_message "Enabling and starting rsyslog.service"
-systemctl enable --now rsyslog.service
-
-log_message "Installing fail2ban and sendmail"
-apt-get install -y fail2ban sendmail
 
 log_message "Installing vim"
 apt-get install -y vim

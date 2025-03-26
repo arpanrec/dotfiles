@@ -20,6 +20,9 @@ else
     log_message "Running as root"
 fi
 
+apt-get update
+apt-get install -y net-tools git curl
+
 if [ "${HOME}" != "/root" ]; then
     log_message "HOME is not set to /root, exiting"
     exit 1

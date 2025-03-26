@@ -20,6 +20,7 @@ else
     log_message "Running as root"
 fi
 
+log_message "Updating package net-tools, git, curl"
 apt-get update
 apt-get install -y net-tools git curl
 

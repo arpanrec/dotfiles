@@ -20,9 +20,9 @@ else
     log_message "Running as root"
 fi
 
-log_message "Updating package net-tools, git, curl"
+log_message "Updating package net-tools, git, curl jq, unzip, zip, wget, gnupg2, tar"
 apt-get update
-apt-get install -y net-tools git curl
+apt-get install -y net-tools git curl jq unzip zip wget gnupg2 tar
 
 if [ "${HOME}" != "/root" ]; then
     log_message "HOME is not set to /root, exiting"

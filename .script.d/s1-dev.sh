@@ -79,7 +79,7 @@ ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'make' 'cmake' 'ninja' 'lua' 'luaroc
 ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')
 
 # 'docker-scan' not found
-ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
+ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs' 'gitleaks')
 
 ALL_PAKGS+=('bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 

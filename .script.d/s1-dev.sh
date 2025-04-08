@@ -106,7 +106,8 @@ ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmw
     'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
     'lib32-pipewire-v4l2')
 
-ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'yubikey-manager' 'yubikey-manager-qt')
+# 'yubikey-manager' 'yubikey-manager-qt' now in AUR
+ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools')
 
 #  'restic' 'duplicity'
 ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync')

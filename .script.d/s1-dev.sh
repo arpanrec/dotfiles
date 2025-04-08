@@ -74,6 +74,8 @@ ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-
 
 ALL_PAKGS+=('python-pip')
 
+ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'linux-api-headers' 'devtools')
+
 ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim')
 
 ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')

@@ -65,3 +65,9 @@ if command -v mc &> /dev/null; then
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which mc)")" mc
 fi
+
+FNM_PATH="${HOME}/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="${HOME}/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi

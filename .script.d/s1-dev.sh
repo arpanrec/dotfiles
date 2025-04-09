@@ -72,7 +72,7 @@ ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfat-utils')
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('python-pip')
+ALL_PAKGS+=('python-pip' 'pipx')
 
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'linux-api-headers' 'devtools')

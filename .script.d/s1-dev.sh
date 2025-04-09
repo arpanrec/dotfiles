@@ -125,7 +125,8 @@ ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-p
 ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau' 'lib32-mesa' 'libvdpau-va-gl'
     'mesa-utils')
 
-ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges') # VMware Workstation dependencies
+# VMware Workstation dependencies
+ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')
 
 ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden')
 

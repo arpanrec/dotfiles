@@ -88,6 +88,8 @@ ALL_PAKGS+=('bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat' 'lm_sen
 
 ALL_PAKGS+=('veracrypt' 'keepassxc' 'cryptsetup')
 
+ALL_PAKGS+=('wireguard-tools' 'inetutils')
+
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'

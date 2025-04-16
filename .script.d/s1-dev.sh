@@ -77,7 +77,8 @@ ALL_PAKGS+=('python-pip' 'python-pipx')
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'linux-api-headers' 'devtools')
 
-ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim')
+ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim'
+    'tmux')
 
 ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')
 
@@ -302,5 +303,7 @@ done
 echo "Completed"
 # shellcheck disable=SC2016
 echo "Set the password for user ${username} using 'passwd ${username}'."
+
+nvidia-ctk runtime configure --runtime=docker || true
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

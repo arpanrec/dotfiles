@@ -116,7 +116,7 @@ ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmw
 ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools')
 
 #  'restic' 'duplicity'
-ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync')
+ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync' 'restic')
 
 ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper' 'print-manager')
 

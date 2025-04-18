@@ -110,7 +110,7 @@ ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
 ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack' 'lib32-pipewire'
     'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
-    'lib32-pipewire-v4l2')
+    'lib32-pipewire-v4l2' 'pavucontrol')
 
 # 'yubikey-manager' 'yubikey-manager-qt' now in AUR
 ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools')

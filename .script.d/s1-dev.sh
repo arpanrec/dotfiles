@@ -112,8 +112,8 @@ ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmw
     'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
     'lib32-pipewire-v4l2' 'pavucontrol')
 
-# 'yubikey-manager' 'yubikey-manager-qt' now in AUR
-ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools')
+# 'yubikey-manager-qt' Is broken
+ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
 
 #  'restic' 'duplicity'
 ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync' 'restic')

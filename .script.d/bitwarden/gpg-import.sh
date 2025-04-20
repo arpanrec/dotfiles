@@ -47,7 +47,7 @@ fi
 
 declare -a bw_items=(
     # "PGP KEY - AB - 8B5DA775C63F6D456B3525A334D06AC4966B56C8" SECRET.asc
-    "PGP KEY - 1B0D9C73D1221DB0DB64592912086B524AF4FD70" private.asc
+    "GPG_KEY - BB5973E71755FC76" "BB5973E71755FC76-Certify.key"
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 2)); do

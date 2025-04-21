@@ -27,6 +27,6 @@
 [user]
     name = arpan
     email = arpan.rec@gmail.com
-    signingkey = E884374E178FA6BACBDDAF5E5B4DAED6C95C447C
+    signingkey = 57843A13BAA67E5EA0E233EC1A2249D8FE12E5D3
 [http]
     sslVerify = true

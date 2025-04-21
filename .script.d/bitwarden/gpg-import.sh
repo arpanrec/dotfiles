@@ -46,8 +46,7 @@ if [ "${current_status}" != "unlocked" ]; then
 fi
 
 declare -a bw_items=(
-    # "PGP KEY - AB - 8B5DA775C63F6D456B3525A334D06AC4966B56C8" SECRET.asc
-    "GPG_KEY - 5B4DAED6C95C447C" "5B4DAED6C95C447C-Certify.key"
+    "GPG_KEY - 1A2249D8FE12E5D3" "1A2249D8FE12E5D3-Certify.key"
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 2)); do

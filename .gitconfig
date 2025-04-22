@@ -26,7 +26,7 @@
     gpgsign = true
 [user]
     name = arpan
-    email = arpan.rec@gmail.com
+    email = me@arpanrec.com
     signingkey = 57843A13BAA67E5EA0E233EC1A2249D8FE12E5D3
 [http]
     sslVerify = true

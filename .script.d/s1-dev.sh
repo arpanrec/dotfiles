@@ -69,6 +69,8 @@ ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-h
 # exfatprogs is replaced by exfat-utils
 ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfat-utils')
 
+ALL_PAKGS=('fwupd') # For firmware updates
+
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
@@ -292,7 +294,7 @@ echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
 MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' # 'sshd'
+    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' 'fwupd-refresh.timer' # 'sshd'
 )
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do

@@ -79,7 +79,7 @@ ALL_PAKGS+=('python-pip' 'python-pipx')
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'linux-api-headers' 'devtools')
 
-ALL_PAKGS+=('neovim' 'xclip' 'wl-clipboard' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim'
+ALL_PAKGS+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim'
     'tmux')
 
 ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')
@@ -96,13 +96,13 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 ALL_PAKGS+=('sddm' 'sway' 'foot' 'foot-terminfo' 'wmenu' 'xorg-xwayland' 'kwallet-pam' 'kwallet' 'kwalletmanager'
-    'pyside6' 'polkit' 'firefox' 'kdialog' 'qt6-multimedia-ffmpeg' 'qt6-quick3d' 'assimp')
+    'pyside6' 'polkit' 'firefox' 'kdialog' 'qt6-multimedia-ffmpeg' 'qt6-quick3d' 'assimp' 'wl-clipboard')
 
 # ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
 #     'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
 #     'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'
 #     'qt6-imageformats' 'kimageformats' 'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk'
-#     'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde' 'qt5-declarative' 'qt5-x11extras' 'kdecoration')
+#     'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde' 'qt5-declarative' 'qt5-x11extras' 'kdecoration' 'xclip')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet

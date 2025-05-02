@@ -95,6 +95,9 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
+ALL_PAKGS+=('sddm' 'sway' 'foot' 'foot-terminfo' 'wmenu' 'xorg-xwayland' 'kwallet-pam' 'kwallet' 'kwalletmanager'
+    'pyside6' 'polkit' 'firefox' 'kdialog' 'qt6-multimedia-ffmpeg' 'qt6-quick3d' 'assimp')
+
 # ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
 #     'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
 #     'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'

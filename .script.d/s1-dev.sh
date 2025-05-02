@@ -95,11 +95,11 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
-ALL_PAKGS+=('gdm' 'sway' 'foot' 'foot-terminfo' 'wmenu' 'xorg-xwayland' 'kwallet-pam' 'kwallet' 'kwalletmanager'
-    'pyside6' 'polkit' 'firefox' 'assimp' 'wl-clipboard')
+ALL_PAKGS+=('gdm' 'sway' 'foot' 'foot-terminfo' 'wmenu' 'xorg-xwayland' 'pyside6' 'polkit' 'firefox' 'assimp'
+    'wl-clipboard')
 
 # ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
-#     'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
+#     'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare' 'kwallet-pam' 'kwallet'
 #     'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'
 #     'qt6-imageformats' 'kimageformats' 'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk'
 #     'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde' 'qt5-declarative' 'qt5-x11extras' 'kdecoration' 'xclip')

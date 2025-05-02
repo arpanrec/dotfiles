@@ -296,7 +296,7 @@ echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
-MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
+MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'gdm' 'pcscd'
     'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' 'fwupd-refresh.timer' # 'sshd'
 )
 

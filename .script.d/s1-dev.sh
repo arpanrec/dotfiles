@@ -96,7 +96,7 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 ALL_PAKGS+=('gdm' 'sway' 'foot' 'foot-terminfo' 'wmenu' 'xorg-xwayland' 'pyside6' 'polkit' 'firefox' 'assimp'
-    'wl-clipboard')
+    'wl-clipboard' 'gnome-keyring' 'libsecret')
 
 # ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
 #     'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare' 'kwallet-pam' 'kwallet'

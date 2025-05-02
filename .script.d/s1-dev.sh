@@ -96,17 +96,20 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 ALL_PAKGS+=('xorg' 'xorg-xinit' 'phonon-qt5-gstreamer' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
-    'kleopatra' 'discover' 'partitionmanager' 'skanlite')
-ALL_PAKGS+=('dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6'
+    'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
+    'kdegraphics-thumbnailers' 'qt5-imageformats' 'packagekit-qt6'
     'kdesdk-thumbnailers' 'ark' 'icoutils' 'qt6-imageformats' 'kimageformats' 'kio-gdrive'
     'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk' 'packagekit-qt5' 'kdialog' 'kvantum' 'materia-kde'
     'qt5-declarative' 'qt5-x11extras' 'kdecoration')
+
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet
 # gtk-engine-murrine and gtk-engines is required by materia-gtk-theme
 # adapta-gtk-theme Gtk+ theme based on Material Design
 ALL_PAKGS+=('gtk-engine-murrine' 'gtk-engines' 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme')
+
 ALL_PAKGS+=('networkmanager-openvpn' 'libnma')
+
 ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
 
 ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')

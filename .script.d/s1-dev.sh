@@ -66,15 +66,14 @@ pacman -Syu --noconfirm
 ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'dkms' 'dhcpcd'
     'networkmanager' 'dhclient')
 
-# exfatprogs is replaced by exfat-utils
-ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfat-utils')
+ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
 ALL_PAKGS=('fwupd') # For firmware updates
 
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('python-pip' 'python-pipx')
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry')
 
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'linux-api-headers' 'devtools')

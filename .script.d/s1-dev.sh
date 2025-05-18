@@ -85,7 +85,7 @@ ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' '
 # 'docker-scan' not found
 ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs' 'gitleaks')
 
-ALL_PAKGS+=('bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+ALL_PAKGS+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
 ALL_PAKGS+=('veracrypt' 'keepassxc' 'cryptsetup')
 

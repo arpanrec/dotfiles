@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "Starting s1-dev setup"
+echo "Starting s2-dev setup"
 
 echo "--------------------------------------"
 echo "--     Time zone : Asia/Kolkata     --"
@@ -46,13 +46,13 @@ echo "--------------------------------------"
 
 touch /etc/hosts
 touch /etc/hostname
-hostnamectl hostname s1-dev || true
-echo s1-dev | tee /etc/hostname
+hostnamectl hostname s2-dev || true
+echo s2-dev | tee /etc/hostname
 
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   s1-dev s1-dev.blr-home.arpanrec.com
+127.0.1.1   s2-dev s2-dev.blr-home.arpanrec.com
 EOT
 
 pacman -Sy archlinux-keyring --noconfirm

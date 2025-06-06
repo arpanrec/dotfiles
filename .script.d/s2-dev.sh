@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "Starting s1-dev setup"
+echo "Starting s2-dev setup"
 
 echo "--------------------------------------"
 echo "--     Time zone : Asia/Kolkata     --"
@@ -46,13 +46,13 @@ echo "--------------------------------------"
 
 touch /etc/hosts
 touch /etc/hostname
-hostnamectl hostname s1-dev || true
-echo s1-dev | tee /etc/hostname
+hostnamectl hostname s2-dev || true
+echo s2-dev | tee /etc/hostname
 
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   s1-dev s1-dev.blr-home.arpanrec.com
+127.0.1.1   s2-dev s2-dev.blr-home.arpanrec.com
 EOT
 
 pacman -Sy archlinux-keyring --noconfirm
@@ -66,15 +66,14 @@ pacman -Syu --noconfirm
 ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'dkms' 'dhcpcd'
     'networkmanager' 'dhclient')
 
-# exfatprogs is replaced by exfat-utils
-ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfat-utils')
+ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
 ALL_PAKGS=('fwupd') # For firmware updates
 
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('python-pip' 'python-pipx')
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry')
 
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'linux-api-headers' 'devtools')
@@ -86,7 +85,7 @@ ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' '
 # 'docker-scan' not found
 ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs' 'gitleaks')
 
-ALL_PAKGS+=('bpytop' 'htop' 'neofetch' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+ALL_PAKGS+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
 ALL_PAKGS+=('veracrypt' 'keepassxc' 'cryptsetup')
 
@@ -135,7 +134,7 @@ ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-me
 # VMware Workstation dependencies
 ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')
 
-ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden')
+ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden' 'signal-desktop')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -295,8 +294,8 @@ echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
-MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'gdm' 'pcscd'
-    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' 'fwupd-refresh.timer' # 'sshd'
+MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
+    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' # 'sshd'
 )
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do

@@ -133,7 +133,7 @@ ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-me
 # VMware Workstation dependencies
 ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')
 
-ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden')
+ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden' 'signal-desktop')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"

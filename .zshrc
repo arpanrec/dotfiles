@@ -32,12 +32,12 @@ autoload -U compinit && compinit
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # unsetopt correct_all
 
-if hash terraform &>/dev/null ; then
+if command -v terraform &> /dev/null; then
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which terraform)")" terraform
 fi
 
-if hash kubectl &>/dev/null ; then
+if command -v kubectl &> /dev/null; then
     source <(kubectl completion zsh)
 fi
 

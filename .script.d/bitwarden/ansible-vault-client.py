@@ -27,17 +27,17 @@
 #
 # In usage like:
 #
-#    ansible-vault --vault-id production@/path/to/bitwarden-client.py view some_encrypted_file
+#    ansible-vault --vault-id production@/path/to/ansible-vault-client.py view some_encrypted_file
 #
 #  --vault-id will call this script like:
 #
-#     /path/to/bitwarden-client.py --vault-id production
+#     /path/to/ansible-vault-client.py --vault-id production
 #
 # That will retrieve the password from the Bitwarden item's custom field named 'production'.
 # This is equivalent to getting the value from the custom field 'production' in the
 # 'ANSIBLE_VAULT_PASS' Bitwarden item.
 #
-# If no vault-id name is specified to ansible command line, the bitwarden-client.py
+# If no vault-id name is specified to ansible command line, the ansible-vault-client.py
 # script will be called without a '--vault-id' and will default to the custom field 'default'
 # This is equivalent to getting the value from the custom field 'default' in the
 # 'ANSIBLE_VAULT_PASS' Bitwarden item.
@@ -46,26 +46,26 @@
 #
 # [defaults]
 # ...
-# vault_password_file = /path/to/bitwarden-client.py
+# vault_password_file = /path/to/ansible-vault-client.py
 # ...
 #
 # To set your password, `cd` to your project directory and run:
 #
 #   # will use default Bitwarden item 'ANSIBLE_VAULT_PASS' and custom field 'default'
-#   /path/to/bitwarden-client.py --set
+#   /path/to/ansible-vault-client.py --set
 #
 # or to specify a custom field name (vault-id) of 'production':
 #
-#  /path/to/bitwarden-client.py --vault-id production --set
+#  /path/to/ansible-vault-client.py --vault-id production --set
 #
 # or to specify a different Bitwarden item name:
 #
-#  /path/to/bitwarden-client.py --bw-item my-vault-secrets --vault-id production --set
+#  /path/to/ansible-vault-client.py --bw-item my-vault-secrets --vault-id production --set
 #
 # If you choose not to configure the path to `vault_password_file` in
 # ansible.cfg, your `ansible-playbook` command might look like:
 #
-# ansible-playbook --vault-id=production@/path/to/bitwarden-client.py site.yml
+# ansible-playbook --vault-id=production@/path/to/ansible-vault-client.py site.yml
 
 
 # pylint: disable=line-too-long
@@ -252,7 +252,7 @@ def main():
 
         if secret is None:
             sys.stderr.write(
-                "ansible vault bitwarden-client could not find,"
+                "ansible vault ansible-vault-client could not find,"
                 f' field="{vault_id}" in Bitwarden item "{bw_item_name}"\n'
             )
             sys.exit(KEYNAME_UNKNOWN_RC)

@@ -208,5 +208,5 @@
     "yaml.customTags": ["!vault"],
     "yaml.format.enable": false,
     "yaml.format.printWidth": 120,
-    "remote.autoForwardPorts": false,
+    "remote.autoForwardPorts": false
 }

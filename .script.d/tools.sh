@@ -71,38 +71,6 @@ if command -v cargo &>/dev/null; then
     echo y | cargo binstall "cargo-binstall" "fd-find" "ripgrep" --force
 fi
 
-declare -a npm_packages=("@bitwarden/cli" "neovim" "yarn" "pnpm")
-if command -v npm &>/dev/null; then
-
-    # if command -v corepack &>/dev/null; then
-    #     echo "enable pnpm and yarn"
-    #     corepack enable pnpm yarn
-    # fi
-
-    log_message "Installing npm packages"
-    for npm_package in "${npm_packages[@]}"; do
-        log_message "Installing npm package ${npm_package}"
-        npm install -g "${npm_package}"
-    done
-fi
-
-declare -a go_packages=(
-    "golang.org/x/tools/gopls@latest"
-    "mvdan.cc/sh/v3/cmd/gosh@latest"
-    "github.com/mikefarah/yq/v4@latest"
-    "github.com/minio/mc@latest"
-    "github.com/jesseduffield/lazygit@latest"
-    "github.com/tursodatabase/turso-cli/cmd/turso@latest"
-)
-
-if command -v go &>/dev/null; then
-    log_message "Installing go packages"
-    for go_package in "${go_packages[@]}"; do
-        log_message "Installing go package ${go_package}"
-        go install "${go_package}"
-    done
-fi
-
 install_neovim
 
 log_message "Removing lock file at ${TOOLS_INSTALL_LOCK_FILE}"

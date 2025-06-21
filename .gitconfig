@@ -1,5 +1,6 @@
 [advice]
 	detachedHead = false
+	forceDeleteBranch = false
 [fetch]
 	prune = false
 [pull]

@@ -141,17 +141,27 @@ def __bw_exec(
     if env_vars is not None:
         cli_env_vars.update(env_vars)
 
-    command_out = subprocess.run(
-        cmd,
-        capture_output=True,
-        check=False,
-        encoding=ret_encoding,
-        env=cli_env_vars,
-        timeout=10,
-        shell=False,
-        input=input_val,
-        text=True if input_val is not None else None,
-    )  # nosec B603
+    try:
+        command_out = subprocess.run(
+            cmd,
+            capture_output=True,
+            check=False,
+            encoding=ret_encoding,
+            env=cli_env_vars,
+            timeout=10,
+            shell=False,
+            input=input_val,
+            text=True if input_val is not None else None,
+        )  # nosec B603
+    except subprocess.TimeoutExpired as e:
+        sys.stderr.write(f"Command timed out: {' '.join(cmd)}\n")
+        sys.stderr.write(f"Error: {str(e)}\n")
+        sys.exit(1)
+
+    if not command_out or command_out.stdout is None:
+        sys.stderr.write(f"Command failed to execute: {' '.join(cmd)}\n")
+        sys.exit(1)
+
     if command_out.returncode != 0:
         sys.stderr.write(f"Error executing command: {' '.join(cmd)}\n")
         sys.stderr.write(f"Return code: {command_out.returncode}\n")
@@ -202,6 +212,13 @@ def main():
     args = arg_parser.parse_args()
 
     vault_id = args.vault_id or vault_id
+
+    bw_status = json.loads(__bw_exec(["status"]))["status"]
+    if bw_status != "unlocked":
+        sys.stderr.write("Bitwarden CLI is not unlocked.")
+        sys.stderr.write(f" Bitwarden status: {bw_status}.")
+        sys.stderr.write(" Please run 'bw unlock' to unlock your Bitwarden vault.")
+        sys.exit(1)
 
     __bw_exec(["sync"])
     bw_item = __bw_exec(["get", "item", bw_item_name])

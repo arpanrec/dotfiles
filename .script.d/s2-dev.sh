@@ -221,7 +221,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
     echo "-----------------------------------------------------------"
 
     ALL_PAKGS+=('linux-firmware-intel' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver'
-        'libva-utils''mesa' 'intel-media-driver' 'vulkan-intel' 'lib32-vulkan-intel')
+        'libva-utils' 'mesa' 'intel-media-driver' 'vulkan-intel' 'lib32-vulkan-intel')
 
 fi
 

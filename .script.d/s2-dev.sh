@@ -63,8 +63,11 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 
 pacman -Syu --noconfirm
 
-ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'dkms' 'dhcpcd'
-    'networkmanager' 'dhclient')
+ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers'
+    # 'linux-firmware'
+    'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
+    'core/linux-firmware-realtek' 'linux-firmware-whence'
+    'dkms' 'dhcpcd' 'networkmanager' 'dhclient')
 
 ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
@@ -165,8 +168,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     # 'nvidia-utils'
-    ALL_PAKGS+=('nvidia' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop' 'libvdpau-va-gl'
-        'nvidia-container-toolkit')
+    ALL_PAKGS+=('linux-firmware-nvidia' 'nvidia' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
+        'libvdpau-va-gl' 'nvidia-container-toolkit')
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"
@@ -206,7 +209,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('linux-firmware-amdgpu' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk' 'xf86-video-amdgpu'
+        'amdvlk' 'lib32-amdvlk')
 
 fi
 
@@ -216,7 +220,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
     echo "                   Setting Intel Drivers                   "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver' 'libva-utils')
+    ALL_PAKGS+=('linux-firmware-intel' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver'
+        'libva-utils''mesa' 'intel-media-driver' 'vulkan-intel' 'lib32-vulkan-intel')
 
 fi
 

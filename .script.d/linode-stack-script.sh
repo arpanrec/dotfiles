@@ -98,7 +98,7 @@ declare -A env_vars=(
 for var in "${!env_vars[@]}"; do
     sed -i "/export ${var}=.*/d" /etc/environment
     sed -i "/^${var}=.*/d" /etc/environment
-    echo "export ${var}=${env_vars[$var]}" | tee -a /etc/environment
+    echo "${var}=${env_vars[$var]}" | tee -a /etc/environment
 done
 
 log_message "Sourcing /etc/environment after setting environment variables"

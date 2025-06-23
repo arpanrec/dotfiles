@@ -43,11 +43,11 @@ if [ "${current_status}" == "unauthenticated" ]; then
 
                 echo "Saving Client ID and Client Secret in ${BW_API_KEY_FILE}"
                 if [ -f "${BW_API_KEY_FILE}" ]; then
-                    sed -i '/^export BW_CLIENTID=/d' "${BW_API_KEY_FILE}"
-                    sed -i '/^export BW_CLIENTSECRET=/d' "${BW_API_KEY_FILE}"
+                    sed -i '/^BW_CLIENTID=/d' "${BW_API_KEY_FILE}"
+                    sed -i '/^BW_CLIENTSECRET=/d' "${BW_API_KEY_FILE}"
                 fi
-                echo "export BW_CLIENTID=${__bw_client_id}" >>"${BW_API_KEY_FILE}"
-                echo "export BW_CLIENTSECRET=${__bw_client_secret}" >>"${BW_API_KEY_FILE}"
+                echo "BW_CLIENTID=${__bw_client_id}" >>"${BW_API_KEY_FILE}"
+                echo "BW_CLIENTSECRET=${__bw_client_secret}" >>"${BW_API_KEY_FILE}"
             fi
         else
             echo "Client ID and Client Secret found in environment, Possibly from ${BW_API_KEY_FILE}"
@@ -76,14 +76,13 @@ if [ "${current_status}" == "locked" ]; then
         echo "Error!!!!!!!!!!!!!!!! Unable to unlock"
         exit 1
     fi
-    export BW_SESSION="${__bw_session_id}"
     read -n1 -r -p "Set session id in ${BW_API_SESSION_FILE} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then
         if [ -f "${BW_API_SESSION_FILE}" ]; then
-            sed -i '/^export BW_SESSION=/d' "${BW_API_SESSION_FILE}"
+            sed -i '/^BW_SESSION=/d' "${BW_API_SESSION_FILE}"
         fi
-        echo "export BW_SESSION=${__bw_session_id}" >>"${BW_API_SESSION_FILE}"
+        echo "BW_SESSION=${__bw_session_id}" >>"${BW_API_SESSION_FILE}"
     fi
 fi
 

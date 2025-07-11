@@ -174,8 +174,7 @@ log_message "Installing vim"
 apt-get install -y vim
 log_message "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
-sed -i '/^export EDITOR=.*/d' /etc/environment
-echo "export EDITOR=vim" | tee -a /etc/environment
+echo "EDITOR=vim" | tee -a /etc/environment
 
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.5"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`

@@ -170,8 +170,7 @@ def __bw_exec(
     return command_out.stdout
 
 
-# pylint: disable=too-many-locals
-def main():
+def main():  # pylint: disable=too-many-locals,too-many-statements
     """
     Main entry point for the Bitwarden Ansible vault password client.
 

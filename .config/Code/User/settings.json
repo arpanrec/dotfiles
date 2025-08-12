@@ -133,7 +133,6 @@
     "files.trimTrailingWhitespace": false,
     "files.watcherExclude": {
         "**/.classpath": true,
-        "**/.env/**": true,
         "**/.factorypath": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,

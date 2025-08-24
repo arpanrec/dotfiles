@@ -101,7 +101,7 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' '
     'kdegraphics-thumbnailers' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'
     'qt6-imageformats' 'kimageformats' 'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk'
     'kdialog' 'kvantum' 'materia-kde' 'kdecoration'
-    'qt5-imageformats' 'qt5-declarative' 'qt5-x11extras' 'packagekit-qt5')
+    'qt5-imageformats' 'qt5-declarative' 'qt5-x11extras')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet

@@ -320,6 +320,10 @@ sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
 set -exuo pipefail
 
+export HOME="/home/${CLOUD_INIT_USER}"
+export USER="${CLOUD_INIT_USER}"
+export LOGNAME="${CLOUD_INIT_USER}"
+
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
     bash <(curl -sSL --connect-timeout 10 --max-time 10 \
         https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/dot-install.sh)

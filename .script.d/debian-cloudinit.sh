@@ -347,7 +347,7 @@ if [ -f /etc/update-motd.d/10-uname ]; then
 fi
 
 function install_fastfetch() {
-    fastfetch_version="2.29.0"
+    fastfetch_version="2.52.0"
     log_message "Installing fastfetch"
 
     if command -v fastfetch &>/dev/null; then

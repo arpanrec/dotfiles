@@ -129,3 +129,8 @@ fi
 if [[ -d "${HOME}/.dotnet/tools" ]]; then
     export PATH="${HOME}/.dotnet/tools:${PATH}"
 fi
+
+export PNPM_HOME="${HOME}.local/share/pnpm"
+if [[ ! "${PATH}" =~ ${PNPM_HOME}: ]]; then
+    export PATH="${PNPM_HOME}:${PATH}"
+fi

@@ -301,7 +301,6 @@ echo "--------------------------------------"
 
 sudo mkdir -p /etc/ssh/sshd_config.d
 tee "/etc/ssh/sshd_config.d/010-ssh-ansible.conf" <<EOF
----
 Port 22
 PasswordAuthentication no
 PermitRootLogin no

@@ -296,6 +296,25 @@ id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -
 sudo usermod -aG docker,wheel,nordvpn "${username}"
 
 echo "--------------------------------------"
+echo "         SSH Key Only login           "
+echo "--------------------------------------"
+
+sudo mkdir -p /etc/ssh/sshd_config.d
+tee "/etc/ssh/sshd_config.d/010-ssh-ansible.conf" <<EOF
+---
+Port 22
+PasswordAuthentication no
+PermitRootLogin no
+PermitEmptyPasswords no
+MaxAuthTries 3
+X11Forwarding no
+ClientAliveInterval 60
+ClientAliveCountMax 3
+ChallengeResponseAuthentication no
+
+EOF
+
+echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 

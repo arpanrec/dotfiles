@@ -10,7 +10,7 @@
         "prettier.singleQuote": false
     },
     "[dockerfile]": {
-        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+        "editor.defaultFormatter": "ms-azuretools.vscode-containers"
     },
     "[github-actions-workflow]": {
         "prettier.singleQuote": false
@@ -111,6 +111,7 @@
     },
     "files.exclude": {
         "**/.classpath": true,
+        "**/.env/**": true,
         "**/.factorypath": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
@@ -200,12 +201,21 @@
     "workbench.colorTheme": "GitHub Dark Default",
     "workbench.editor.enablePreview": false,
     "workbench.editorAssociations": {
-        "*.ipynb": "default"
+        "*.ipynb": "default",
+        "*.excalidraw": "editor.excalidraw"
     },
     "workbench.iconTheme": "material-icon-theme",
     "workbench.startupEditor": "none",
     "yaml.customTags": ["!vault"],
     "yaml.format.enable": false,
     "yaml.format.printWidth": 120,
-    "remote.autoForwardPorts": false
+    "remote.autoForwardPorts": false,
+    "terraform.mcp.server.enable": false,
+    "excalidraw.image": {
+        "exportScale": 1,
+        "exportWithBackground": true,
+        "exportWithDarkMode": false
+    },
+    "excalidraw.theme": "dark",
+    "excalidraw.language": "en"
 }

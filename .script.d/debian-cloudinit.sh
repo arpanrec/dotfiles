@@ -176,7 +176,7 @@ log_message "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
 
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.23"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.24"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
 export NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
@@ -336,7 +336,7 @@ if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
 else
     bash <(curl -sSL --connect-timeout 10 --max-time 10 \
         https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.script.d/server-workspace.sh) \
-        --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi
+        --tags all --skip-tags java,go,terraform,vault,nodejs,bws,pulumi,hadolint,gitleaks
 fi
 
 '

@@ -152,7 +152,7 @@
         "**/venv/**": true,
         "**/vendor/**": true
     },
-    "git.autofetch": true,
+    "git.autofetch": false,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "git.ignoreLegacyWarning": true,

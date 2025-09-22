@@ -176,7 +176,7 @@ log_message "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
 
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.25"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.26"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
 export NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"

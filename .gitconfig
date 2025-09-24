@@ -14,7 +14,6 @@
 	editor = vim
 	pager = less
 	excludesFile = ~/.gitignore
-	hooksPath = .git-hooks
 [push]
 	followTags = true
 [init]

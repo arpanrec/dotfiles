@@ -82,7 +82,8 @@ ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-ea
 
 ALL_PAKGS+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
 
-ALL_PAKGS+=('bash-completion' 'shellcheck' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')
+# 'shellcheck'
+ALL_PAKGS+=('bash-completion' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb')
 
 # 'docker-scan' not found
 ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')

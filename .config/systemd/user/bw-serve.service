@@ -1,13 +1,11 @@
 [Unit]
 Description="Bitwarden Local Server (https://bitwarden.com/help/vault-management-api/)"
-ConditionPathExists=%h/.secrets.d/020-bwlogin-session.sh
-ConditionPathExists=%h/.secrets.d/010-bwlogin-apikey.sh
+ConditionPathExists=%h/.env
 
 [Service]
 Type=simple
 Environment="PATH=%h/.local/share/node/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
-EnvironmentFile=%h/.secrets.d/020-bwlogin-session.sh
-EnvironmentFile=%h/.secrets.d/010-bwlogin-apikey.sh
+EnvironmentFile=%h/.env
 ExecStart=%h/.local/share/node/bin/bw serve
 SuccessExitStatus=143
 

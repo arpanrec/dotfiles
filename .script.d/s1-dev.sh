@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "Starting s2-dev setup"
+echo "Starting s1-dev setup"
 
 echo "--------------------------------------"
 echo "--     Time zone : Asia/Kolkata     --"
@@ -46,13 +46,13 @@ echo "--------------------------------------"
 
 touch /etc/hosts
 touch /etc/hostname
-hostnamectl hostname s2-dev || true
-echo s2-dev | tee /etc/hostname
+hostnamectl hostname s1-dev || true
+echo s1-dev | tee /etc/hostname
 
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   s2-dev s2-dev.blr-home.arpanrec.com
+127.0.1.1   s1-dev s1-dev.blr-home.arpanrec.com
 EOT
 
 pacman -Sy archlinux-keyring --noconfirm
@@ -160,6 +160,62 @@ AuthenticAMD)
     exit 1
     ;;
 esac
+
+echo "--------------------------------------------------"
+echo "         Graphics Drivers find and install        "
+echo "--------------------------------------------------"
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+    echo "-----------------------------------------------------------"
+    # 'nvidia-utils'
+    ALL_PAKGS+=('linux-firmware-nvidia' 'nvidia' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
+        'libvdpau-va-gl' 'nvidia-container-toolkit')
+    echo "Adding nvidia drivers to be installed"
+
+    mkdir -p "/etc/pacman.d/hooks"
+    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia
+Target=linux
+# Change the linux part above and in the Exec line if a different kernel is used
+
+[Action]
+Description=Update Nvidia module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+EOT
+    echo "Nvidia pacman hook installed /etc/pacman.d/hooks/nvidia.hook"
+    cat /etc/pacman.d/hooks/nvidia.hook
+
+    mkdir /etc/udev/rules.d/ -p
+    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
+ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
+EOT
+
+    echo "Nvidia pudev rule installed /etc/udev/rules.d/99-nvidia.rules"
+    cat /etc/udev/rules.d/99-nvidia.rules
+
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "                    Setting AMD Drivers                    "
+    echo "-----------------------------------------------------------"
+
+    ALL_PAKGS+=('linux-firmware-amdgpu' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk' 'xf86-video-amdgpu'
+        'amdvlk' 'lib32-amdvlk')
+
+fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
 
@@ -275,5 +331,7 @@ done
 echo "Completed"
 # shellcheck disable=SC2016
 echo "Set the password for user ${username} using 'passwd ${username}'."
+
+nvidia-ctk runtime configure --runtime=docker || true
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

@@ -108,7 +108,7 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' '
 # materia-gtk-theme this is required for some of the themes like prof and sweet
 # gtk-engine-murrine and gtk-engines is required by materia-gtk-theme
 # adapta-gtk-theme Gtk+ theme based on Material Design
-ALL_PAKGS+=('gtk-engine-murrine' 'gtk-engines' 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme')
+ALL_PAKGS+=('gtk-engines' 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme')
 
 ALL_PAKGS+=('networkmanager-openvpn' 'libnma')
 
@@ -225,7 +225,8 @@ if ! command -v yay &>/dev/null; then
     '
 fi
 
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin'
+    'gtk-engine-murrine')
 
 PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 

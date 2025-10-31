@@ -260,6 +260,17 @@ ChallengeResponseAuthentication no
 
 EOF
 
+sudo mkdir -p /etc/NetworkManager/conf.d
+tee "/etc/NetworkManager/conf.d/30-mac-randomization.conf" <<EOF
+[device-mac-randomization]
+wifi.scan-rand-mac-address=yes
+
+[connection-mac-randomization]
+ethernet.cloned-mac-address=permanent
+wifi.cloned-mac-address=permanent
+
+EOF
+
 echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"

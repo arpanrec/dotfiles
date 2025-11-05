@@ -111,7 +111,6 @@
     },
     "files.exclude": {
         "**/.classpath": true,
-        "**/.env/**": true,
         "**/.factorypath": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
@@ -133,7 +132,6 @@
     "files.trimTrailingWhitespace": false,
     "files.watcherExclude": {
         "**/.classpath": true,
-        "**/.env/**": true,
         "**/.factorypath": true,
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
@@ -217,5 +215,7 @@
         "exportWithDarkMode": false
     },
     "excalidraw.theme": "dark",
-    "excalidraw.language": "en"
+    "excalidraw.language": "en",
+    "docker.extension.enableComposeLanguageServer": false,
+    "python.analysis.typeCheckingMode": "strict"
 }

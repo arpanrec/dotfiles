@@ -33,7 +33,7 @@ install_neovim() {
     NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
 
     NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
-    NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.11.1"}"
+    NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.11.4"}"
     log_message "Creating Neovim directories"
     mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 

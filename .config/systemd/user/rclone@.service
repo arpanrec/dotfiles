@@ -17,7 +17,7 @@ ExecStart= \
     --log-level INFO \
     --log-file /tmp/rclone-%i.log \
     --umask 022 \
-    %i: %h/mnt/%i
+    %i:/ %h/mnt/%i
 ExecStop=/bin/fusermount -uz %h/mnt/%i
 ExecStopPost=-/bin/umount -l %h/mnt/%i
 Restart=no

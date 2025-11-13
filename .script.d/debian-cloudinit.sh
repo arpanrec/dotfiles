@@ -161,7 +161,7 @@ sed -i '/^en_US.UTF-8 UTF-8$/d' /etc/locale.gen >/dev/null 2>&1
 echo "en_US.UTF-8 UTF-8" | tee -a /etc/locale.gen >/dev/null 2>&1
 locale -a
 locale-gen
-localectl set-locale LANG=en_US.UTF-8
+localectl set-locale LANG=en_US.UTF-8 || true
 
 log_message "Installing apt dependencies"
 apt-get update

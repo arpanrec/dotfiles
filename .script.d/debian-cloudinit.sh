@@ -154,7 +154,7 @@ apt-get update
 apt-get install -y locales tzdata
 
 log_message "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
-timedatectl set-timezone Asia/Kolkata
+timedatectl set-timezone Asia/Kolkata || true
 echo "LANG=en_US.UTF-8" | tee /etc/default/locale >/dev/null 2>&1
 echo "LC_ALL=en_US.UTF-8" | tee -a /etc/default/locale >/dev/null 2>&1
 sed -i '/^en_US.UTF-8 UTF-8$/d' /etc/locale.gen >/dev/null 2>&1

@@ -157,13 +157,13 @@
     "git.openDiffOnClick": true,
     "git.openRepositoryInParentFolders": "always",
     "github.copilot.enable": {
-        "*": true,
-        "ansible": true,
-        "markdown": true,
-        "plaintext": true,
+        "*": false,
+        "ansible": false,
+        "markdown": false,
+        "plaintext": false,
         "scminput": false,
-        "shellscript": true,
-        "yaml": true
+        "shellscript": false,
+        "yaml": false
     },
     "githubPullRequests.createOnPublishBranch": "never",
     "githubPullRequests.pullBranch": "never",

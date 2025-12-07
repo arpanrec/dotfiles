@@ -132,9 +132,8 @@ ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-p
     'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'vlc-plugin-ffmpeg' 'vlc-plugins-all'
     'libheif' 'taglib' 'ffmpegthumbs')
 
-# Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver
-ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'mesa-vdpau' 'lib32-mesa-vdpau' 'lib32-mesa' 'libvdpau-va-gl'
-    'mesa-utils')
+# Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver mesa-vdpau lib32-mesa-vdpau
+ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
 
 # VMware Workstation dependencies
 ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')

@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import sys
+import json
+from pathlib import Path
+
+try:
+    import yaml
+except ImportError as e:
+    print(f"Error: {e}. Try 'pip install pyyaml'")
+    sys.exit(1)
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: convert.py <file>")
+        sys.exit(1)
+
+    file_path = Path(sys.argv[1])
+
+    if not file_path.exists():
+        print(f"Error: File '{file_path}' does not exist")
+        sys.exit(1)
+
+    suffix = file_path.suffix.lower()
+
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        if suffix == ".json":
+            # Convert JSON → YAML
+            data = json.loads(content)
+            print(yaml.safe_dump(data, sort_keys=False))
+
+        elif suffix in (".yaml", ".yml"):
+            # Convert YAML → JSON
+            data = yaml.safe_load(content)
+            print(json.dumps(data, indent=2))
+
+        else:
+            print("Error: Unsupported file type. Must be .json, .yaml, or .yml")
+            sys.exit(1)
+
+    except Exception as e:
+        print(f"Error processing file: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

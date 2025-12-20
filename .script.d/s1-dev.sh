@@ -240,14 +240,14 @@ getent group sudo || groupadd --system sudo
 getent group wheel || groupadd --system wheel
 echo -e "root\nroot" | passwd
 
-echo "-----------------------------------------------------------------------------------"
-echo "       Install Grub Boot-loader with UEFI in directory /efi                        "
-echo "-----------------------------------------------------------------------------------"
-mkinitcpio -P
-chmod 600 /boot/initramfs-linux*
-grub-install --target=x86_64-efi --bootloader-id=Archlinux \
-    --efi-directory=/efi --root-directory=/ --recheck
-grub-mkconfig -o /boot/grub/grub.cfg
+# echo "-----------------------------------------------------------------------------------"
+# echo "       Install Grub Boot-loader with UEFI in directory /efi                        "
+# echo "-----------------------------------------------------------------------------------"
+# mkinitcpio -P
+# chmod 600 /boot/initramfs-linux*
+# grub-install --target=x86_64-efi --bootloader-id=Archlinux \
+#     --efi-directory=/efi --root-directory=/ --recheck
+# grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "

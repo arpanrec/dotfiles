@@ -61,7 +61,7 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
     /etc/pacman.d/gnupg/gpg.conf ||
     echo "keyserver hkp://keyserver.ubuntu.com" >>/etc/pacman.d/gnupg/gpg.conf
 
-pacman -Sy reflector --noconfirm
+pacman -Sy reflector curl --noconfirm --needed
 
 sudo reflector --country India --age 12 \
     --protocol https --sort rate --save /etc/pacman.d/mirrorlist

@@ -71,7 +71,7 @@ pacman -Syu --noconfirm
 ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers'
     'linux-firmware' 'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek'
     'linux-firmware-other' 'linux-firmware-realtek' 'linux-firmware-whence'
-    'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'mkinitcpio' 'iptables-nft')
+    'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'mkinitcpio' 'iptables-nft' 'trurl')
     
 ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 

@@ -78,7 +78,7 @@ ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 ALL_PAKGS=('fwupd') # For firmware updates
 
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
-    'jq' 'unarchiver' 'lzop' 'lrzip' 'curl' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
+    'jq' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
 ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry')
 

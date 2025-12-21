@@ -106,7 +106,7 @@ ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' '
     'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
     'kdegraphics-thumbnailers' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'
     'qt6-imageformats' 'kimageformats' 'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk'
-    'kdialog' 'kvantum' 'materia-kde' 'kdecoration'
+    'kdialog' 'kvantum' 'materia-kde' 'kdecoration' 'kate'
     'qt5-imageformats' 'qt5-declarative' 'qt5-x11extras')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur

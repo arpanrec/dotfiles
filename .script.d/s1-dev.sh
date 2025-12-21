@@ -71,14 +71,14 @@ pacman -Syu --noconfirm
 ALL_PAKGS=('mkinitcpio' 'grub' 'efibootmgr' 'base' 'base-devel' 'linux' 'linux-headers'
     'linux-firmware' 'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek'
     'linux-firmware-other' 'linux-firmware-realtek' 'linux-firmware-whence'
-    'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'mkinitcpio' 'iptables-nft' 'trurl')
+    'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'mkinitcpio' 'iptables-nft')
 
-ALL_PAKGS=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
+ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
-ALL_PAKGS=('fwupd') # For firmware updates
+ALL_PAKGS+=('fwupd') # For firmware updates
 
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
-    'jq' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
+    'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
 ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry')
 

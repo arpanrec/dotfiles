@@ -64,7 +64,7 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 pacman -Sy reflector curl --noconfirm --needed
 
 sudo reflector --country India --age 12 \
-    --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose || true
 
 pacman -Syu --noconfirm
 

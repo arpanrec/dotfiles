@@ -229,7 +229,7 @@ if ! command -v yay &>/dev/null; then
     '
 fi
 
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-gui' 'yubico-authenticator-bin')
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
 
 PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 

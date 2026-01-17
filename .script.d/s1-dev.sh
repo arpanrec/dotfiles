@@ -175,7 +175,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     # 'nvidia-utils'
-    ALL_PAKGS+=('linux-firmware-nvidia' 'nvidia' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
+    ALL_PAKGS+=('linux-firmware-nvidia' 'nvidia-open' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
         'libvdpau-va-gl' 'nvidia-container-toolkit')
     echo "Adding nvidia drivers to be installed"
 

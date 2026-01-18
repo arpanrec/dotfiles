@@ -1,26 +1,55 @@
 #!/usr/bin/env bash
 set -euo pipefail
-echo "Starting s1-dev setup"
+echo "Starting setup"
+echo "Allowed hosts are: s1-dev, s2-dev"
+
+export TARGET_HOSTNAME="${1}"
+
+if [[ "${TARGET_HOSTNAME}" != "s1-dev" ]] && [[ "${TARGET_HOSTNAME}" != "s2-dev" ]]; then
+    echo "Invalid hostname provided. Allowed hosts are: s1-dev, s2-dev"
+    echo "First argument should be one of the above"
+    exit 1
+fi
+
+if [[ -d /run/systemd/system ]] && [[ "$(ps -p 1 -o comm=)" == "systemd" ]]; then
+    export IS_RUNNING_SYSTEMD=true
+else
+    export IS_RUNNING_SYSTEMD=false
+fi
+
+echo "System is running systemd: $IS_RUNNING_SYSTEMD"
 
 echo "--------------------------------------"
 echo "--     Time zone : Asia/Kolkata     --"
 echo "--------------------------------------"
 rm -rf /etc/localtime
-timedatectl set-timezone Asia/Kolkata || true
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    timedatectl set-timezone Asia/Kolkata
+    timedatectl set-ntp true
+else
+    echo "Skipping systemd time setup (not running under systemd)"
+fi
+
 hwclock --systohc
-timedatectl set-ntp true || true
+
 echo "Current date time : " "$(date)"
 
 echo "--------------------------------------"
 echo "--       Localization : UTF-8       --"
 echo "--------------------------------------"
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-locale-gen
-localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8" || true
-localectl --no-ask-password set-keymap us || true
 echo 'LANG=en_US.UTF-8' >/etc/locale.conf
-localectl || true
+locale-gen
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8"
+    localectl --no-ask-password set-keymap us
+    localectl
+else
+    echo "Skipping systemd services (not running under systemd)"
+fi
 
 nc=$(grep -c ^processor /proc/cpuinfo)
 echo "You have $nc cores."
@@ -44,16 +73,18 @@ echo "--------------------------------------"
 echo "             Set Host Name            "
 echo "--------------------------------------"
 
-touch /etc/hosts
-touch /etc/hostname
-hostnamectl hostname s1-dev || true
-echo s1-dev | tee /etc/hostname
-
+echo "${TARGET_HOSTNAME}" | tee /etc/hostname
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   s1-dev s1-dev.blr-home.arpanrec.com
+127.0.1.1   ${TARGET_HOSTNAME} ${TARGET_HOSTNAME}.blr-home.easyiac.com
 EOT
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    hostnamectl hostname "${TARGET_HOSTNAME}"
+else
+    echo "Skipping systemd services (not running under systemd)"
+fi
 
 pacman -Sy archlinux-keyring --noconfirm
 
@@ -64,7 +95,7 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 pacman -Sy reflector curl --noconfirm --needed
 
 sudo reflector --country India --age 12 \
-    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose || true
+    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 
 pacman -Syu --noconfirm
 
@@ -138,7 +169,7 @@ ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-p
     'haruna' 'yt-dlp' 'libheif' 'taglib' 'ffmpegthumbs')
 
 # Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver mesa-vdpau lib32-mesa-vdpau
-ALL_PAKGS+=('libva-mesa-driver' 'lib32-libva-mesa-driver' 'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
+ALL_PAKGS+=('mesa' 'libva-mesa-driver' 'lib32-libva-mesa-driver' 'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
 
 # VMware Workstation dependencies
 ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')
@@ -216,8 +247,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
 
-    ALL_PAKGS+=('linux-firmware-amdgpu' 'xf86-video-amdgpu' 'amdvlk' 'lib32-amdvlk' 'xf86-video-amdgpu'
-        'amdvlk' 'lib32-amdvlk')
+    ALL_PAKGS+=('linux-firmware-amdgpu' 'xf86-video-amdgpu' 'xf86-video-ati' 'lib32-vulkan-radeon'
+        'vulkan-radeon' 'lib32-vulkan-mesa-layers')
 
 fi
 
@@ -243,7 +274,6 @@ echo '         Setting Root Password to "root"        '
 echo "--------------------------------------------------"
 getent group sudo || groupadd --system sudo
 getent group wheel || groupadd --system wheel
-echo -e "root\nroot" | passwd
 
 echo "-----------------------------------------------------------------------------------"
 echo "       Install Grub Boot-loader with UEFI in directory /efi                        "
@@ -273,7 +303,7 @@ echo "-------------------------------------------------------"
 echo " Adding user makemyarch_build_user"
 id -u makemyarch_build_user &>/dev/null ||
     useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
-echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers.d/10-makemyarch_build_user
+echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
 
 if ! command -v yay &>/dev/null; then
     sudo -H -u makemyarch_build_user bash -c '
@@ -291,7 +321,7 @@ PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 
 sudo -H -u makemyarch_build_user bash -c "cd ~ && \
         yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
-sudo userdel -r makemyarch_build_user || true
+sudo userdel -r makemyarch_build_user
 
 echo "--------------------------------------"
 echo "       Create User and Groups         "
@@ -299,7 +329,9 @@ echo "--------------------------------------"
 
 username="${username:-user1}"
 id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -m -d "/home/${username}" "${username}"
+
 sudo usermod -aG docker,wheel,nordvpn "${username}"
+echo -e "${username}\n${username}" | passwd "${username}"
 
 echo "--------------------------------------"
 echo "         SSH Key Only login           "
@@ -347,6 +379,18 @@ echo "Completed"
 # shellcheck disable=SC2016
 echo "Set the password for user ${username} using 'passwd ${username}'."
 
-nvidia-ctk runtime configure --runtime=docker || true
+if ! command -v nvidia-ctk &>/dev/null; then
+    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
+else
+    echo "Nvidia Container Toolkit is installed."
+
+    if $IS_RUNNING_SYSTEMD; then
+        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+        nvidia-ctk runtime configure --runtime=docker
+        systemctl restart docker
+    else
+        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+    fi
+fi
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

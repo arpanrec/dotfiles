@@ -7,7 +7,7 @@
 	rebase = false
 [core]
 	autocrlf = false
-	fileMode = false
+	fileMode = true
 	ignorecase = false
 	safecrlf = true
 	eol = lf

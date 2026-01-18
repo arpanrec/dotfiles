@@ -34,7 +34,7 @@ fi
 
 hwclock --systohc
 
-echo "Current date time : " "$(date)"
+echo "Current date time : $(date)"
 
 echo "--------------------------------------"
 echo "--       Localization : UTF-8       --"

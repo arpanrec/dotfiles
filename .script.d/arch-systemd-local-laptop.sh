@@ -1,0 +1,435 @@
+#!/usr/bin/env bash
+set -euo pipefail
+echo "Starting setup"
+echo "Allowed hosts are: s1-dev, s2-dev"
+
+export TARGET_HOSTNAME="${1}"
+
+if [[ "${TARGET_HOSTNAME}" != "s1-dev" ]] && [[ "${TARGET_HOSTNAME}" != "s2-dev" ]]; then
+    echo "Invalid hostname provided. Allowed hosts are: s1-dev, s2-dev"
+    echo "First argument should be one of the above"
+    exit 1
+fi
+
+if [[ -d /run/systemd/system ]] && [[ "$(ps -p 1 -o comm=)" == "systemd" ]]; then
+    export IS_RUNNING_SYSTEMD=true
+else
+    export IS_RUNNING_SYSTEMD=false
+fi
+
+echo "System is running systemd: $IS_RUNNING_SYSTEMD"
+
+echo "--------------------------------------"
+echo "--     Time zone : Asia/Kolkata     --"
+echo "--------------------------------------"
+rm -rf /etc/localtime
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    timedatectl set-timezone Asia/Kolkata
+    timedatectl set-ntp true
+else
+    echo "Skipping systemd time setup (not running under systemd)"
+fi
+
+hwclock --systohc
+
+echo "Current date time : $(date)"
+
+echo "--------------------------------------"
+echo "--       Localization : UTF-8       --"
+echo "--------------------------------------"
+sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+echo 'LANG=en_US.UTF-8' >/etc/locale.conf
+locale-gen
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8"
+    localectl --no-ask-password set-keymap us
+    localectl
+else
+    echo "Skipping systemd services (not running under systemd)"
+fi
+
+nc=$(grep -c ^processor /proc/cpuinfo)
+echo "You have $nc cores."
+echo "-------------------------------------------------"
+echo "Changing the makeflags for $nc cores."
+TOTALMEM=$(grep -i 'memtotal' /proc/meminfo | grep -o '[[:digit:]]*')
+if [[ $TOTALMEM -gt 8000000 ]]; then
+    sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+    echo "Changing the compression settings for $nc cores."
+    sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+fi
+
+#Add parallel downloading
+sed -i 's/^#Para/Para/' /etc/pacman.conf
+sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
+#Enable multilib
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
+
+echo "--------------------------------------"
+echo "             Set Host Name            "
+echo "--------------------------------------"
+
+echo "${TARGET_HOSTNAME}" | tee /etc/hostname
+cat <<EOT >"/etc/hosts"
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   ${TARGET_HOSTNAME} ${TARGET_HOSTNAME}.blr-home.easyiac.com
+EOT
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    hostnamectl hostname "${TARGET_HOSTNAME}"
+else
+    echo "Skipping systemd services (not running under systemd)"
+fi
+
+pacman -Sy archlinux-keyring --noconfirm
+
+grep "keyserver hkp://keyserver.ubuntu.com" \
+    /etc/pacman.d/gnupg/gpg.conf ||
+    echo "keyserver hkp://keyserver.ubuntu.com" >>/etc/pacman.d/gnupg/gpg.conf
+
+pacman -Sy reflector curl --noconfirm --needed
+
+sudo reflector --country India --age 12 \
+    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+
+pacman -Syu --noconfirm
+
+ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers'
+    'linux-firmware' 'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek'
+    'linux-firmware-other' 'linux-firmware-realtek' 'linux-firmware-whence'
+    'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'mkinitcpio' 'iptables-nft')
+
+ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
+
+ALL_PAKGS+=('fwupd') # For firmware updates
+
+ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
+    'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
+
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry')
+
+ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
+    'linux-api-headers' 'devtools')
+
+ALL_PAKGS+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
+
+ALL_PAKGS+=('bash-completion' 'terminator' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+
+# 'docker-scan' not found
+ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
+
+ALL_PAKGS+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+
+ALL_PAKGS+=('veracrypt' 'keepassxc' 'cryptsetup')
+
+ALL_PAKGS+=('wireguard-tools' 'inetutils')
+
+ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
+
+# 'phonon-qt5-gstreamer'
+ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
+    'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
+    'kdegraphics-thumbnailers' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'
+    'qt6-imageformats' 'kimageformats' 'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk'
+    'kdialog' 'kvantum' 'materia-kde' 'kdecoration' 'kate'
+    'qt5-imageformats' 'qt5-declarative' 'qt5-x11extras')
+
+# materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
+# materia-gtk-theme this is required for some of the themes like prof and sweet
+# gtk-engine-murrine and gtk-engines is required by materia-gtk-theme
+# adapta-gtk-theme Gtk+ theme based on Material Design
+ALL_PAKGS+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme')
+
+ALL_PAKGS+=('networkmanager-openvpn' 'libnma')
+
+ALL_PAKGS+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
+
+ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
+ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack' 'lib32-pipewire'
+    'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
+    'lib32-pipewire-v4l2' 'pavucontrol')
+
+# 'yubikey-manager-qt' Is broken
+ALL_PAKGS+=('ccid' 'opensc' 'pcsc-tools' 'yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
+
+#  'restic' 'duplicity'
+ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync' 'restic')
+
+ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper' 'print-manager')
+
+ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly'
+    'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg' 'libmpeg2'
+    'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'vlc-plugin-ffmpeg' 'vlc-plugins-all'
+    'haruna' 'yt-dlp' 'libheif' 'taglib' 'ffmpegthumbs')
+
+# Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver mesa-vdpau lib32-mesa-vdpau
+ALL_PAKGS+=('mesa' 'libva-mesa-driver' 'lib32-libva-mesa-driver' 'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
+
+# VMware Workstation dependencies
+ALL_PAKGS+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')
+
+ALL_PAKGS+=('gimp' 'qbittorrent' 'bitwarden' 'signal-desktop' 'nextcloud-client')
+
+echo "--------------------------------------------------"
+echo "--determine processor type and install microcode--"
+echo "--------------------------------------------------"
+proc_type=$(grep vendor /proc/cpuinfo | uniq | awk '{print $3}')
+echo "proc_type: $proc_type"
+case "$proc_type" in
+GenuineIntel)
+    echo "Installing Intel microcode"
+    ALL_PAKGS+=('intel-ucode')
+    ;;
+AuthenticAMD)
+    echo "Installing AMD microcode"
+    ALL_PAKGS+=('amd-ucode')
+    ;;
+*)
+    echo "Unknown processor type"
+    exit 1
+    ;;
+esac
+
+echo "--------------------------------------------------"
+echo "         Graphics Drivers find and install        "
+echo "--------------------------------------------------"
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+    echo "-----------------------------------------------------------"
+    # 'nvidia-utils'
+    ALL_PAKGS+=('linux-firmware-nvidia' 'nvidia-open' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
+        'libvdpau-va-gl' 'nvidia-container-toolkit')
+    echo "Adding nvidia drivers to be installed"
+
+    mkdir -p "/etc/pacman.d/hooks"
+    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia
+Target=linux
+# Change the linux part above and in the Exec line if a different kernel is used
+
+[Action]
+Description=Update Nvidia module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+EOT
+    echo "Nvidia pacman hook installed /etc/pacman.d/hooks/nvidia.hook"
+    cat /etc/pacman.d/hooks/nvidia.hook
+
+    mkdir /etc/udev/rules.d/ -p
+    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
+ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
+EOT
+
+    echo "Nvidia pudev rule installed /etc/udev/rules.d/99-nvidia.rules"
+    cat /etc/udev/rules.d/99-nvidia.rules
+
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "                    Setting AMD Drivers                    "
+    echo "-----------------------------------------------------------"
+
+    ALL_PAKGS+=('linux-firmware-amdgpu' 'xf86-video-amdgpu' 'xf86-video-ati' 'lib32-vulkan-radeon'
+        'vulkan-radeon' 'lib32-vulkan-mesa-layers')
+
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "                   Setting Intel Drivers                   "
+    echo "-----------------------------------------------------------"
+
+    ALL_PAKGS+=('linux-firmware-intel' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver'
+        'libva-utils' 'mesa' 'intel-media-driver' 'vulkan-intel' 'lib32-vulkan-intel')
+
+fi
+
+echo "--------------------------------------------------"
+echo "         Installing Hell lot of packages          "
+echo "--------------------------------------------------"
+
+pacman -S --needed --noconfirm "${ALL_PAKGS[@]}"
+
+echo "--------------------------------------------------"
+echo '         Setting Root Password to "root"        '
+echo "--------------------------------------------------"
+getent group sudo || groupadd --system sudo
+getent group wheel || groupadd --system wheel
+
+echo "-----------------------------------------------------------------------------------"
+echo "                           Install Boot-loader with UEFI                           "
+echo "-----------------------------------------------------------------------------------"
+
+tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/boot/vmlinuz-linux"
+PRESETS=('default' 'fallback')
+default_image="/boot/initramfs-linux.img"
+default_options=""
+# Fallback preset (no autodetect)
+fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"
+EOF
+
+mkinitcpio -P
+chmod 600 /boot/initramfs-linux*
+
+tee "/boot/loader/loader.conf" <<EOF
+default  arch.conf
+timeout  4
+console-mode max
+editor   no
+EOF
+
+tee "/boot/loader/entries/arch.conf" <<EOF
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options $(cat /etc/kernel/cmdline)
+EOF
+
+tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+title   Arch Linux (fallback)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options $(cat /etc/kernel/cmdline)
+EOF
+
+bootctl install
+
+sbctl sign -s /boot/vmlinuz-linux
+sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+echo "------------------------------------------"
+echo "       heil wheel group in sudoers        "
+echo "------------------------------------------"
+
+# Add wheel no password rights
+mkdir -p /etc/sudoers.d
+echo "root ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1000-root
+echo "%sudo ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1100-sudo
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/1200-wheel
+
+grep wheel /etc/sudoers
+
+echo "-------------------------------------------------------"
+echo "             Install Yay and AUR Packages              "
+echo "-------------------------------------------------------"
+
+echo " Adding user makemyarch_build_user"
+id -u makemyarch_build_user &>/dev/null ||
+    useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
+echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
+
+if ! command -v yay &>/dev/null; then
+    sudo -H -u makemyarch_build_user bash -c '
+    set -e
+    rm -rf ~/yay
+    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
+    cd "${HOME}/yay"
+    makepkg -si --noconfirm
+    '
+fi
+
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+
+PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+
+sudo -H -u makemyarch_build_user bash -c "cd ~ && \
+        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+sudo userdel -r makemyarch_build_user || true
+
+echo "--------------------------------------"
+echo "       Create User and Groups         "
+echo "--------------------------------------"
+
+username="${username:-user1}"
+id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -m -d "/home/${username}" "${username}"
+
+sudo usermod -aG docker,wheel,nordvpn "${username}"
+echo -e "${username}\n${username}" | passwd "${username}"
+
+echo "--------------------------------------"
+echo "         SSH Key Only login           "
+echo "--------------------------------------"
+
+sudo mkdir -p /etc/ssh/sshd_config.d
+tee "/etc/ssh/sshd_config.d/010-ssh-ansible.conf" <<EOF
+Port 22
+PasswordAuthentication no
+PermitRootLogin no
+PermitEmptyPasswords no
+MaxAuthTries 3
+X11Forwarding no
+ClientAliveInterval 60
+ClientAliveCountMax 3
+ChallengeResponseAuthentication no
+
+EOF
+
+sudo mkdir -p /etc/NetworkManager/conf.d
+tee "/etc/NetworkManager/conf.d/30-mac-randomization.conf" <<EOF
+[device-mac-randomization]
+wifi.scan-rand-mac-address=yes
+
+[connection-mac-randomization]
+ethernet.cloned-mac-address=permanent
+wifi.cloned-mac-address=permanent
+
+EOF
+
+echo "--------------------------------------"
+echo "       Enable Mandatory Services      "
+echo "--------------------------------------"
+
+MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
+    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' # 'sshd'
+)
+
+for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
+    echo "Enable Service: ${MAN_SERVICE}"
+    systemctl enable "$MAN_SERVICE"
+done
+
+echo "Completed"
+# shellcheck disable=SC2016
+echo "Set the password for user ${username} using 'passwd ${username}'."
+
+if ! command -v nvidia-ctk &>/dev/null; then
+    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
+else
+    echo "Nvidia Container Toolkit is installed."
+
+    if $IS_RUNNING_SYSTEMD; then
+        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+        nvidia-ctk runtime configure --runtime=docker
+        systemctl restart docker
+    else
+        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+    fi
+fi
+
+sbctl status
+sbctl verify
+bootctl status
+bootctl list
+
+echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

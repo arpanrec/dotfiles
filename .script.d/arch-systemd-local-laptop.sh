@@ -304,8 +304,8 @@ mkdir -p /boot/loader
 tee "/boot/loader/loader.conf" <<EOF
 default  arch.conf
 timeout  4
-console-mode max
-editor   no
+console-mode auto
+editor   yes
 EOF
 
 mkdir -p /boot/loader/entries

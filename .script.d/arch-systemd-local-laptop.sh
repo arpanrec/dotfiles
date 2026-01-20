@@ -301,14 +301,14 @@ console-mode max
 editor   no
 EOF
 
+mkdir -p /boot/loader/entries
+
 tee "/boot/loader/entries/arch.conf" <<EOF
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
 options $(cat /etc/kernel/cmdline)
 EOF
-
-mkdir -p /boot/loader/entries
 
 tee "/boot/loader/entries/arch-fallback.conf" <<EOF
 title   Arch Linux (fallback)

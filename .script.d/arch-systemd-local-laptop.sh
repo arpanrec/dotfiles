@@ -355,7 +355,7 @@ PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 
 sudo -H -u makemyarch_build_user bash -c "cd ~ && \
         yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
-sudo userdel -r makemyarch_build_user || true
+# sudo userdel -r makemyarch_build_user || true
 
 echo "--------------------------------------"
 echo "       Create User and Groups         "

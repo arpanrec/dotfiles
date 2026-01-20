@@ -94,8 +94,8 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 
 pacman -Sy reflector curl --noconfirm --needed
 
-sudo reflector --country India --age 12 \
-    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+# sudo reflector --country India --age 12 \
+#     --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 
 pacman -Syu --noconfirm
 
@@ -292,7 +292,7 @@ echo "KEYMAP=us" | tee /etc/vconsole.conf
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*
 
-# mkdir -p /boot/loader
+mkdir -p /boot/loader
 
 tee "/boot/loader/loader.conf" <<EOF
 default  arch.conf

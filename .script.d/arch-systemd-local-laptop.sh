@@ -292,7 +292,7 @@ echo "KEYMAP=us" | tee /etc/vconsole.conf
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*
 
-mkdir -p /boot/loader
+# mkdir -p /boot/loader
 
 tee "/boot/loader/loader.conf" <<EOF
 default  arch.conf
@@ -317,11 +317,11 @@ initrd  /initramfs-linux-fallback.img
 options $(cat /etc/kernel/cmdline)
 EOF
 
-bootctl install --esp-path=/efi --boot-path=/boot
+bootctl install
 
 sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /efi/EFI/BOOT/BOOTX64.EFI
-sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
+sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
@@ -339,27 +339,27 @@ echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "
 echo "-------------------------------------------------------"
 
-echo " Adding user makemyarch_build_user"
-id -u makemyarch_build_user &>/dev/null ||
-    useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
-echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
+# echo " Adding user makemyarch_build_user"
+# id -u makemyarch_build_user &>/dev/null ||
+#     useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
+# echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
 
-if ! command -v yay &>/dev/null; then
-    sudo -H -u makemyarch_build_user bash -c '
-    set -e
-    rm -rf ~/yay
-    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
-    cd "${HOME}/yay"
-    makepkg -si --noconfirm
-    '
-fi
+# if ! command -v yay &>/dev/null; then
+#     sudo -H -u makemyarch_build_user bash -c '
+#     set -e
+#     rm -rf ~/yay
+#     git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
+#     cd "${HOME}/yay"
+#     makepkg -si --noconfirm
+#     '
+# fi
 
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+# PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
 
-PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+# PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 
-sudo -H -u makemyarch_build_user bash -c "cd ~ && \
-        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+# sudo -H -u makemyarch_build_user bash -c "cd ~ && \
+#         yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
 # sudo userdel -r makemyarch_build_user || true
 
 echo "--------------------------------------"
@@ -434,7 +434,7 @@ fi
 
 sbctl status
 sbctl verify
-bootctl status --esp-path=/efi --boot-path=/boot
-bootctl list --esp-path=/efi --boot-path=/boot
+bootctl status
+bootctl list
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

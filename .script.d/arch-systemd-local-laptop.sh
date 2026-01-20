@@ -447,6 +447,6 @@ sudo -H -u makemyarch_build_user bash -c "cd ~ && \
 sudo userdel -r makemyarch_build_user || true
 
 sudo usermod -aG nordvpn "${username}"
-systemctl enable nordvpn.service
+systemctl enable nordvpnd
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

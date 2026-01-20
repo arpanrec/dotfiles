@@ -94,8 +94,8 @@ grep "keyserver hkp://keyserver.ubuntu.com" \
 
 pacman -Sy reflector curl --noconfirm --needed
 
-# sudo reflector --country India --age 12 \
-#     --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+sudo reflector --country India --age 12 \
+    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 
 pacman -Syu --noconfirm
 
@@ -414,30 +414,30 @@ echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "
 echo "-------------------------------------------------------"
 
-# echo " Adding user makemyarch_build_user"
-# id -u makemyarch_build_user &>/dev/null ||
-#     useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
-# echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
+echo " Adding user makemyarch_build_user"
+id -u makemyarch_build_user &>/dev/null ||
+    useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
+echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
 
-# if ! command -v yay &>/dev/null; then
-#     sudo -H -u makemyarch_build_user bash -c '
-#     set -e
-#     rm -rf ~/yay
-#     git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
-#     cd "${HOME}/yay"
-#     makepkg -si --noconfirm
-#     '
-# fi
+if ! command -v yay &>/dev/null; then
+    sudo -H -u makemyarch_build_user bash -c '
+    set -e
+    rm -rf ~/yay
+    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
+    cd "${HOME}/yay"
+    makepkg -si --noconfirm
+    '
+fi
 
-# PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
 
-# PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
 
-# sudo -H -u makemyarch_build_user bash -c "cd ~ && \
-#         yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
-# sudo userdel -r makemyarch_build_user || true
+sudo -H -u makemyarch_build_user bash -c "cd ~ && \
+        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+sudo userdel -r makemyarch_build_user || true
 
-# sudo usermod -aG nordvpn "${username}"
-# systemctl enable nordvpn.service
+sudo usermod -aG nordvpn "${username}"
+systemctl enable nordvpn.service
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

@@ -292,21 +292,25 @@ echo "KEYMAP=us" | tee /etc/vconsole.conf
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*
 
-tee "/efi/loader/loader.conf" <<EOF
+mkdir -p /boot/loader
+
+tee "/boot/loader/loader.conf" <<EOF
 default  arch.conf
 timeout  4
 console-mode max
 editor   no
 EOF
 
-tee "/efi/loader/entries/arch.conf" <<EOF
+tee "/boot/loader/entries/arch.conf" <<EOF
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
 options $(cat /etc/kernel/cmdline)
 EOF
 
-tee "/efi/loader/entries/arch-fallback.conf" <<EOF
+mkdir -p /boot/loader/entries
+
+tee "/boot/loader/entries/arch-fallback.conf" <<EOF
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
 initrd  /initramfs-linux-fallback.img

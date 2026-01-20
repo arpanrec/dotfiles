@@ -327,6 +327,10 @@ echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
 echo "------------------------------------------"
 
+__new_random_root="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
+echo "Setting a random root password"
+echo -e "${__new_random_root}\n${__new_random_root}" | passwd root
+
 # Add wheel no password rights
 mkdir -p /etc/sudoers.d
 echo "root ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1000-root

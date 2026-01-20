@@ -335,41 +335,14 @@ echo "%wheel ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/1200-wheel
 
 grep wheel /etc/sudoers
 
-echo "-------------------------------------------------------"
-echo "             Install Yay and AUR Packages              "
-echo "-------------------------------------------------------"
-
-# echo " Adding user makemyarch_build_user"
-# id -u makemyarch_build_user &>/dev/null ||
-#     useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
-# echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
-
-# if ! command -v yay &>/dev/null; then
-#     sudo -H -u makemyarch_build_user bash -c '
-#     set -e
-#     rm -rf ~/yay
-#     git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
-#     cd "${HOME}/yay"
-#     makepkg -si --noconfirm
-#     '
-# fi
-
-# PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
-
-# PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
-
-# sudo -H -u makemyarch_build_user bash -c "cd ~ && \
-#         yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
-# sudo userdel -r makemyarch_build_user || true
-
 echo "--------------------------------------"
 echo "       Create User and Groups         "
 echo "--------------------------------------"
 
 username="${username:-user1}"
-id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel,nordvpn -m -d "/home/${username}" "${username}"
+id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
 
-sudo usermod -aG docker,wheel,nordvpn "${username}"
+sudo usermod -aG docker,wheel "${username}"
 echo -e "${username}\n${username}" | passwd "${username}"
 
 echo "--------------------------------------"
@@ -406,7 +379,7 @@ echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
 MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    'cups' 'bluetooth' 'nordvpnd' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' # 'sshd'
+    'cups' 'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' # 'sshd'
 )
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
@@ -436,5 +409,35 @@ sbctl status
 sbctl verify
 bootctl status
 bootctl list
+
+echo "-------------------------------------------------------"
+echo "             Install Yay and AUR Packages              "
+echo "-------------------------------------------------------"
+
+# echo " Adding user makemyarch_build_user"
+# id -u makemyarch_build_user &>/dev/null ||
+#     useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
+# echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
+
+# if ! command -v yay &>/dev/null; then
+#     sudo -H -u makemyarch_build_user bash -c '
+#     set -e
+#     rm -rf ~/yay
+#     git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
+#     cd "${HOME}/yay"
+#     makepkg -si --noconfirm
+#     '
+# fi
+
+# PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+
+# PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+
+# sudo -H -u makemyarch_build_user bash -c "cd ~ && \
+#         yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+# sudo userdel -r makemyarch_build_user || true
+
+# sudo usermod -aG nordvpn "${username}"
+# systemctl enable nordvpn.service
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

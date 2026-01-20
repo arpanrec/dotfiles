@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
@@ -291,32 +291,32 @@ EOF
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*
 
-tee "/boot/loader/loader.conf" <<EOF
+tee "/efi/loader/loader.conf" <<EOF
 default  arch.conf
 timeout  4
 console-mode max
 editor   no
 EOF
 
-tee "/boot/loader/entries/arch.conf" <<EOF
+tee "/efi/loader/entries/arch.conf" <<EOF
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
 options $(cat /etc/kernel/cmdline)
 EOF
 
-tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+tee "/efi/loader/entries/arch-fallback.conf" <<EOF
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
 initrd  /initramfs-linux-fallback.img
 options $(cat /etc/kernel/cmdline)
 EOF
 
-bootctl install
+bootctl install --esp-path=/efi --boot-path=/boot
 
 sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+sbctl sign -s /efi/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
@@ -429,7 +429,7 @@ fi
 
 sbctl status
 sbctl verify
-bootctl status
-bootctl list
+bootctl status --esp-path=/efi --boot-path=/boot
+bootctl list --esp-path=/efi --boot-path=/boot
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

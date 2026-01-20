@@ -289,12 +289,14 @@ ALL_kver="/boot/vmlinuz-linux"
 PRESETS=('default' 'fallback')
 default_image="/boot/initramfs-linux.img"
 default_options=""
-# Fallback preset (no autodetect)
 fallback_image="/boot/initramfs-linux-fallback.img"
 fallback_options="-S autodetect"
 EOF
 
 echo "KEYMAP=us" | tee /etc/vconsole.conf
+
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    /etc/mkinitcpio.conf
 
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*
@@ -329,6 +331,11 @@ bootctl install
 sbctl sign -s /boot/vmlinuz-linux
 sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
 sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+sbctl status
+sbctl verify
+bootctl status
+bootctl list
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
@@ -411,11 +418,6 @@ else
         echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
     fi
 fi
-
-sbctl status
-sbctl verify
-bootctl status
-bootctl list
 
 echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "

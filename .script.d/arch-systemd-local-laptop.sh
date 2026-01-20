@@ -99,10 +99,9 @@ sudo reflector --country India --age 12 \
 
 pacman -Syu --noconfirm
 
-ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers'
-    'linux-firmware' 'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek'
-    'linux-firmware-other' 'linux-firmware-realtek' 'linux-firmware-whence'
-    'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'mkinitcpio' 'iptables-nft')
+ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
+    'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
+    'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft')
 
 ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
@@ -287,6 +286,8 @@ default_options=""
 fallback_image="/boot/initramfs-linux-fallback.img"
 fallback_options="-S autodetect"
 EOF
+
+echo "KEYMAP=us" | tee /etc/vconsole.conf
 
 mkinitcpio -P
 chmod 600 /boot/initramfs-linux*

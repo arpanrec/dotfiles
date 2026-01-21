@@ -39,10 +39,6 @@ if ! [[ "${PATH}" =~ /usr/sbin: ]]; then
     export PATH="/usr/sbin:${PATH}"
 fi
 
-if [[ -d "${HOME}/.script.d/bin" ]] && [[ ! "${PATH}" =~ ${HOME}/.script.d/bin: ]]; then
-    export PATH="${HOME}/.script.d/bin:${PATH}"
-fi
-
 if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "${PATH}" =~ /var/lib/snapd/snap/bin: ]]; then
     export PATH="/var/lib/snapd/snap/bin:${PATH}"
 fi

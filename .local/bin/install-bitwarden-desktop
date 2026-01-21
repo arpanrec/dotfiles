@@ -3,7 +3,7 @@ set -euo pipefail
 
 # https://github.com/bitwarden/clients/releases/download/desktop-v2025.12.1/Bitwarden-2025.12.1-x86_64.AppImage
 
-LATEST_VERSION="2025.12.0"
+LATEST_VERSION="2025.12.1"
 
 if [[ -z "${LATEST_VERSION}" ]]; then
     echo "Failed to get latest version."

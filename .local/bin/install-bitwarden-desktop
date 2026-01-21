@@ -34,16 +34,16 @@ if [[ ! -f "${DOWNLOAD_LOCATION}/${APPIMAGE_FILE_NAME}" ]]; then
 else
     echo "AppImage File already exists"
 fi
-rm -f "${APPIMAGE_INSTALL_DIRECTORY}/${APPIMAGE_FILE_NAME}"
-cp "${DOWNLOAD_LOCATION}/${APPIMAGE_FILE_NAME}" "${APPIMAGE_INSTALL_DIRECTORY}/${APPIMAGE_FILE_NAME}"
-chmod +x "${APPIMAGE_INSTALL_DIRECTORY}/${APPIMAGE_FILE_NAME}"
+rm -f "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
+cp "${DOWNLOAD_LOCATION}/${APPIMAGE_FILE_NAME}" "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
+chmod +x "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
 
 tee "${HOME}/.local/share/applications/bitwarden.desktop" <<EOF
 [Desktop Entry]
 Name=Bitwarden
 GenericName=Password Manager
 Comment=A secure and free password manager for all of your devices.
-Exec=${APPIMAGE_INSTALL_DIRECTORY}/${APPIMAGE_FILE_NAME} %u
+Exec=${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage %u
 Terminal=false
 MimeType=x-scheme-handler/bitwarden
 Type=Application

@@ -392,8 +392,22 @@ echo "--------------------------------------"
 echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
+mkdir -p /etc/pacman.d/hooks
+
+tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Gracefully upgrading systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+EOF
+
 MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
-    'cups' 'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' # 'sshd'
+    'cups' 'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd' 'systemd-boot-update'
 )
 
 for MAN_SERVICE in "${MAN_SERVICES[@]}"; do

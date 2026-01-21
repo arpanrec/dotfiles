@@ -346,52 +346,7 @@ if [ -f /etc/update-motd.d/10-uname ]; then
     rm -f /etc/update-motd.d/10-uname
 fi
 
-function install_fastfetch() {
-    fastfetch_version="2.52.0"
-    log_message "Installing fastfetch"
-
-    if command -v fastfetch &>/dev/null; then
-        fastfetch_installed_version="$(fastfetch --version | awk '{print $2}')"
-        if [ "${fastfetch_installed_version}" = "${fastfetch_version}" ]; then
-            log_message "fastfetch ${fastfetch_version} already installed"
-            return
-        else
-            log_message "fastfetch ${fastfetch_installed_version} installed, upgrading to ${fastfetch_version}"
-            log_message "Removing existing fastfetch"
-            apt-get purge -y fastfetch
-        fi
-    fi
-
-    if ! command -v fastfetch &>/dev/null; then
-        system_architecture="$(uname -m)"
-        case "${system_architecture}" in
-        x86_64)
-            fastfetch_architecture="amd64"
-            ;;
-        aarch64)
-            fastfetch_architecture="aarch64"
-            ;;
-        *)
-            log_message "Unsupported system architecture ${system_architecture}, exiting"
-            exit 1
-            ;;
-        esac
-        fastfetch_url="https://github.com/fastfetch-cli/fastfetch/releases/download/${fastfetch_version}/fastfetch-linux-${fastfetch_architecture}.deb"
-        download_location="${NEBULA_TMP_DIR}/fastfetch-linux-${fastfetch_version}-${fastfetch_architecture}.deb"
-        if [ -f "${download_location}" ]; then
-            log_message "fastfetch ${fastfetch_version} already downloaded to ${download_location}"
-        else
-            log_message "Downloading fastfetch ${fastfetch_version} from ${fastfetch_url} to ${download_location}"
-            curl -sSL --connect-timeout 10 --max-time 10 "${fastfetch_url}" -o "${download_location}"
-        fi
-        log_message "Installing fastfetch ${fastfetch_version} from ${download_location}"
-        dpkg -i "${download_location}"
-    else
-        log_message "fastfetch already installed"
-    fi
-}
-
-install_fastfetch
+sudo apt install -y fastfetch
 log_message "Creating /etc/update-motd.d/10-osinfo-debian-cloudinit"
 tee /etc/update-motd.d/10-osinfo-debian-cloudinit <<EOF >/dev/null
 #!/bin/bash

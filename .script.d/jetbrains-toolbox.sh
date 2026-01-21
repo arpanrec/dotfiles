@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TOOLBOX_DIR="${HOME}/.local/share/jetbrains-toolbox"
+
+#--------------------------------------------------
+# Detect architecture
+#--------------------------------------------------
+CURRENT_ARCH="$(uname -m)"
+
+case "${CURRENT_ARCH}" in
+x86_64)
+    DOWNLOAD_KEY="linux"
+    ;;
+aarch64 | arm64)
+    DOWNLOAD_KEY="linuxARM64"
+    ;;
+*)
+    echo "Unsupported architecture: ${CURRENT_ARCH}"
+    exit 1
+    ;;
+esac
+
+echo "Detected architecture: ${CURRENT_ARCH} (${DOWNLOAD_KEY})"
+
+#--------------------------------------------------
+# Fetch latest download metadata
+#--------------------------------------------------
+RELEASE_JSON="$(
+    curl -fsSL "https://data.services.jetbrains.com/products?code=TBA" |
+        jq '.[0].releases[0]'
+)"
+
+DOWNLOAD_JSON="$(
+    jq -r ".downloads" <<<"${RELEASE_JSON}"
+)"
+
+BUILD_NUMBER="$(jq -r ".build" <<<"${RELEASE_JSON}")"
+
+DOWNLOAD_URL="$(jq -r ".${DOWNLOAD_KEY}.link" <<<"${DOWNLOAD_JSON}")"
+CHECKSUM_URL="$(jq -r ".${DOWNLOAD_KEY}.checksumLink" <<<"${DOWNLOAD_JSON}")"
+
+if [[ -z "${DOWNLOAD_URL}" || "${DOWNLOAD_URL}" == "null" ]]; then
+    echo "Failed to determine download URL"
+    exit 1
+fi
+
+echo "Download URL:"
+echo "  ${DOWNLOAD_URL}"
+
+#--------------------------------------------------
+# Prepare directories
+#--------------------------------------------------
+mkdir -p "${TOOLBOX_DIR}"
+
+DOWNLOADS_DIRECTORY="${HOME}/Downloads"
+ARCHIVE="${DOWNLOADS_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
+CHECKSUM_FILE="${DOWNLOADS_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
+
+#--------------------------------------------------
+# Download archive & checksum
+#--------------------------------------------------
+mkdir -p "${DOWNLOADS_DIRECTORY}"
+echo "Downloading to ${DOWNLOADS_DIRECTORY}"
+
+if [[ ! -f "${ARCHIVE}" ]]; then
+    curl -fL "${DOWNLOAD_URL}" -o "${ARCHIVE}"
+else
+    echo "Archive already exists, skipping download"
+fi
+
+if [[ ! -f "${CHECKSUM_FILE}" ]]; then
+    curl -fL "${CHECKSUM_URL}" -o "${CHECKSUM_FILE}"
+else
+    echo "Checksum already exists, skipping download"
+fi
+
+#--------------------------------------------------
+# Verify checksum
+#--------------------------------------------------
+echo "Verifying checksum..."
+EXPECTED_SHA256="$(awk '{print $1}' "${CHECKSUM_FILE}")"
+CURRENT_SHA256="$(sha256sum "${ARCHIVE}" | awk '{print $1}')"
+
+if [[ -z "${EXPECTED_SHA256}" ]]; then
+    echo "Failed to read expected checksum"
+    exit 1
+fi
+
+if [[ "${EXPECTED_SHA256}" != "${CURRENT_SHA256}" ]]; then
+    echo "Checksum verification failed!"
+    echo "Expected: ${EXPECTED_SHA256}"
+    echo "Actual:   ${CURRENT_SHA256}"
+    exit 1
+fi
+
+echo "Checksum OK ✔"
+
+#--------------------------------------------------
+# Extract
+#--------------------------------------------------
+rm -rf "${TOOLBOX_DIR}"
+mkdir -p "${TOOLBOX_DIR}"
+
+tar -xzvf "${ARCHIVE}" \
+    --strip-components=1 \
+    -C "${TOOLBOX_DIR}"
+
+# Sanity check
+if [[ ! -x "${TOOLBOX_DIR}/bin/jetbrains-toolbox" ]]; then
+    echo "Extraction failed: jetbrains-toolbox binary not found"
+    exit 1
+fi
+
+rm -f "${TOOLBOX_DIR}/bin/jetbrains-toolbox.desktop"
+
+echo
+echo "✅ JetBrains Toolbox installed successfully!"
+echo "Run it with:"
+echo "  ${TOOLBOX_DIR}/bin/jetbrains-toolbox"

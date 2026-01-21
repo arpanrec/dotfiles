@@ -5,6 +5,11 @@ LATEST_VERSION="$(curl -s \
     "https://api.github.com/repos/dbeaver/dbeaver/releases/latest" |
     jq -r ".tag_name")"
 
+if [[ -z "${LATEST_VERSION}" ]]; then
+    echo "Failed to get latest version."
+    exit 1
+fi
+
 rm -rf "${HOME}/.local/share/dbeaver"
 
 DOWNLOAD_DIRECTORY="${HOME}/Downloads"

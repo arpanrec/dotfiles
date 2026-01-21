@@ -10,10 +10,10 @@ CURRENT_ARCH="$(uname -m)"
 
 case "${CURRENT_ARCH}" in
 x86_64)
-    DOWNLOAD_KEY="linux"
+    DOWNLOAD_ARCH_KEY="linux"
     ;;
 aarch64 | arm64)
-    DOWNLOAD_KEY="linuxARM64"
+    DOWNLOAD_ARCH_KEY="linuxARM64"
     ;;
 *)
     echo "Unsupported architecture: ${CURRENT_ARCH}"
@@ -21,7 +21,7 @@ aarch64 | arm64)
     ;;
 esac
 
-echo "Detected architecture: ${CURRENT_ARCH} (${DOWNLOAD_KEY})"
+echo "Detected architecture: ${CURRENT_ARCH} (${DOWNLOAD_ARCH_KEY})"
 
 #--------------------------------------------------
 # Fetch latest download metadata
@@ -37,8 +37,8 @@ DOWNLOAD_JSON="$(
 
 BUILD_NUMBER="$(jq -r ".build" <<<"${RELEASE_JSON}")"
 
-DOWNLOAD_URL="$(jq -r ".${DOWNLOAD_KEY}.link" <<<"${DOWNLOAD_JSON}")"
-CHECKSUM_URL="$(jq -r ".${DOWNLOAD_KEY}.checksumLink" <<<"${DOWNLOAD_JSON}")"
+DOWNLOAD_URL="$(jq -r ".${DOWNLOAD_ARCH_KEY}.link" <<<"${DOWNLOAD_JSON}")"
+CHECKSUM_URL="$(jq -r ".${DOWNLOAD_ARCH_KEY}.checksumLink" <<<"${DOWNLOAD_JSON}")"
 
 if [[ -z "${DOWNLOAD_URL}" || "${DOWNLOAD_URL}" == "null" ]]; then
     echo "Failed to determine download URL"

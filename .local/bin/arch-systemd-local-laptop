@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 

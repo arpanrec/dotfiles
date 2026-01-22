@@ -17,7 +17,6 @@ declare -a git_repositories=(
       "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
       "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
 
-      "https://github.com/ryanoasis/nerd-fonts.git|${TMP_DOWNLOAD_DIRECTORY}/ryanoasis/nerd-fonts|master"
 )
 
 for item in "${git_repositories[@]}"; do
@@ -37,10 +36,10 @@ for item in "${git_repositories[@]}"; do
     fi
 done
 
-mkdir -p "${HOME}/.local/share/themes" "${HOME}/.local/share/color-schemes" \
-    "${HOME}/.local/share/plasma/look-and-feel" \
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/themes" "${HOME}/.local/share/color-schemes" \
+    "${HOME}/.local/share/plasma/look-and-feel" "${HOME}/.local/share/icons" \
     "${HOME}/.local/share/Kvantum" "${HOME}/.local/share/konsole" "${HOME}/.local/share/aurorae/themes" \
-    "${HOME}/.local/share/icons"
+    "${HOME}/.local/share/fonts"
 
 echo "Installing EliverLara/Nordic."
 
@@ -113,9 +112,31 @@ echo "Installing gvolpe/BeautyLine."
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine/main/." "${HOME}/.local/share/icons/"
 rm -rf "${HOME}/.local/share/icons/.git"
 
-echo "Installing ryanoasis/nerd-fonts."
+echo "Installing hack nerd-fonts"
 
-chmod +x "${TMP_DOWNLOAD_DIRECTORY}/ryanoasis/nerd-fonts/master/install.sh"
-"${TMP_DOWNLOAD_DIRECTORY}/ryanoasis/nerd-fonts/master/install.sh"
+NERD_FONT_VERSION="$(curl -s \
+    "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" |
+    jq -r ".tag_name")"
+
+declare -a NERD_FONT_TYPES=(
+    JetBrainsMono
+    Hack
+)
+
+for NERD_FONT_TYPE in "${NERD_FONT_TYPES[@]}"; do
+    if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}.zip" ]]; then
+        echo "Downloading ${NERD_FONT_TYPE}-${NERD_FONT_VERSION}"
+        curl -fL \
+            "https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/${NERD_FONT_TYPE}.zip" \
+            -o "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}.zip"
+    else
+        echo "${NERD_FONT_TYPE}-${NERD_FONT_VERSION} already present."
+    fi
+
+    rm -rf "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
+    unzip "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}.zip" \
+        -d "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
+    fc-cache -f -v "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
+done
 
 echo "Completed"

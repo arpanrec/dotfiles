@@ -5,17 +5,17 @@ TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
 
 # "repo_url|target_dir|branch"
 declare -a git_repositories=(
-      "https://github.com/EliverLara/Nordic.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic|master"
-      "https://github.com/EliverLara/Nordic-kde.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic-kde|master"
-      "https://github.com/vinceliuice/Layan-kde.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde|master"
-      "https://github.com/vinceliuice/Layan-gtk-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme|master"
-      "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|master"
-      "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|mars"
+    "https://github.com/EliverLara/Nordic.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic|master"
+    "https://github.com/EliverLara/Nordic-kde.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic-kde|master"
+    "https://github.com/vinceliuice/Layan-kde.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde|master"
+    "https://github.com/vinceliuice/Layan-gtk-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme|master"
+    "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|master"
+    "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|mars"
 
-      "https://github.com/vinceliuice/Tela-icon-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme|master"
-      "https://github.com/EliverLara/candy-icons.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons|master"
-      "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
-      "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
+    "https://github.com/vinceliuice/Tela-icon-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme|master"
+    "https://github.com/EliverLara/candy-icons.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons|master"
+    "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
+    "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
 
 )
 

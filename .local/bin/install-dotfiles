@@ -89,7 +89,7 @@ for item in "${zsh_items[@]}"; do
 
     if [[ ! -d "${item_dir}" ]]; then
         echo "Cloning ${item_repo} to ${item_dir}"
-        git clone --depth 1 "${item_repo}" "${item_dir}"
+        git clone --depth 1 "${item_repo}" "${item_dir}" --single-branch
     else
         echo "${item_name} already exists at ${item_dir}. Updating."
         (

@@ -139,4 +139,23 @@ for NERD_FONT_TYPE in "${NERD_FONT_TYPES[@]}"; do
     fc-cache -f -v "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
 done
 
+echo "Installing Cascadia-Code"
+
+CASCADIA_CODE_GITHUB_TAG="$(curl -s \
+    "https://api.github.com/repos/microsoft/cascadia-code/releases/latest" |
+    jq -r ".tag_name")"
+
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" ]]; then
+    curl -fL \
+        "https://github.com/microsoft/cascadia-code/releases/download/${CASCADIA_CODE_GITHUB_TAG}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" \
+        -o "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip"
+else
+    echo "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip is already present"
+fi
+
+rm -rf "${HOME}/.local/share/fonts/cascadia-code"
+unzip "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" \
+    -d "${HOME}/.local/share/fonts/cascadia-code"
+fc-cache -f -v "${HOME}/.local/share/fonts/cascadia-code"
+
 echo "Completed"

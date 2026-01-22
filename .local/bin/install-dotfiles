@@ -36,6 +36,22 @@ fi
 dotfiles_git_remote="https://github.com/arpanrec/dotfiles.git"
 dotfiles_dir="${HOME}/.dotfiles"
 
+bash_it_directory="${HOME}/.bash_it"
+oh_my_zsh_directory="${ZSH:-${HOME}/.oh-my-zsh}"
+fzf_directory="${HOME}/.fzf"
+zsh_syntax_highlighting_directory="${ZSH_CUSTOM:-${oh_my_zsh_directory}/custom}/plugins/zsh-syntax-highlighting"
+zsh_autosuggestions_directory="${ZSH_CUSTOM:-${oh_my_zsh_directory}/custom}/plugins/zsh-autosuggestions"
+zsh_completions_directory="${ZSH_CUSTOM:-${oh_my_zsh_directory}/custom}/plugins/zsh-completions"
+powerlevel10k_directory="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+CLEAN_DOT_INSTALL="${CLEAN_DOT_INSTALL:-no}"
+
+if [[ "${CLEAN_DOT_INSTALL}" == "yes" ]]; then
+    rm -rf "${dotfiles_dir}" "${bash_it_directory}" "${oh_my_zsh_directory}" "${fzf_directory}" \
+        "${zsh_syntax_highlighting_directory}" "${zsh_autosuggestions_directory}" "${zsh_completions_directory}" \
+        "${powerlevel10k_directory}"
+fi
+
 log_message "Installing dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir}"
 
 if [ -f "${HOME}/.ssh/github.com" ]; then
@@ -44,20 +60,107 @@ if [ -f "${HOME}/.ssh/github.com" ]; then
     log_message "Using SSH key for GitHub at ${HOME}/.ssh/github.com and changing remote URL to ${dotfiles_git_remote}"
 fi
 
-log_message "Removing existing dotfiles directory at ${dotfiles_dir}"
-rm -rf "${HOME}/.dotfiles"
+if [[ ! -d "${dotfiles_dir}" ]]; then
+    log_message "Cloning dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir} as a bare repository"
+    git clone --depth 1 --bare "${dotfiles_git_remote}" "${dotfiles_dir}"
+else
+    log_message "${dotfiles_dir} directory already exists."
+fi
 
-log_message "Cloning dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir} as a bare repository"
-git clone --bare "${dotfiles_git_remote}" "${HOME}/.dotfiles"
+git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" pull origin main
 
 log_message "Setting status.showUntrackedFiles to no"
-git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config --local status.showUntrackedFiles no
+git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
 
 log_message "Checking out main branch with force"
-git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" checkout main --force
+git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" checkout main --force
 
 log_message "Adding remote origin with fetch refspec"
-git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" config \
+git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" config \
     --local remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+
+log_message "Installing bash it"
+if [[ ! -d "${bash_it_directory}" ]]; then
+    log_message "Cloning Bash-it/bash-it to ${bash_it_directory}"
+    git clone --depth 1 https://github.com/Bash-it/bash-it.git "${bash_it_directory}"
+else
+    log_message "Bash-it/bash-it is already present at ${bash_it_directory}. Updating the repository."
+    cd "${bash_it_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+
+log_message "Installing Oh my zsh"
+if [[ ! -d "${oh_my_zsh_directory}" ]]; then
+    log_message "Cloning ohmyzsh/ohmyzsh to ${oh_my_zsh_directory}"
+    git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "${oh_my_zsh_directory}"
+else
+    log_message "ohmyzsh/ohmyzsh is already present at ${oh_my_zsh_directory}. Updating the repository."
+    cd "${oh_my_zsh_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+
+log_message "Installing fzf"
+if [[ ! -d "${fzf_directory}" ]]; then
+    log_message "Cloning junegunn/fzf to ${fzf_directory}"
+    git clone --depth 1 https://github.com/junegunn/fzf.git "${fzf_directory}"
+else
+    log_message "junegunn/fzf is already present at ${fzf_directory}. Updating the repository."
+    cd "${fzf_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+chmod +x "${fzf_directory}/install"
+"${fzf_directory}/install" --all
+
+log_message "Installing zsh-syntax-highlighting"
+if [[ ! -d "${zsh_syntax_highlighting_directory}" ]]; then
+    log_message "Cloning zsh-users/zsh-syntax-highlighting to ${zsh_syntax_highlighting_directory}"
+    git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${zsh_syntax_highlighting_directory}"
+else
+    log_message "zsh-users/zsh-syntax-highlighting is already present at ${zsh_syntax_highlighting_directory}. \
+Updating the repository."
+    cd "${zsh_syntax_highlighting_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+
+log_message "Installing zsh-autosuggestions"
+if [[ ! -d "${zsh_autosuggestions_directory}" ]]; then
+    log_message "Cloning zsh-users/zsh-autosuggestions to ${zsh_autosuggestions_directory}"
+    git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git "${zsh_autosuggestions_directory}"
+else
+    log_message "zsh-users/zsh-autosuggestions is already present at ${zsh_autosuggestions_directory}. \
+Updating the repository."
+    cd "${zsh_autosuggestions_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+
+log_message "Installing zsh-completions"
+if [[ ! -d "${zsh_completions_directory}" ]]; then
+    log_message "Cloning zsh-users/zsh-completions to ${zsh_completions_directory}"
+    git clone --depth 1 https://github.com/zsh-users/zsh-completions.git "${zsh_completions_directory}"
+else
+    log_message "zsh-users/zsh-completions is already present at ${zsh_completions_directory}. Updating the repository."
+    cd "${zsh_completions_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+
+log_message "Installing powerlevel10k"
+if [[ ! -d "${powerlevel10k_directory}" ]]; then
+    log_message "Cloning romkatv/powerlevel10k to ${powerlevel10k_directory}"
+    git clone --depth 1 https://github.com/romkatv/powerlevel10k.git "${powerlevel10k_directory}"
+else
+    log_message "romkatv/powerlevel10k is already present at ${powerlevel10k_directory}. Updating the repository."
+    cd "${powerlevel10k_directory}" || exit 1
+    git pull
+    cd - || exit 1
+fi
+
+chmod +x "${powerlevel10k_directory}/gitstatus/install"
+"${powerlevel10k_directory}/gitstatus/install" -f
 
 log_message "Completed"

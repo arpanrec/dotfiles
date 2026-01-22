@@ -79,86 +79,36 @@ log_message "Adding remote origin with fetch refspec"
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" config \
     --local remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 
-log_message "Installing bash it"
-if [[ ! -d "${bash_it_directory}" ]]; then
-    log_message "Cloning Bash-it/bash-it to ${bash_it_directory}"
-    git clone --depth 1 https://github.com/Bash-it/bash-it.git "${bash_it_directory}"
-else
-    log_message "Bash-it/bash-it is already present at ${bash_it_directory}. Updating the repository."
-    cd "${bash_it_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
+# "name|repo_url|target_dir"
+declare -a zsh_items=(
+    "bash-it|https://github.com/Bash-it/bash-it.git|${bash_it_directory}"
+    "oh-my-zsh|https://github.com/ohmyzsh/ohmyzsh.git|${oh_my_zsh_directory}"
+    "fzf|https://github.com/junegunn/fzf.git|${fzf_directory}"
+    "zsh-syntax-highlighting|https://github.com/zsh-users/zsh-syntax-highlighting.git|${zsh_syntax_highlighting_directory}"
+    "zsh-autosuggestions|https://github.com/zsh-users/zsh-autosuggestions.git|${zsh_autosuggestions_directory}"
+    "zsh-completions|https://github.com/zsh-users/zsh-completions.git|${zsh_completions_directory}"
+    "powerlevel10k|https://github.com/romkatv/powerlevel10k.git|${powerlevel10k_directory}"
+)
 
-log_message "Installing Oh my zsh"
-if [[ ! -d "${oh_my_zsh_directory}" ]]; then
-    log_message "Cloning ohmyzsh/ohmyzsh to ${oh_my_zsh_directory}"
-    git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "${oh_my_zsh_directory}"
-else
-    log_message "ohmyzsh/ohmyzsh is already present at ${oh_my_zsh_directory}. Updating the repository."
-    cd "${oh_my_zsh_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
+for item in "${zsh_items[@]}"; do
+    IFS="|" read -r item_name item_repo item_dir <<< "${item}"
 
-log_message "Installing fzf"
-if [[ ! -d "${fzf_directory}" ]]; then
-    log_message "Cloning junegunn/fzf to ${fzf_directory}"
-    git clone --depth 1 https://github.com/junegunn/fzf.git "${fzf_directory}"
-else
-    log_message "junegunn/fzf is already present at ${fzf_directory}. Updating the repository."
-    cd "${fzf_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
+    log_message "Installing ${item_name}"
+
+    if [[ ! -d "${item_dir}" ]]; then
+        log_message "Cloning ${item_repo} to ${item_dir}"
+        git clone --depth 1 "${item_repo}" "${item_dir}"
+    else
+        log_message "${item_name} already exists at ${item_dir}. Updating."
+        (
+            cd "${item_dir}" || exit 1
+            git pull
+        )
+    fi
+done
+
 chmod +x "${fzf_directory}/install"
 "${fzf_directory}/install" --all
-
-log_message "Installing zsh-syntax-highlighting"
-if [[ ! -d "${zsh_syntax_highlighting_directory}" ]]; then
-    log_message "Cloning zsh-users/zsh-syntax-highlighting to ${zsh_syntax_highlighting_directory}"
-    git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${zsh_syntax_highlighting_directory}"
-else
-    log_message "zsh-users/zsh-syntax-highlighting is already present at ${zsh_syntax_highlighting_directory}. \
-Updating the repository."
-    cd "${zsh_syntax_highlighting_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
-
-log_message "Installing zsh-autosuggestions"
-if [[ ! -d "${zsh_autosuggestions_directory}" ]]; then
-    log_message "Cloning zsh-users/zsh-autosuggestions to ${zsh_autosuggestions_directory}"
-    git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions.git "${zsh_autosuggestions_directory}"
-else
-    log_message "zsh-users/zsh-autosuggestions is already present at ${zsh_autosuggestions_directory}. \
-Updating the repository."
-    cd "${zsh_autosuggestions_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
-
-log_message "Installing zsh-completions"
-if [[ ! -d "${zsh_completions_directory}" ]]; then
-    log_message "Cloning zsh-users/zsh-completions to ${zsh_completions_directory}"
-    git clone --depth 1 https://github.com/zsh-users/zsh-completions.git "${zsh_completions_directory}"
-else
-    log_message "zsh-users/zsh-completions is already present at ${zsh_completions_directory}. Updating the repository."
-    cd "${zsh_completions_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
-
-log_message "Installing powerlevel10k"
-if [[ ! -d "${powerlevel10k_directory}" ]]; then
-    log_message "Cloning romkatv/powerlevel10k to ${powerlevel10k_directory}"
-    git clone --depth 1 https://github.com/romkatv/powerlevel10k.git "${powerlevel10k_directory}"
-else
-    log_message "romkatv/powerlevel10k is already present at ${powerlevel10k_directory}. Updating the repository."
-    cd "${powerlevel10k_directory}" || exit 1
-    git pull
-    cd - || exit 1
-fi
 
 chmod +x "${powerlevel10k_directory}/gitstatus/install"
 "${powerlevel10k_directory}/gitstatus/install" -f

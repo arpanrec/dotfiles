@@ -84,7 +84,7 @@ declare -a zsh_items=(
 )
 
 for item in "${zsh_items[@]}"; do
-    IFS="|" read -r item_name item_repo item_dir <<< "${item}"
+    IFS="|" read -r item_name item_repo item_dir <<<"${item}"
 
     echo "Installing ${item_name}"
 

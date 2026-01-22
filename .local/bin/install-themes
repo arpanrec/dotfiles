@@ -3,51 +3,55 @@ set -xeuo pipefail
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
 
-# "repo_url|target_dir"
+# "repo_url|target_dir|branch"
 declare -a git_repositories=(
-  #  "https://github.com/EliverLara/Nordic.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic|master"
-  #  "https://github.com/EliverLara/Nordic-kde.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic-kde|master"
-  #  "https://github.com/vinceliuice/Layan-kde.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde|master"
-  #  "https://github.com/vinceliuice/Layan-gtk-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme|master"
-  #  "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|master"
-  #  "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|mars"
-  #
-  #  "https://github.com/vinceliuice/Tela-icon-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme|master"
-  #  "https://github.com/EliverLara/candy-icons.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons|master"
-  #  "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
-  #  "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
+      "https://github.com/EliverLara/Nordic.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic|master"
+      "https://github.com/EliverLara/Nordic-kde.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic-kde|master"
+      "https://github.com/vinceliuice/Layan-kde.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde|master"
+      "https://github.com/vinceliuice/Layan-gtk-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme|master"
+      "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|master"
+      "https://github.com/EliverLara/Sweet.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet|mars"
+
+      "https://github.com/vinceliuice/Tela-icon-theme.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme|master"
+      "https://github.com/EliverLara/candy-icons.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons|master"
+      "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
+      "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
+
+      "https://github.com/ryanoasis/nerd-fonts.git|${TMP_DOWNLOAD_DIRECTORY}/ryanoasis/nerd-fonts|master"
 )
 
 for item in "${git_repositories[@]}"; do
-  IFS="|" read -r item_repo item_dir item_branch <<<"${item}"
+    IFS="|" read -r item_repo item_dir item_branch <<<"${item}"
 
-  echo "Installing ${item_dir}/${item_branch}"
+    echo "Installing ${item_dir}/${item_branch}"
 
-  if [[ ! -d "${item_dir}/${item_branch}" ]]; then
-    echo "Cloning ${item_repo} to ${item_dir}/${item_branch}"
-    git clone --depth 1 "${item_repo}" "${item_dir}/${item_branch}" --single-branch --branch "${item_branch}"
-  else
-    echo "${item_dir}/${item_branch} already exists. Updating."
-    (
-      cd "${item_dir}/${item_branch}" || exit 1
-      git pull
-    )
-  fi
+    if [[ ! -d "${item_dir}/${item_branch}" ]]; then
+        echo "Cloning ${item_repo} to ${item_dir}/${item_branch}"
+        git clone --depth 1 "${item_repo}" "${item_dir}/${item_branch}" --single-branch --branch "${item_branch}"
+    else
+        echo "${item_dir}/${item_branch} already exists. Updating."
+        (
+            cd "${item_dir}/${item_branch}" || exit 1
+            git pull
+        )
+    fi
 done
+
+mkdir -p "${HOME}/.local/share/themes" "${HOME}/.local/share/color-schemes" \
+    "${HOME}/.local/share/plasma/look-and-feel" \
+    "${HOME}/.local/share/Kvantum" "${HOME}/.local/share/konsole" "${HOME}/.local/share/aurorae/themes" \
+    "${HOME}/.local/share/icons"
 
 echo "Installing EliverLara/Nordic."
 
-rm -rf "${HOME}/.local/share/themes/Nordic" "${HOME}/.local/share/aurorae/themes/Nordic"
-
-mkdir -p "${HOME}/.local/share/color-schemes/" "${HOME}/.local/share/plasma/look-and-feel" "${HOME}/.local/share/Kvantum" \
-  "${HOME}/.local/share/konsole/"
+rm -rf "${HOME}/.local/share/themes/Nordic"
 
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic/master" "${HOME}/.local/share/themes/Nordic"
 rm -rf "${HOME}/.local/share/themes/Nordic/.git"
 
-cp -r "${HOME}/.local/share/themes/Nordic/kde/aurorae/Nordic" "${HOME}/.local/share/aurorae/themes"
-cp -r "${HOME}/.local/share/themes/Nordic/kde/colorschemes/." "${HOME}/.local/share/color-schemes"
-cp -r "${HOME}/.local/share/themes/Nordic/kde/plasma/look-and-feel/." "${HOME}/.local/share/plasma/look-and-feel"
+cp -r "${HOME}/.local/share/themes/Nordic/kde/aurorae/." "${HOME}/.local/share/aurorae/themes/"
+cp -r "${HOME}/.local/share/themes/Nordic/kde/colorschemes/." "${HOME}/.local/share/color-schemes/"
+cp -r "${HOME}/.local/share/themes/Nordic/kde/plasma/look-and-feel/." "${HOME}/.local/share/plasma/look-and-feel/"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/kvantum/." "${HOME}/.local/share/Kvantum/"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/konsole/." "${HOME}/.local/share/konsole/"
 
@@ -67,5 +71,51 @@ echo "Installing vinceliuice/Layan-gtk-theme."
 chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
 "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
 "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh" --libadwaita
+
+echo "Installing EliverLara/Sweet/mars."
+
+rm -rf "${HOME}/.local/share/themes/Sweet-mars"
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet/mars" "${HOME}/.local/share/themes/Sweet-mars"
+rm -rf "${HOME}/.local/share/themes/Sweet-mars/.git"
+
+echo "Installing EliverLara/Sweet/master."
+
+rm -rf "${HOME}/.local/share/themes/Sweet"
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet/master" "${HOME}/.local/share/themes/Sweet"
+rm -rf "${HOME}/.local/share/themes/Sweet/.git"
+
+cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/aurorae/." "${HOME}/.local/share/aurorae/themes/"
+cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/colorschemes/." "${HOME}/.local/share/color-schemes/"
+cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/plasma/." "${HOME}/.local/share/plasma/"
+cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/kvantum/." "${HOME}/.local/share/Kvantum/"
+cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/konsole/." "${HOME}/.local/share/konsole/"
+
+echo "Installing vinceliuice/Tela-icon-theme."
+chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme/master/install.sh"
+"${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme/master/install.sh" -a
+
+echo "Installing EliverLara/candy-icons."
+
+rm -rf "${HOME}/.local/share/icons/candy-icons"
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons/master" "${HOME}/.local/share/icons/candy-icons"
+rm -rf "${HOME}/.local/share/icons/candy-icons/.git"
+
+echo "Installing vinceliuice/Layan-cursors."
+
+(
+    cd "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors/master" || exit 1
+    chmod +x ./install.sh
+    ./install.sh
+)
+
+echo "Installing gvolpe/BeautyLine."
+
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine/main/." "${HOME}/.local/share/icons/"
+rm -rf "${HOME}/.local/share/icons/.git"
+
+echo "Installing ryanoasis/nerd-fonts."
+
+chmod +x "${TMP_DOWNLOAD_DIRECTORY}/ryanoasis/nerd-fonts/master/install.sh"
+"${TMP_DOWNLOAD_DIRECTORY}/ryanoasis/nerd-fonts/master/install.sh"
 
 echo "Completed"

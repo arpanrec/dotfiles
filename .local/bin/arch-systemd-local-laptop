@@ -100,7 +100,7 @@ sudo reflector --country India --age 12 \
 pacman -Syu --noconfirm
 
 ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
-    'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
+    'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other' 'plymouth'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft')
 
 ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
@@ -284,6 +284,8 @@ echo "--------------------------------------------------------------------------
 echo "                           Install Boot-loader with UEFI                           "
 echo "-----------------------------------------------------------------------------------"
 
+sudo plymouth-set-default-theme spinfinity
+
 tee "/etc/mkinitcpio.d/linux.preset" <<EOF
 ALL_kver="/boot/vmlinuz-linux"
 PRESETS=('default' 'fallback')
@@ -295,7 +297,7 @@ EOF
 
 echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
     /etc/mkinitcpio.conf
 
 mkinitcpio -P
@@ -393,6 +395,12 @@ echo "       Enable Mandatory Services      "
 echo "--------------------------------------"
 
 mkdir -p /etc/pacman.d/hooks
+
+mkdir -p /etc/systemd/system/NetworkManager.service.d
+tee "/etc/systemd/system/NetworkManager.service.d/44-override.conf" <<EOF
+[Service]
+TimeoutStopSec=10s
+EOF
 
 tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
 [Trigger]

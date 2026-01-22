@@ -39,7 +39,7 @@ done
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/themes" "${HOME}/.local/share/color-schemes" \
     "${HOME}/.local/share/plasma/look-and-feel" "${HOME}/.local/share/icons" \
     "${HOME}/.local/share/Kvantum" "${HOME}/.local/share/konsole" "${HOME}/.local/share/aurorae/themes" \
-    "${HOME}/.local/share/fonts"
+    "${HOME}/.local/share/fonts" "${HOME}/.local/share/plasma/desktoptheme"
 
 echo "Installing EliverLara/Nordic."
 

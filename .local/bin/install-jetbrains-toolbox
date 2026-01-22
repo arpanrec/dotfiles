@@ -53,15 +53,15 @@ echo "  ${DOWNLOAD_URL}"
 #--------------------------------------------------
 mkdir -p "${TOOLBOX_DIR}"
 
-DOWNLOADS_DIRECTORY="${HOME}/Downloads"
-ARCHIVE="${DOWNLOADS_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
-CHECKSUM_FILE="${DOWNLOADS_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
+ARCHIVE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
+CHECKSUM_FILE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
 
 #--------------------------------------------------
 # Download archive & checksum
 #--------------------------------------------------
-mkdir -p "${DOWNLOADS_DIRECTORY}"
-echo "Downloading to ${DOWNLOADS_DIRECTORY}"
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}"
+echo "Downloading to ${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${ARCHIVE}" ]]; then
     curl -fL "${DOWNLOAD_URL}" -o "${ARCHIVE}"

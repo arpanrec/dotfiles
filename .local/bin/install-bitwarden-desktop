@@ -22,20 +22,20 @@ x86_64)
     ;;
 esac
 
-DOWNLOAD_LOCATION="${HOME}/Downloads"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
 APPIMAGE_FILE_NAME="Bitwarden-${LATEST_VERSION}-${DOWNLOAD_ARCH_KEY}.AppImage"
 APPIMAGE_INSTALL_DIRECTORY="${HOME}/.local/share/bitwarden-desktop"
 DOWNLOAD_URI="https://github.com/bitwarden/clients/releases/download/desktop-v${LATEST_VERSION}/${APPIMAGE_FILE_NAME}"
 
-mkdir -p "${APPIMAGE_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${DOWNLOAD_LOCATION}"
+mkdir -p "${APPIMAGE_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${TMP_DOWNLOAD_DIRECTORY}"
 
-if [[ ! -f "${DOWNLOAD_LOCATION}/${APPIMAGE_FILE_NAME}" ]]; then
-    curl -fL "${DOWNLOAD_URI}" -o "${DOWNLOAD_LOCATION}/${APPIMAGE_FILE_NAME}"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}" ]]; then
+    curl -fL "${DOWNLOAD_URI}" -o "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}"
 else
     echo "AppImage File already exists"
 fi
 rm -f "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
-cp "${DOWNLOAD_LOCATION}/${APPIMAGE_FILE_NAME}" "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
+cp "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}" "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
 chmod +x "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
 
 tee "${HOME}/.local/share/applications/bitwarden.desktop" <<EOF

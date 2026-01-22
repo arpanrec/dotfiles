@@ -12,10 +12,10 @@ fi
 
 echo "Installing Visual Studio Code version ${LATEST_VERSION}"
 
-DOWNLOAD_DIRECTORY="${HOME}/Downloads"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
 
 rm -rf "${HOME}/.local/share/vscode"
-mkdir -p "${DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/vscode" "${HOME}/.local/share/applications/" \
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/vscode" "${HOME}/.local/share/applications/" \
     "${HOME}/.local/bin"
 
 CURRENT_ARCH="$(uname -m)"
@@ -35,15 +35,15 @@ esac
 
 DOWNLOAD_URL="https://update.code.visualstudio.com/${LATEST_VERSION}/linux-${DOWNLOAD_ARCH_KEY}/stable"
 
-echo "Downloading Visual Studio Code version ${LATEST_VERSION} for ${CURRENT_ARCH} architecture to ${DOWNLOAD_DIRECTORY}"
+echo "Downloading Visual Studio Code version ${LATEST_VERSION} for ${CURRENT_ARCH} architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
-if [[ ! -f "${DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" ]]; then
-    curl -fL "${DOWNLOAD_URL}" -o "${DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" ]]; then
+    curl -fL "${DOWNLOAD_URL}" -o "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
 else
     echo "Tarball File already exists"
 fi
 
-tar -xzvf "${DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" \
+tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" \
     -C "${HOME}/.local/share/vscode" \
     --strip-components=1
 

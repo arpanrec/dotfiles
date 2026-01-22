@@ -40,6 +40,7 @@ powerlevel10k_directory="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerleve
 CLEAN_DOT_INSTALL="${CLEAN_DOT_INSTALL:-no}"
 
 if [[ "${CLEAN_DOT_INSTALL}" == "yes" ]]; then
+    echo "CLEAN_DOT_INSTALL is set to yes. Cleaning all existing repos."
     rm -rf "${dotfiles_dir}" "${bash_it_directory}" "${oh_my_zsh_directory}" "${fzf_directory}" \
         "${zsh_syntax_highlighting_directory}" "${zsh_autosuggestions_directory}" "${zsh_completions_directory}" \
         "${powerlevel10k_directory}"
@@ -49,7 +50,6 @@ echo "Installing dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir}"
 
 if [ -f "${HOME}/.ssh/github.com" ]; then
     dotfiles_git_remote="git@github.com:arpanrec/dotfiles.git"
-
     echo "Using SSH key for GitHub at ${HOME}/.ssh/github.com and changing remote URL to ${dotfiles_git_remote}"
 fi
 
@@ -57,10 +57,9 @@ if [[ ! -d "${dotfiles_dir}" ]]; then
     echo "Cloning dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir} as a bare repository"
     git clone --depth 1 --bare "${dotfiles_git_remote}" "${dotfiles_dir}"
 else
-    echo "${dotfiles_dir} directory already exists."
+    echo "${dotfiles_dir} directory already exists. Updating existing repo."
+    git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" pull origin main
 fi
-
-git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" pull origin main
 
 echo "Setting status.showUntrackedFiles to no"
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" config --local status.showUntrackedFiles no

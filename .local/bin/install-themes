@@ -5,7 +5,6 @@ required_cmds=(
   curl
   git
   unzip
-  zsh
   gtk-update-icon-cache
   jq
   fc-cache

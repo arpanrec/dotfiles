@@ -1,36 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-log_message() {
-    printf "\n\n================================================================================\n %s \
-server-workspace: %s\n--------------------------------------------------------------------------------\n\n" "$(date)" "$*"
-}
-export -f log_message
-
-log_message "Starting"
+echo "Starting"
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.tmp"}"
 
 export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/server-workspace.lock"
 
 if [[ -f "${SERVER_WORKSPACE_LOCK_FILE}" ]]; then
-    log_message "Lock file ${SERVER_WORKSPACE_LOCK_FILE} exists, Exiting"
+    echo "Lock file ${SERVER_WORKSPACE_LOCK_FILE} exists, Exiting"
     exit 1
 else
-    log_message "Creating lock file ${SERVER_WORKSPACE_LOCK_FILE}"
+    echo "Creating lock file ${SERVER_WORKSPACE_LOCK_FILE}"
     mkdir -p "$(dirname "${SERVER_WORKSPACE_LOCK_FILE}")"
     touch "${SERVER_WORKSPACE_LOCK_FILE}"
 fi
 
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
-    log_message "Root user detected, Please run this script as a non-root user, Exiting"
+    echo "Root user detected, Please run this script as a non-root user, Exiting"
     exit 1
 fi
 
 if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-    log_message "Virtual environment is not activated"
+    echo "Virtual environment is not activated"
 else
-    log_message "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
+    echo "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     exit 1
 fi
 
@@ -44,7 +38,7 @@ which_os_python() {
             return
         fi
     done
-    log_message "Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
+    echo "Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
     exit 1
 }
 
@@ -54,71 +48,71 @@ if [[ -z $* ]]; then
 
     read -n1 -s -r -p 'Enter "Y" to install node js (Press any other key to Skip*) : ' install_node_js
     if [[ "${install_node_js}" == "Y" || "${install_node_js}" == "y" ]]; then
-        log_message "Nodejs installation selected"
+        echo "Nodejs installation selected"
         __install_tags+=('nodejs')
     else
-        log_message "Skipping nodejs installation"
+        echo "Skipping nodejs installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install go (Press any other key to Skip*) : ' install_go
     if [[ "${install_go}" == "Y" || "${install_go}" == "y" ]]; then
-        log_message "Go installation selected"
+        echo "Go installation selected"
         __install_tags+=('go')
     else
-        log_message "Skipping go installation"
+        echo "Skipping go installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install Oracle JDK (Press any other key to Skip*) : ' install_java
     if [[ "${install_java}" == "Y" || "${install_java}" == "y" ]]; then
-        log_message "Java installation selected"
+        echo "Java installation selected"
         __install_tags+=('java')
     else
-        log_message "Skipping Java installation"
+        echo "Skipping Java installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install Vault (Press any other key to Skip*) : ' install_vault
     if [[ "${install_vault}" == "Y" || "${install_vault}" == "y" ]]; then
-        log_message "Vault installation selected"
+        echo "Vault installation selected"
         __install_tags+=('vault')
     else
-        log_message "Skipping Vault installation"
+        echo "Skipping Vault installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install Terraform (Press any other key to Skip*) : ' install_terraform
     if [[ "${install_terraform}" == "Y" || "${install_terraform}" == "y" ]]; then
-        log_message "Terraform installation selected"
+        echo "Terraform installation selected"
         __install_tags+=('terraform')
     else
-        log_message "Skipping Terraform installation"
+        echo "Skipping Terraform installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install pulumi (Press any other key to Skip*) : ' install_pulumi
     if [[ "${install_pulumi}" == "Y" || "${install_pulumi}" == "y" ]]; then
-        log_message "Pulumi installation selected"
+        echo "Pulumi installation selected"
         __install_tags+=('pulumi')
     else
-        log_message "Skipping Pulumi installation"
+        echo "Skipping Pulumi installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install Bitwarden SDK (Press any other key to Skip*) : ' install_bitwarden_sdk
     if [[ "${install_bitwarden_sdk}" == "Y" || "${install_bitwarden_sdk}" == "y" ]]; then
-        log_message "Bitwarden SDK installation selected"
+        echo "Bitwarden SDK installation selected"
         __install_tags+=('bws')
     else
-        log_message "Skipping Bitwarden SDK installation"
+        echo "Skipping Bitwarden SDK installation"
     fi
 
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
-    log_message "Running with default tags :: ${__ansible_tags::-1}"
+    echo "Running with default tags :: ${__ansible_tags::-1}"
     read -n1 -s -r -p 'Press any key to continue or Ctrl+C to exit' continue_script
     if [[ "${continue_script}" == "" ]]; then
-        log_message "Continuing with default tags :: ${__ansible_tags::-1}"
+        echo "Continuing with default tags :: ${__ansible_tags::-1}"
     else
-        log_message "Exiting"
+        echo "Exiting"
         exit 1
     fi
 else
-    log_message "Running with custom tags :: $*"
+    echo "Running with custom tags :: $*"
 fi
 
 export PATH="${HOME}/.local/bin:${PATH}"
@@ -128,7 +122,7 @@ export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
-log_message "
+echo "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
 NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
@@ -140,13 +134,13 @@ export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
-log_message "
+echo "
 DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
 ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
 ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
 ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
 
-log_message Creating NEBULA_TMP_DIR at "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
+echo Creating NEBULA_TMP_DIR at "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
@@ -154,22 +148,22 @@ mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
 # shellcheck source=/dev/null
 if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then
     $(readlink -f "$(which "$(which_os_python)")") -m venv "${NEBULA_VENV_DIR}"
-    log_message "Virtual Environment created at ${NEBULA_VENV_DIR}"
+    echo "Virtual Environment created at ${NEBULA_VENV_DIR}"
 else
-    log_message "Virtual Environment already exists at ${NEBULA_VENV_DIR}"
+    echo "Virtual Environment already exists at ${NEBULA_VENV_DIR}"
 fi
 
 if [[ -f "${NEBULA_VENV_DIR}/local/bin/activate" ]]; then
-    log_message "Activating ${NEBULA_VENV_DIR}/local/bin/activate"
+    echo "Activating ${NEBULA_VENV_DIR}/local/bin/activate"
     # shellcheck source=/dev/null
     source "${NEBULA_VENV_DIR}/local/bin/activate"
 else
-    log_message "Activating ${NEBULA_VENV_DIR}/bin/activate"
+    echo "Activating ${NEBULA_VENV_DIR}/bin/activate"
     # shellcheck source=/dev/null
     source "${NEBULA_VENV_DIR}/bin/activate"
 fi
 
-log_message "
+echo "
 Python :: $(python --version)
 Virtual Env :: ${VIRTUAL_ENV}
 Working dir :: ${PWD}
@@ -179,29 +173,29 @@ pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac https://github.com/Prayag2/konsave.git --upgrade
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
-    log_message "Downloading ${NEBULA_REQUIREMENTS_FILE}"
+    echo "Downloading ${NEBULA_REQUIREMENTS_FILE}"
     mkdir -p "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
     curl -sSL --connect-timeout 10 --max-time 10 \
         "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
         -o "${NEBULA_REQUIREMENTS_FILE}"
 else
-    log_message "Requirements file ${NEBULA_REQUIREMENTS_FILE} exists"
+    echo "Requirements file ${NEBULA_REQUIREMENTS_FILE} exists"
 fi
 
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 ansible-galaxy collection install arpanrec.nebula:"${NEBULA_VERSION}"
 
-log_message "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
+echo "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then
-    log_message "Creating ${NEBULA_EXTRA_VARS_JSON_FILE}"
+    echo "Creating ${NEBULA_EXTRA_VARS_JSON_FILE}"
     echo "Creating directory $(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
     mkdir -p "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
     echo "{}" >"${NEBULA_EXTRA_VARS_JSON_FILE}"
 else
-    log_message "${NEBULA_EXTRA_VARS_JSON_FILE} exists"
+    echo "${NEBULA_EXTRA_VARS_JSON_FILE} exists"
 fi
 
-log_message "Creating ansible inventory yaml file. ANSIBLE_INVENTORY :: ${ANSIBLE_INVENTORY}"
+echo "Creating ansible inventory yaml file. ANSIBLE_INVENTORY :: ${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" >/dev/null <<EOF
 ---
 all:
@@ -225,11 +219,11 @@ if [[ -n "${__ansible_tags:-}" && "${__ansible_tags:-}" != "," && -z $* ]]; then
 elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
 else
-    log_message "Not sure what to do, Exiting"
+    echo "Not sure what to do, Exiting"
     exit 1
 fi
 
-log_message "Removing lock file ${SERVER_WORKSPACE_LOCK_FILE}"
+echo "Removing lock file ${SERVER_WORKSPACE_LOCK_FILE}"
 rm -f "${SERVER_WORKSPACE_LOCK_FILE}"
 
-log_message "Completed"
+echo "Completed"

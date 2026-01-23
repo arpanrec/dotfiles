@@ -3,83 +3,75 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
-log_message() {
-    printf "\n\n================================================================================\n %s \
-linode-stack-script: \
-%s\n--------------------------------------------------------------------------------\n\n" "$(date)" "$*"
-}
-
-export -f log_message
-
-log_message "Starting"
+echo "Starting"
 
 if [ "$(id -u)" -ne 0 ]; then
-    log_message "Please run as root, exiting"
+    echo "Please run as root, exiting"
     exit 1
 else
-    log_message "Running as root"
+    echo "Running as root"
 fi
 
-log_message "Updating package net-tools, git, curl, jq, unzip, zip, wget, gnupg2, tar"
+echo "Updating package net-tools, git, curl, jq, unzip, zip, wget, gnupg2, tar"
 apt-get update
 apt-get install -y net-tools git curl jq unzip zip wget gnupg2 tar
 
 if [ "${HOME}" != "/root" ]; then
-    log_message "HOME is not set to /root, exiting"
+    echo "HOME is not set to /root, exiting"
     exit 1
 else
-    log_message "HOME is set to /root"
+    echo "HOME is set to /root"
 fi
 
 # Exit if LINODE_ID, LINODE_LISHUSERNAME, LINODE_RAM, LINODE_DATACENTERID are not set
 
 if [ -z "${LINODE_ID:-}" ]; then
-    log_message "LINODE_ID is not set, exiting"
+    echo "LINODE_ID is not set, exiting"
     exit 1
 else
-    log_message "LINODE_ID is set to ${LINODE_ID}"
+    echo "LINODE_ID is set to ${LINODE_ID}"
 fi
 
 if [ -z "${LINODE_LISHUSERNAME:-}" ]; then
-    log_message "LINODE_LISHUSERNAME is not set, exiting"
+    echo "LINODE_LISHUSERNAME is not set, exiting"
     exit 1
 else
-    log_message "LINODE_LISHUSERNAME is set to ${LINODE_LISHUSERNAME}"
+    echo "LINODE_LISHUSERNAME is set to ${LINODE_LISHUSERNAME}"
 fi
 
 if [ -z "${LINODE_RAM:-}" ]; then
-    log_message "LINODE_RAM is not set, exiting"
+    echo "LINODE_RAM is not set, exiting"
     exit 1
 else
-    log_message "LINODE_RAM is set to ${LINODE_RAM}"
+    echo "LINODE_RAM is set to ${LINODE_RAM}"
 fi
 
 if [ -z "${LINODE_DATACENTERID:-}" ]; then
-    log_message "LINODE_DATACENTERID is not set, exiting"
+    echo "LINODE_DATACENTERID is not set, exiting"
     exit 1
 else
-    log_message "LINODE_DATACENTERID is set to ${LINODE_DATACENTERID}"
+    echo "LINODE_DATACENTERID is set to ${LINODE_DATACENTERID}"
 fi
 
 export LINODE_STACK_SCRIPT_LOCK_FILE="/tmp/linode-stack-script.lock"
 if [ -f "${LINODE_STACK_SCRIPT_LOCK_FILE}" ]; then
-    log_message "Lock file ${LINODE_STACK_SCRIPT_LOCK_FILE} exists, exiting"
+    echo "Lock file ${LINODE_STACK_SCRIPT_LOCK_FILE} exists, exiting"
     exit 1
 else
-    log_message "Creating lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
+    echo "Creating lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
     touch "${LINODE_STACK_SCRIPT_LOCK_FILE}"
 fi
 
-log_message "Setting up environment"
+echo "Setting up environment"
 
 if [ ! -f /etc/environment ]; then
-    log_message "Creating /etc/environment"
+    echo "Creating /etc/environment"
     touch /etc/environment
 else
-    log_message "/etc/environment already exists"
+    echo "/etc/environment already exists"
 fi
 
-log_message "Setting up environment variables in /etc/environment"
+echo "Setting up environment variables in /etc/environment"
 
 declare -A env_vars=(
     ["LINODE_ID"]="${LINODE_ID}"
@@ -101,34 +93,34 @@ for var in "${!env_vars[@]}"; do
     echo "${var}=${env_vars[$var]}" | tee -a /etc/environment
 done
 
-log_message "Sourcing /etc/environment after setting environment variables"
+echo "Sourcing /etc/environment after setting environment variables"
 # shellcheck source=/dev/null
 source /etc/environment
 
-log_message "Installing cron"
+echo "Installing cron"
 apt-get install -y cron
-log_message "Enabling and starting cron.service"
+echo "Enabling and starting cron.service"
 systemctl enable --now cron.service
 
-log_message "Adding cron job to run linode-stack-script every day at 1 AM"
+echo "Adding cron job to run linode-stack-script every day at 1 AM"
 
-log_message "Dumping root crontab to /tmp/root-crontab"
+echo "Dumping root crontab to /tmp/root-crontab"
 crontab -l -u root | tee /tmp/root-crontab || true
 
-log_message "Removing existing linode-stack-script cron job"
+echo "Removing existing linode-stack-script cron job"
 sed -i '/.*linode-stack-script.*/d' /tmp/root-crontab
 
-log_message "Adding new linode-stack-script cron job"
+echo "Adding new linode-stack-script cron job"
 echo "0 1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/linode-stack-script) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" |
     tee -a /tmp/root-crontab
 
-log_message "Installing new crontab"
+echo "Installing new crontab"
 crontab -u root /tmp/root-crontab
 
 if [ -z "${CLOUD_INIT_WEB_SERVER_FQDN:-}" ]; then
-    log_message "CLOUD_INIT_WEB_SERVER_FQDN is not set"
+    echo "CLOUD_INIT_WEB_SERVER_FQDN is not set"
 else
-    log_message "CLOUD_INIT_WEB_SERVER_FQDN is set to ${CLOUD_INIT_WEB_SERVER_FQDN}"
+    echo "CLOUD_INIT_WEB_SERVER_FQDN is set to ${CLOUD_INIT_WEB_SERVER_FQDN}"
 
     IPADDR=$(/sbin/ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://')
     sed -i "/${IPADDR}.*/d" /etc/hosts
@@ -138,7 +130,7 @@ fi
 /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/debian-cloudinit)
 
-log_message "Removing lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
+echo "Removing lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
 rm -f "${LINODE_STACK_SCRIPT_LOCK_FILE}"
 
-log_message "Completed"
+echo "Completed"

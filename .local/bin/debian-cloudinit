@@ -3,12 +3,6 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND="noninteractive"
 
-log_message() {
-    printf "\n\n================================================================================\n %s \
-debian-cloudinit: \
-%s\n--------------------------------------------------------------------------------\n\n" "$(date)" "$*"
-}
-
 export LC_ALL="en_US.UTF8"
 export LC_TIME="en_US.UTF8"
 export LC_MONETARY="en_US.UTF8"
@@ -24,36 +18,34 @@ export LC_NUMERIC="en_US.UTF8"
 export LC_PAPER="en_US.UTF8"
 export LANG="en_GB.UTF-8"
 
-export -f log_message
-
-log_message "Starting"
+echo "Starting"
 
 if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-    log_message "Virtual environment is not activated"
+    echo "Virtual environment is not activated"
 else
-    log_message "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
+    echo "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     exit 1
 fi
 
 if [ "$(id -u)" -ne 0 ]; then
-    log_message "Please run as root, exiting"
+    echo "Please run as root, exiting"
     exit 1
 else
-    log_message "Running as root"
+    echo "Running as root"
 fi
 
 if [ "${HOME}" != "/root" ]; then
-    log_message "HOME is not set to /root, exiting"
+    echo "HOME is not set to /root, exiting"
     exit 1
 else
-    log_message "HOME is set to /root"
+    echo "HOME is set to /root"
 fi
 
 if [ ! -f /etc/environment ]; then
-    log_message "Creating /etc/environment"
+    echo "Creating /etc/environment"
     touch /etc/environment
 else
-    log_message "/etc/environment already exists"
+    echo "/etc/environment already exists"
 fi
 
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
@@ -61,7 +53,7 @@ export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 \
 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/\
 WcgpOHacjKDa7p2skBYljmk="}"
 
-log_message "
+echo "
 CLOUD_INIT_USER: ${CLOUD_INIT_USER}
 CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
@@ -80,7 +72,7 @@ export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"arpanrec.com"}"
 export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
 export CLOUD_INIT_INSTALL_DOCKER="${CLOUD_INIT_INSTALL_DOCKER:-"false"}"
 
-log_message "
+echo "
 CLOUD_INIT_COPY_ROOT_SSH_KEYS: ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}
 CLOUD_INIT_GROUP: ${CLOUD_INIT_GROUP}
 CLOUD_INIT_IS_DEV_MACHINE: ${CLOUD_INIT_IS_DEV_MACHINE}
@@ -90,49 +82,49 @@ CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}
 CLOUD_INIT_INSTALL_DOCKER: ${CLOUD_INIT_INSTALL_DOCKER}"
 
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
-    log_message "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
+    echo "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
     exit 1
 else
-    log_message "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
+    echo "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
 fi
 
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
-    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false), exiting"
+    echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false), exiting"
     exit 1
 else
-    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set as ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
+    echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set as ${CLOUD_INIT_COPY_ROOT_SSH_KEYS}"
 fi
 
 if [[ ! "${CLOUD_INIT_IS_DEV_MACHINE}" =~ ^true|false$ ]]; then
-    log_message "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false), exiting"
+    echo "CLOUD_INIT_IS_DEV_MACHINE must be a boolean (true|false), exiting"
     exit 1
 else
     if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-        log_message "server_workspace will be run with all tags in dev mode"
+        echo "server_workspace will be run with all tags in dev mode"
     else
-        log_message "server_workspace will be run without java, go, terraform, vault, nodejs, bws, pulumi tags"
+        echo "server_workspace will be run without java, go, terraform, vault, nodejs, bws, pulumi tags"
     fi
 fi
 
 if [[ ! "${CLOUD_INIT_INSTALL_DOTFILES}" =~ ^true|false$ ]]; then
-    log_message "CLOUD_INIT_INSTALL_DOTFILES must be a boolean (true|false), exiting"
+    echo "CLOUD_INIT_INSTALL_DOTFILES must be a boolean (true|false), exiting"
     exit 1
 else
     if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
-        log_message "Dotfiles will be installed/reset"
+        echo "Dotfiles will be installed/reset"
     else
-        log_message "Dotfiles will not be installed/reset"
+        echo "Dotfiles will not be installed/reset"
     fi
 fi
 
 if [[ ! "${CLOUD_INIT_INSTALL_DOCKER}" =~ ^true|false$ ]]; then
-    log_message "CLOUD_INIT_INSTALL_DOCKER must be a boolean (true|false), exiting"
+    echo "CLOUD_INIT_INSTALL_DOCKER must be a boolean (true|false), exiting"
     exit 1
 else
     if [ "${CLOUD_INIT_INSTALL_DOCKER}" = true ]; then
-        log_message "Docker will be installed"
+        echo "Docker will be installed"
     else
-        log_message "Docker will not be installed"
+        echo "Docker will not be installed"
     fi
 fi
 
@@ -141,19 +133,19 @@ export NEBULA_TMP_DIR="${NEBULA_TMP_DIR%/}" # Remove trailing slash if exists
 export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/debian-cloudinit.lock"
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
-    log_message "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
+    echo "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
     exit 1
 else
-    log_message "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
+    echo "Creating lock file ${CLOUD_INIT_LOCK_FILE}"
     mkdir -p "$(dirname "${CLOUD_INIT_LOCK_FILE}")"
     touch "${CLOUD_INIT_LOCK_FILE}"
 fi
 
-log_message "Installing locales and setting timezone"
+echo "Installing locales and setting timezone"
 apt-get update
 apt-get install -y locales tzdata
 
-log_message "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
+echo "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
 timedatectl set-timezone Asia/Kolkata || true
 echo "LANG=en_US.UTF-8" | tee /etc/default/locale >/dev/null 2>&1
 echo "LC_ALL=en_US.UTF-8" | tee -a /etc/default/locale >/dev/null 2>&1
@@ -163,16 +155,16 @@ locale -a
 locale-gen
 localectl set-locale LANG=en_US.UTF-8 || true
 
-log_message "Installing apt dependencies"
+echo "Installing apt dependencies"
 apt-get update
 apt-get install -y git curl ca-certificates gnupg2 tar unzip wget sudo bash
 
-log_message "Installing Python 3 venv and pip"
+echo "Installing Python 3 venv and pip"
 apt-get install -y python3-venv python3-pip
 
-log_message "Installing vim"
+echo "Installing vim"
 apt-get install -y vim
-log_message "Setting vim as default editor"
+echo "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
 
@@ -181,7 +173,7 @@ export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not cre
 export NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
-log_message "
+echo "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
 NEBULA_VENV_DIR: ${NEBULA_VENV_DIR} 
@@ -191,42 +183,42 @@ NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
 Creating directories if not exists and changing ownership to root:root"
 
 if [ -d "${NEBULA_VENV_DIR}" ]; then
-    log_message "Virtual environment already exists at ${NEBULA_VENV_DIR}"
+    echo "Virtual environment already exists at ${NEBULA_VENV_DIR}"
 else
 
-    log_message "Creating virtual environment at ${NEBULA_VENV_DIR}"
+    echo "Creating virtual environment at ${NEBULA_VENV_DIR}"
     python3 -m venv "${NEBULA_VENV_DIR}"
 fi
 
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" \
     "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
-log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+echo Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
     to root:root
 chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
-log_message "Creating authorized_keys file at ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
+echo "Creating authorized_keys file at ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
 tee "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}" <<EOF >/dev/null
 ${CLOUD_INIT_USE_SSH_PUB}
 EOF
 
 if [ "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" = true ] && [ -f "/root/.ssh/authorized_keys" ]; then
-    log_message "Copying root's authorized_keys to ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
+    echo "Copying root's authorized_keys to ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
     cat "/root/.ssh/authorized_keys" >>"${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
 else
-    log_message "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding
+    echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS is set to false or /root/.ssh/authorized_keys does not exist, not adding
  any extra keys to ${CLOUD_INIT_USER}"
 fi
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
-    log_message "Downloading nebula ansible requirements ${NEBULA_VERSION} file to ${NEBULA_REQUIREMENTS_FILE}"
+    echo "Downloading nebula ansible requirements ${NEBULA_VERSION} file to ${NEBULA_REQUIREMENTS_FILE}"
     curl -sSL --connect-timeout 10 --max-time 10 \
         "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
         -o "${NEBULA_REQUIREMENTS_FILE}"
 else
-    log_message "${NEBULA_REQUIREMENTS_FILE} already exists"
+    echo "${NEBULA_REQUIREMENTS_FILE} already exists"
 fi
 
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
@@ -234,7 +226,7 @@ export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
-log_message "
+echo "
 DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
 ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
 ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
@@ -247,24 +239,24 @@ mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_
 chown -R root:root "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
     "$(dirname "${ANSIBLE_INVENTORY}")"
 
-log_message "Activating virtual environment at ${NEBULA_VENV_DIR}"
+echo "Activating virtual environment at ${NEBULA_VENV_DIR}"
 # shellcheck source=/dev/null
 source "${NEBULA_VENV_DIR}/bin/activate"
 
-log_message "Installing ansible and hvac using pip3"
+echo "Installing ansible and hvac using pip3"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac --upgrade
 
-log_message "Installing nebula version ${NEBULA_VERSION}"
+echo "Installing nebula version ${NEBULA_VERSION}"
 
-log_message "Installing roles and collections dependencies"
+echo "Installing roles and collections dependencies"
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 
-log_message "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
+echo "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
 ansible-galaxy collection install arpanrec.nebula:"${NEBULA_VERSION}"
 
-log_message Creating inventory file at "${ANSIBLE_INVENTORY}"
+echo Creating inventory file at "${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
 ---
 all:
@@ -290,21 +282,21 @@ EOF
 
 #             ansible_python_interpreter: "$(which python3)"
 
-log_message Running ansible-playbook arpanrec.nebula.cloudinit
+echo Running ansible-playbook arpanrec.nebula.cloudinit
 
 ansible-playbook arpanrec.nebula.cloudinit
 
-log_message Deactivating virtual environment at "${NEBULA_VENV_DIR}"
+echo Deactivating virtual environment at "${NEBULA_VENV_DIR}"
 
 deactivate
 
-log_message Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+echo Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
     to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
-log_message Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
+echo Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
     "$(dirname "${ANSIBLE_INVENTORY}")" to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
@@ -312,9 +304,9 @@ chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${A
 ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/server-workspace-inventory.yml"
 export ANSIBLE_INVENTORY
 
-log_message ANSIBLE_INVENTORY for server_workspace: "${ANSIBLE_INVENTORY}"
+echo ANSIBLE_INVENTORY for server_workspace: "${ANSIBLE_INVENTORY}"
 
-log_message "Running server_workspace playbook as ${CLOUD_INIT_USER}"
+echo "Running server_workspace playbook as ${CLOUD_INIT_USER}"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
@@ -338,22 +330,22 @@ fi
 '
 
 if [ -f /etc/update-motd.d/10-uname ]; then
-    log_message "Removing /etc/update-motd.d/10-uname"
+    echo "Removing /etc/update-motd.d/10-uname"
     rm -f /etc/update-motd.d/10-uname
 fi
 
 sudo apt install -y fastfetch
-log_message "Creating /etc/update-motd.d/10-osinfo-debian-cloudinit"
+echo "Creating /etc/update-motd.d/10-osinfo-debian-cloudinit"
 tee /etc/update-motd.d/10-osinfo-debian-cloudinit <<EOF >/dev/null
 #!/bin/bash
 fastfetch || true
 EOF
 
-log_message "Setting permissions for /etc/update-motd.d/10-osinfo-debian-cloudinit"
+echo "Setting permissions for /etc/update-motd.d/10-osinfo-debian-cloudinit"
 chmod +x /etc/update-motd.d/10-osinfo-debian-cloudinit
 chown root:root /etc/update-motd.d/10-osinfo-debian-cloudinit
 
-log_message "Creating /etc/motd"
+echo "Creating /etc/motd"
 
 tee /etc/motd <<EOF >/dev/null
 ############################################################
@@ -376,7 +368,7 @@ tee /etc/motd <<EOF >/dev/null
 ############################################################
 EOF
 
-log_message "Removing lock file ${CLOUD_INIT_LOCK_FILE}"
+echo "Removing lock file ${CLOUD_INIT_LOCK_FILE}"
 rm -f "${CLOUD_INIT_LOCK_FILE}"
 
-log_message "Completed"
+echo "Completed"

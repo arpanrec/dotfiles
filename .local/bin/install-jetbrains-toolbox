@@ -53,7 +53,7 @@ echo "  ${DOWNLOAD_URL}"
 #--------------------------------------------------
 mkdir -p "${TOOLBOX_DIR}"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
 ARCHIVE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
 CHECKSUM_FILE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
 

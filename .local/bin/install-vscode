@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+required_cmds=(
+    curl
+    jq
+    tar
+)
+
+for cmd in "${required_cmds[@]}"; do
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Required command '$cmd' is not installed or not in PATH"
+        exit 1
+    fi
+done
+
 LATEST_VERSION="$(curl -s \
     "https://update.code.visualstudio.com/api/releases/stable" |
     jq -r ".[0]")"
@@ -12,7 +25,7 @@ fi
 
 echo "Installing Visual Studio Code version ${LATEST_VERSION}"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
 
 rm -rf "${HOME}/.local/share/vscode"
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/vscode" "${HOME}/.local/share/applications/" \

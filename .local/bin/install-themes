@@ -17,7 +17,7 @@ for cmd in "${required_cmds[@]}"; do
     fi
 done
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
 
 # "repo_url|target_dir|branch"
 declare -a git_repositories=(

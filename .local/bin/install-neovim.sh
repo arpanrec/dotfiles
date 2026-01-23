@@ -10,6 +10,7 @@ required_cmds=(
     gcc
     gettext
     yarn
+    jq
 )
 
 for cmd in "${required_cmds[@]}"; do
@@ -32,23 +33,26 @@ echo "Checking for CPU count"
 CPUCOUNT=$(grep -c "^processor" /proc/cpuinfo)
 echo "CPU count is ${CPUCOUNT}"
 
-NEOVIM_GIT_CLONE_DIR="${NEOVIM_GIT_CLONE_DIR:-"/tmp/neovim-src-$(date +%s)"}"
+NEOVIM_VERSION="$(curl -s \
+    "https://api.github.com/repos/neovim/neovim/releases/latest" |
+    jq -r ".tag_name")"
+
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
+
+NEOVIM_GIT_CLONE_DIR="${TMP_DOWNLOAD_DIRECTORY}/abc/neovim-src-${NEOVIM_VERSION}"
 
 NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
-NEOVIM_VERSION="${NEOVIM_VERSION:-"v0.11.4"}"
-echo "Creating Neovim directories"
-mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 
-echo "Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
-git clone https://github.com/neovim/neovim.git --single-branch \
-    --branch="${NEOVIM_VERSION}" --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
+if [[ ! -d "${NEOVIM_GIT_CLONE_DIR}" ]]; then
+    echo "Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
+    git clone https://github.com/neovim/neovim.git --single-branch \
+        --branch="${NEOVIM_VERSION}" --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
+fi
 
 cd "${NEOVIM_GIT_CLONE_DIR}" || exit 1
 
-rm -rf "${NEOVIM_INSTALL_DIR}/state/nvim"
-rm -rf "${NEOVIM_INSTALL_DIR}/share/nvim"
-rm -rf "${NEOVIM_INSTALL_DIR}/bin/nvim"
-rm -rf "${HOME}/.cache/nvim"
+rm -rf "${NEOVIM_INSTALL_DIR}/state/nvim" "${NEOVIM_INSTALL_DIR}/share/nvim" "${NEOVIM_INSTALL_DIR}/bin/nvim" \
+    "${HOME}/.cache/nvim"
 
 echo "Building Neovim"
 make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}" -j"${CPUCOUNT}"

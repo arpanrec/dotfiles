@@ -28,8 +28,6 @@ hostnamectl hostname "${TARGET_HOSTNAME}"
 
 apt install -y sudo jq git curl wget zip unzip jq zsh bpytop htop lm-sensors fancontrol read-edid i2c-tools
 
-apt install -y shfmt shellcheck
-
 install -d -m 0755 /etc/apt/keyrings
 wget -qO- https://dl.google.com/linux/linux_signing_key.pub |
     gpg --dearmor --yes -o /etc/apt/keyrings/google-chrome.gpg
@@ -61,6 +59,8 @@ Signed-By: /etc/apt/keyrings/docker.asc
 EOF
 
 apt update
+
+apt install -y shfmt shellcheck
 
 apt install -y python3-venv python3-pynvim
 

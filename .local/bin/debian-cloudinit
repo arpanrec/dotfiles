@@ -317,12 +317,12 @@ export USER="${CLOUD_INIT_USER}"
 export LOGNAME="${CLOUD_INIT_USER}"
 
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
-    bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/dot-install)
+    bash <(curl -sSLf --connect-timeout 10 --max-time 10 \
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/install-dotfiles)
 fi
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
-    bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    bash <(curl -sSLf --connect-timeout 10 --max-time 10 \
         https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/server-workspace) \
         --tags all
 fi

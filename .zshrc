@@ -14,11 +14,12 @@ ENABLE_CORRECTION="false"
 
 COMPLETION_WAITING_DOTS="true"
 
-plugins=(fzf
+plugins=(
+    fzf
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-completions
-    )
+)
 
 autoload -U compinit && compinit
 
@@ -32,12 +33,12 @@ autoload -U compinit && compinit
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # unsetopt correct_all
 
-if command -v terraform &> /dev/null; then
+if command -v terraform &>/dev/null; then
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which terraform)")" terraform
 fi
 
-if command -v kubectl &> /dev/null; then
+if command -v kubectl &>/dev/null; then
     source <(kubectl completion zsh)
 fi
 
@@ -46,28 +47,28 @@ fi
 #         eval "$(bw completion --shell zsh 2>/dev/null); compdef _bw bw;" 2>/dev/null
 # fi
 
-if command -v vault &> /dev/null; then
+if command -v vault &>/dev/null; then
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which vault)")" vault
 fi
 
-if command -v gh &> /dev/null; then
+if command -v gh &>/dev/null; then
     __auto_comp_file_path="${HOME}/.oh-my-zsh/completions/_gh"
     if [ ! -f "${__auto_comp_file_path}" ]; then
         mkdir "$(dirname "${__auto_comp_file_path}")" 2>/dev/null
-        gh completion -s zsh > "${__auto_comp_file_path}"
+        gh completion -s zsh >"${__auto_comp_file_path}"
     fi
     autoload -U compinit
     compinit -i
 fi
 
-if command -v mc &> /dev/null; then
+if command -v mc &>/dev/null; then
     autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which mc)")" mc
 fi
 
 FNM_PATH="${HOME}/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
-  export PATH="${HOME}/.local/share/fnm:$PATH"
-  eval "`fnm env`"
+    export PATH="${HOME}/.local/share/fnm:$PATH"
+    eval "$(fnm env)"
 fi

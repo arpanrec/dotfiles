@@ -25,7 +25,7 @@ fi
 
 echo "Installing Visual Studio Code version ${LATEST_VERSION}"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 
 rm -rf "${HOME}/.local/share/vscode"
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/vscode" "${HOME}/.local/share/applications/" \

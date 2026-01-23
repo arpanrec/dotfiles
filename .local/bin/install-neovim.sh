@@ -37,7 +37,7 @@ NEOVIM_VERSION="$(curl -s \
     "https://api.github.com/repos/neovim/neovim/releases/latest" |
     jq -r ".tag_name")"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 
 NEOVIM_GIT_CLONE_DIR="${TMP_DOWNLOAD_DIRECTORY}/neovim-src-${NEOVIM_VERSION}"
 

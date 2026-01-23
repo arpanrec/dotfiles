@@ -12,7 +12,7 @@ fi
 
 rm -rf "${HOME}/.local/share/dbeaver"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/.from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/dbeaver-ce" "${HOME}/.local/share/applications/"
 echo "Downloading DBeaver version ${LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"

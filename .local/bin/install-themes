@@ -2,19 +2,19 @@
 set -xeuo pipefail
 
 required_cmds=(
-  curl
-  git
-  unzip
-  gtk-update-icon-cache
-  jq
-  fc-cache
+    curl
+    git
+    unzip
+    gtk-update-icon-cache
+    jq
+    fc-cache
 )
 
 for cmd in "${required_cmds[@]}"; do
-  if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "Required command '$cmd' is not installed or not in PATH"
-    exit 1
-  fi
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Required command '$cmd' is not installed or not in PATH"
+        exit 1
+    fi
 done
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/Downloads/.from_dotfiles"

@@ -2,27 +2,27 @@
 set -euo pipefail
 
 required_cmds=(
-  curl
-  git
-  unzip
-  ninja
-  cmake
-  gcc
-  gettext
+    curl
+    git
+    unzip
+    ninja
+    cmake
+    gcc
+    gettext
 )
 
 for cmd in "${required_cmds[@]}"; do
-  if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "Required command '$cmd' is not installed or not in PATH"
-    exit 1
-  fi
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Required command '$cmd' is not installed or not in PATH"
+        exit 1
+    fi
 done
 
 echo "Starting"
 
 if [ "$(id -u)" -eq 0 ]; then
-  echo "Root user detected!!!! Error"
-  exit 1
+    echo "Root user detected!!!! Error"
+    exit 1
 fi
 
 echo "Installing Neovim"
@@ -40,7 +40,7 @@ mkdir -p "$(dirname "${NEOVIM_GIT_CLONE_DIR}")"
 
 echo "Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
 git clone https://github.com/neovim/neovim.git --single-branch \
-  --branch="${NEOVIM_VERSION}" --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
+    --branch="${NEOVIM_VERSION}" --depth 1 "${NEOVIM_GIT_CLONE_DIR}"
 
 cd "${NEOVIM_GIT_CLONE_DIR}" || exit 1
 

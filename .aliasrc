@@ -2,8 +2,9 @@
 alias dotfiles='git --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 alias dotfiles-lazygit='lazygit --git-dir="${HOME}/.dotfiles" --work-tree=${HOME}'
 
-alias chrome-p1='google-chrome-stable --user-data-dir="${HOME}/.local/share/chrome-user-data-dir/p1" >/dev/null 2>&1 & disown'
-alias brave-p1='brave --user-data-dir="${HOME}/.local/share/brave-user-data-dir/p1" >/dev/null 2>&1 & disown'
+#alias chrome-p1='google-chrome-stable --user-data-dir="${HOME}/.local/share/chrome-user-data-dir/p1" >/dev/null 2>&1 & disown'
+#alias brave-p1='brave --user-data-dir="${HOME}/.local/share/brave-user-data-dir/p1" >/dev/null 2>&1 & disown'
+alias brave-p1='brave_profile p1'
 
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -alrhtF"

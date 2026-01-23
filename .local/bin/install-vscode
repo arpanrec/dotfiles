@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo -e "\033[31m⚠️⚠️There is no checksum verification⚠️⚠️\033[0m" >&2
+
 required_cmds=(
     curl
     jq

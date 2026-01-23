@@ -101,7 +101,8 @@ pacman -Syu --noconfirm
 
 ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other' 'plymouth'
-    'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft')
+    'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft'
+    'linux-api-headers')
 
 ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
@@ -110,10 +111,10 @@ ALL_PAKGS+=('fwupd') # For firmware updates
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry')
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry' 'python-pyaml')
 
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
-    'linux-api-headers' 'devtools')
+    'devtools')
 
 ALL_PAKGS+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
 
@@ -318,14 +319,14 @@ tee "/boot/loader/entries/arch.conf" <<EOF
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline)
+options $(cat /etc/kernel/cmdline) splash
 EOF
 
 tee "/boot/loader/entries/arch-fallback.conf" <<EOF
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
 initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline)
+options $(cat /etc/kernel/cmdline) splash
 EOF
 
 bootctl install

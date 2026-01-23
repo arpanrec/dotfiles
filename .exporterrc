@@ -130,3 +130,27 @@ export PNPM_HOME="${HOME}/.local/share/pnpm"
 if [[ ! "${PATH}" =~ ${PNPM_HOME}: ]]; then
     export PATH="${PNPM_HOME}:${PATH}"
 fi
+
+brave-profile() {
+  local profile="${1:-}"
+  local brave-cmd
+
+  # validate profile name
+  if [[ -z "$profile" || "${#profile}" -le 2 ]]; then
+    printf 'brave-profile: profile name must be longer than 2 characters\n' >&2
+    return 2
+  fi
+
+  # find brave binary
+  brave-cmd=$(command -v brave || command -v brave-browser) || {
+    printf 'brave-profile: brave browser not found\n' >&2
+    return 127
+  }
+
+  "$brave-cmd" \
+    --user-data-dir="$HOME/.local/share/brave-user-data-dir/$profile" \
+    >/dev/null 2>&1 &
+  disown
+}
+
+export -f brave-profile

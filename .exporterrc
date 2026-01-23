@@ -160,8 +160,8 @@ brave_profile() {
   local bravecmd
 
   # validate profile name
-  if [[ -z "$profile" || "${#profile}" -le 2 ]]; then
-    printf 'brave-profile: profile name must be longer than 2 characters\n' >&2
+  if [[ -z "$profile" || "${#profile}" -le 1 ]]; then
+    printf 'brave-profile: profile name must be longer than 1 character\n' >&2
     return 2
   fi
 

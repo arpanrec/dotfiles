@@ -27,6 +27,9 @@ if [ "$(id -u)" -eq 0 ]; then
     exit 1
 fi
 
+# https://github.com/neovim/neovim/blob/master/BUILD.md
+# https://github.com/neovim/neovim/blob/master/INSTALL.md
+
 echo "Installing Neovim"
 
 echo "Checking for CPU count"

@@ -68,20 +68,12 @@ if [[ -z $* ]]; then
         log_message "Skipping go installation"
     fi
 
-    read -n1 -s -r -p 'Enter "Y" to install Oracle JDK17 (Press any other key to Skip*) : ' install_java
+    read -n1 -s -r -p 'Enter "Y" to install Oracle JDK (Press any other key to Skip*) : ' install_java
     if [[ "${install_java}" == "Y" || "${install_java}" == "y" ]]; then
         log_message "Java installation selected"
         __install_tags+=('java')
     else
         log_message "Skipping Java installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to terminal tools (Press any other key to Skip*) : ' download_terminal
-    if [[ "${download_terminal}" == "Y" || "${download_terminal}" == "y" ]]; then
-        log_message "Terminal tools installation selected"
-        __install_tags+=('terminal')
-    else
-        log_message "Skipping terminal tools installation"
     fi
 
     read -n1 -s -r -p 'Enter "Y" to install Vault (Press any other key to Skip*) : ' install_vault
@@ -114,62 +106,6 @@ if [[ -z $* ]]; then
         __install_tags+=('bws')
     else
         log_message "Skipping Bitwarden SDK installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Bitwarden (Press any other key to Skip*) : ' install_bitwarden_app_image
-    if [[ "${install_bitwarden_app_image}" == "Y" || "${install_bitwarden_app_image}" == "y" ]]; then
-        log_message "Bitwarden installation selected"
-        __install_tags+=('bitwarden_desktop')
-    else
-        log_message "Skipping Bitwarden installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Mattermost (Press any other key to Skip*) : ' install_mattermost
-    if [[ "${install_mattermost}" == "Y" || "${install_mattermost}" == "y" ]]; then
-        log_message "Mattermost installation selected"
-        __install_tags+=('mattermost_desktop')
-    else
-        log_message "Skipping Mattermost installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Telegram (Press any other key to Skip*) : ' install_telegram_desktop
-    if [[ "${install_telegram_desktop}" == "Y" || "${install_telegram_desktop}" == "y" ]]; then
-        log_message "Telegram installation selected"
-        __install_tags+=('telegram_desktop')
-    else
-        log_message "Skipping Telegram installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Postman (Press any other key to Skip*) : ' install_postman
-    if [[ "${install_postman}" == "Y" || "${install_postman}" == "y" ]]; then
-        log_message "Postman installation selected"
-        __install_tags+=('postman')
-    else
-        log_message "Skipping Postman installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Visual Studio Code (Press any other key to Skip*) : ' install_vscode
-    if [[ "${install_vscode}" == "Y" || "${install_vscode}" == "y" ]]; then
-        log_message "Visual Studio Code installation selected"
-        __install_tags+=('code')
-    else
-        log_message "Skipping Visual Studio Code installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install gnome (Press any other key to Skip*) : ' install_gnome
-    if [[ "${install_gnome}" == "Y" || "${install_gnome}" == "y" ]]; then
-        log_message "Gnome installation selected"
-        __install_tags+=('gnome')
-    else
-        log_message "Skipping Gnome installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to download themes (Press any other key to Skip*) : ' download_themes
-    if [[ "${download_themes}" == "Y" || "${download_themes}" == "y" ]]; then
-        log_message "Themes installation selected"
-        __install_tags+=('themes')
-    else
-        log_message "Skipping Themes installation"
     fi
 
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
@@ -240,7 +176,7 @@ Working dir :: ${PWD}
 Installing ansible, hvac and arpanrec.nebula"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible hvac konsave --upgrade
+pip3 install ansible hvac https://github.com/Prayag2/konsave.git --upgrade
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     log_message "Downloading ${NEBULA_REQUIREMENTS_FILE}"

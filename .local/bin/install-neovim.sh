@@ -9,6 +9,7 @@ required_cmds=(
     cmake
     gcc
     gettext
+    yarn
 )
 
 for cmd in "${required_cmds[@]}"; do

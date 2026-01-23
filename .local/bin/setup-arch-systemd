@@ -132,11 +132,12 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 # 'phonon-qt5-gstreamer'
+# For full kde 'plasma-meta' 'kde-applications'
 ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager' 'kleopatra' 'discover'
     'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'packagekit-qt6'
-    'kdesdk-thumbnailers' 'ark' 'icoutils' 'plasma-meta' 'kde-applications' 'qt6-imageformats' 'kimageformats' 'kate'
-    'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk' 'kdialog' 'kvantum' 'materia-kde' 'kdecoration'
-    'qt5-imageformats' 'qt5-declarative' 'qt5-x11extras')
+    'kdesdk-thumbnailers' 'ark' 'icoutils' 'qt6-imageformats' 'kimageformats' 'kate' 'qt5-imageformats' 'kcalc' 'tk'
+    'kio-gdrive' 'spectacle' 'gwenview' 'kamera' 'kamoso' 'kdialog' 'kvantum' 'materia-kde' 'kdecoration'
+    'qt5-declarative' 'qt5-x11extras')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet

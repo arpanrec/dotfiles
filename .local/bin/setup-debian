@@ -130,7 +130,7 @@ fi
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/cloudinit/.tmp"}"
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR%/}" # Remove trailing slash if exists
-export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/debian-cloudinit.lock"
+export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/setup-debian.lock"
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
     echo "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
@@ -301,7 +301,7 @@ echo Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${AN
 chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" \
     "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
-ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/server-workspace-inventory.yml"
+ANSIBLE_INVENTORY="$(dirname "${ANSIBLE_INVENTORY}")/setup-workspace-inventory.yml"
 export ANSIBLE_INVENTORY
 
 echo ANSIBLE_INVENTORY for server_workspace: "${ANSIBLE_INVENTORY}"
@@ -323,7 +323,7 @@ fi
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSLf --connect-timeout 10 --max-time 10 \
-        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/server-workspace) \
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/setup-workspace) \
         --tags all
 fi
 
@@ -335,15 +335,15 @@ if [ -f /etc/update-motd.d/10-uname ]; then
 fi
 
 sudo apt install -y fastfetch
-echo "Creating /etc/update-motd.d/10-osinfo-debian-cloudinit"
-tee /etc/update-motd.d/10-osinfo-debian-cloudinit <<EOF >/dev/null
+echo "Creating /etc/update-motd.d/10-osinfo-setup-debian"
+tee /etc/update-motd.d/10-osinfo-setup-debian <<EOF >/dev/null
 #!/bin/bash
 fastfetch || true
 EOF
 
-echo "Setting permissions for /etc/update-motd.d/10-osinfo-debian-cloudinit"
-chmod +x /etc/update-motd.d/10-osinfo-debian-cloudinit
-chown root:root /etc/update-motd.d/10-osinfo-debian-cloudinit
+echo "Setting permissions for /etc/update-motd.d/10-osinfo-setup-debian"
+chmod +x /etc/update-motd.d/10-osinfo-setup-debian
+chown root:root /etc/update-motd.d/10-osinfo-setup-debian
 
 echo "Creating /etc/motd"
 

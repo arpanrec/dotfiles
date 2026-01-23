@@ -5,7 +5,7 @@ echo "Starting"
 
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.tmp"}"
 
-export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/server-workspace.lock"
+export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/setup-workspace.lock"
 
 if [[ -f "${SERVER_WORKSPACE_LOCK_FILE}" ]]; then
     echo "Lock file ${SERVER_WORKSPACE_LOCK_FILE} exists, Exiting"

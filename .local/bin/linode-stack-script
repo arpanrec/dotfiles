@@ -128,7 +128,7 @@ else
 fi
 
 /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/debian-cloudinit)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/setup-debian)
 
 echo "Removing lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
 rm -f "${LINODE_STACK_SCRIPT_LOCK_FILE}"

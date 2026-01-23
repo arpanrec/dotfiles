@@ -3,9 +3,7 @@ set -euo pipefail
 
 TOOLBOX_DIR="${HOME}/.local/share/jetbrains-toolbox"
 
-#--------------------------------------------------
-# Detect architecture
-#--------------------------------------------------
+echo "Detect architecture"
 CURRENT_ARCH="$(uname -m)"
 
 case "${CURRENT_ARCH}" in
@@ -23,9 +21,7 @@ esac
 
 echo "Detected architecture: ${CURRENT_ARCH} (${DOWNLOAD_ARCH_KEY})"
 
-#--------------------------------------------------
-# Fetch latest download metadata
-#--------------------------------------------------
+echo "Fetch latest download metadata"
 RELEASE_JSON="$(
     curl -fsSL "https://data.services.jetbrains.com/products?code=TBA" |
         jq '.[0].releases[0]'
@@ -48,19 +44,13 @@ fi
 echo "Download URL:"
 echo "  ${DOWNLOAD_URL}"
 
-#--------------------------------------------------
-# Prepare directories
-#--------------------------------------------------
-mkdir -p "${TOOLBOX_DIR}"
+echo "Prepare directories"
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 ARCHIVE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
 CHECKSUM_FILE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
 
-#--------------------------------------------------
-# Download archive & checksum
-#--------------------------------------------------
-mkdir -p "${TMP_DOWNLOAD_DIRECTORY}"
 echo "Downloading to ${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${ARCHIVE}" ]]; then
@@ -102,9 +92,7 @@ echo "Checksum OK ✔"
 rm -rf "${TOOLBOX_DIR}"
 mkdir -p "${TOOLBOX_DIR}"
 
-tar -xzvf "${ARCHIVE}" \
-    --strip-components=1 \
-    -C "${TOOLBOX_DIR}"
+tar -xzvf "${ARCHIVE}" --strip-components=1 -C "${TOOLBOX_DIR}"
 
 # Sanity check
 if [[ ! -x "${TOOLBOX_DIR}/bin/jetbrains-toolbox" ]]; then

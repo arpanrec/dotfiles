@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
 
 CURRENT_ARCH="$(uname -m)"
 
@@ -22,6 +22,7 @@ DOWNLOAD_URI="https://github.com/bitwarden/clients/releases/download/desktop-v${
 mkdir -p "${APPIMAGE_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}" ]]; then
+    echo "Downloading app image."
     curl -fL "${DOWNLOAD_URI}" -o "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}"
 else
     echo "AppImage File already exists"
@@ -29,6 +30,11 @@ fi
 rm -f "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
 cp "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}" "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
 chmod +x "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
+
+if [[ ! -f "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.png" ]]; then
+    echo "Downloading icon file."
+    curl -fL "https://bitwarden.com/favicon.png" -o "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.png"
+fi
 
 tee "${HOME}/.local/share/applications/bitwarden.desktop" <<EOF
 [Desktop Entry]
@@ -39,7 +45,7 @@ Exec=${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage %u
 Terminal=false
 MimeType=x-scheme-handler/bitwarden
 Type=Application
-Icon=bitwarden
+Icon=${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.png
 Categories=Utility;
 StartupWMClass=Bitwarden
 EOF

@@ -44,12 +44,12 @@ fi
 echo "Download URL:"
 echo "  ${DOWNLOAD_URL}"
 
-echo "Prepare directories"
-mkdir -p "${TMP_DOWNLOAD_DIRECTORY}"
-
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 ARCHIVE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
 CHECKSUM_FILE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
+
+echo "Prepare directories"
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}"
 
 echo "Downloading to ${TMP_DOWNLOAD_DIRECTORY}"
 

@@ -149,9 +149,18 @@ for NERD_FONT_TYPE in "${NERD_FONT_TYPES[@]}"; do
         echo "${NERD_FONT_TYPE}-${NERD_FONT_VERSION} already present."
     fi
 
-    rm -rf "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
+    rm -rf "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}" \
+        "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}"
+
     unzip "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}.zip" \
-        -d "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
+        -d "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}"
+
+    mkdir -p "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
+
+    find "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}" \
+        -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname '*.ttc' \) \
+        -exec install -Dm644 {} "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}/" \;
+
     fc-cache -f -v "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}"
 done
 
@@ -169,9 +178,16 @@ else
     echo "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip is already present"
 fi
 
-rm -rf "${HOME}/.local/share/fonts/cascadia-code"
+rm -rf "${HOME}/.local/share/fonts/cascadia-code" "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}"
+mkdir -p "${HOME}/.local/share/fonts/cascadia-code"
+
 unzip "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" \
-    -d "${HOME}/.local/share/fonts/cascadia-code"
+    -d "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}"
+
+find "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}" \
+    -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname '*.ttc' \) \
+    -exec install -Dm644 {} "${HOME}/.local/share/fonts/cascadia-code" \;
+
 fc-cache -f -v "${HOME}/.local/share/fonts/cascadia-code"
 
 echo "Completed"

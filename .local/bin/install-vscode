@@ -107,7 +107,7 @@ MimeType=x-scheme-handler/vscode;
 Keywords=vscode;
 EOF
 
-rm "${HOME}/.local/bin/code"
+rm -f "${HOME}/.local/bin/code"
 ln -s "${HOME}/.local/share/vscode/bin/code" "${HOME}/.local/bin/code"
 
 echo "Visual Studio Code installed successfully! :"

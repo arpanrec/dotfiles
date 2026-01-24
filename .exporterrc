@@ -55,7 +55,7 @@ fi
 export GOPATH="${HOME}/.go"
 
 if [[ ! "${PATH}" =~ ${GOPATH}/bin: ]]; then
-    export PATH="${HOME}/go/bin:${PATH}"
+    export PATH="${GOPATH}/bin:${PATH}"
 fi
 
 if command -v go &>/dev/null; then

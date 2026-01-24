@@ -132,48 +132,24 @@ if [[ ! "${PATH}" =~ ${PNPM_HOME}: ]]; then
 fi
 
 brave_profile() {
-  local profile="${1:-}"
-  local bravecmd
+    local profile="${1:-}"
+    local bravecmd
 
-  # validate profile name
-  if [[ -z "$profile" || "${#profile}" -le 2 ]]; then
-    printf 'brave-profile: profile name must be longer than 2 characters\n' >&2
-    return 2
-  fi
+    # validate profile name
+    if [[ -z "$profile" || "${#profile}" -le 1 ]]; then
+        printf 'brave-profile: profile name must be longer than 1 character\n' >&2
+        return 2
+    fi
 
-  # find brave binary
-  bravecmd=$(command -v brave || command -v brave-browser) || {
-    printf 'brave-profile: brave browser not found\n' >&2
-    return 127
-  }
+    # find brave binary
+    bravecmd=$(command -v brave || command -v brave-browser) || {
+        printf 'brave-profile: brave browser not found\n' >&2
+        return 127
+    }
 
-  "$bravecmd" \
-    --user-data-dir="$HOME/.local/share/brave-user-data-dir/$profile" \
-    >/dev/null 2>&1 &
-  disown
-}
-export brave_profile
-
-
-brave_profile() {
-  local profile="${1:-}"
-  local bravecmd
-
-  # validate profile name
-  if [[ -z "$profile" || "${#profile}" -le 1 ]]; then
-    printf 'brave-profile: profile name must be longer than 1 character\n' >&2
-    return 2
-  fi
-
-  # find brave binary
-  bravecmd=$(command -v brave || command -v brave-browser) || {
-    printf 'brave-profile: brave browser not found\n' >&2
-    return 127
-  }
-
-  "$bravecmd" \
-    --user-data-dir="$HOME/.local/share/brave-user-data-dir/$profile" \
-    >/dev/null 2>&1 &
-  disown
+    "$bravecmd" \
+        --user-data-dir="$HOME/.local/share/brave-user-data-dir/$profile" \
+        >/dev/null 2>&1 &
+    disown
 }
 export brave_profile

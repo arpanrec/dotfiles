@@ -62,10 +62,10 @@ if [[ $TOTALMEM -gt 8000000 ]]; then
     sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 fi
 
-#Add parallel downloading
+echo "Add parallel downloading"
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
-#Enable multilib
+echo "Enable multilib"
 sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
 
@@ -106,7 +106,7 @@ BASIC_PACMAN_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux
 
 BASIC_PACMAN_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs' 'inetutils')
 
-BASIC_PACMAN_PACKAGES+=('fwupd') # For firmware updates
+BASIC_PACMAN_PACKAGES+=('fwupd')
 
 BASIC_PACMAN_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'less' 'tree')
@@ -120,14 +120,12 @@ BASIC_PACMAN_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-s
 
 BASIC_PACMAN_PACKAGES+=('bash-completion' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
 
-# 'docker-scan' not found
 BASIC_PACMAN_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 
 BASIC_PACMAN_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
 BASIC_PACMAN_PACKAGES+=('cryptsetup' 'ccid' 'opensc')
 
-# 'system-config-printer' 'print-manager'
 BASIC_PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
 
 echo "--------------------------------------------------"
@@ -161,8 +159,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     IS_NVIDIA_GPU=true
-    # 'nvidia-utils'
-    BASIC_PACMAN_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms') # 'nvidia-open'
+    BASIC_PACMAN_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms') # 'nvidia-open' 'nvidia-utils'
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"
@@ -230,7 +227,6 @@ echo "--------------------------------------------------"
 export __new_random_root="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
 echo "Setting a random root password"
 echo -e "${__new_random_root}\n${__new_random_root}" | passwd root
-unset __new_random_root
 
 getent group sudo || groupadd --system sudo
 getent group wheel || groupadd --system wheel
@@ -297,7 +293,7 @@ echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
 echo "------------------------------------------"
 
-# Add wheel no password rights
+echo "Add wheel no password rights"
 mkdir -p /etc/sudoers.d
 echo "root ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1000-root
 echo "%sudo ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1100-sudo
@@ -440,6 +436,8 @@ ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate'
 ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack' 'lib32-pipewire'
     'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
     'lib32-pipewire-v4l2' 'pavucontrol')
+
+ALL_PAKGS+=('system-config-printer' 'print-manager')
 
 if [[ "${IS_NVIDIA_GPU}" == "true" ]]; then
     ALL_PAKGS+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')

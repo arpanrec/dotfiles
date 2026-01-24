@@ -162,7 +162,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "-----------------------------------------------------------"
     IS_NVIDIA_GPU=true
     # 'nvidia-utils'
-    BASIC_PACMAN_PACKAGES+=('linux-firmware-nvidia' 'nvidia-open' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms')
+    BASIC_PACMAN_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms') # 'nvidia-open'
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"

@@ -246,11 +246,13 @@ echo "--------------------------------------"
 echo "       Create User and Groups         "
 echo "--------------------------------------"
 
-username="${username:-user1}"
-id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
+SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
+SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
-sudo usermod -aG docker,wheel "${username}"
-echo -e "${username}\n${username}" | passwd "${username}"
+sudo usermod -aG docker,wheel "${SYSTEM_ADMIN_USER}"
+echo "Set the password for user ${SYSTEM_ADMIN_USER} using 'passwd ${SYSTEM_ADMIN_USER}'."
+echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
 
 echo "--------------------------------------"
 echo "         SSH Key Only login           "
@@ -315,19 +317,34 @@ for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
 done
 
 echo "Completed"
-# shellcheck disable=SC2016
-echo "Set the password for user ${username} using 'passwd ${username}'."
 
-if ! command -v nvidia-ctk &>/dev/null; then
-    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
-else
-    echo "Nvidia Container Toolkit is installed."
+echo "-------------------------------------------------------"
+echo "             Install Yay and AUR Packages              "
+echo "-------------------------------------------------------"
 
-    if $IS_RUNNING_SYSTEMD; then
-        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
-        nvidia-ctk runtime configure --runtime=docker
-        systemctl restart docker
-    else
-        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
-    fi
+if ! command -v yay &>/dev/null; then
+    echo "Adding user arch-yay-installer-user"
+    id -u arch-yay-installer-user &>/dev/null ||
+        useradd -s /bin/bash -m -d /home/arch-yay-installer-user arch-yay-installer-user
+    echo "arch-yay-installer-user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-arch-yay-installer-user
+
+    sudo -H -u arch-yay-installer-user bash -c '
+    set -e
+    rm -rf ~/yay
+    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
+    cd "${HOME}/yay"
+    makepkg -si --noconfirm
+    '
 fi
+
+PKGS_AUR=('nordvpn-bin')
+
+PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+
+sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
+        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+
+sudo usermod -aG nordvpn "${SYSTEM_ADMIN_USER}"
+systemctl enable nordvpnd
+
+echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

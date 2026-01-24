@@ -52,7 +52,7 @@ if [ -f "${HOME}/.local/share/go/bin/go" ] && [[ ! "${PATH}" =~ ${HOME}/.local/s
     export PATH="${HOME}/.local/share/go/bin:${PATH}"
 fi
 
-export GOPATH="${HOME}/go"
+export GOPATH="${HOME}/.go"
 
 if [[ ! "${PATH}" =~ ${GOPATH}/bin: ]]; then
     export PATH="${HOME}/go/bin:${PATH}"

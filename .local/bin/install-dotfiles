@@ -110,7 +110,7 @@ chmod +x "${powerlevel10k_directory}/gitstatus/install"
 "${powerlevel10k_directory}/gitstatus/install" -f
 
 echo "Adding my ssh key"
-mkdir "${HOME}/.ssh" && chmod 700 "${HOME}/.ssh"
+mkdir -p "${HOME}/.ssh" && chmod 700 "${HOME}/.ssh"
 curl -fl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub |
     tee -a "/home/${SYSTEM_ADMIN_USER}/.ssh/authorized_keys"
 chmod 600 "${HOME}/.ssh/authorized_keys"

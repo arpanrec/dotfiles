@@ -247,22 +247,29 @@ echo "--------------------------------------"
 
 SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
 SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
-id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m \
+    -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
 sudo usermod -aG docker,wheel "${SYSTEM_ADMIN_USER}"
-echo "Set the password for user ${SYSTEM_ADMIN_USER} using 'passwd ${SYSTEM_ADMIN_USER}'."
+echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
 echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
+
+echo "Adding ssh key to admin user"
+mkdir -p "/home/${SYSTEM_ADMIN_USER}/.ssh"
+curl -fl https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub |
+    tee -a "/home/${SYSTEM_ADMIN_USER}/.ssh/authorized_keys"
+chmod 600 "/home/${SYSTEM_ADMIN_USER}/.ssh/authorized_keys"
+chown -R "${SYSTEM_ADMIN_USER}":"${SYSTEM_ADMIN_USER}" "/home/${SYSTEM_ADMIN_USER}/.ssh"
 
 echo "--------------------------------------"
 echo "         SSH Key Only login           "
 echo "--------------------------------------"
 
 sudo mkdir -p /etc/ssh/sshd_config.d
-# TODO: Set PasswordAuthentication and PermitRootLogin to `no`
 tee "/etc/ssh/sshd_config.d/010-ssh-ansible.conf" <<EOF
 Port 22
-PasswordAuthentication yes
-PermitRootLogin yes
+PasswordAuthentication no
+PermitRootLogin no
 PermitEmptyPasswords no
 MaxAuthTries 3
 X11Forwarding no

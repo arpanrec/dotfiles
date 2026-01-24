@@ -185,7 +185,7 @@ Target=linux
 #    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
 #ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
 #EOT
-#fi
+fi
 #
 #if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
 #

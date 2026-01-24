@@ -227,7 +227,6 @@ sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
 
 sbctl status
 sbctl verify
-bootctl status
 bootctl list
 
 echo "------------------------------------------"

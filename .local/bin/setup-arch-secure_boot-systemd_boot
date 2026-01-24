@@ -456,6 +456,13 @@ pacman -S --needed --noconfirm "${ALL_PAKGS[@]}"
 
 systemctl enable sddm
 
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+
+PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+
+sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
+        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
 echo "Completed"

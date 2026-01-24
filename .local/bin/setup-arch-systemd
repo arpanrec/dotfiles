@@ -111,7 +111,7 @@ ALL_PAKGS+=('fwupd') # For firmware updates
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry' 'python-pyaml')
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-pyaml')
 
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'devtools')

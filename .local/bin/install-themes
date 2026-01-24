@@ -21,7 +21,7 @@ TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 
 IS_GNOME_SHELL=false
 
-if [[ $(command -v gnome-shell &>/dev/null) ]]; then
+if command -v gnome-shell &>/dev/null; then
     IS_GNOME_SHELL=true
 fi
 

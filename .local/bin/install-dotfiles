@@ -74,6 +74,9 @@ echo "Checking out main branch with force"
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" checkout main --force
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" branch --set-upstream-to=origin/main main
 
+# DO NOT PULL, Pulling might change this file as well and changing this file while executing might be very bad.
+# git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" pull
+
 # "name|repo_url|target_dir"
 declare -a zsh_items=(
     "bash-it|https://github.com/Bash-it/bash-it.git|${bash_it_directory}"

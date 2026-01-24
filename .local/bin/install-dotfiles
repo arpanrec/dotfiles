@@ -73,7 +73,6 @@ git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" config --local status.show
 echo "Checking out main branch with force"
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" checkout main --force
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" branch --set-upstream-to=origin/main main
-git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" pull
 
 # "name|repo_url|target_dir"
 declare -a zsh_items=(

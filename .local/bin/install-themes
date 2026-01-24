@@ -27,8 +27,6 @@ fi
 
 echo "IS_GNOME_SHELL $IS_GNOME_SHELL"
 
-exit 1
-
 # "repo_url|target_dir|branch"
 declare -a git_repositories=(
     "https://github.com/EliverLara/Nordic.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic|master"
@@ -86,16 +84,18 @@ rm -rf "${HOME}/.local/share/plasma/desktoptheme/Nordic"
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Nordic-kde/master" "${HOME}/.local/share/plasma/desktoptheme/Nordic"
 rm -rf "${HOME}/.local/share/plasma/desktoptheme/Nordic/.git"
 
-echo "Installing vinceliuice/Layan-kde."
+if [[ ${IS_GNOME_SHELL} == "false" ]]; then
+    echo "Installing vinceliuice/Layan-kde."
+    chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde/master/install.sh"
+    "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde/master/install.sh"
+fi
 
-chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde/master/install.sh"
-"${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-kde/master/install.sh"
-
-echo "Installing vinceliuice/Layan-gtk-theme."
-
-chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
-"${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
-"${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh" --libadwaita
+if [[ ${IS_GNOME_SHELL} == "true" ]]; then
+    echo "Installing vinceliuice/Layan-gtk-theme."
+    chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
+    "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
+#    "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh" --libadwaita
+fi
 
 echo "Installing EliverLara/Sweet/mars."
 

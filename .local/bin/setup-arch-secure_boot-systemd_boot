@@ -99,38 +99,38 @@ pacman -Sy reflector curl --noconfirm --needed
 
 pacman -Syu --noconfirm
 
-ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
+BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other' 'plymouth'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft'
     'linux-api-headers' 'cronie' 'power-profiles-daemon')
 
-ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
+BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
 
-ALL_PAKGS+=('fwupd') # For firmware updates
+BASIC_PACKAGES+=('fwupd') # For firmware updates
 
-ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
+BASIC_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'less' 'tree')
 
-ALL_PAKGS+=('python-pip' 'python-pipx' 'python-pyaml')
+BASIC_PACKAGES+=('python-pip' 'python-pipx' 'python-pyaml')
 
-ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
+BASIC_PACKAGES+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'devtools')
 
-ALL_PAKGS+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
+BASIC_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
 
-ALL_PAKGS+=('bash-completion' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+BASIC_PACKAGES+=('bash-completion' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
 
 # 'docker-scan' not found
-ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
+BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 
-ALL_PAKGS+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-ALL_PAKGS+=('cryptsetup')
+BASIC_PACKAGES+=('cryptsetup')
 
-ALL_PAKGS+=('inetutils')
+BASIC_PACKAGES+=('inetutils')
 
 # 'system-config-printer' 'print-manager'
-ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
+BASIC_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -140,11 +140,11 @@ echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
     echo "Installing Intel microcode"
-    ALL_PAKGS+=('intel-ucode')
+    BASIC_PACKAGES+=('intel-ucode')
     ;;
 AuthenticAMD)
     echo "Installing AMD microcode"
-    ALL_PAKGS+=('amd-ucode')
+    BASIC_PACKAGES+=('amd-ucode')
     ;;
 *)
     echo "Unknown processor type"
@@ -156,7 +156,7 @@ echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "
 echo "--------------------------------------------------"
 
-pacman -S --needed --noconfirm "${ALL_PAKGS[@]}"
+pacman -S --needed --noconfirm "${BASIC_PACKAGES[@]}"
 
 echo "--------------------------------------------------"
 echo '      Setting Root Password to a Random one       '

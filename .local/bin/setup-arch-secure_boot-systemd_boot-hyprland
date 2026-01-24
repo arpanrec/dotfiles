@@ -129,6 +129,7 @@ ALL_PAKGS+=('cryptsetup')
 
 ALL_PAKGS+=('inetutils')
 
+ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper' 'print-manager')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -329,35 +330,3 @@ else
         echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
     fi
 fi
-
-echo "-------------------------------------------------------"
-echo "             Install Yay and AUR Packages              "
-echo "-------------------------------------------------------"
-
-echo " Adding user makemyarch_build_user"
-id -u makemyarch_build_user &>/dev/null ||
-    useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
-echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
-
-if ! command -v yay &>/dev/null; then
-    sudo -H -u makemyarch_build_user bash -c '
-    set -e
-    rm -rf ~/yay
-    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
-    cd "${HOME}/yay"
-    makepkg -si --noconfirm
-    '
-fi
-
-PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
-
-PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
-
-sudo -H -u makemyarch_build_user bash -c "cd ~ && \
-        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
-sudo userdel -r makemyarch_build_user || true
-
-sudo usermod -aG nordvpn "${username}"
-systemctl enable nordvpnd
-
-echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

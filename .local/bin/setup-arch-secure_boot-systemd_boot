@@ -161,8 +161,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
-    # 'nvidia-open' 'nvidia-utils'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-dkms')
+    # 'nvidia-open' 'nvidia-utils' 'nvtop'
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvidia-container-toolkit' 'nvidia-dkms')
 
     mkdir -p "/etc/pacman.d/hooks"
     cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"

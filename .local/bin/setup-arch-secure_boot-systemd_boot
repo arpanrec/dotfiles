@@ -151,57 +151,57 @@ AuthenticAMD)
     ;;
 esac
 
-echo "--------------------------------------------------"
-echo "         Graphics Drivers find and install        "
-echo "--------------------------------------------------"
-
-if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-
-    echo "-----------------------------------------------------------"
-    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
-    echo "-----------------------------------------------------------"
-    echo "Adding nvidia drivers to be installed"
-    # 'nvidia-open' 'nvidia-utils'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms')
-
-    mkdir -p "/etc/pacman.d/hooks"
-    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
-[Trigger]
-Operation=Install
-Operation=Upgrade
-Operation=Remove
-Type=Package
-Target=nvidia-open-dkms
-Target=linux
-
-[Action]
-Description=Update Nvidia module in initcpio
-Depends=mkinitcpio
-When=PostTransaction
-NeedsTargets
-Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
-EOT
-    mkdir /etc/udev/rules.d/ -p
-    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
-ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
-EOT
-fi
-
-if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
-
-    echo "-----------------------------------------------------------"
-    echo "                    Setting AMD Drivers                    "
-    echo "-----------------------------------------------------------"
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
-fi
-
-if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
-
-    echo "-----------------------------------------------------------"
-    echo "                   Setting Intel Drivers                   "
-    echo "-----------------------------------------------------------"
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
-fi
+#echo "--------------------------------------------------"
+#echo "         Graphics Drivers find and install        "
+#echo "--------------------------------------------------"
+#
+#if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+#
+#    echo "-----------------------------------------------------------"
+#    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+#    echo "-----------------------------------------------------------"
+#    echo "Adding nvidia drivers to be installed"
+#    # 'nvidia-open' 'nvidia-utils'
+#    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms')
+#
+#    mkdir -p "/etc/pacman.d/hooks"
+#    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+#[Trigger]
+#Operation=Install
+#Operation=Upgrade
+#Operation=Remove
+#Type=Package
+#Target=nvidia-open-dkms
+#Target=linux
+#
+#[Action]
+#Description=Update Nvidia module in initcpio
+#Depends=mkinitcpio
+#When=PostTransaction
+#NeedsTargets
+#Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+#EOT
+#    mkdir /etc/udev/rules.d/ -p
+#    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
+#ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
+#EOT
+#fi
+#
+#if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
+#
+#    echo "-----------------------------------------------------------"
+#    echo "                    Setting AMD Drivers                    "
+#    echo "-----------------------------------------------------------"
+#    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
+#fi
+#
+#if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
+#
+#    echo "-----------------------------------------------------------"
+#    echo "                   Setting Intel Drivers                   "
+#    echo "-----------------------------------------------------------"
+#    PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
+#fi
 
 echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "

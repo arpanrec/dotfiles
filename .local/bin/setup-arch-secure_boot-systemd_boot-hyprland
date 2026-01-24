@@ -129,7 +129,8 @@ ALL_PAKGS+=('cryptsetup')
 
 ALL_PAKGS+=('inetutils')
 
-ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper' 'print-manager')
+# 'system-config-printer' 'print-manager'
+ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"

@@ -151,29 +151,29 @@ AuthenticAMD)
     ;;
 esac
 
-#echo "--------------------------------------------------"
-#echo "         Graphics Drivers find and install        "
-#echo "--------------------------------------------------"
-#
-#if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-#
-#    echo "-----------------------------------------------------------"
-#    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
-#    echo "-----------------------------------------------------------"
-#    echo "Adding nvidia drivers to be installed"
-#    # 'nvidia-open' 'nvidia-utils'
-#    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms')
-#
-#    mkdir -p "/etc/pacman.d/hooks"
-#    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
-#[Trigger]
-#Operation=Install
-#Operation=Upgrade
-#Operation=Remove
-#Type=Package
-#Target=nvidia-open-dkms
-#Target=linux
-#
+echo "--------------------------------------------------"
+echo "         Graphics Drivers find and install        "
+echo "--------------------------------------------------"
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+    echo "-----------------------------------------------------------"
+    echo "Adding nvidia drivers to be installed"
+    # 'nvidia-open' 'nvidia-utils'
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-container-toolkit' 'nvidia-dkms')
+
+    mkdir -p "/etc/pacman.d/hooks"
+    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia-open-dkms
+Target=linux
+
 #[Action]
 #Description=Update Nvidia module in initcpio
 #Depends=mkinitcpio

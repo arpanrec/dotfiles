@@ -99,36 +99,36 @@ pacman -Sy reflector curl --noconfirm --needed
 
 pacman -Syu --noconfirm
 
-BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
+BASIC_PACMAN_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other' 'plymouth'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft'
     'linux-api-headers' 'cronie' 'power-profiles-daemon')
 
-BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs' 'inetutils')
+BASIC_PACMAN_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs' 'inetutils')
 
-BASIC_PACKAGES+=('fwupd') # For firmware updates
+BASIC_PACMAN_PACKAGES+=('fwupd') # For firmware updates
 
-BASIC_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
+BASIC_PACMAN_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'less' 'tree')
 
-BASIC_PACKAGES+=('python-pip' 'python-pipx' 'python-pyaml')
+BASIC_PACMAN_PACKAGES+=('python-pip' 'python-pipx' 'python-pyaml')
 
-BASIC_PACKAGES+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
+BASIC_PACMAN_PACKAGES+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'devtools')
 
-BASIC_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
+BASIC_PACMAN_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
 
-BASIC_PACKAGES+=('bash-completion' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+BASIC_PACMAN_PACKAGES+=('bash-completion' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
 
 # 'docker-scan' not found
-BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
+BASIC_PACMAN_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 
-BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+BASIC_PACMAN_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-BASIC_PACKAGES+=('cryptsetup' 'ccid' 'opensc')
+BASIC_PACMAN_PACKAGES+=('cryptsetup' 'ccid' 'opensc')
 
 # 'system-config-printer' 'print-manager'
-BASIC_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
+BASIC_PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -138,11 +138,11 @@ echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
     echo "Installing Intel microcode"
-    BASIC_PACKAGES+=('intel-ucode')
+    BASIC_PACMAN_PACKAGES+=('intel-ucode')
     ;;
 AuthenticAMD)
     echo "Installing AMD microcode"
-    BASIC_PACKAGES+=('amd-ucode')
+    BASIC_PACMAN_PACKAGES+=('amd-ucode')
     ;;
 *)
     echo "Unknown processor type"
@@ -162,7 +162,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "-----------------------------------------------------------"
     IS_NVIDIA_GPU=true
     # 'nvidia-utils'
-    BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvidia-open' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms')
+    BASIC_PACMAN_PACKAGES+=('linux-firmware-nvidia' 'nvidia-open' 'nvtop' 'nvidia-container-toolkit' 'nvidia-open-dkms')
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"
@@ -203,7 +203,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
     IS_AMD_GPU=true
-    BASIC_PACKAGES+=('linux-firmware-amdgpu')
+    BASIC_PACMAN_PACKAGES+=('linux-firmware-amdgpu')
 fi
 
 IS_INTEL_GPU=false
@@ -213,14 +213,14 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
     echo "                   Setting Intel Drivers                   "
     echo "-----------------------------------------------------------"
     IS_INTEL_GPU=true
-    BASIC_PACKAGES+=('linux-firmware-intel')
+    BASIC_PACMAN_PACKAGES+=('linux-firmware-intel')
 fi
 
 echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "
 echo "--------------------------------------------------"
 
-pacman -S --needed --noconfirm "${BASIC_PACKAGES[@]}"
+pacman -S --needed --noconfirm "${BASIC_PACMAN_PACKAGES[@]}"
 
 echo "--------------------------------------------------"
 echo '      Setting Root Password to a Random one       '
@@ -378,13 +378,13 @@ When = PostTransaction
 Exec = /usr/bin/systemctl restart systemd-boot-update.service
 EOF
 
-MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
+BASIC_SYSTEMD_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
     'cups' 'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd' 'systemd-boot-update'
 )
 
-for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
-    echo "Enable Service: ${MAN_SERVICE}"
-    systemctl enable "$MAN_SERVICE"
+for BASIC_SYSTEMD_SERVICE in "${BASIC_SYSTEMD_SERVICES[@]}"; do
+    echo "Enable Service: ${BASIC_SYSTEMD_SERVICE}"
+    systemctl enable "$BASIC_SYSTEMD_SERVICE"
 done
 
 if ! command -v nvidia-ctk &>/dev/null; then
@@ -420,12 +420,12 @@ if ! command -v yay &>/dev/null; then
     '
 fi
 
-PKGS_AUR=('nordvpn-bin')
+BASIC_AUR_PACKAGES=('nordvpn-bin')
 
-PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+BASIC_AUR_PACKAGE_JOIN=$(printf " %s" "${BASIC_AUR_PACKAGES[@]}")
 
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
-        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+        yay -S --answerclean None --answerdiff None --noconfirm --needed ${BASIC_AUR_PACKAGE_JOIN}"
 
 sudo usermod -aG nordvpn "${SYSTEM_ADMIN_USER}"
 systemctl enable nordvpnd
@@ -451,6 +451,8 @@ if [[ "${IS_INTEL_GPU}" == "true" ]]; then
     ALL_PAKGS+=('libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver'
         'libva-utils' 'mesa' 'intel-media-driver')
 fi
+
+pacman -S --needed --noconfirm "${ALL_PAKGS[@]}"
 
 systemctl enable sddm
 

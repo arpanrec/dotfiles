@@ -104,7 +104,7 @@ BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linu
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft'
     'linux-api-headers' 'cronie' 'power-profiles-daemon')
 
-BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
+BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs' 'inetutils')
 
 BASIC_PACKAGES+=('fwupd') # For firmware updates
 
@@ -125,9 +125,7 @@ BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-li
 
 BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-BASIC_PACKAGES+=('cryptsetup')
-
-BASIC_PACKAGES+=('inetutils')
+BASIC_PACKAGES+=('cryptsetup' 'ccid' 'opensc')
 
 # 'system-config-printer' 'print-manager'
 BASIC_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
@@ -151,6 +149,73 @@ AuthenticAMD)
     exit 1
     ;;
 esac
+
+echo "--------------------------------------------------"
+echo "         Graphics Drivers find and install        "
+echo "--------------------------------------------------"
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+    echo "-----------------------------------------------------------"
+    # 'nvidia-utils'
+    BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvidia-open' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
+        'libvdpau-va-gl' 'nvidia-container-toolkit' 'nvidia-open-dkms')
+    echo "Adding nvidia drivers to be installed"
+
+    mkdir -p "/etc/pacman.d/hooks"
+    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia
+Target=linux
+# Change the linux part above and in the Exec line if a different kernel is used
+
+[Action]
+Description=Update Nvidia module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+EOT
+    echo "Nvidia pacman hook installed /etc/pacman.d/hooks/nvidia.hook"
+    cat /etc/pacman.d/hooks/nvidia.hook
+
+    mkdir /etc/udev/rules.d/ -p
+    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
+ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
+EOT
+
+    echo "Nvidia pudev rule installed /etc/udev/rules.d/99-nvidia.rules"
+    cat /etc/udev/rules.d/99-nvidia.rules
+
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "                    Setting AMD Drivers                    "
+    echo "-----------------------------------------------------------"
+
+    BASIC_PACKAGES+=('linux-firmware-amdgpu' 'xf86-video-amdgpu' 'xf86-video-ati' 'lib32-vulkan-radeon'
+        'vulkan-radeon' 'lib32-vulkan-mesa-layers')
+
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
+
+    echo "-----------------------------------------------------------"
+    echo "                   Setting Intel Drivers                   "
+    echo "-----------------------------------------------------------"
+
+    BASIC_PACKAGES+=('linux-firmware-intel' 'libvdpau-va-gl' 'lib32-vulkan-intel' 'vulkan-intel' 'libva-intel-driver'
+        'libva-utils' 'mesa' 'intel-media-driver' 'vulkan-intel' 'lib32-vulkan-intel')
+
+fi
 
 echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "
@@ -323,7 +388,19 @@ for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
     systemctl enable "$MAN_SERVICE"
 done
 
-echo "Completed"
+if ! command -v nvidia-ctk &>/dev/null; then
+    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
+else
+    echo "Nvidia Container Toolkit is installed."
+
+    if $IS_RUNNING_SYSTEMD; then
+        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+        nvidia-ctk runtime configure --runtime=docker
+        systemctl restart docker
+    else
+        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+    fi
+fi
 
 echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "
@@ -354,4 +431,19 @@ sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
 sudo usermod -aG nordvpn "${SYSTEM_ADMIN_USER}"
 systemctl enable nordvpnd
 
+ALL_PAKGS+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'polkit' 'hyprpolkitagent' 'xorg-xwayland'
+    'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
+    'hyprlauncher' 'dolphin' 'dunst' 'kitty'
+    'wl-clipboard' 'cliphist'
+    'noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome' 'sans-serif')
+
+ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
+ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack' 'lib32-pipewire'
+    'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
+    'lib32-pipewire-v4l2' 'pavucontrol')
+
+systemctl enable sddm
+
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
+
+echo "Completed"

@@ -206,7 +206,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "-----------------------------------------------------------"
     # 'nvidia-utils'
     ALL_PAKGS+=('linux-firmware-nvidia' 'nvidia-open' 'nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'nvtop'
-        'libvdpau-va-gl' 'nvidia-container-toolkit')
+        'libvdpau-va-gl' 'nvidia-container-toolkit' 'nvidia-open-dkms')
     echo "Adding nvidia drivers to be installed"
 
     mkdir -p "/etc/pacman.d/hooks"
@@ -361,6 +361,7 @@ id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/h
 
 sudo usermod -aG docker,wheel "${username}"
 echo -e "${username}\n${username}" | passwd "${username}"
+echo "Set the password for user ${username} using 'passwd ${username}'."
 
 echo "--------------------------------------"
 echo "         SSH Key Only login           "
@@ -425,8 +426,6 @@ for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
 done
 
 echo "Completed"
-# shellcheck disable=SC2016
-echo "Set the password for user ${username} using 'passwd ${username}'."
 
 if ! command -v nvidia-ctk &>/dev/null; then
     echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."

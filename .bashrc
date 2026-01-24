@@ -148,3 +148,4 @@ fi
 if hash mc &>/dev/null; then
     complete -C "$(readlink -f "$(which mc)")" mc
 fi
+export GOPATH="${HOME}/.go"

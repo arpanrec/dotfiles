@@ -408,7 +408,7 @@ fi
 
 while orphaned=$(pacman -Qtdq); do
     [[ -z "${orphaned}" ]] && break
-    yay -R --noconfirm "${orphaned}"
+    pacman -R --noconfirm "${orphaned}"
 done
 
 AUR_BASIC_PACKAGES=('nordvpn-bin')

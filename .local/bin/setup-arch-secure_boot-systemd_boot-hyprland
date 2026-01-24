@@ -1,0 +1,363 @@
+#!/usr/bin/env bash
+set -euo pipefail
+echo "Starting setup"
+echo "Allowed hosts are: s1-dev, s2-dev"
+
+export TARGET_HOSTNAME="${1}"
+
+if [[ "${TARGET_HOSTNAME}" != "s1-dev" ]] && [[ "${TARGET_HOSTNAME}" != "s2-dev" ]]; then
+    echo "Invalid hostname provided. Allowed hosts are: s1-dev, s2-dev"
+    echo "First argument should be one of the above"
+    exit 1
+fi
+
+if [[ -d /run/systemd/system ]] && [[ "$(ps -p 1 -o comm=)" == "systemd" ]]; then
+    export IS_RUNNING_SYSTEMD=true
+else
+    export IS_RUNNING_SYSTEMD=false
+fi
+
+echo "System is running systemd: $IS_RUNNING_SYSTEMD"
+
+echo "--------------------------------------"
+echo "--     Time zone : Asia/Kolkata     --"
+echo "--------------------------------------"
+rm -rf /etc/localtime
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    timedatectl set-timezone Asia/Kolkata
+    timedatectl set-ntp true
+else
+    echo "Skipping systemd time setup (not running under systemd)"
+fi
+
+hwclock --systohc
+
+echo "Current date time : $(date)"
+
+echo "--------------------------------------"
+echo "--       Localization : UTF-8       --"
+echo "--------------------------------------"
+sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+echo 'LANG=en_US.UTF-8' >/etc/locale.conf
+locale-gen
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8"
+    localectl --no-ask-password set-keymap us
+    localectl
+else
+    echo "Skipping systemd services (not running under systemd)"
+fi
+
+nc=$(grep -c ^processor /proc/cpuinfo)
+echo "You have $nc cores."
+echo "-------------------------------------------------"
+echo "Changing the makeflags for $nc cores."
+TOTALMEM=$(grep -i 'memtotal' /proc/meminfo | grep -o '[[:digit:]]*')
+if [[ $TOTALMEM -gt 8000000 ]]; then
+    sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+    echo "Changing the compression settings for $nc cores."
+    sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+fi
+
+#Add parallel downloading
+sed -i 's/^#Para/Para/' /etc/pacman.conf
+sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
+#Enable multilib
+sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
+
+echo "--------------------------------------"
+echo "             Set Host Name            "
+echo "--------------------------------------"
+
+echo "${TARGET_HOSTNAME}" | tee /etc/hostname
+cat <<EOT >"/etc/hosts"
+127.0.0.1   localhost
+::1         localhost
+127.0.1.1   ${TARGET_HOSTNAME} ${TARGET_HOSTNAME}.blr-home.easyiac.com
+EOT
+
+if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
+    hostnamectl hostname "${TARGET_HOSTNAME}"
+else
+    echo "Skipping systemd services (not running under systemd)"
+fi
+
+pacman -Sy archlinux-keyring --noconfirm
+
+grep "keyserver hkp://keyserver.ubuntu.com" \
+    /etc/pacman.d/gnupg/gpg.conf ||
+    echo "keyserver hkp://keyserver.ubuntu.com" >>/etc/pacman.d/gnupg/gpg.conf
+
+pacman -Sy reflector curl --noconfirm --needed
+
+sudo reflector --country India --age 12 \
+    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+
+pacman -Syu --noconfirm
+
+ALL_PAKGS=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware' 'efibootmgr'
+    'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other' 'plymouth'
+    'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft'
+    'linux-api-headers')
+
+ALL_PAKGS+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
+
+ALL_PAKGS+=('fwupd') # For firmware updates
+
+ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
+    'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
+
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-pyaml')
+
+ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
+    'devtools')
+
+ALL_PAKGS+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux')
+
+ALL_PAKGS+=('bash-completion' 'zsh' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+
+# 'docker-scan' not found
+ALL_PAKGS+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
+
+ALL_PAKGS+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+
+ALL_PAKGS+=('cryptsetup')
+
+ALL_PAKGS+=('inetutils')
+
+
+echo "--------------------------------------------------"
+echo "--determine processor type and install microcode--"
+echo "--------------------------------------------------"
+proc_type=$(grep vendor /proc/cpuinfo | uniq | awk '{print $3}')
+echo "proc_type: $proc_type"
+case "$proc_type" in
+GenuineIntel)
+    echo "Installing Intel microcode"
+    ALL_PAKGS+=('intel-ucode')
+    ;;
+AuthenticAMD)
+    echo "Installing AMD microcode"
+    ALL_PAKGS+=('amd-ucode')
+    ;;
+*)
+    echo "Unknown processor type"
+    exit 1
+    ;;
+esac
+
+echo "--------------------------------------------------"
+echo "         Installing Hell lot of packages          "
+echo "--------------------------------------------------"
+
+pacman -S --needed --noconfirm "${ALL_PAKGS[@]}"
+
+echo "--------------------------------------------------"
+echo '      Setting Root Password to a Random one       '
+echo "--------------------------------------------------"
+
+# shellcheck disable=SC2155
+export __new_random_root="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
+echo "Setting a random root password"
+echo -e "${__new_random_root}\n${__new_random_root}" | passwd root
+unset __new_random_root
+
+getent group sudo || groupadd --system sudo
+getent group wheel || groupadd --system wheel
+
+echo "-----------------------------------------------------------------------------------"
+echo "                           Install Boot-loader with UEFI                           "
+echo "-----------------------------------------------------------------------------------"
+
+sudo plymouth-set-default-theme spinfinity
+
+tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/boot/vmlinuz-linux"
+PRESETS=('default' 'fallback')
+default_image="/boot/initramfs-linux.img"
+default_options=""
+fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"
+EOF
+
+echo "KEYMAP=us" | tee /etc/vconsole.conf
+
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    /etc/mkinitcpio.conf
+
+mkinitcpio -P
+chmod 600 /boot/initramfs-linux*
+
+mkdir -p /boot/loader
+
+tee "/boot/loader/loader.conf" <<EOF
+default  arch.conf
+timeout  4
+console-mode auto
+editor   yes
+EOF
+
+mkdir -p /boot/loader/entries
+
+tee "/boot/loader/entries/arch.conf" <<EOF
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options $(cat /etc/kernel/cmdline) splash
+EOF
+
+tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+title   Arch Linux (fallback)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options $(cat /etc/kernel/cmdline) splash
+EOF
+
+bootctl install
+
+sbctl sign -s /boot/vmlinuz-linux
+sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+sbctl status
+sbctl verify
+bootctl status
+bootctl list
+
+echo "------------------------------------------"
+echo "       heil wheel group in sudoers        "
+echo "------------------------------------------"
+
+# Add wheel no password rights
+mkdir -p /etc/sudoers.d
+echo "root ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1000-root
+echo "%sudo ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1100-sudo
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/1200-wheel
+
+grep wheel /etc/sudoers
+
+echo "--------------------------------------"
+echo "       Create User and Groups         "
+echo "--------------------------------------"
+
+username="${username:-user1}"
+id -u "${username}" &>/dev/null || useradd -s /bin/zsh -G docker,wheel -m -d "/home/${username}" "${username}"
+
+sudo usermod -aG docker,wheel "${username}"
+echo -e "${username}\n${username}" | passwd "${username}"
+
+echo "--------------------------------------"
+echo "         SSH Key Only login           "
+echo "--------------------------------------"
+
+sudo mkdir -p /etc/ssh/sshd_config.d
+tee "/etc/ssh/sshd_config.d/010-ssh-ansible.conf" <<EOF
+Port 22
+PasswordAuthentication no
+PermitRootLogin no
+PermitEmptyPasswords no
+MaxAuthTries 3
+X11Forwarding no
+ClientAliveInterval 60
+ClientAliveCountMax 3
+ChallengeResponseAuthentication no
+
+EOF
+
+sudo mkdir -p /etc/NetworkManager/conf.d
+tee "/etc/NetworkManager/conf.d/30-mac-randomization.conf" <<EOF
+[device-mac-randomization]
+wifi.scan-rand-mac-address=yes
+
+[connection-mac-randomization]
+ethernet.cloned-mac-address=permanent
+wifi.cloned-mac-address=permanent
+
+EOF
+
+echo "--------------------------------------"
+echo "       Enable Mandatory Services      "
+echo "--------------------------------------"
+
+mkdir -p /etc/pacman.d/hooks
+
+mkdir -p /etc/systemd/system/NetworkManager.service.d
+tee "/etc/systemd/system/NetworkManager.service.d/44-override.conf" <<EOF
+[Service]
+TimeoutStopSec=10s
+EOF
+
+tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Gracefully upgrading systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+EOF
+
+MAN_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'sddm' 'pcscd'
+    'cups' 'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd' 'systemd-boot-update'
+)
+
+for MAN_SERVICE in "${MAN_SERVICES[@]}"; do
+    echo "Enable Service: ${MAN_SERVICE}"
+    systemctl enable "$MAN_SERVICE"
+done
+
+echo "Completed"
+# shellcheck disable=SC2016
+echo "Set the password for user ${username} using 'passwd ${username}'."
+
+if ! command -v nvidia-ctk &>/dev/null; then
+    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
+else
+    echo "Nvidia Container Toolkit is installed."
+
+    if $IS_RUNNING_SYSTEMD; then
+        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+        nvidia-ctk runtime configure --runtime=docker
+        systemctl restart docker
+    else
+        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+    fi
+fi
+
+echo "-------------------------------------------------------"
+echo "             Install Yay and AUR Packages              "
+echo "-------------------------------------------------------"
+
+echo " Adding user makemyarch_build_user"
+id -u makemyarch_build_user &>/dev/null ||
+    useradd -s /bin/bash -m -d /home/makemyarch_build_user makemyarch_build_user
+echo "makemyarch_build_user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-makemyarch_build_user
+
+if ! command -v yay &>/dev/null; then
+    sudo -H -u makemyarch_build_user bash -c '
+    set -e
+    rm -rf ~/yay
+    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
+    cd "${HOME}/yay"
+    makepkg -si --noconfirm
+    '
+fi
+
+PKGS_AUR=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
+
+PKG_AUR_JOIN=$(printf " %s" "${PKGS_AUR[@]}")
+
+sudo -H -u makemyarch_build_user bash -c "cd ~ && \
+        yay -S --answerclean None --answerdiff None --noconfirm --needed ${PKG_AUR_JOIN}"
+sudo userdel -r makemyarch_build_user || true
+
+sudo usermod -aG nordvpn "${username}"
+systemctl enable nordvpnd
+
+echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

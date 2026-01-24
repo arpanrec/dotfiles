@@ -111,7 +111,7 @@ ALL_PAKGS+=('fwupd') # For firmware updates
 ALL_PAKGS+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw' 'p7zip' 'unrar'
     'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'libxcrypt-compat' 'openssh' 'git' 'vim' 'power-profiles-daemon')
 
-ALL_PAKGS+=('python-pip' 'python-pipx' 'python-uv' 'python-poetry' 'python-pyaml')
+ALL_PAKGS+=('python-pip' 'python-pipx' 'python-pyaml')
 
 ALL_PAKGS+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib'
     'devtools')
@@ -132,12 +132,12 @@ ALL_PAKGS+=('wireguard-tools' 'inetutils')
 ALL_PAKGS+=('noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 # 'phonon-qt5-gstreamer'
-ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager'
-    'kleopatra' 'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare'
-    'kdegraphics-thumbnailers' 'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils'
-    'qt6-imageformats' 'kimageformats' 'kio-gdrive' 'spectacle' 'gwenview' 'kcalc' 'kamera' 'kamoso' 'tk'
-    'kdialog' 'kvantum' 'materia-kde' 'kdecoration' 'kate'
-    'qt5-imageformats' 'qt5-declarative' 'qt5-x11extras')
+# For full kde 'plasma-meta' 'kde-applications'
+ALL_PAKGS+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager' 'kleopatra' 'discover'
+    'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'packagekit-qt6'
+    'kdesdk-thumbnailers' 'ark' 'icoutils' 'qt6-imageformats' 'kimageformats' 'kate' 'qt5-imageformats' 'kcalc' 'tk'
+    'kio-gdrive' 'spectacle' 'gwenview' 'kamera' 'kamoso' 'kdialog' 'kvantum' 'materia-kde' 'kdecoration'
+    'qt5-declarative' 'qt5-x11extras')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet
@@ -162,10 +162,10 @@ ALL_PAKGS+=('timeshift' 'vorta' 'deja-dup' 'borg' 'borgmatic' 'rclone' 'rsync' '
 
 ALL_PAKGS+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'system-config-printer' 'cups-pk-helper' 'print-manager')
 
-ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly'
+ALL_PAKGS+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good' 'gst-plugins-ugly' 'taglib'
     'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv' 'libmad' 'ffmpeg' 'libmpeg2'
-    'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'vlc-plugin-ffmpeg' 'vlc-plugins-all'
-    'haruna' 'yt-dlp' 'libheif' 'taglib' 'ffmpegthumbs')
+    'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'vlc-plugin-ffmpeg' 'vlc-plugins-all' 'yt-dlp'
+    'haruna' 'libheif' 'ffmpegthumbs')
 
 # Not Sure if this is needed Removed # libva-vdpau-driver lib32-libva-vdpau-driver mesa-vdpau lib32-mesa-vdpau
 ALL_PAKGS+=('mesa' 'libva-mesa-driver' 'lib32-libva-mesa-driver' 'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')

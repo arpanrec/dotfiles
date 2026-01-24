@@ -258,10 +258,11 @@ echo "         SSH Key Only login           "
 echo "--------------------------------------"
 
 sudo mkdir -p /etc/ssh/sshd_config.d
+# TODO: Set PasswordAuthentication and PermitRootLogin to `no`
 tee "/etc/ssh/sshd_config.d/010-ssh-ansible.conf" <<EOF
 Port 22
-PasswordAuthentication no
-PermitRootLogin no
+PasswordAuthentication yes
+PermitRootLogin yes
 PermitEmptyPasswords no
 MaxAuthTries 3
 X11Forwarding no

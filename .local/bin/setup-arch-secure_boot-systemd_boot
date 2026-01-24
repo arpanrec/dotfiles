@@ -416,6 +416,11 @@ AUR_BASIC_PACKAGES=('nordvpn-bin')
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
         yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_BASIC_PACKAGES[@]}")"
 
+while orphaned=$(pacman -Qtdq); do
+    [[ -z "${orphaned}" ]] && break
+    pacman -R --noconfirm "${orphaned}"
+done
+
 usermod -aG nordvpn "${SYSTEM_ADMIN_USER}"
 systemctl enable nordvpnd
 

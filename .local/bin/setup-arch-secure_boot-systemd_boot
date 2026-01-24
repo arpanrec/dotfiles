@@ -92,8 +92,8 @@ sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnu
 
 pacman -Sy reflector curl --noconfirm --needed
 
-reflector --country India --age 12 \
-    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+#reflector --country India --age 12 \
+#    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 
 pacman -Syu --noconfirm
 

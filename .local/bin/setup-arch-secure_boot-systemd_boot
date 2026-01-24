@@ -434,7 +434,7 @@ ALL_PAKGS+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'polkit' 'hyprpolki
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'hyprlauncher' 'dolphin' 'dunst' 'kitty'
     'wl-clipboard' 'cliphist'
-    'noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome' 'sans-serif')
+    'noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome' 'adobe-source-sans-fonts')
 
 ALL_PAKGS+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 ALL_PAKGS+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack' 'lib32-pipewire'

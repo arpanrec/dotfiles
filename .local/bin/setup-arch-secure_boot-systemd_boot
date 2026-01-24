@@ -161,6 +161,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
+    #This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
     PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open-dkms' 'nvidia-container-toolkit')
 
     mkdir -p "/etc/pacman.d/hooks"

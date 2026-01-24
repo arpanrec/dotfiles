@@ -42,7 +42,7 @@ sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
 
 while orphaned=$(pacman -Qtdq); do
     [[ -z "${orphaned}" ]] && break
-    yay -R "${orphaned}"
+    yay -R --noconfirm "${orphaned}"
 done
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

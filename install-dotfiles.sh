@@ -56,6 +56,8 @@ fi
 if [[ ! -d "${dotfiles_dir}" ]]; then
     echo "Cloning dotfiles from ${dotfiles_git_remote} to ${dotfiles_dir} as a bare repository"
     git clone --bare "${dotfiles_git_remote}" "${dotfiles_dir}"
+    echo "Checking out main branch with force"
+    git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" checkout main --force
 else
     git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" remote set-url origin "${dotfiles_git_remote}"
     echo "${dotfiles_dir} directory already exists. Updating existing repo."
@@ -70,8 +72,6 @@ git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" fetch --all
 echo "Setting status.showUntrackedFiles to no"
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" config --local status.showUntrackedFiles no
 
-echo "Checking out main branch with force"
-git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" checkout main --force
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" branch --set-upstream-to=origin/main main
 
 git --git-dir="${dotfiles_dir}" --work-tree="${HOME}" pull

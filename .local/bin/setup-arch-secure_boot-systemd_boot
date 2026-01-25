@@ -186,22 +186,22 @@ EOT
 ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
 EOT
 fi
-#
-#if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
-#
-#    echo "-----------------------------------------------------------"
-#    echo "                    Setting AMD Drivers                    "
-#    echo "-----------------------------------------------------------"
-#    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
-#fi
-#
-#if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
-#
-#    echo "-----------------------------------------------------------"
-#    echo "                   Setting Intel Drivers                   "
-#    echo "-----------------------------------------------------------"
-#    PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
-#fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
+
+   echo "-----------------------------------------------------------"
+   echo "                    Setting AMD Drivers                    "
+   echo "-----------------------------------------------------------"
+   PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
+
+   echo "-----------------------------------------------------------"
+   echo "                   Setting Intel Drivers                   "
+   echo "-----------------------------------------------------------"
+   PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
+fi
 
 echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "

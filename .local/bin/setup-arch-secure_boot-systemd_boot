@@ -424,11 +424,15 @@ echo "Set default to multi user"
 systemctl set-default multi-user.target
 
 echo "Install root certificate"
-mkdir -p /etc/ca-certificates/trust-source/anchors
+
+ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
 curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |
-    tee /etc/ca-certificates/trust-source/anchors/root_ca.crt
+    tee "${ROOT_CERTIFICATE_TEMP_FILE}"
+trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
+
+mkdir -p /etc/ca-certificates/trust-source/anchors
+cp "${ROOT_CERTIFICATE_TEMP_FILE}" /etc/ca-certificates/trust-source/anchors/root_ca.crt
 update-ca-trust
-trust anchor --store /etc/ca-certificates/trust-source/anchors/root_ca.crt
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 

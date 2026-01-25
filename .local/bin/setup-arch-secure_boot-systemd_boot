@@ -127,10 +127,6 @@ PACMAN_BASIC_PACKAGES+=('cryptsetup' 'libxcrypt-compat' 'ccid' 'opensc' 'pcsc-to
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
 
-PACMAN_BASIC_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
-
-PACMAN_BASIC_PACKAGES+=('ffmpeg' 'yt-dlp')
-
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
 echo "--------------------------------------------------"

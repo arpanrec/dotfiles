@@ -17,6 +17,10 @@ PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-
 
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma')
 
+PACMAN_BASIC_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
+
+PACMAN_BASIC_PACKAGES+=('ffmpeg' 'yt-dlp')
+
 PACMAN_PACKAGES+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
 
 PACMAN_PACKAGES+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'

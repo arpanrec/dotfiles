@@ -363,7 +363,7 @@ Exec = /usr/bin/systemctl restart systemd-boot-update.service
 EOF
 
 SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
-    'cups' 'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd' 'systemd-boot-update'
+    'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd' 'systemd-boot-update'
 )
 
 for SYSTEMD_BASIC_SERVICE in "${SYSTEMD_BASIC_SERVICES[@]}"; do

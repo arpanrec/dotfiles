@@ -74,6 +74,7 @@ fi
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
 systemctl enable sddm
+systemctl set-default graphical.target
 
 AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
 

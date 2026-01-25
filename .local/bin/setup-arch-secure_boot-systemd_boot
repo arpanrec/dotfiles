@@ -422,9 +422,6 @@ done
 usermod -aG nordvpn "${SYSTEM_ADMIN_USER}"
 systemctl enable nordvpnd
 
-echo "Set default to multi user"
-systemctl set-default multi-user.target
-
 echo "Install root certificate"
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"

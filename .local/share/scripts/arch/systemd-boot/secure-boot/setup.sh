@@ -209,7 +209,7 @@ echo "--------------------------------------------------------------------------
 echo "                           Install Boot-loader with UEFI                           "
 echo "-----------------------------------------------------------------------------------"
 
-plymouth-set-default-theme -R text
+plymouth-set-default-theme text
 
 tee "/etc/mkinitcpio.d/linux.preset" <<EOF
 ALL_kver="/boot/vmlinuz-linux"

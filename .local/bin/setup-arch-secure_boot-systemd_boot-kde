@@ -17,9 +17,9 @@ PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-
 
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma')
 
-PACMAN_BASIC_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
+PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
 
-PACMAN_BASIC_PACKAGES+=('ffmpeg' 'yt-dlp')
+PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp')
 
 PACMAN_PACKAGES+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
 
@@ -73,8 +73,7 @@ fi
 
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
-systemctl enable sddm
-systemctl enable cups
+systemctl enable sddm cups
 systemctl set-default graphical.target
 
 AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')

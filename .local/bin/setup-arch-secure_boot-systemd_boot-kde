@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+PACMAN_PACKAGES+=('plymouth')
+
 # 'phonon-qt5-gstreamer'
 # For full kde 'plasma-meta' 'kde-applications'
 PACMAN_PACKAGES+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'konsole' 'kwalletmanager' 'kleopatra'
@@ -72,6 +74,10 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
 fi
 
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
+
+plymouth-set-default-theme spinfinity
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    /etc/mkinitcpio.conf
 
 systemctl enable sddm
 

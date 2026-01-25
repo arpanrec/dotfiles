@@ -111,7 +111,7 @@ echo "Removing existing linode-stack-script cron job"
 sed -i '/.*linode-stack-script.*/d' /tmp/root-crontab
 
 echo "Adding new linode-stack-script cron job"
-echo "0 1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/linode-stack-script) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" |
+echo "0 1 * * * /bin/bash -c 'mkdir -p /var/log/linode-stack-script; /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/share/scripts/debian/linode-stack-script.sh) | tee -a /var/log/linode-stack-script/linode-stack-script-cron.log'" |
     tee -a /tmp/root-crontab
 
 echo "Installing new crontab"
@@ -128,7 +128,7 @@ else
 fi
 
 /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/bin/setup-debian)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/.local/share/scripts/debian/setup.sh)
 
 echo "Removing lock file ${LINODE_STACK_SCRIPT_LOCK_FILE}"
 rm -f "${LINODE_STACK_SCRIPT_LOCK_FILE}"

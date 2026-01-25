@@ -17,14 +17,11 @@ PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-
 
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma')
 
-PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper')
-
 PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp')
 
 PACMAN_PACKAGES+=('cryfs' 'encfs' 'gocryptfs') # For kde vault
 
-PACMAN_PACKAGES+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
-    'lib32-glib2')
+PACMAN_PACKAGES+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 
 PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
     'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2' 'pipewire-zeroconf'
@@ -43,7 +40,7 @@ PACMAN_PACKAGES+=('yubikey-personalization' 'yubikey-personalization-gui' 'yubik
 #  'duplicity'
 PACMAN_PACKAGES+=('timeshift' 'vorta' 'deja-dup' 'borgmatic')
 
-PACMAN_PACKAGES+=('system-config-printer' 'print-manager')
+PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
 PACMAN_PACKAGES+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 'gst-plugins-good'
     'gst-plugins-ugly' 'taglib' 'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv'

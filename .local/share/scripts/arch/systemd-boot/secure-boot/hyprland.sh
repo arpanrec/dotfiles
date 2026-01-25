@@ -15,7 +15,9 @@ PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof
     'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2'
     'pipewire-zeroconf' 'lib32-pipewire-v4l2' 'pavucontrol')
 
-PACMAN_PACKAGES+=('system-config-printer' 'print-manager')
+PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-config-printer' 'print-manager')
+
+PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')
@@ -33,7 +35,8 @@ fi
 
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
-systemctl enable sddm
+systemctl enable sddm cups
+systemctl set-default graphical.target
 
 AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin')
 

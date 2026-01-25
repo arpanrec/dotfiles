@@ -1,12 +1,12 @@
 * {
-  font-family: JetBrainsMono Nerd Font, monospace;
-  font-size: 13px;
+    font-family: JetBrainsMono Nerd Font, monospace;
+    font-size: 13px;
 }
 
 window#waybar {
-  background: rgba(30, 30, 46, 0.85);
-  border-radius: 12px;
-  color: #cdd6f4;
+    background: rgba(30, 30, 46, 0.85);
+    border-radius: 12px;
+    color: #cdd6f4;
 }
 
 /* General module styling */
@@ -16,49 +16,49 @@ window#waybar {
 #pulseaudio,
 #network,
 #tray {
-  padding: 0 16px;
-  margin: 4px 4px;
-  border-radius: 8px;
-  background: rgba(49, 50, 68, 0.6);
+    padding: 0 16px;
+    margin: 4px 4px;
+    border-radius: 8px;
+    background: rgba(49, 50, 68, 0.6);
 }
 
 /* Workspaces */
 #workspaces button {
-  padding: 0 6px;
-  color: #a6adc8;
-  background: transparent;
+    padding: 0 6px;
+    color: #a6adc8;
+    background: transparent;
 }
 
 #workspaces button.active {
-  color: #89b4fa;
-  background: rgba(137, 180, 250, 0.2);
+    color: #89b4fa;
+    background: rgba(137, 180, 250, 0.2);
 }
 
 #workspaces button:hover {
-  background: rgba(137, 180, 250, 0.15);
+    background: rgba(137, 180, 250, 0.15);
 }
 
 /* Window title */
 #window {
-  color: #bac2de;
+    color: #bac2de;
 }
 
 /* Clock */
 #clock {
-  color: #f9e2af;
+    color: #f9e2af;
 }
 
 /* Audio */
 #pulseaudio {
-  color: #94e2d5;
+    color: #94e2d5;
 }
 
 /* Network */
 #network {
-  color: #89b4fa;
+    color: #89b4fa;
 }
 
 /* Tray */
 #tray {
-  padding-right: 12px;
+    padding-right: 12px;
 }

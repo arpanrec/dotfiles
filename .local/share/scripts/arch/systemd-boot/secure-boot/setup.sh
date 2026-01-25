@@ -396,7 +396,7 @@ echo "-------------------------------------------------------"
 
 echo "Adding user arch-yay-installer-user"
 id -u arch-yay-installer-user &>/dev/null ||
-    useradd -s /bin/bash -m -d /home/arch-yay-installer-user arch-yay-installer-user
+    useradd -s /bin/bash --system -m -d /home/arch-yay-installer-user arch-yay-installer-user
 echo "arch-yay-installer-user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-arch-yay-installer-user
 
 if ! command -v yay &>/dev/null; then

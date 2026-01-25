@@ -185,18 +185,18 @@ fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
 
-   echo "-----------------------------------------------------------"
-   echo "                    Setting AMD Drivers                    "
-   echo "-----------------------------------------------------------"
-   PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
+    echo "-----------------------------------------------------------"
+    echo "                    Setting AMD Drivers                    "
+    echo "-----------------------------------------------------------"
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
 fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
 
-   echo "-----------------------------------------------------------"
-   echo "                   Setting Intel Drivers                   "
-   echo "-----------------------------------------------------------"
-   PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
+    echo "-----------------------------------------------------------"
+    echo "                   Setting Intel Drivers                   "
+    echo "-----------------------------------------------------------"
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
 fi
 
 echo "--------------------------------------------------"
@@ -422,6 +422,12 @@ systemctl enable nordvpnd
 
 echo "Set default to multi user"
 systemctl set-default multi-user.target
+
+echo "Install root certificate"
+ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
+curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |
+    tee "${ROOT_CERTIFICATE_TEMP_FILE}"
+trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 

@@ -389,11 +389,12 @@ echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "
 echo "-------------------------------------------------------"
 
+echo "Adding user arch-yay-installer-user"
+id -u arch-yay-installer-user &>/dev/null ||
+    useradd -s /bin/bash -m -d /home/arch-yay-installer-user arch-yay-installer-user
+echo "arch-yay-installer-user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-arch-yay-installer-user
+
 if ! command -v yay &>/dev/null; then
-    echo "Adding user arch-yay-installer-user"
-    id -u arch-yay-installer-user &>/dev/null ||
-        useradd -s /bin/bash -m -d /home/arch-yay-installer-user arch-yay-installer-user
-    echo "arch-yay-installer-user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-arch-yay-installer-user
 
     sudo -H -u arch-yay-installer-user bash -c '
     set -e

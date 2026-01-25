@@ -254,7 +254,7 @@ echo "Installing roles and collections dependencies"
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 
 echo "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
-ansible-galaxy collection install arpanrec.nebula:"${NEBULA_VERSION}"
+ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,"${NEBULA_VERSION}"
 
 echo Creating inventory file at "${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null

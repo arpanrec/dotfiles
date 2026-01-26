@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../.local/share/scripts"
+		},
+		{
+			"path": "../waybar"
+		},
+		{
+			"path": "../hypr"
+		}
+	],
+    "settings": {}
+}

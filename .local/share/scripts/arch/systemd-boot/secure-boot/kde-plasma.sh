@@ -7,7 +7,8 @@ PACMAN_PACKAGES+=('xorg' 'xorg-xinit' 'plasma' 'xdg-desktop-portal' 'sddm' 'kons
     'discover' 'partitionmanager' 'skanlite' 'dolphin' 'dolphin-plugins' 'kompare' 'kdegraphics-thumbnailers' 'kcalc'
     'packagekit-qt6' 'kdesdk-thumbnailers' 'ark' 'icoutils' 'qt6-imageformats' 'kimageformats' 'kate' 'qt5-imageformats'
     'tk' 'kio-gdrive' 'spectacle' 'gwenview' 'kamera' 'kamoso' 'kdialog' 'kvantum' 'materia-kde' 'kdecoration'
-    'qt5-declarative' 'qt5-x11extras' 'qt5-wayland' 'qt6-wayland' 'egl-wayland' 'egl-wayland2')
+    'qt5-declarative' 'qt5-x11extras' 'qt5-wayland' 'qt6-wayland' 'egl-wayland' 'egl-wayland2'
+    'kwallet-pam')
 
 # materia-kde materia UI based themes support, kvantum-qt5 has moved to aur
 # materia-gtk-theme this is required for some of the themes like prof and sweet

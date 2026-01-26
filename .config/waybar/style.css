@@ -12,6 +12,7 @@ window#waybar {
 }
 
 /* General module styling */
+#bluetooth,
 #workspaces,
 #window,
 #clock,

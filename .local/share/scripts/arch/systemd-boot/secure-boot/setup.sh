@@ -129,6 +129,8 @@ PACMAN_BASIC_PACKAGES+=('ccid' 'opensc' 'pcsc-tools')
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
 
+PACMAN_BASIC_PACKAGES+=('bluez' 'bluez-utils')
+
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
 echo "--------------------------------------------------"

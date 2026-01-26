@@ -23,6 +23,8 @@ PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-
 
 PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp')
 
+PACMAN_BASIC_PACKAGES+=('blueman')
+
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')
 fi

@@ -1,13 +1,16 @@
+MenuBar=Disabled
+
 [Desktop Entry]
-DefaultProfile=arpanrec.profile
+DefaultProfile=mainkonsole.profile
+
+[General]
+ConfigVersion=1
 
 [KFileDialog Settings]
 detailViewIconSize=16
 
 [MainWindow]
 MenuBar=Disabled
-State=AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAfsAAAAcAFMAUwBIAE0AYQBuAGEAZwBlAHIARABvAGMAawAAAAAA/////wAAANQA////AAAHgAAABBwAAAAEAAAABAAAAAgAAAAI/AAAAAEAAAACAAAAAgAAABYAbQBhAGkAbgBUAG8AbwBsAEIAYQByAQAAAAD/////AAAAAAAAAAAAAAAcAHMAZQBzAHMAaQBvAG4AVABvAG8AbABiAGEAcgEAAADi/////wAAAAAAAAAA
-ToolBarsMovable=Disabled
 eDP Height 1920x1200=1101
 eDP Height 2560x1600=732
 eDP Width 1920x1200=1920
@@ -28,5 +31,4 @@ eDP-1 YPosition 2560x1600=55
 CloseSingleTab=true
 
 [UiSettings]
-ColorScheme=
-WindowColorScheme=Default
+ColorScheme=Nordic

@@ -149,16 +149,17 @@ AuthenticAMD)
     ;;
 esac
 
-#echo "--------------------------------------------------"
-#echo "         Graphics Drivers find and install        "
-#echo "--------------------------------------------------"
-#
+echo "--------------------------------------------------"
+echo "         Graphics Drivers find and install        "
+echo "--------------------------------------------------"
+IS_NVIDIA_DRM=false
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
 
     echo "-----------------------------------------------------------"
     echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
+    IS_NVIDIA_DRM=true
     #This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
     PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
 
@@ -211,7 +212,11 @@ echo "--------------------------------------------------------------------------
 echo "                           Install Boot-loader with UEFI                           "
 echo "-----------------------------------------------------------------------------------"
 
-plymouth-set-default-theme text
+if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
+    echo todo
+fi
+
+plymouth-set-default-theme spinner
 
 tee "/etc/mkinitcpio.d/linux.preset" <<EOF
 ALL_kver="/boot/vmlinuz-linux"
@@ -393,7 +398,7 @@ echo "-------------------------------------------------------"
 
 echo "Adding user arch-yay-installer-user"
 id -u arch-yay-installer-user &>/dev/null ||
-    useradd -s /bin/bash -m -d /home/arch-yay-installer-user arch-yay-installer-user
+    useradd -s /bin/bash --system -m -d /home/arch-yay-installer-user arch-yay-installer-user
 echo "arch-yay-installer-user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-arch-yay-installer-user
 
 if ! command -v yay &>/dev/null; then

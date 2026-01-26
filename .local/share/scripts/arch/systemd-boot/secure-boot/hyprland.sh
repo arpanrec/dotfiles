@@ -6,7 +6,7 @@ PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'polkit' 'hyp
     'hyprlauncher' 'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
     'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk' 'gwenview'
     'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'unicode-emoji' 'breeze' 'aurorae' 'nodejs-emojione'
-    'dolphin-plugins' 'ark' 'kcalc' 'kservice5' 'archlinux-xdg-menu')
+    'dolphin-plugins' 'ark' 'kcalc' 'kservice5' 'archlinux-xdg-menu' 'perl-lwp-protocol-https')
 
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')
 

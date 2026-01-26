@@ -118,7 +118,7 @@ PACMAN_BASIC_PACKAGES+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 
     'arm-none-eabi-newlib' 'devtools')
 
 PACMAN_BASIC_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux' 'zsh'
-    'bash-completion' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+    'bash-completion' 'hunspell' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
 
 PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 

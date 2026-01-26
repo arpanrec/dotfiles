@@ -6,7 +6,7 @@
     // "width": 1280, // Waybar width
     "spacing": 6, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "hyprland/mode", "hyprland/scratchpad", "custom/media"],
+    "modules-left": ["hyprland/workspaces"],
     "modules-center": ["hyprland/window"],
     "modules-right": [
         "mpd",
@@ -44,9 +44,9 @@
         "format": "{name}: {icon}",
         "format-icons": {
             "1": "",
-            "2": "NA",
+            "2": "",
             "3": "",
-            "4": "",
+            "4": "",
             "5": "",
             "urgent": "",
             "focused": "",
@@ -62,16 +62,7 @@
             "unlocked": "",
         },
     },
-    "hyprland/mode": {
-        "format": "<span style=\"italic\">{}</span>",
-    },
-    "hyprland/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", ""],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}",
-    },
+
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
         "format-disconnected": "Disconnected ",
@@ -191,18 +182,6 @@
             "default": ["", "", ""],
         },
         "on-click": "pavucontrol",
-    },
-    "custom/media": {
-        "format": "{icon} {text}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜",
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null", // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
     "custom/power": {
         "format": "⏻",

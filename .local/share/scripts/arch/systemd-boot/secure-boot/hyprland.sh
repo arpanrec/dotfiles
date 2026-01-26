@@ -7,7 +7,7 @@ PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'polkit' 'hyp
     'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk')
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome'
-    'adobe-source-sans-fonts' 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono')
+    'adobe-source-sans-fonts' 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'rofi-emoji')
 
 PACMAN_PACKAGES+=('gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection'
     'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev'
@@ -21,7 +21,10 @@ PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
-PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp')
+PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'gst-libav' 'gstreamer'
+    'gst-plugins-ugly' 'taglib' 'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv'
+    'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'vlc-plugin-ffmpeg'
+    'vlc-plugins-all' 'haruna' 'libheif' 'gst-plugins-bad' 'gst-plugins-good')
 
 PACMAN_BASIC_PACKAGES+=('blueman')
 

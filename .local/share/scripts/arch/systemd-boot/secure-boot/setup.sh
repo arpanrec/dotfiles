@@ -110,7 +110,7 @@ PACMAN_BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exf
 PACMAN_BASIC_PACKAGES+=('fwupd')
 
 PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw'
-    'p7zip' 'unrar' 'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'openssh' 'git' 'vim' 'less' 'tree')
+    'p7zip' 'unrar' 'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'openssh' 'git' 'vim' 'less' 'tree' 'shfmt')
 
 PACMAN_BASIC_PACKAGES+=('python-pip' 'python-pipx' 'python-pyaml')
 

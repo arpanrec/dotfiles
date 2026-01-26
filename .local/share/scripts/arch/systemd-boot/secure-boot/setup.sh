@@ -97,7 +97,8 @@ pacman -Sy reflector curl --noconfirm --needed
 
 pacman -Syu --noconfirm
 
-PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
+# 'sbctl'
+PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'plymouth'
     'linux-api-headers' 'cronie' 'power-profiles-daemon' 'efibootmgr')
@@ -123,7 +124,8 @@ PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgr
 
 PACMAN_BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-PACMAN_BASIC_PACKAGES+=('cryptsetup' 'libxcrypt-compat' 'ccid' 'opensc' 'pcsc-tools')
+# 'cryptsetup' 'libxcrypt-compat'
+PACMAN_BASIC_PACKAGES+=('ccid' 'opensc' 'pcsc-tools')
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
 
@@ -255,12 +257,12 @@ EOF
 
 bootctl install
 
-sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
-
-sbctl status
-sbctl verify
+#sbctl sign -s /boot/vmlinuz-linux
+#sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+#sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+#
+#sbctl status
+#sbctl verify
 bootctl list
 
 echo "--------------------------------------------------"

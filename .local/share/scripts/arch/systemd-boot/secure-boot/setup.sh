@@ -213,7 +213,13 @@ echo "                           Install Boot-loader with UEFI                  
 echo "-----------------------------------------------------------------------------------"
 
 if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
-    echo todo
+    mkdir -p /etc/modprobe.d
+    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
+options nvidia-drm modeset=1
+EOF
+
+sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+
 fi
 
 plymouth-set-default-theme spinner

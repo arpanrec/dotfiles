@@ -189,7 +189,7 @@
         "menu": "on-click",
         "menu-file": "$HOME/.config/waybar/power_menu.xml",
         "menu-actions": {
-            "logout": "$HOME/.local/bin/hypr-logout",
+            "logout": "loginctl kill-user $USER",
             "shutdown": "systemctl poweroff",
             "reboot": "systemctl reboot",
             "suspend": "systemctl suspend",

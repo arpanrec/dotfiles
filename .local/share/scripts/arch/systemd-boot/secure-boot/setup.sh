@@ -229,7 +229,8 @@ EOF
 
 echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+# sd-encrypt
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block lvm2 filesystems fsck)/' \
     /etc/mkinitcpio.conf
 
 mkinitcpio -P

@@ -4,7 +4,7 @@ set -euo pipefail
 PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'polkit' 'hyprpolkitagent' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'hyprlauncher' 'dolphin' 'dunst' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6'
-    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi')
+    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk')
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome'
     'adobe-source-sans-fonts' 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono')

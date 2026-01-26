@@ -3,6 +3,7 @@
         Cascadia Mono NF,
         monospace;
     font-size: 14px;
+    padding-right: 4px;
 }
 
 window#waybar {
@@ -19,7 +20,7 @@ window#waybar {
 #pulseaudio,
 #network,
 #tray {
-    padding: 0 10px;
+    /* padding: 0 6px; */
     margin: 4px 4px;
     border-radius: 8px;
     background: rgba(49, 50, 68, 0.6);
@@ -63,5 +64,6 @@ window#waybar {
 
 /* Tray */
 #tray {
-    padding-right: 12px;
+    padding-right: 6px;
+    padding-left: 6px;
 }

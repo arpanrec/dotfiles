@@ -4,7 +4,7 @@
     // "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 34, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
-    "spacing": 30, // Gaps between modules (4px)
+    "spacing": 6, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces", "hyprland/mode", "hyprland/scratchpad", "custom/media"],
     "modules-center": ["hyprland/window"],
@@ -44,9 +44,9 @@
         "format": "{name}: {icon}",
         "format-icons": {
             "1": "",
-            "2": "",
+            "2": "NA",
             "3": "",
-            "4": "",
+            "4": "",
             "5": "",
             "urgent": "",
             "focused": "",
@@ -152,9 +152,6 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""],
-    },
-    "battery#bat2": {
-        "bat": "BAT2",
     },
     "power-profiles-daemon": {
         "format": "{icon}",

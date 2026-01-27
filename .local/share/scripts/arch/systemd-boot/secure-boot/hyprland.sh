@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-pacman -Rsc hyprpolkitagent
+pacman -Rsc hyprpolkitagent --noconfirm
 
 PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'

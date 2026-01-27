@@ -213,10 +213,10 @@ echo '      Setting Root Password to a Random one       '
 echo "--------------------------------------------------"
 
 # shellcheck disable=SC2155
-NEW_RANDOM_ROOT_PASSWORD="$(openssl rand -base64 128)"
+NEW_RANDOM_ROOT_PASSWORD="$(openssl rand -base64 128 | tr -d '\n')"
 export NEW_RANDOM_ROOT_PASSWORD
 echo "Setting a random root password"
-echo -e "${NEW_RANDOM_ROOT_PASSWORD}\n${NEW_RANDOM_ROOT_PASSWORD}" | passwd root
+printf '%s\n%s\n' "$NEW_RANDOM_ROOT_PASSWORD" "$NEW_RANDOM_ROOT_PASSWORD"| passwd root
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "

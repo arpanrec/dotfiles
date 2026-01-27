@@ -5,11 +5,15 @@ if pacman -Qi hyprpolkitagent &>/dev/null; then
     pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-authentication-agent-1
 fi
 
+if pacman -Qi hyprlauncher &>/dev/null; then
+    pacman -Rsc hyprlauncher --noconfirm # with Replace rofi
+fi
+
 PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'kwallet' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
-    'hyprlauncher' 'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
+    'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
     'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk'
-    'xdg-desktop-portal-kde' 'gwenview' 'xdg-user-dirs'
+    'xdg-desktop-portal-kde' 'gwenview' 'xdg-user-dirs' 'rofi'
     'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'unicode-emoji' 'breeze' 'aurorae' 'nodejs-emojione'
     'dolphin-plugins' 'ark' 'kcalc' 'kservice' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
     'kdbusaddons' 'kconfig' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' 'kitemviews' 'kwidgetsaddons'
@@ -23,7 +27,7 @@ PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')
 
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome'
-    'adobe-source-sans-fonts' 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'rofi-emoji')
+    'adobe-source-sans-fonts' 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono')
 
 PACMAN_PACKAGES+=('gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection'
     'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev'

@@ -281,7 +281,7 @@ echo '      Setting Root Password to a Random one       '
 echo "--------------------------------------------------"
 
 # shellcheck disable=SC2155
-NEW_RANDOM_ROOT_PASSWORD="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
+NEW_RANDOM_ROOT_PASSWORD="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 128)"
 export NEW_RANDOM_ROOT_PASSWORD
 echo "Setting a random root password"
 echo -e "${NEW_RANDOM_ROOT_PASSWORD}\n${NEW_RANDOM_ROOT_PASSWORD}" | passwd root

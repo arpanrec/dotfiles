@@ -97,7 +97,8 @@ pacman -Sy reflector curl --noconfirm --needed
 
 pacman -Syu --noconfirm
 
-PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
+# 'sbctl'
+PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'plymouth'
     'linux-api-headers' 'cronie' 'power-profiles-daemon' 'efibootmgr')
@@ -109,7 +110,7 @@ PACMAN_BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exf
 PACMAN_BASIC_PACKAGES+=('fwupd')
 
 PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw'
-    'p7zip' 'unrar' 'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'openssh' 'git' 'vim' 'less' 'tree')
+    'p7zip' 'unrar' 'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'openssh' 'git' 'vim' 'less' 'tree' 'shfmt')
 
 PACMAN_BASIC_PACKAGES+=('python-pip' 'python-pipx' 'python-pyaml')
 
@@ -117,15 +118,18 @@ PACMAN_BASIC_PACKAGES+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 
     'arm-none-eabi-newlib' 'devtools')
 
 PACMAN_BASIC_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux' 'zsh'
-    'bash-completion' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+    'bash-completion' 'hunspell' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
 
 PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
 
 PACMAN_BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-PACMAN_BASIC_PACKAGES+=('cryptsetup' 'libxcrypt-compat' 'ccid' 'opensc' 'pcsc-tools')
+# 'cryptsetup' 'libxcrypt-compat'
+PACMAN_BASIC_PACKAGES+=('ccid' 'opensc' 'pcsc-tools')
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
+
+PACMAN_BASIC_PACKAGES+=('bluez' 'bluez-utils')
 
 echo "--------------------------------------------------"
 echo "--determine processor type and install microcode--"
@@ -211,7 +215,13 @@ echo "                           Install Boot-loader with UEFI                  
 echo "-----------------------------------------------------------------------------------"
 
 if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
-    echo todo
+    mkdir -p /etc/modprobe.d
+    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
+options nvidia-drm modeset=1
+EOF
+
+sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+
 fi
 
 plymouth-set-default-theme spinner
@@ -227,7 +237,8 @@ EOF
 
 echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+# sd-encrypt
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block lvm2 filesystems fsck)/' \
     /etc/mkinitcpio.conf
 
 mkinitcpio -P
@@ -260,12 +271,12 @@ EOF
 
 bootctl install
 
-sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
-
-sbctl status
-sbctl verify
+#sbctl sign -s /boot/vmlinuz-linux
+#sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+#sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+#
+#sbctl status
+#sbctl verify
 bootctl list
 
 echo "--------------------------------------------------"

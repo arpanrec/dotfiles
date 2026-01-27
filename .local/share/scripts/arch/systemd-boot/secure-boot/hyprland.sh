@@ -9,12 +9,14 @@ PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'kwallet' 'sddm' 'sd
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'hyprlauncher' 'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
     'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk'
-    'xdg-desktop-portal-kde' 'gwenview' 'xdg-user-dirs-update'
+    'xdg-desktop-portal-kde' 'gwenview' 'xdg-user-dirs'
     'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'unicode-emoji' 'breeze' 'aurorae' 'nodejs-emojione'
     'dolphin-plugins' 'ark' 'kcalc' 'kservice' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
     'kdbusaddons' 'kconfig' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' 'kitemviews' 'kwidgetsaddons'
     'kwindowsystem' 'hypridle' 'hyprlock' 'polkit-kde-agent' 'hyprland-qt-support'
     'qt6-virtualkeyboard')
+
+# 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils' 'packagekit-qt6' 'qt6ct'
 
 PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme' 'adw-gtk-theme')
 

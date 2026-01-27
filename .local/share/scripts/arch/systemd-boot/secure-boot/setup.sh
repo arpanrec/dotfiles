@@ -97,8 +97,7 @@ pacman -Sy reflector curl --noconfirm --needed
 
 pacman -Syu --noconfirm
 
-# 'sbctl'
-PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
+PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'plymouth'
     'linux-api-headers' 'cronie' 'power-profiles-daemon' 'efibootmgr')

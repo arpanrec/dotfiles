@@ -97,8 +97,7 @@ pacman -Sy reflector curl --noconfirm --needed
 
 pacman -Syu --noconfirm
 
-# 'sbctl'
-PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
+PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
     'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
     'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'plymouth'
     'linux-api-headers' 'cronie' 'power-profiles-daemon' 'efibootmgr')
@@ -124,8 +123,7 @@ PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgr
 
 PACMAN_BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-# 'cryptsetup' 'libxcrypt-compat'
-PACMAN_BASIC_PACKAGES+=('ccid' 'opensc' 'pcsc-tools')
+PACMAN_BASIC_PACKAGES+=('cryptsetup' 'libxcrypt-compat' 'ccid' 'opensc' 'pcsc-tools')
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
 
@@ -210,83 +208,15 @@ echo "--------------------------------------------------"
 
 pacman -S --needed --noconfirm "${PACMAN_BASIC_PACKAGES[@]}"
 
-echo "-----------------------------------------------------------------------------------"
-echo "                           Install Boot-loader with UEFI                           "
-echo "-----------------------------------------------------------------------------------"
-
-if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
-    mkdir -p /etc/modprobe.d
-    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
-options nvidia-drm modeset=1
-EOF
-
-sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-
-fi
-
-plymouth-set-default-theme spinner
-
-tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-ALL_kver="/boot/vmlinuz-linux"
-PRESETS=('default' 'fallback')
-default_image="/boot/initramfs-linux.img"
-default_options=""
-fallback_image="/boot/initramfs-linux-fallback.img"
-fallback_options="-S autodetect"
-EOF
-
-echo "KEYMAP=us" | tee /etc/vconsole.conf
-
-# sd-encrypt
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block lvm2 filesystems fsck)/' \
-    /etc/mkinitcpio.conf
-
-mkinitcpio -P
-chmod 600 /boot/initramfs-linux*
-
-mkdir -p /boot/loader
-
-tee "/boot/loader/loader.conf" <<EOF
-default  arch.conf
-timeout  4
-console-mode auto
-editor   yes
-EOF
-
-mkdir -p /boot/loader/entries
-
-tee "/boot/loader/entries/arch.conf" <<EOF
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline) splash
-EOF
-
-tee "/boot/loader/entries/arch-fallback.conf" <<EOF
-title   Arch Linux (fallback)
-linux   /vmlinuz-linux
-initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline) splash
-EOF
-
-bootctl install
-
-#sbctl sign -s /boot/vmlinuz-linux
-#sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-#sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
-#
-#sbctl status
-#sbctl verify
-bootctl list
-
 echo "--------------------------------------------------"
 echo '      Setting Root Password to a Random one       '
 echo "--------------------------------------------------"
 
 # shellcheck disable=SC2155
-export __new_random_root="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
+NEW_RANDOM_ROOT_PASSWORD="$(openssl rand -base64 128 | tr -d '\n')"
+export NEW_RANDOM_ROOT_PASSWORD
 echo "Setting a random root password"
-echo -e "${__new_random_root}\n${__new_random_root}" | passwd root
+printf '%s\n%s\n' "$NEW_RANDOM_ROOT_PASSWORD" "$NEW_RANDOM_ROOT_PASSWORD"| passwd root
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
@@ -400,6 +330,74 @@ else
         echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
     fi
 fi
+
+echo "-----------------------------------------------------------------------------------"
+echo "                           Install Boot-loader with UEFI                           "
+echo "-----------------------------------------------------------------------------------"
+
+if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
+    mkdir -p /etc/modprobe.d
+    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
+options nvidia-drm modeset=1
+EOF
+
+sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+
+fi
+
+plymouth-set-default-theme spinner
+
+tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/boot/vmlinuz-linux"
+PRESETS=('default' 'fallback')
+default_image="/boot/initramfs-linux.img"
+default_options=""
+fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"
+EOF
+
+echo "KEYMAP=us" | tee /etc/vconsole.conf
+
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    /etc/mkinitcpio.conf
+
+mkinitcpio -P
+chmod 600 /boot/initramfs-linux*
+
+mkdir -p /boot/loader
+
+tee "/boot/loader/loader.conf" <<EOF
+default  arch.conf
+timeout  4
+console-mode auto
+editor   yes
+EOF
+
+mkdir -p /boot/loader/entries
+
+tee "/boot/loader/entries/arch.conf" <<EOF
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options $(cat /etc/kernel/cmdline) splash
+EOF
+
+tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+title   Arch Linux (fallback)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options $(cat /etc/kernel/cmdline) splash
+EOF
+
+bootctl install
+
+sbctl sign -s /boot/vmlinuz-linux
+sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+sbctl status
+sbctl verify
+bootctl list
 
 echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "

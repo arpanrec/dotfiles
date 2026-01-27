@@ -33,7 +33,7 @@ PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'gst-liba
     'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'vlc' 'vlc-plugin-ffmpeg'
     'vlc-plugins-all' 'haruna' 'libheif' 'gst-plugins-bad' 'gst-plugins-good')
 
-PACMAN_BASIC_PACKAGES+=('blueman')
+PACMAN_PACKAGES+=('blueman')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')

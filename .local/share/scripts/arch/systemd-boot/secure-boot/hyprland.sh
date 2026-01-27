@@ -72,6 +72,7 @@ else
 fi
 sed -i 's|^ConfigFile=configs/default\.conf$|ConfigFile=configs/rei.conf|' \
     /usr/share/sddm/themes/SilentSDDM/metadata.desktop
+sudo cp -r /usr/share/sddm/themes/SilentSDDM/fonts/* /usr/share/fonts/
 
 tee "/etc/sddm.conf" <<EOF
 [Theme]

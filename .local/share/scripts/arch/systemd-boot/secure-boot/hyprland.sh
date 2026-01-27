@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+pacman -Rsc hyprpolkitagent
+
 PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'hyprlauncher' 'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
@@ -8,7 +10,7 @@ PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'sddm-kcm' 'p
     'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'unicode-emoji' 'breeze' 'aurorae' 'nodejs-emojione'
     'dolphin-plugins' 'ark' 'kcalc' 'kservice' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
     'kdbusaddons' 'kconfig' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' 'kitemviews' 'kwidgetsaddons'
-    'kwindowsystem' 'hypridle' 'hyprlock' 'polkit-kde-agent' 'hyprland-qt-support' 'hyprpolkitagent'
+    'kwindowsystem' 'hypridle' 'hyprlock' 'polkit-kde-agent' 'hyprland-qt-support'
     'qt6-virtualkeyboard')
 
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')

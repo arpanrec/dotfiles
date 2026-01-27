@@ -1,13 +1,15 @@
 [Added Associations]
-image/png=gwenview-2.desktop;gwenview.desktop;
+image/png=org.kde.gwenview.desktop;gwenview-2.desktop;gwenview.desktop;
+text/plain=org.kde.kate.desktop;
 video/mp4=haruna-5.desktop;haruna-4.desktop;haruna-3.desktop;haruna-2.desktop;haruna.desktop;
 
 [Default Applications]
-image/png=gwenview-2.desktop;
-text/html=google-chrome.desktop
+image/png=org.kde.gwenview.desktop;
+text/html=brave-browser.desktop
+text/plain=org.kde.kate.desktop;
 video/mp4=haruna-5.desktop;
-x-scheme-handler/about=google-chrome.desktop
-x-scheme-handler/http=google-chrome.desktop
-x-scheme-handler/https=google-chrome.desktop
+x-scheme-handler/about=brave-browser.desktop
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
-x-scheme-handler/unknown=google-chrome.desktop
+x-scheme-handler/unknown=brave-browser.desktop

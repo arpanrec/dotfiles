@@ -8,12 +8,15 @@ fi
 PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'hyprlauncher' 'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
-    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk' 'gwenview'
+    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk'
+    'xdg-desktop-portal-kde' 'gwenview'
     'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'unicode-emoji' 'breeze' 'aurorae' 'nodejs-emojione'
     'dolphin-plugins' 'ark' 'kcalc' 'kservice' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
     'kdbusaddons' 'kconfig' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' 'kitemviews' 'kwidgetsaddons'
     'kwindowsystem' 'hypridle' 'hyprlock' 'polkit-kde-agent' 'hyprland-qt-support'
     'qt6-virtualkeyboard')
+
+PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme' 'adw-gtk-theme')
 
 PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')
 
@@ -38,6 +41,15 @@ PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'gst-liba
     'vlc-plugins-all' 'haruna' 'libheif' 'gst-plugins-bad' 'gst-plugins-good')
 
 PACMAN_PACKAGES+=('blueman')
+
+PACMAN_PACKAGES+=('wireguard-tools')
+PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
+# 'yubikey-manager-qt' Is broken
+PACMAN_PACKAGES+=('yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
+PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
+
+#  'duplicity'
+PACMAN_PACKAGES+=('timeshift' 'vorta' 'deja-dup' 'borgmatic')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')

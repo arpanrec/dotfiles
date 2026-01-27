@@ -281,9 +281,10 @@ echo '      Setting Root Password to a Random one       '
 echo "--------------------------------------------------"
 
 # shellcheck disable=SC2155
-export __new_random_root="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
+NEW_RANDOM_ROOT_PASSWORD="$(tr -dc 'A-Za-z0-9!@#$%^&*()_+=-{}[]:;,.?' </dev/urandom | head -c 64)"
+export NEW_RANDOM_ROOT_PASSWORD
 echo "Setting a random root password"
-echo -e "${__new_random_root}\n${__new_random_root}" | passwd root
+echo -e "${NEW_RANDOM_ROOT_PASSWORD}\n${NEW_RANDOM_ROOT_PASSWORD}" | passwd root
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "

@@ -208,80 +208,12 @@ echo "--------------------------------------------------"
 
 pacman -S --needed --noconfirm "${PACMAN_BASIC_PACKAGES[@]}"
 
-echo "-----------------------------------------------------------------------------------"
-echo "                           Install Boot-loader with UEFI                           "
-echo "-----------------------------------------------------------------------------------"
-
-if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
-    mkdir -p /etc/modprobe.d
-    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
-options nvidia-drm modeset=1
-EOF
-
-sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-
-fi
-
-plymouth-set-default-theme spinner
-
-tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-ALL_kver="/boot/vmlinuz-linux"
-PRESETS=('default' 'fallback')
-default_image="/boot/initramfs-linux.img"
-default_options=""
-fallback_image="/boot/initramfs-linux-fallback.img"
-fallback_options="-S autodetect"
-EOF
-
-echo "KEYMAP=us" | tee /etc/vconsole.conf
-
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
-    /etc/mkinitcpio.conf
-
-mkinitcpio -P
-chmod 600 /boot/initramfs-linux*
-
-mkdir -p /boot/loader
-
-tee "/boot/loader/loader.conf" <<EOF
-default  arch.conf
-timeout  4
-console-mode auto
-editor   yes
-EOF
-
-mkdir -p /boot/loader/entries
-
-tee "/boot/loader/entries/arch.conf" <<EOF
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline) splash
-EOF
-
-tee "/boot/loader/entries/arch-fallback.conf" <<EOF
-title   Arch Linux (fallback)
-linux   /vmlinuz-linux
-initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline) splash
-EOF
-
-bootctl install
-
-sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
-
-sbctl status
-sbctl verify
-bootctl list
-
 echo "--------------------------------------------------"
 echo '      Setting Root Password to a Random one       '
 echo "--------------------------------------------------"
 
 # shellcheck disable=SC2155
-NEW_RANDOM_ROOT_PASSWORD="$(head -c 128 /dev/urandom | base64 -w0)"
+NEW_RANDOM_ROOT_PASSWORD="$(openssl rand -base64 128)"
 export NEW_RANDOM_ROOT_PASSWORD
 echo "Setting a random root password"
 echo -e "${NEW_RANDOM_ROOT_PASSWORD}\n${NEW_RANDOM_ROOT_PASSWORD}" | passwd root
@@ -398,6 +330,74 @@ else
         echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
     fi
 fi
+
+echo "-----------------------------------------------------------------------------------"
+echo "                           Install Boot-loader with UEFI                           "
+echo "-----------------------------------------------------------------------------------"
+
+if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
+    mkdir -p /etc/modprobe.d
+    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
+options nvidia-drm modeset=1
+EOF
+
+sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+
+fi
+
+plymouth-set-default-theme spinner
+
+tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/boot/vmlinuz-linux"
+PRESETS=('default' 'fallback')
+default_image="/boot/initramfs-linux.img"
+default_options=""
+fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"
+EOF
+
+echo "KEYMAP=us" | tee /etc/vconsole.conf
+
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    /etc/mkinitcpio.conf
+
+mkinitcpio -P
+chmod 600 /boot/initramfs-linux*
+
+mkdir -p /boot/loader
+
+tee "/boot/loader/loader.conf" <<EOF
+default  arch.conf
+timeout  4
+console-mode auto
+editor   yes
+EOF
+
+mkdir -p /boot/loader/entries
+
+tee "/boot/loader/entries/arch.conf" <<EOF
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options $(cat /etc/kernel/cmdline) splash
+EOF
+
+tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+title   Arch Linux (fallback)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options $(cat /etc/kernel/cmdline) splash
+EOF
+
+bootctl install
+
+sbctl sign -s /boot/vmlinuz-linux
+sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+sbctl status
+sbctl verify
+bootctl list
 
 echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "

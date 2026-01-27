@@ -13,6 +13,7 @@ window#waybar {
 }
 
 /* General module styling */
+#mpris,
 #bluetooth,
 #workspaces,
 #window,

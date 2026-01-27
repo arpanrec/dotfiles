@@ -65,9 +65,6 @@ else
     echo "Checksum already exists, skipping download"
 fi
 
-#--------------------------------------------------
-# Verify checksum
-#--------------------------------------------------
 echo "Verifying checksum..."
 EXPECTED_SHA256="$(awk '{print $1}' "${CHECKSUM_FILE}")"
 CURRENT_SHA256="$(sha256sum "${ARCHIVE}" | awk '{print $1}')"
@@ -86,9 +83,6 @@ fi
 
 echo "Checksum OK ✔"
 
-#--------------------------------------------------
-# Extract
-#--------------------------------------------------
 rm -rf "${TOOLBOX_DIR}"
 mkdir -p "${TOOLBOX_DIR}"
 

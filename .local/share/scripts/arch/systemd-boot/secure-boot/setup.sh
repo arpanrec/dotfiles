@@ -123,8 +123,7 @@ PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgr
 
 PACMAN_BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
 
-# 'cryptsetup' 'libxcrypt-compat'
-PACMAN_BASIC_PACKAGES+=('ccid' 'opensc' 'pcsc-tools')
+PACMAN_BASIC_PACKAGES+=('cryptsetup' 'libxcrypt-compat' 'ccid' 'opensc' 'pcsc-tools')
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
 
@@ -236,8 +235,7 @@ EOF
 
 echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-# sd-encrypt
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block lvm2 filesystems fsck)/' \
+sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
     /etc/mkinitcpio.conf
 
 mkinitcpio -P
@@ -270,12 +268,12 @@ EOF
 
 bootctl install
 
-#sbctl sign -s /boot/vmlinuz-linux
-#sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-#sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
-#
-#sbctl status
-#sbctl verify
+sbctl sign -s /boot/vmlinuz-linux
+sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+sbctl status
+sbctl verify
 bootctl list
 
 echo "--------------------------------------------------"

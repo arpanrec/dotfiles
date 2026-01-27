@@ -79,6 +79,9 @@ tee "/etc/sddm.conf" <<EOF
 Current=SilentSDDM
 EOF
 
+systemctl enable sddm cups avahi-daemon.service
+systemctl set-default graphical.target
+
 while orphaned=$(pacman -Qtdq); do
     [[ -z "${orphaned}" ]] && break
     pacman -R --noconfirm "${orphaned}"

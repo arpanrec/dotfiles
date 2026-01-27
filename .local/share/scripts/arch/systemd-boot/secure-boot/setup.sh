@@ -379,14 +379,14 @@ tee "/boot/loader/entries/arch.conf" <<EOF
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline) splash
+options $(cat /etc/kernel/cmdline) splash quiet
 EOF
 
 tee "/boot/loader/entries/arch-fallback.conf" <<EOF
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
 initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline) splash
+options $(cat /etc/kernel/cmdline) splash quiet
 EOF
 
 bootctl install

@@ -12,13 +12,8 @@
         "mpris",
         "idle_inhibitor",
         "pulseaudio",
-        "network",
         "power-profiles-daemon",
-        "cpu",
-        "memory",
         "bluetooth",
-        "temperature",
-        "backlight",
         "battery",
         "clock",
         "tray",
@@ -56,8 +51,15 @@
             "default": "",
         },
     },
+    "hyprland/window": {
+        "format": "{title}",
+        "rewrite": {
+            "(.*) - Mozilla Firefox": "🌎 $1",
+            "(.*) - zsh": "> [$1]",
+        },
+    },
     "mpris": {
-        "format": "{player_icon} {dynamic}",
+        "format": "{player_icon} {player}",
         "format-paused": "{status_icon} <i>{dynamic}</i>",
         "player-icons": {
             "default": "▶",
@@ -88,26 +90,6 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}",
     },
-    "cpu": {
-        "format": "{usage}% ",
-        "tooltip": false,
-    },
-    "memory": {
-        "format": "{}% ",
-    },
-    "temperature": {
-        // "thermal-zone": 2,
-        "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C {icon}",
-        "format-icons": ["", "", ""],
-    },
-    "backlight": {
-        // "device": "acpi_video1",
-        "format": "{percent}% {icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", ""],
-    },
     "battery": {
         "states": {
             // "good": 95,
@@ -133,15 +115,6 @@
             "balanced": "",
             "power-saver": "",
         },
-    },
-    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}",
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float

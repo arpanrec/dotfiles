@@ -5,7 +5,7 @@ if pacman -Qi hyprpolkitagent &>/dev/null; then
     pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-authentication-agent-1
 fi
 
-PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
+PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'kwallet' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'hyprlauncher' 'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
     'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk' 'gwenview'

@@ -99,13 +99,21 @@ if [[ -f "${HOME}/.pulumi/bin/pulumi" ]] && [[ ! "${PATH}" =~ ${HOME}/.pulumi/bi
     export PATH="${HOME}/.pulumi/bin:${PATH}"
 fi
 
-GPG_TTY=$(tty)
-export GPG_TTY
+if [ -t 0 ]; then
+    GPG_TTY="$(tty 2>/dev/null)"
+    if [ -n "$GPG_TTY" ] && [ "$GPG_TTY" != "not a tty" ]; then
+        export GPG_TTY
+    else
+        unset GPG_TTY
+    fi
+else
+    unset GPG_TTY
+fi
 
 # Not working on centos7 systems
 # gpg-connect-agent updatestartuptty /bye >/dev/null
 
-if hash vim &>/dev/null; then
+if command -v vim &>/dev/null; then
     export EDITOR=vim
 fi
 

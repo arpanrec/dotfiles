@@ -27,17 +27,17 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 
 #'gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection' 'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev' 'libxkbcommon' 'upower' 'meson' 'scdoc' 'glib2-devel'
 
-PACMAN_PACKAGES+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
+# 'libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2'
+# 'gst-plugins-ugly' 'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv'
+# 'gst-libav' 'gstreamer' 'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore'
+# 'gst-plugins-good' 'libheif' 'gst-plugins-bad' 'mpv' 'mpv-mpris' 'gst-plugin-pipewire'
 
 PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
-    'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'gst-plugin-pipewire' 'pipewire-v4l2'
-    'pipewire-zeroconf' 'lib32-pipewire-v4l2' 'pavucontrol' 'qt6-multimedia-ffmpeg')
+    'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2'
+    'pipewire-zeroconf' 'lib32-pipewire-v4l2' 'pavucontrol' 'qt6-multimedia-ffmpeg'
+    'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'taglib' 'haruna')
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-config-printer' 'print-manager')
-
-PACMAN_PACKAGES+=('ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'gst-libav' 'gstreamer'
-    'gst-plugins-ugly' 'taglib' 'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv'
-    'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore' 'haruna' 'libheif' 'gst-plugins-bad' 'gst-plugins-good' 'mpv' 'mpv-mpris')
 
 PACMAN_PACKAGES+=('blueman')
 

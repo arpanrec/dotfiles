@@ -67,32 +67,18 @@ fi
 
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
-# redhat-fonts is needed for SilentSDDM
 AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin'
-    'redhat-fonts')
+    'sddm-silent-theme')
 
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
         yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_PACKAGES[@]}")"
 
-if [[ ! -d /usr/share/sddm/themes/SilentSDDM ]]; then
-    echo "Clonnig https://github.com/uiriansan/SilentSDDM.git to /usr/share/sddm/themes/SilentSDDM"
-    mkdir -p /usr/share/sddm/themes
-    git clone --depth 1 https://github.com/uiriansan/SilentSDDM.git /usr/share/sddm/themes/SilentSDDM
-else
-    echo "/usr/share/sddm/themes/SilentSDDM exists, Updating from https://github.com/uiriansan/SilentSDDM.git"
-    (
-        cd /usr/share/sddm/themes/SilentSDDM || exit 1
-        git reset --hard HEAD
-        git pull
-    )
-fi
 sed -i 's|^ConfigFile=configs/default\.conf$|ConfigFile=configs/rei.conf|' \
-    /usr/share/sddm/themes/SilentSDDM/metadata.desktop
-sudo cp -r /usr/share/sddm/themes/SilentSDDM/fonts/* /usr/share/fonts/
+    /usr/share/sddm/themes/silent/metadata.desktop
 
 tee "/etc/sddm.conf" <<EOF
 [Theme]
-Current=SilentSDDM
+Current=silent
 EOF
 
 systemctl enable sddm cups avahi-daemon.service

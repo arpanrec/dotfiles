@@ -8,13 +8,15 @@ fi
 # 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
 # 'cliphist'
 
-PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support'
+PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support' 'hyprpolkitagent'
     'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
     'wl-clipboard' 'copyq'
-    'qt5-wayland' 'qt6-wayland'  'kwalletmanager' 'kwallet' 'sddm'
-    'dolphin'  'kate' 'konsole' 'xdg-desktop-portal-kde' 'qtkeychain-qt6' 'kvantum' 'gwenview'
-    'hyprpolkitagent' 'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'dolphin-plugins' 'ark')
+    'qt5-wayland' 'qt6-wayland'
+    'qt6ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
+    'kwalletmanager' 'kwallet' 'sddm'
+    'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'xdg-desktop-portal-kde' 'qtkeychain-qt6' 'kvantum' 'gwenview'
+    'ark') # ark is needed for dolphin archive/unarchive plugin.
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
 # 'packagekit-qt6' 'qt6ct'
@@ -33,9 +35,9 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 # 'gst-plugins-good' 'libheif' 'gst-plugins-bad' 'mpv' 'mpv-mpris' 'gst-plugin-pipewire'
 
 PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
-    'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2'
-    'pipewire-zeroconf' 'lib32-pipewire-v4l2' 'pavucontrol' 'qt6-multimedia-ffmpeg'
-    'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'taglib' 'haruna')
+    'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2' 'pipewire-zeroconf'
+    'lib32-pipewire-v4l2' 'pavucontrol' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats'
+    'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'taglib' 'haruna' 'kdegraphics-thumbnailers')
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 

@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if pacman -Qi hyprpolkitagent &>/dev/null; then
-    pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-authentication-agent-1
-fi
-
 if pacman -Qi hyprlauncher &>/dev/null; then
     pacman -Rsc hyprlauncher --noconfirm # with Replace rofi
 fi
 
+# 'xdg-desktop-portal-kde' 'xdg-desktop-portal-gtk' kwidgetsaddons kitemviews 'breeze' 'aurorae' 'nodejs-emojione' kconfig
+# 'kdbusaddons' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' kservice
 PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'kwallet' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
-    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi' 'xdg-desktop-portal-gtk'
-    'xdg-desktop-portal-kde' 'gwenview' 'xdg-user-dirs' 'rofi'
-    'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'unicode-emoji' 'breeze' 'aurorae' 'nodejs-emojione'
-    'dolphin-plugins' 'ark' 'kcalc' 'kservice' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
-    'kdbusaddons' 'kconfig' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' 'kitemviews' 'kwidgetsaddons'
+    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
+    'gwenview' 'xdg-user-dirs' 'rofi' 'hyprpolkitagent'
+    'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats'
+    'dolphin-plugins' 'ark' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
     'kwindowsystem' 'hypridle' 'hyprlock' 'polkit-kde-agent' 'hyprland-qt-support'
     'qt6-virtualkeyboard')
 
@@ -31,7 +28,7 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 
 PACMAN_PACKAGES+=('gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection'
     'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev'
-    'libxkbcommon' 'upower' 'meson' 'cmake' 'scdoc' 'wayland-protocols' 'glib2-devel')
+    'libxkbcommon' 'upower' 'meson' 'scdoc' 'wayland-protocols' 'glib2-devel')
 
 PACMAN_PACKAGES+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 

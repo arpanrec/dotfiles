@@ -6,29 +6,27 @@ if pacman -Qi hyprlauncher &>/dev/null; then
 fi
 
 # 'xdg-desktop-portal-kde' 'xdg-desktop-portal-gtk' kwidgetsaddons kitemviews 'breeze' 'aurorae' 'nodejs-emojione' kconfig
-# 'kdbusaddons' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' kservice
-PACMAN_PACKAGES+=('hyprland' 'kwalletmanager' 'kwallet-pam' 'kwallet' 'sddm' 'sddm-kcm' 'polkit' 'xorg-xwayland'
+# 'kdbusaddons' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' kservice 'kwallet-pam' 'sddm-kcm'
+# 'polkit' 'polkit-kde-agent' 'avahi' kwindowsystem 'perl-lwp-protocol-https' 'qt6-virtualkeyboard'
+PACMAN_PACKAGES+=('hyprland' 'waybar' 'kwalletmanager' 'kwallet' 'sddm' 'xorg-xwayland'
     'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
     'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
     'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
-    'gwenview' 'xdg-user-dirs' 'rofi' 'hyprpolkitagent'
-    'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats'
-    'dolphin-plugins' 'ark' 'archlinux-xdg-menu' 'perl-lwp-protocol-https' 'avahi'
-    'kwindowsystem' 'hypridle' 'hyprlock' 'polkit-kde-agent' 'hyprland-qt-support'
-    'qt6-virtualkeyboard')
+    'gwenview' 'xdg-user-dirs' 'rofi' 'hyprpolkitagent' 'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats'
+    'dolphin-plugins' 'ark' 'archlinux-xdg-menu' 'wayland-protocols'
+    'hypridle' 'hyprlock' 'hyprland-qt-support')
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils' 'packagekit-qt6' 'qt6ct'
+# 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme' 'adw-gtk-theme'
+# 'networkmanager-openvpn' 'libnma'  'networkmanager-openconnect'
+PACMAN_PACKAGES+=('network-manager-applet')
 
-PACMAN_PACKAGES+=('appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme' 'adw-gtk-theme')
+# 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'
+PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
-PACMAN_PACKAGES+=('networkmanager-openvpn' 'libnma' 'network-manager-applet' 'networkmanager-openconnect')
-
-PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'waybar' 'otf-font-awesome'
-    'adobe-source-sans-fonts' 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono')
-
-PACMAN_PACKAGES+=('gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection'
-    'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev'
-    'libxkbcommon' 'upower' 'meson' 'scdoc' 'wayland-protocols' 'glib2-devel')
+#'gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection'
+#    'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev'
+#    'libxkbcommon' 'upower' 'meson' 'scdoc' 'glib2-devel'
 
 PACMAN_PACKAGES+=('libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2')
 

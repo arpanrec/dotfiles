@@ -51,7 +51,7 @@ PACMAN_PACKAGES+=('ffmpegthumbnailer' 'gst-libav' 'gstreamer' 'gst-plugins-bad' 
 PACMAN_PACKAGES+=('mesa' 'libva-mesa-driver' 'lib32-libva-mesa-driver' 'lib32-mesa' 'libvdpau-va-gl' 'mesa-utils')
 
 # VMware Workstation dependencies
-PACMAN_PACKAGES+=('gtkmm3' 'pcsclite' 'swtpm' 'openssl-1.1' 'realtime-privileges' 'linux-headers')
+PACMAN_PACKAGES+=('gtkmm3' 'pcsclite' 'swtpm' 'realtime-privileges' 'linux-headers')
 
 PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 

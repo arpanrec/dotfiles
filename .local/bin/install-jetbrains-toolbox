@@ -98,5 +98,5 @@ rm -f "${TOOLBOX_DIR}/bin/jetbrains-toolbox.desktop"
 
 echo
 echo "✅ JetBrains Toolbox installed successfully!"
-echo "Run it with:"
-echo "  ${TOOLBOX_DIR}/bin/jetbrains-toolbox"
+echo "Running: ${TOOLBOX_DIR}/bin/jetbrains-toolbox"
+"${TOOLBOX_DIR}/bin/jetbrains-toolbox"

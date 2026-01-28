@@ -5,18 +5,19 @@ if pacman -Qi hyprlauncher &>/dev/null; then
     pacman -Rsc hyprlauncher --noconfirm # with Replace rofi
 fi
 
-# 'xdg-desktop-portal-kde' 'xdg-desktop-portal-gtk' kwidgetsaddons kitemviews 'breeze' 'aurorae' 'nodejs-emojione' kconfig
-# 'kdbusaddons' 'kcoreaddons' 'kcrash' 'kguiaddons' 'ki18n' kservice 'kwallet-pam' 'sddm-kcm'
-# 'polkit' 'polkit-kde-agent' 'avahi' kwindowsystem 'perl-lwp-protocol-https' 'qt6-virtualkeyboard'
-PACMAN_PACKAGES+=('hyprland' 'waybar' 'kwalletmanager' 'kwallet' 'sddm' 'xorg-xwayland'
-    'xorg-xeyes' 'xorg-xlsclients' 'xdg-desktop-portal-hyprland' 'qt5-wayland' 'qt6-wayland' 'hyprpaper'
-    'dolphin' 'dunst' 'copyq' 'kitty' 'kate' 'konsole' 'qt6-declarative' 'qtkeychain-qt6' 'kvantum'
-    'wl-clipboard' 'cliphist' 'hyprshot' 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
-    'gwenview' 'xdg-user-dirs' 'rofi' 'hyprpolkitagent' 'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats'
-    'dolphin-plugins' 'ark' 'archlinux-xdg-menu' 'wayland-protocols'
-    'hypridle' 'hyprlock' 'hyprland-qt-support')
+# 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
+# 'cliphist'
 
-# 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils' 'packagekit-qt6' 'qt6ct'
+PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support'
+    'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
+    'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
+    'wl-clipboard' 'copyq'
+    'qt5-wayland' 'qt6-wayland'  'kwalletmanager' 'kwallet' 'sddm'
+    'dolphin'  'kate' 'konsole' 'xdg-desktop-portal-kde' 'qtkeychain-qt6' 'kvantum' 'gwenview'
+    'hyprpolkitagent' 'kdegraphics-thumbnailers' 'qt6-imageformats' 'kimageformats' 'dolphin-plugins' 'ark')
+
+# 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
+# 'packagekit-qt6' 'qt6ct'
 # 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme' 'adw-gtk-theme'
 # 'networkmanager-openvpn' 'libnma'  'networkmanager-openconnect'
 PACMAN_PACKAGES+=('network-manager-applet')

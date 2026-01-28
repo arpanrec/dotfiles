@@ -14,7 +14,7 @@ PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprlan
     'wl-clipboard' 'copyq'
     'qt5-wayland' 'qt6-wayland'
     'qt6ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
-    'kwalletmanager' 'kwallet' 'sddm'
+    'kwalletmanager' 'kwallet' 'sddm' 'kleopatra'
     'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'qtkeychain-qt6' 'kvantum' 'gwenview'
     'ark') # ark is needed for dolphin archive/unarchive plugin.
 

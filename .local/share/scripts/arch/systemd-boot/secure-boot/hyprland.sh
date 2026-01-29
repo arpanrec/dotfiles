@@ -18,7 +18,7 @@ PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprlan
     'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'qtkeychain-qt6' 'kvantum' 'gwenview'
     'ark') # ark is needed for dolphin archive/unarchive plugin.
 
-# xdg-desktop-portal-kde
+# 'xdg-desktop-portal-kde'
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
 # 'packagekit-qt6' 'qt6ct'
@@ -29,7 +29,9 @@ PACMAN_PACKAGES+=('network-manager-applet')
 # 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
-#'gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection' 'libgirepository' 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev' 'libxkbcommon' 'upower' 'meson' 'scdoc' 'glib2-devel'
+# 'gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection' 'libgirepository'
+# 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev' 'libxkbcommon' 'upower'
+# 'meson' 'scdoc' 'glib2-devel'
 
 # 'libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2'
 # 'gst-plugins-ugly' 'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv'
@@ -51,8 +53,8 @@ PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
 PACMAN_PACKAGES+=('yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
 PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 
-#  'duplicity'
-PACMAN_PACKAGES+=('timeshift' 'vorta' 'deja-dup' 'borgmatic')
+#  'duplicity' 'vorta' 'borgmatic'
+PACMAN_PACKAGES+=('timeshift' 'deja-dup')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')

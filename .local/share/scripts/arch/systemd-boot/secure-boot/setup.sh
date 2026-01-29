@@ -139,7 +139,8 @@ PACMAN_BASIC_PACKAGES+=('lvm2' 'cryptsetup' 'btrfs-progs' 'xfsprogs' 'nilfs-util
 PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'p7zip' 'unrar' 'unarchiver' 'pigz' 'lzop' 'lrzip')
 
 # Monitoring & diagnostics
-PACMAN_BASIC_PACKAGES+=('htop' 'bpytop' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace' 'screenfetch')
+PACMAN_BASIC_PACKAGES+=('htop' 'bpytop' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace' 'screenfetch' 'usbutils'
+    'iotop')
 
 # Development toolchains
 PACMAN_BASIC_PACKAGES+=('make' 'cmake' 'ninja' 'gcc' 'clang' 'llvm' 'llvm-libs' 'lldb' 'devtools' 'tree-sitter')

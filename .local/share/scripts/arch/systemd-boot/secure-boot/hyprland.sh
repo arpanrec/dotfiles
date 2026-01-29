@@ -43,7 +43,7 @@ PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof
     'lib32-pipewire-v4l2' 'pavucontrol' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats'
     'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'taglib' 'haruna' 'kdegraphics-thumbnailers')
 
-PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'usbutils' 'cups-pk-helper' 'system-config-printer' 'print-manager')
+PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
 PACMAN_PACKAGES+=('blueman')
 

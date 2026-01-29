@@ -72,7 +72,10 @@ fi
 
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
-AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'nordvpn-bin' 'yubico-authenticator-bin'
+systemctl enable sddm cups avahi-daemon.service
+systemctl set-default graphical.target
+
+AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'yubico-authenticator-bin'
     'sddm-silent-theme')
 
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
@@ -85,9 +88,6 @@ tee "/etc/sddm.conf" <<EOF
 [Theme]
 Current=silent
 EOF
-
-systemctl enable sddm cups avahi-daemon.service
-systemctl set-default graphical.target
 
 while orphaned=$(pacman -Qtdq); do
     [[ -z "${orphaned}" ]] && break

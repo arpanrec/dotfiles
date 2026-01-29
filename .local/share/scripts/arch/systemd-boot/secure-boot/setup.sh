@@ -3,7 +3,7 @@ set -euo pipefail
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
-export TARGET_HOSTNAME="${1}"
+export TARGET_HOSTNAME="${1:$(hostname -s)}"
 
 if [[ "${TARGET_HOSTNAME}" != "s1-dev" ]] && [[ "${TARGET_HOSTNAME}" != "s2-dev" ]]; then
     echo "Invalid hostname provided. Allowed hosts are: s1-dev, s2-dev"

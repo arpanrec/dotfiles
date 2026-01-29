@@ -12,8 +12,8 @@ if [[ "${TARGET_HOSTNAME}" != "s1-dev" ]] && [[ "${TARGET_HOSTNAME}" != "s2-dev"
 fi
 
 allowed_host_names=(
-  s1-dev
-  s2-dev
+    s1-dev
+    s2-dev
 )
 
 is_valid_hostname=false
@@ -112,38 +112,56 @@ sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnu
 
 pacman -Sy reflector curl --noconfirm --needed
 
-#reflector --country India --age 12 \
-#    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+reflector --country India --age 12 \
+    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 
 pacman -Syu --noconfirm
 
-PACMAN_BASIC_PACKAGES=('mkinitcpio' 'systemd' 'sbctl' 'base' 'base-devel' 'linux' 'linux-headers' 'linux-firmware'
-    'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek' 'linux-firmware-other'
-    'linux-firmware-realtek' 'linux-firmware-whence' 'dkms' 'plymouth'
-    'linux-api-headers' 'cronie' 'power-profiles-daemon' 'efibootmgr')
+# Core system & boot
+PACMAN_BASIC_PACKAGES=('base' 'base-devel' 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio'
+    'efibootmgr' 'sbctl' 'plymouth')
 
-PACMAN_BASIC_PACKAGES+=('inetutils' 'dhcpcd' 'networkmanager' 'dhclient' 'iptables-nft')
+# Firmware
+PACMAN_BASIC_PACKAGES+=('linux-firmware' 'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek'
+    'linux-firmware-realtek' 'linux-firmware-other' 'linux-firmware-whence' 'fwupd')
 
-PACMAN_BASIC_PACKAGES+=('lvm2' 'ntfs-3g' 'sshfs' 'btrfs-progs' 'dosfstools' 'exfatprogs')
+# Init, services & scheduling
+PACMAN_BASIC_PACKAGES+=('systemd' 'cronie' 'power-profiles-daemon')
 
-PACMAN_BASIC_PACKAGES+=('fwupd')
+# Networking & firewall
+PACMAN_BASIC_PACKAGES+=('networkmanager' 'dhcpcd' 'dhclient' 'inetutils' 'openssh' 'iptables-nft' 'ufw')
 
-PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'pigz' 'wget' 'jfsutils' 'udftools' 'xfsprogs' 'nilfs-utils' 'curlftpfs' 'ufw'
-    'p7zip' 'unrar' 'jq' 'trurl' 'unarchiver' 'lzop' 'lrzip' 'openssh' 'git' 'vim' 'less' 'tree' 'shfmt')
+# Storage, filesystems & disk utilities
+PACMAN_BASIC_PACKAGES+=('lvm2' 'cryptsetup' 'btrfs-progs' 'xfsprogs' 'nilfs-utils' 'jfsutils' 'udftools' 'dosfstools'
+    'exfatprogs' 'ntfs-3g' 'sshfs')
 
-PACMAN_BASIC_PACKAGES+=('python-pip' 'python-pipx' 'python-pyaml')
+# Archiving & compression
+PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'p7zip' 'unrar' 'unarchiver' 'pigz' 'lzop' 'lrzip')
 
-PACMAN_BASIC_PACKAGES+=('lldb' 'clang' 'llvm' 'llvm-libs' 'gcc' 'mingw-w64-gcc' 'arm-none-eabi-gcc'
-    'arm-none-eabi-newlib' 'devtools')
+# Monitoring & diagnostics
+PACMAN_BASIC_PACKAGES+=('htop' 'bpytop' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace' 'screenfetch')
 
-PACMAN_BASIC_PACKAGES+=('neovim' 'make' 'cmake' 'ninja' 'lua' 'luarocks' 'tree-sitter' 'python-pynvim' 'tmux' 'zsh'
-    'bash-completion' 'hunspell' 'hunspell-en_us' 'hunspell-en_gb' 'shellcheck')
+# Development toolchains
+PACMAN_BASIC_PACKAGES+=('make' 'cmake' 'ninja' 'gcc' 'clang' 'llvm' 'llvm-libs' 'lldb' 'devtools' 'tree-sitter')
 
-PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose' 'postgresql-libs')
+# Cross-compilers & embedded
+PACMAN_BASIC_PACKAGES+=('mingw-w64-gcc' 'arm-none-eabi-gcc' 'arm-none-eabi-newlib')
 
-PACMAN_BASIC_PACKAGES+=('bpytop' 'htop' 'screenfetch' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace')
+PACMAN_BASIC_PACKAGES+=('dkms')
 
-PACMAN_BASIC_PACKAGES+=('cryptsetup' 'libxcrypt-compat' 'ccid' 'opensc' 'pcsc-tools')
+# CLI essentials & shell tooling
+PACMAN_BASIC_PACKAGES+=('curlftpfs' 'wget' 'jq' 'trurl' 'git' 'less' 'tree' 'shfmt' 'tmux' 'vim' 'zsh' 'shellcheck'
+    'bash-completion')
+
+PACMAN_BASIC_PACKAGES+=('lua' 'luarocks')
+
+PACMAN_BASIC_PACKAGES+=('hunspell' 'hunspell-en_us' 'hunspell-en_gb')
+
+PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose')
+
+PACMAN_BASIC_PACKAGES+=('postgresql-libs')
+
+PACMAN_BASIC_PACKAGES+=('ccid' 'opensc' 'pcsc-tools')
 
 PACMAN_BASIC_PACKAGES+=('rclone' 'rsync' 'restic' 'borg')
 
@@ -236,7 +254,7 @@ echo "--------------------------------------------------"
 NEW_RANDOM_ROOT_PASSWORD="$(openssl rand -base64 128 | tr -d '\n')"
 export NEW_RANDOM_ROOT_PASSWORD
 echo "Setting a random root password"
-printf '%s\n%s\n' "$NEW_RANDOM_ROOT_PASSWORD" "$NEW_RANDOM_ROOT_PASSWORD"| passwd root
+printf '%s\n%s\n' "$NEW_RANDOM_ROOT_PASSWORD" "$NEW_RANDOM_ROOT_PASSWORD" | passwd root
 
 echo "------------------------------------------"
 echo "       heil wheel group in sudoers        "
@@ -361,7 +379,7 @@ if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
 options nvidia-drm modeset=1
 EOF
 
-sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+    sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 
 fi
 

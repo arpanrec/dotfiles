@@ -122,8 +122,7 @@ PACMAN_BASIC_PACKAGES=('base' 'base-devel' 'linux' 'linux-headers' 'linux-api-he
     'efibootmgr' 'sbctl' 'plymouth')
 
 # Firmware
-PACMAN_BASIC_PACKAGES+=('linux-firmware' 'linux-firmware-atheros' 'linux-firmware-broadcom' 'linux-firmware-mediatek'
-    'linux-firmware-realtek' 'linux-firmware-other' 'linux-firmware-whence' 'fwupd')
+PACMAN_BASIC_PACKAGES+=('linux-firmware' 'fwupd')
 
 # Init, services & scheduling
 PACMAN_BASIC_PACKAGES+=('systemd' 'cronie' 'power-profiles-daemon')
@@ -176,11 +175,11 @@ echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
     echo "Installing Intel microcode"
-    PACMAN_BASIC_PACKAGES+=('intel-ucode')
+    PACMAN_BASIC_PACKAGES+=('intel-ucode' 'linux-firmware-intel')
     ;;
 AuthenticAMD)
     echo "Installing AMD microcode"
-    PACMAN_BASIC_PACKAGES+=('amd-ucode')
+    PACMAN_BASIC_PACKAGES+=('amd-ucode' 'linux-firmware-amdgpu' 'linux-firmware-radeon')
     ;;
 *)
     echo "Unknown processor type"
@@ -230,7 +229,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
     echo "-----------------------------------------------------------"
     echo "                    Setting AMD Drivers                    "
     echo "-----------------------------------------------------------"
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu')
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu' 'linux-firmware-radeon')
 fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then

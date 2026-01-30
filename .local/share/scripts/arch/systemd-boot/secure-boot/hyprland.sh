@@ -76,7 +76,7 @@ systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
 AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'yubico-authenticator-bin'
-    'sddm-silent-theme')
+    'sddm-silent-theme-git')
 
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
         yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_PACKAGES[@]}")"

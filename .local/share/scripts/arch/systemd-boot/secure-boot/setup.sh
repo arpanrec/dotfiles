@@ -279,7 +279,9 @@ id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash -G docker,sudo 
     -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
 usermod -aG docker,sudo "${SYSTEM_ADMIN_USER}"
-gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
+if id -nG "${SYSTEM_ADMIN_USER}" | grep -qw wheel; then
+    gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
+fi
 echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
 echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
 

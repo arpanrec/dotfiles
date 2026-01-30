@@ -75,11 +75,11 @@ pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
-AUR_PACKAGES=('google-chrome' 'brave-bin' 'sublime-text-4' 'onlyoffice-bin' 'yubico-authenticator-bin'
-    'sddm-silent-theme-git')
+# 'google-chrome'
+AUR_PACKAGES=('brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin' 'sddm-silent-theme-git')
 
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
-        yay -S --save --nodiffmenu --nocleanmenu --noanswerlist --answerupgrade All --noconfirm --needed $(printf " %s" "${AUR_PACKAGES[@]}")"
+        yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_PACKAGES[@]}")"
 
 sed -i 's|^ConfigFile=configs/default\.conf$|ConfigFile=configs/rei.conf|' \
     /usr/share/sddm/themes/silent/metadata.desktop

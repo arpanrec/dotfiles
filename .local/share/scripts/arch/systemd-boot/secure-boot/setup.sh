@@ -275,10 +275,11 @@ echo "--------------------------------------"
 
 SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
 SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
-id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash -G docker,wheel -m \
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash -G docker,sudo -m \
     -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
-usermod -aG docker,wheel "${SYSTEM_ADMIN_USER}"
+usermod -aG docker,sudo "${SYSTEM_ADMIN_USER}"
+gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
 echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
 echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
 

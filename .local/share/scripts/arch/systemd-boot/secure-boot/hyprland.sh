@@ -92,6 +92,13 @@ echo "${AUR_INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-"${AUR_INS
 AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'google-chrome' 'brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin'
     'redhat-fonts' 'sddm-silent-theme')
 
+# Import OpenPGP key for yay
+curl https://keys.openpgp.org/vks/v1/by-fingerprint/20EE325B86A81BCBD3E56798F04367096FBA95E8 | gpg --import --batch --yes
+
+# Verify key import
+gpg --list-keys --fingerprint 20EE325B86A81BCBD3E56798F04367096FBA95E8 &>/dev/null ||
+    { echo "Failed to import OpenPGP key for yay"; exit 1; }
+
 for AUR_BASIC_PACKAGE in "${AUR_BASIC_PACKAGES[@]}"; do
     if ! pacman -Qi "${AUR_BASIC_PACKAGE}" &>/dev/null; then
         su - "${AUR_INSTALL_USER}" -c "

@@ -124,6 +124,8 @@ PACMAN_BASIC_PACKAGES=('base' 'base-devel' 'linux' 'linux-headers' 'linux-api-he
 # Firmware
 PACMAN_BASIC_PACKAGES+=('linux-firmware' 'fwupd')
 
+PACMAN_BASIC_PACKAGES+=('ca-certificates' 'ca-certificates-utils')
+
 # Init, services & scheduling
 PACMAN_BASIC_PACKAGES+=('systemd' 'cronie' 'power-profiles-daemon')
 

@@ -88,13 +88,14 @@ id -u "${AUR_INSTALL_USER}" &>/dev/null ||
 
 echo "${AUR_INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-"${AUR_INSTALL_USER}"
 
+# redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
 AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'google-chrome' 'brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin'
-    'sddm-silent-theme')
+    'redhat-fonts' 'sddm-silent-theme')
 
 for AUR_BASIC_PACKAGE in "${AUR_BASIC_PACKAGES[@]}"; do
     if ! pacman -Qi "${AUR_BASIC_PACKAGE}" &>/dev/null; then
         su - "${AUR_INSTALL_USER}" -c "
-            set -e
+            set -eou pipefail
             rm -rf \"\${HOME}/${AUR_BASIC_PACKAGE}\"
             git clone \"https://aur.archlinux.org/${AUR_BASIC_PACKAGE}.git\" \"\${HOME}/${AUR_BASIC_PACKAGE}\" --depth=1
             cd \"\${HOME}/${AUR_BASIC_PACKAGE}\" || exit 1

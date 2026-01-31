@@ -75,8 +75,7 @@ pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
-# 'google-chrome'
-AUR_PACKAGES=('brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin' 'sddm-silent-theme-git')
+AUR_PACKAGES=('google-chrome' 'brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin' 'sddm-silent-theme')
 
 sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
         yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_PACKAGES[@]}")"

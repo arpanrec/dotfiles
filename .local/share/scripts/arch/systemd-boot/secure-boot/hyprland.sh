@@ -75,10 +75,40 @@ pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
-AUR_PACKAGES=('google-chrome' 'brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin' 'sddm-silent-theme')
+echo "-------------------------------------------------------"
+echo "             Install Yay and AUR Packages              "
+echo "-------------------------------------------------------"
 
-sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
-        yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_PACKAGES[@]}")"
+AUR_INSTALL_USER="arch-yay-installer-user"
+
+echo "Adding user ${AUR_INSTALL_USER}"
+
+id -u "${AUR_INSTALL_USER}" &>/dev/null ||
+    useradd -s /bin/bash --system -m -d /home/"${AUR_INSTALL_USER}" "${AUR_INSTALL_USER}"
+
+echo "${AUR_INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-"${AUR_INSTALL_USER}"
+
+AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'google-chrome' 'brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin'
+    'sddm-silent-theme')
+
+for AUR_BASIC_PACKAGE in "${AUR_BASIC_PACKAGES[@]}"; do
+    if ! pacman -Qi "${AUR_BASIC_PACKAGE}" &>/dev/null; then
+        su - "${AUR_INSTALL_USER}" -c "
+            set -e
+            rm -rf \"\${HOME}/${AUR_BASIC_PACKAGE}\"
+            git clone \"https://aur.archlinux.org/${AUR_BASIC_PACKAGE}.git\" \"\${HOME}/${AUR_BASIC_PACKAGE}\" --depth=1
+            cd \"\${HOME}/${AUR_BASIC_PACKAGE}\" || exit 1
+            makepkg -si --noconfirm
+        "
+    fi
+done
+
+while orphaned=$(pacman -Qtdq); do
+    [[ -z "${orphaned}" ]] && break
+    pacman -R --noconfirm "${orphaned}"
+done
+
+systemctl enable nordvpnd
 
 sed -i 's|^ConfigFile=configs/default\.conf$|ConfigFile=configs/rei.conf|' \
     /usr/share/sddm/themes/silent/metadata.desktop
@@ -87,11 +117,6 @@ tee "/etc/sddm.conf" <<EOF
 [Theme]
 Current=silent
 EOF
-
-while orphaned=$(pacman -Qtdq); do
-    [[ -z "${orphaned}" ]] && break
-    pacman -R --noconfirm "${orphaned}"
-done
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 

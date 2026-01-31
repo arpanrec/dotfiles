@@ -442,45 +442,9 @@ sbctl status
 sbctl verify
 bootctl list
 
-echo "-------------------------------------------------------"
-echo "             Install Yay and AUR Packages              "
-echo "-------------------------------------------------------"
-
-echo "Adding user arch-yay-installer-user"
-id -u arch-yay-installer-user &>/dev/null ||
-    useradd -s /bin/bash --system -m -d /home/arch-yay-installer-user arch-yay-installer-user
-echo "arch-yay-installer-user ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-arch-yay-installer-user
-
-if ! command -v yay &>/dev/null; then
-
-    sudo -H -u arch-yay-installer-user bash -c '
-    set -e
-    rm -rf ~/yay
-    git clone "https://aur.archlinux.org/yay.git" ~/yay --depth=1
-    cd "${HOME}/yay"
-    makepkg -si --noconfirm
-    '
-fi
-
-while orphaned=$(pacman -Qtdq); do
-    [[ -z "${orphaned}" ]] && break
-    pacman -R --noconfirm "${orphaned}"
-done
-
-AUR_BASIC_PACKAGES=('nordvpn-bin')
-
-sudo -H -u arch-yay-installer-user bash -c "cd ~ && \
-        yay -S --answerclean None --answerdiff None --noconfirm --needed $(printf " %s" "${AUR_BASIC_PACKAGES[@]}")"
-
-while orphaned=$(pacman -Qtdq); do
-    [[ -z "${orphaned}" ]] && break
-    pacman -R --noconfirm "${orphaned}"
-done
-
-usermod -aG nordvpn "${SYSTEM_ADMIN_USER}"
-systemctl enable nordvpnd
-
-echo "Install root certificate"
+echo "-----------------------------------------------------------------------------------"
+echo "                             Install root certificate                              "
+echo "-----------------------------------------------------------------------------------"
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
 curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |

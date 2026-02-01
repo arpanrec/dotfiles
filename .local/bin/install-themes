@@ -146,6 +146,7 @@ NERD_FONT_VERSION="$(curl -s \
 declare -a NERD_FONT_TYPES=(
     JetBrainsMono
     Hack
+    Meslo
 )
 
 for NERD_FONT_TYPE in "${NERD_FONT_TYPES[@]}"; do

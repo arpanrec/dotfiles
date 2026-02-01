@@ -76,9 +76,10 @@
     "ansibleServer.trace.server": "messages",
     "black-formatter.args": ["--line-length", "120"],
     "diffEditor.ignoreTrimWhitespace": false,
+    "editor.fontLigatures": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,
-    "editor.fontFamily": "'Cascadia Code', 'Hack Nerd Font', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono NL', Consolas, 'Courier New', monospace",
     "editor.formatOnSave": false,
     "editor.indentSize": "tabSize",
     "editor.inlineSuggest.enabled": true,
@@ -191,7 +192,7 @@
     "terminal.integrated.env.linux": {
         "DEBUG": "true"
     },
-    "terminal.integrated.fontFamily": "'Hack Nerd Font'",
+    "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono NL', Consolas, 'Courier New', monospace",
     "terminal.integrated.persistentSessionScrollback": 1000,
     "update.showReleaseNotes": false,
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",

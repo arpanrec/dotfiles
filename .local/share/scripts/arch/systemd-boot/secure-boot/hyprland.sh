@@ -13,10 +13,9 @@ PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprlan
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
     'wl-clipboard' 'copyq') # ark is needed for dolphin archive/unarchive plugin.
 
-# 'xdg-desktop-portal-kde'
-
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
+    'xdg-desktop-portal-kde'
     'kwalletmanager' 'kwallet' 'sddm' 'kleopatra'
     'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'kvantum' 'gwenview'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
@@ -26,7 +25,7 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 # 'packagekit-qt6'
 # 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
 # 'networkmanager-openvpn'  'networkmanager-openconnect'
-PACMAN_PACKAGES+=('adw-gtk-theme')
+PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme')
 
 PACMAN_PACKAGES+=('network-manager-applet')
 

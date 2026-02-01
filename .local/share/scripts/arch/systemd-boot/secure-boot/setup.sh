@@ -17,15 +17,15 @@ allowed_host_names=(
 )
 
 is_valid_hostname=false
-for host in "${allowed_host_names[@]}"; do
-    if [[ "$TARGET_HOSTNAME" == "$host" ]]; then
+for allowed_host_name in "${allowed_host_names[@]}"; do
+    if [[ "${TARGET_HOSTNAME}" == "${allowed_host_name}" ]]; then
         is_valid_hostname=true
         echo "Valid hostname: $TARGET_HOSTNAME"
         break
     fi
 done
 
-if ! $is_valid_hostname; then
+if ! "${is_valid_hostname}"; then
     echo "Invalid hostname: $TARGET_HOSTNAME"
     echo "Allowed hosts are: ${allowed_host_names[*]}"
     exit 1
@@ -40,7 +40,7 @@ fi
 echo "System is running systemd: $IS_RUNNING_SYSTEMD"
 
 echo "--------------------------------------"
-echo "--     Time zone : Asia/Kolkata     --"
+echo "-------Time zone : Asia/Kolkata-------"
 echo "--------------------------------------"
 rm -rf /etc/localtime
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
@@ -57,7 +57,7 @@ hwclock --systohc
 echo "Current date time : $(date)"
 
 echo "--------------------------------------"
-echo "--       Localization : UTF-8       --"
+echo "---------Localization : UTF-8---------"
 echo "--------------------------------------"
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 echo 'LANG=en_US.UTF-8' >/etc/locale.conf
@@ -90,7 +90,7 @@ sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
 
 echo "--------------------------------------"
-echo "             Set Host Name            "
+echo "-------------Set Host Name------------"
 echo "--------------------------------------"
 
 echo "${TARGET_HOSTNAME}" | tee /etc/hostname
@@ -194,9 +194,8 @@ echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
 IS_NVIDIA_DRM=false
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-
     echo "-----------------------------------------------------------"
-    echo "  Setting Nvidia Drivers setup pacman hook and udev rules  "
+    echo "                    Setting Nvidia Drivers                 "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
     IS_NVIDIA_DRM=true
@@ -220,6 +219,8 @@ When=PostTransaction
 NeedsTargets
 Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 EOT
+
+    echo "Setting Nvidia Drivers setup pacman hook and udev rules"
     mkdir /etc/udev/rules.d/ -p
     cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
 ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"

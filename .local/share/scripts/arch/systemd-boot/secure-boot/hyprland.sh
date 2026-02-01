@@ -87,7 +87,7 @@ AUR_INSTALL_USER="arch-yay-installer-user"
 echo "Adding user ${AUR_INSTALL_USER}"
 
 id -u "${AUR_INSTALL_USER}" &>/dev/null ||
-    useradd -s /bin/bash --system -m -d /home/"${AUR_INSTALL_USER}" "${AUR_INSTALL_USER}"
+    useradd -s /bin/bash --system -m -d "/home/${AUR_INSTALL_USER}" "${AUR_INSTALL_USER}"
 
 echo "${AUR_INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-"${AUR_INSTALL_USER}"
 
@@ -96,8 +96,6 @@ AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'google-chrome' 'brave-bin' 'onlyoffice-
     'redhat-fonts' 'sddm-silent-theme')
 
 # Import OpenPGP key for yay
-
-
 su - "${AUR_INSTALL_USER}" -c "
             set -eou pipefail
             curl https://keys.openpgp.org/vks/v1/by-fingerprint/20EE325B86A81BCBD3E56798F04367096FBA95E8 |

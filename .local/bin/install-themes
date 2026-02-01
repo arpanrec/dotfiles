@@ -62,7 +62,7 @@ done
 
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/themes" "${HOME}/.local/share/color-schemes" \
     "${HOME}/.local/share/plasma/look-and-feel" "${HOME}/.local/share/icons" \
-    "${HOME}/.local/share/Kvantum" "${HOME}/.local/share/konsole" "${HOME}/.local/share/aurorae/themes" \
+    "${HOME}/.config/Kvantum" "${HOME}/.local/share/konsole" "${HOME}/.local/share/aurorae/themes" \
     "${HOME}/.local/share/fonts" "${HOME}/.local/share/plasma/desktoptheme"
 
 echo "Installing EliverLara/Nordic."
@@ -75,7 +75,7 @@ rm -rf "${HOME}/.local/share/themes/Nordic/.git"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/aurorae/." "${HOME}/.local/share/aurorae/themes/"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/colorschemes/." "${HOME}/.local/share/color-schemes/"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/plasma/look-and-feel/." "${HOME}/.local/share/plasma/look-and-feel/"
-cp -r "${HOME}/.local/share/themes/Nordic/kde/kvantum/." "${HOME}/.local/share/Kvantum/"
+cp -r "${HOME}/.local/share/themes/Nordic/kde/kvantum/." "${HOME}/.config/Kvantum/"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/konsole/." "${HOME}/.local/share/konsole/"
 
 echo "Installing EliverLara/Nordic-kde."
@@ -111,7 +111,7 @@ rm -rf "${HOME}/.local/share/themes/Sweet/.git"
 cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/aurorae/." "${HOME}/.local/share/aurorae/themes/"
 cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/colorschemes/." "${HOME}/.local/share/color-schemes/"
 cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/plasma/." "${HOME}/.local/share/plasma/"
-cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/kvantum/." "${HOME}/.local/share/Kvantum/"
+cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/kvantum/." "${HOME}/.config/Kvantum/"
 cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/konsole/." "${HOME}/.local/share/konsole/"
 
 echo "Installing vinceliuice/Tela-icon-theme."

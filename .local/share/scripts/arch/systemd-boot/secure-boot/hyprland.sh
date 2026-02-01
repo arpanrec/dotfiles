@@ -29,7 +29,6 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 # 'xdg-desktop-portal-gtk' 'adw-gtk-theme'
 PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme')
 
-
 PACMAN_PACKAGES+=('network-manager-applet')
 
 # 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'

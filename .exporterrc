@@ -16,15 +16,6 @@ export LC_IDENTIFICATION="en_US.UTF8"
 export LC_ALL="en_US.UTF8"
 export CLOUD_INIT_IS_DEV_MACHINE=true
 
-export XDG_DESKTOP_DIR="$HOME/Desktop"
-export XDG_DOWNLOAD_DIR="$HOME/Downloads"
-export XDG_TEMPLATES_DIR="$HOME/Templates"
-export XDG_PUBLICSHARE_DIR="$HOME/Public"
-export XDG_DOCUMENTS_DIR="$HOME/Documents"
-export XDG_MUSIC_DIR="$HOME/Music"
-export XDG_PICTURES_DIR="$HOME/Pictures"
-export XDG_VIDEOS_DIR="$HOME/Videos"
-
 export LD_LIBRARY_PATH=${HOME}/.local/lib64:${HOME}/.local/lib:${LD_LIBRARY_PATH}
 
 if ! [[ "${PATH}" =~ /usr/local/bin: ]]; then

@@ -25,7 +25,8 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 # 'packagekit-qt6'
 # 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
 # 'networkmanager-openvpn'  'networkmanager-openconnect'
-PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme')
+
+# 'xdg-desktop-portal-gtk' 'adw-gtk-theme'
 
 PACMAN_PACKAGES+=('network-manager-applet')
 

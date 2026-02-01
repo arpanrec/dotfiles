@@ -208,10 +208,10 @@ mkdir -p "${HOME}/.local/share/fonts/meslo" "${TMP_DOWNLOAD_DIRECTORY}/meslo-ner
 
 for NERD_PATCHED_FONT_FOR_P10K in "${NERD_PATCHED_FONTS_FOR_P10K[@]}"; do
     if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf" ]]; then
-        NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED=$(printf %s "a b" | jq -sRr @uri)
+        NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED=$(printf %s "${NERD_PATCHED_FONT_FOR_P10K}" | jq -sRr @uri)
         curl -fL \
-        "https://github.com/romkatv/powerlevel10k-media/blob/master/${NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED}.ttf" \
-        -o "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf"
+            "https://github.com/romkatv/powerlevel10k-media/raw/refs/heads/master/${NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED}.ttf" \
+            -o "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf"
     else
         echo "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf \
             is already present."

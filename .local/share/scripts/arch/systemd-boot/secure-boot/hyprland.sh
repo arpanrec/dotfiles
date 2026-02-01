@@ -41,7 +41,7 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 # 'gst-libav' 'gstreamer' 'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore'
 # 'gst-plugins-good' 'gst-plugins-bad' 'mpv-mpris' 'gst-plugin-pipewire'
 
-PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pa52decipewire-alsa' 'sof-firmware' 'pipewire-jack'
+PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
     'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2' 'pipewire-zeroconf'
     'lib32-pipewire-v4l2' 'pavucontrol' 'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'haruna' )
 

@@ -11,19 +11,22 @@ fi
 PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support' 'hyprpolkitagent'
     'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
-    'wl-clipboard' 'copyq'
-    'qt5-wayland' 'qt6-wayland'
-    'qt6ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
+    'wl-clipboard' 'copyq') # ark is needed for dolphin archive/unarchive plugin.
+
+# 'xdg-desktop-portal-kde'
+
+PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
+    'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'kwalletmanager' 'kwallet' 'sddm' 'kleopatra'
     'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'qtkeychain-qt6' 'kvantum' 'gwenview'
     'ark') # ark is needed for dolphin archive/unarchive plugin.
 
-# 'xdg-desktop-portal-kde'
-
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
-# 'packagekit-qt6' 'qt6ct'
-# 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme' 'adw-gtk-theme'
+# 'packagekit-qt6'
+# 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
 # 'networkmanager-openvpn' 'libnma'  'networkmanager-openconnect'
+PACMAN_PACKAGES+=('adw-gtk-theme')
+
 PACMAN_PACKAGES+=('network-manager-applet')
 
 # 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'

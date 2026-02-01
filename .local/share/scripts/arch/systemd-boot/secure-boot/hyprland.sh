@@ -18,13 +18,14 @@ PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprlan
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'kwalletmanager' 'kwallet' 'sddm' 'kleopatra'
-    'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'qtkeychain-qt6' 'kvantum' 'gwenview'
-    'ark') # ark is needed for dolphin archive/unarchive plugin.
+    'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'kvantum' 'gwenview'
+    'ark' # ark is needed for dolphin archive/unarchive plugin.
+    'kdegraphics-thumbnailers' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats')
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
 # 'packagekit-qt6'
 # 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
-# 'networkmanager-openvpn' 'libnma'  'networkmanager-openconnect'
+# 'networkmanager-openvpn'  'networkmanager-openconnect'
 PACMAN_PACKAGES+=('adw-gtk-theme')
 
 PACMAN_PACKAGES+=('network-manager-applet')
@@ -32,19 +33,18 @@ PACMAN_PACKAGES+=('network-manager-applet')
 # 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
-# 'gtkmm3' 'jsoncpp' 'libsigc++' 'fmt' 'chrono-date' 'spdlog' 'gtk3' 'gobject-introspection' 'libgirepository'
-# 'libpulse' 'libnl' 'libappindicator-gtk3' 'libdbusmenu-gtk3' 'libmpdclient' 'sndio' 'libevdev' 'libxkbcommon' 'upower'
+# 'chrono-date' 'gobject-introspection'
+# 'libappindicator-gtk3'
 # 'meson' 'scdoc' 'glib2-devel'
 
-# 'libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'lib32-glib2'
-# 'gst-plugins-ugly' 'gst-plugins-base' 'a52dec' 'faac' 'faad2' 'flac' 'jasper' 'lame' 'libdca' 'libdv'
+# 'libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
+# 'gst-plugins-ugly' 'gst-plugins-base' 'faac' 'faad2' 'lame' 'libdca' 'libdv'
 # 'gst-libav' 'gstreamer' 'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore'
-# 'gst-plugins-good' 'libheif' 'gst-plugins-bad' 'mpv' 'mpv-mpris' 'gst-plugin-pipewire'
+# 'gst-plugins-good' 'gst-plugins-bad' 'mpv-mpris' 'gst-plugin-pipewire'
 
-PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
+PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pa52decipewire-alsa' 'sof-firmware' 'pipewire-jack'
     'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2' 'pipewire-zeroconf'
-    'lib32-pipewire-v4l2' 'pavucontrol' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats'
-    'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'taglib' 'haruna' 'kdegraphics-thumbnailers')
+    'lib32-pipewire-v4l2' 'pavucontrol' 'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'haruna' )
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 

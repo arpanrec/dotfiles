@@ -34,10 +34,10 @@
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
     context                 # user@hostname
-    # =========================[ Line #2 ]=========================
-    newline                 # \n
     dir                     # current directory
     vcs                     # git status
+    # =========================[ Line #2 ]=========================
+    newline                 # \n
     # prompt_char           # prompt symbol
   )
 

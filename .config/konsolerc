@@ -3,6 +3,10 @@ MenuBar=Disabled
 [Desktop Entry]
 DefaultProfile=mainkonsole.profile
 
+[FileLocation]
+scrollbackUseCacheLocation=true
+scrollbackUseSystemLocation=false
+
 [General]
 ConfigVersion=1
 

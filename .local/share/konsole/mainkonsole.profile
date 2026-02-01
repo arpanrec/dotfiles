@@ -1,7 +1,7 @@
 [Appearance]
 ColorScheme=Nordic-Custom
-Font=MesloLGS NF,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-TabColor=0,255,0
+Font=JetBrainsMono Nerd Font,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+TabColor=110,110,110
 
 [General]
 Name=mainkonsole
@@ -12,3 +12,6 @@ KeyBindings=default
 
 [Scrolling]
 HistoryMode=2
+
+[Terminal Features]
+LineNumbers=1

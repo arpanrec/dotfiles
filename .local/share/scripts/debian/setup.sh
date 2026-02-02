@@ -310,7 +310,7 @@ echo "Running server_workspace playbook as ${CLOUD_INIT_USER}"
 
 sudo -E -H -u "${CLOUD_INIT_USER}" bash -c '
 #!/usr/bin/env bash
-set -exuo pipefail
+set -euo pipefail
 
 export HOME="/home/${CLOUD_INIT_USER}"
 export USER="${CLOUD_INIT_USER}"

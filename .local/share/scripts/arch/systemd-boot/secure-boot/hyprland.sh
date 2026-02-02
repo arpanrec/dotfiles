@@ -6,12 +6,11 @@ if pacman -Qi hyprlauncher &>/dev/null; then
 fi
 
 # 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
-# 'cliphist'
 
 PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support' 'hyprpolkitagent'
     'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
-    'wl-clipboard' 'copyq') # ark is needed for dolphin archive/unarchive plugin.
+    'cliphist' 'copyq' 'wl-clip-persist')
 
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/

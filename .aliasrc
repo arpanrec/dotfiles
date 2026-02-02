@@ -32,3 +32,4 @@ alias yd='youtube-dl -f best --verbose --external-downloader axel --external-dow
 alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -af --volumes'
 
 alias myip='curl ipinfo.io/ip'
+alias hyprctl-blr-home-dock="hyprctl keyword monitor 'DP-3,3840x2160@60,0x0,1.5' && hyprctl keyword monitor 'eDP-1,2560x1600@60,2560x0,1.6'"

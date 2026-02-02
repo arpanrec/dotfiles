@@ -49,6 +49,8 @@ PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-prin
 
 PACMAN_PACKAGES+=('blueman')
 
+PACMAN_PACKAGES+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
+
 PACMAN_PACKAGES+=('wireguard-tools')
 PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
 # 'yubikey-manager-qt' Is broken
@@ -89,9 +91,9 @@ id -u "${AUR_INSTALL_USER}" &>/dev/null ||
 
 echo "${AUR_INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-"${AUR_INSTALL_USER}"
 
-# redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
-AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'google-chrome' 'brave-bin' 'onlyoffice-bin' 'yubico-authenticator-bin'
-    'redhat-fonts' 'sddm-silent-theme')
+AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'google-chrome' 'onlyoffice-bin' 'yubico-authenticator-bin'
+    'redhat-fonts' # redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
+    'sddm-silent-theme')
 
 # Import OpenPGP key for yay
 su - "${AUR_INSTALL_USER}" -c "

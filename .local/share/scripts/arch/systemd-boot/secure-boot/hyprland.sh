@@ -50,7 +50,7 @@ PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-prin
 
 PACMAN_PACKAGES+=('blueman')
 
-PACMAN_PACKAGES+=('firefox')
+PACMAN_PACKAGES+=('firefox' 'vivaldi' 'vivaldi-ffmpeg-codecs')
 
 PACMAN_PACKAGES+=('wireguard-tools')
 PACMAN_PACKAGES+=('veracrypt' 'keepassxc')

@@ -55,7 +55,7 @@ PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
 PACMAN_PACKAGES+=('yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
 PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 
-PACMAN_PACKAGES+=('timeshift' 'restic')
+PACMAN_PACKAGES+=('timeshift')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')

@@ -10,7 +10,7 @@ fi
 PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support' 'hyprpolkitagent'
     'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
-    'kanshi'
+    'kanshi' # Dynamic monitor switching tool
     'cliphist' 'copyq' 'wl-clip-persist')
 
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'

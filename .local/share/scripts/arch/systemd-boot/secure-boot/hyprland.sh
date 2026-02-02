@@ -15,7 +15,8 @@ PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprlan
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'xdg-desktop-portal-kde'
-    'kwalletmanager' 'kwallet' 'sddm' 'kleopatra'
+    'kwalletmanager' 'kwallet' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit-kde-agent'
+    'kleopatra'
     'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'kvantum' 'gwenview'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
     'kdegraphics-thumbnailers' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats')
@@ -24,15 +25,12 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 # 'packagekit-qt6'
 # 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
 # 'networkmanager-openvpn'  'networkmanager-openconnect'
-PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme')
-
-PACMAN_PACKAGES+=('network-manager-applet')
+PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme' 'network-manager-applet')
 
 # 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
 
 # 'chrono-date' 'gobject-introspection'
-# 'libappindicator-gtk3'
 # 'meson' 'scdoc' 'glib2-devel'
 
 # 'libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'

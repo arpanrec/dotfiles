@@ -18,6 +18,7 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'xdg-desktop-portal-kde'
     'kwalletmanager' 'kwallet' 'sddm' 'kleopatra'
     'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'kvantum' 'gwenview'
+    'kdialog'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
     'kdegraphics-thumbnailers' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats')
 
@@ -48,6 +49,8 @@ PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
 PACMAN_PACKAGES+=('blueman')
+
+PACMAN_PACKAGES+=('firefox')
 
 PACMAN_PACKAGES+=('wireguard-tools')
 PACMAN_PACKAGES+=('veracrypt' 'keepassxc')

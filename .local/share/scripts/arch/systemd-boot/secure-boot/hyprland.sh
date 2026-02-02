@@ -40,7 +40,7 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 
 PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
     'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2' 'pipewire-zeroconf'
-    'lib32-pipewire-v4l2' 'pavucontrol' 'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'haruna' )
+    'lib32-pipewire-v4l2' 'pavucontrol' 'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'haruna')
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
@@ -55,7 +55,16 @@ PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 PACMAN_PACKAGES+=('timeshift')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-    PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl')
+    PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl' 'libva-nvidia-driver')
+    touch /etc/environment
+
+    sed -i '/LIBVA_DRIVER_NAME/d' /etc/environment
+    sed -i '/__GLX_VENDOR_LIBRARY_NAME/d' /etc/environment
+    sed -i '/NVD_BACKEND/d' /etc/environment
+
+    echo 'LIBVA_DRIVER_NAME=nvidia' | tee -a /etc/environment
+    echo '__GLX_VENDOR_LIBRARY_NAME=nvidia' | tee -a /etc/environment
+    echo 'NVD_BACKEND=direct' | tee -a /etc/environment
 fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then

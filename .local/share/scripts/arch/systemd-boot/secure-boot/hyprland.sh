@@ -56,7 +56,9 @@ PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 PACMAN_PACKAGES+=('timeshift')
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-    PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl' 'libva-nvidia-driver')
+    PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl'
+        'libva-nvidia-driver' 'libva-utils' # For hardware acceleration
+    )
     touch /etc/environment
 
     sed -i '/LIBVA_DRIVER_NAME/d' /etc/environment
@@ -87,6 +89,12 @@ echo "-------------------------------------------------------"
 if [[ -f /usr/share/dbus-1/services/org.kde.plasma.Notifications.service ]]; then
     mv /usr/share/dbus-1/services/org.kde.plasma.Notifications.service \
         /usr/share/dbus-1/services/org.kde.plasma.Notifications.service.disabled
+fi
+
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+    systemctl enable nvidia-suspend.service
+    systemctl enable nvidia-hibernate.service
+    systemctl enable nvidia-resume.service
 fi
 
 systemctl enable sddm cups avahi-daemon.service

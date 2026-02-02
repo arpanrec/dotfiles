@@ -1,0 +1,13 @@
+profile blr-home-s1-dev-hp-docked {
+    output "DP-3" {
+        mode 3840x2160@59.99900
+        scale 1.50
+        position 0,0
+    }
+
+    output "eDP-1" {
+        mode 2560x1600@60.00800
+        scale 1.60
+        position 2560,0
+    }
+}

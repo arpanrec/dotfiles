@@ -109,6 +109,7 @@ Theme=Tela-nord
 
 [KDE]
 LookAndFeelPackage=Nordic
+ShowDeleteCommand=false
 SingleClick=false
 widgetStyle=kvantum
 
@@ -128,6 +129,10 @@ Sort hidden files last=false
 Sort reversed=false
 Speedbar Width=140
 View Style=DetailTree
+
+[PreviewSettings]
+EnableRemoteFolderThumbnail=false
+MaximumRemoteSize=0
 
 [WM]
 activeBackground=47,52,63

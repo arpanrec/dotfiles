@@ -14,3 +14,4 @@ x-scheme-handler/https=brave-browser.desktop
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
 x-scheme-handler/unknown=brave-browser.desktop
 x-scheme-handler/jetbrains-gateway=jetbrains-gateway.desktop
+inode/directory=org.kde.dolphin.desktop

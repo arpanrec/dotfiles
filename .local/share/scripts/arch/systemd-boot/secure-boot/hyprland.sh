@@ -73,6 +73,15 @@ fi
 
 pacman -S --needed --noconfirm "${PACMAN_PACKAGES[@]}"
 
+echo "-------------------------------------------------------"
+echo "   Disable dbus org.kde.plasma.Notifications.service   "
+echo "-------------------------------------------------------"
+
+if [[ -f /usr/share/dbus-1/services/org.kde.plasma.Notifications.service ]]; then
+    mv /usr/share/dbus-1/services/org.kde.plasma.Notifications.service \
+        /usr/share/dbus-1/services/org.kde.plasma.Notifications.service.disabled
+fi
+
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 

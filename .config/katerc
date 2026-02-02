@@ -20,6 +20,7 @@ Text Font Features=
 Word Wrap Marker=false
 
 [MainWindow]
+1800x1125 screen: Window-Maximized=true
 2 screens: Window-Maximized=true
 
 [UiSettings]

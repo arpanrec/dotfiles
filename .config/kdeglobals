@@ -96,6 +96,13 @@ ForegroundVisited=143,188,187
 [General]
 BrowserApplication=google-chrome.desktop
 ColorSchemeHash=d05680ca25bbbbf09a8b5f36923ee7f2b1117fbf
+XftHintStyle=hintslight
+XftSubPixel=none
+fixed=JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+font=JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+menuFont=JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+smallestReadableFont=JetBrainsMono Nerd Font,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+toolBarFont=JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 
 [Icons]
 Theme=Tela-nord
@@ -128,6 +135,7 @@ ColorScheme=LayanDark
 [WM]
 activeBackground=47,52,63
 activeBlend=47,52,63
+activeFont=JetBrainsMono Nerd Font,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 activeForeground=211,218,227
 inactiveBackground=47,52,63
 inactiveBlend=47,52,63

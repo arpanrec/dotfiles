@@ -1,7 +1,7 @@
 [Appearance]
 ColorScheme=Nordic-Custom
 Font=JetBrainsMono Nerd Font,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-TabColor=110,110,110
+TabColor=67,76,94,0
 
 [General]
 Name=mainkonsole

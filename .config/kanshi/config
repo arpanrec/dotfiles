@@ -1,13 +1,18 @@
-profile blr-home-s1-dev-hp-docked {
-    output "DP-3" {
-        mode 3840x2160@59.99900
-        scale 1.50
-        position 0,0
-    }
+output "BNQ BenQ EL2870U GBM03038SL0" {
+  mode 3840x2160@59.99900
+  position 0,0
+  scale 1.50
+  alias $BLR_HOME_BENQ
+}
 
-    output "eDP-1" {
-        mode 2560x1600@60.00800
-        scale 1.60
-        position 2560,0
-    }
+output "California Institute of Technology 0x1609 Unknown" {
+  mode 2560x1600@60.00800
+  position 2560,0
+  scale 1.60
+  alias $S1_DEV_INTERNAL
+}
+
+profile blr-home-s1-dev-hp-docked {
+  output $BLR_HOME_BENQ enable
+  output $S1_DEV_INTERNAL scale 2 enable
 }

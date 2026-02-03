@@ -4,6 +4,9 @@ ShowZoomSlider=true
 Version=202
 ViewPropsTimestamp=2022,2,15,12,20,0.102
 
+[IconsMode]
+PreviewSize=176
+
 [KFileDialog Settings]
 Places Icons Auto-resize=false
 Places Icons Static Size=22

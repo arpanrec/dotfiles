@@ -15,6 +15,16 @@ output "California Institute of Technology 0x1609 Unknown" {
     alias $S1_DEV_INTERNAL
 }
 
+profile blr-home-s1-dev-hp-docked {
+    output $BLR_HOME_BENQ enable
+    output $S1_DEV_INTERNAL {
+        enable
+        scale 2
+        mode 2560x1600@60.00800
+        position 2560,0
+    }
+}
+
 output "Samsung Display Corp. 0x419F Unknown" {
     mode 2880x1800@120.00Hz
     position 0,0
@@ -26,12 +36,12 @@ profile s2-dev {
     output $S2_DEV_INTERNAL
 }
 
-profile blr-home-s1-dev-hp-docked {
+profile blr-home-s2-dev-hp-docked {
     output $BLR_HOME_BENQ enable
-    output $S1_DEV_INTERNAL {
+    output $S2_DEV_INTERNAL {
         enable
-        scale 2
-        mode 2560x1600@60.00800
-        position 2560,0
+        scale 1.60
+        mode 2880x1800@60.00Hz
+        position 2560,315
     }
 }

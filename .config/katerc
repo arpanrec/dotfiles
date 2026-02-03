@@ -22,6 +22,7 @@ Word Wrap Marker=false
 [MainWindow]
 1800x1125 screen: Window-Maximized=true
 2 screens: Window-Maximized=true
+2048x1280 screen: Window-Maximized=true
 
 [UiSettings]
 ColorScheme=NordicDarker

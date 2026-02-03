@@ -48,10 +48,14 @@
         },
     },
     "hyprland/window": {
-        "format": "{icon} {title}",
+        "format": "{title}",
         "expand": false,
         "rewrite": {
             "(.*) - Mozilla Firefox": "󰈹 $1",
+            "(.*) - Konsole": "󰆍 $1", // Doesn't work, Because it's not `-`.
+            "(.*) - Visual Studio Code": "󰨞 $1",
+            "(.*) - Brave": "󰖟 $1",
+            "(.*) - Google Chrome": " $1",
         },
     },
     "mpris": {

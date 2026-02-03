@@ -12,6 +12,7 @@ PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprlan
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
     'kanshi' # Dynamic monitor switching tool
     'nwg-displays' # GUI Dynamic monitor switching tool, testings with hyprland
+    'brightnessctl'
     'cliphist' 'copyq' 'wl-clip-persist')
 
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'

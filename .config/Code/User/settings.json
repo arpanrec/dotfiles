@@ -82,7 +82,7 @@
     "editor.fontLigatures": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,
-    "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
+    "editor.fontFamily": "'JetBrainsMono Nerd Font', monospace",
     "editor.formatOnSave": false,
     "editor.indentSize": "tabSize",
     "editor.inlineSuggest.enabled": true,
@@ -195,7 +195,7 @@
     "terminal.integrated.env.linux": {
         "DEBUG": "true",
     },
-    "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
+    "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font', monospace",
     "terminal.integrated.persistentSessionScrollback": 1000,
     "update.showReleaseNotes": false,
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",

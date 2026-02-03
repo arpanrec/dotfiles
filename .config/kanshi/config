@@ -11,8 +11,12 @@ output "BNQ BenQ EL2870U GBM03038SL0" {
 output "California Institute of Technology 0x1609 Unknown" {
     mode 2560x1600@165.02Hz
     position 0,0
-    scale 1.60
+    scale 1.25
     alias $S1_DEV_INTERNAL
+}
+
+profile s1-dev {
+    output $S1_DEV_INTERNAL
 }
 
 profile blr-home-s1-dev-hp-docked {

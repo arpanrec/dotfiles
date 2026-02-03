@@ -5,66 +5,66 @@
         "editor.quickSuggestions": {
             "comments": true,
             "other": true,
-            "strings": true
+            "strings": true,
         },
-        "prettier.singleQuote": false
+        "prettier.singleQuote": false,
     },
     "[dockerfile]": {
-        "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+        "editor.defaultFormatter": "ms-azuretools.vscode-containers",
     },
     "[github-actions-workflow]": {
-        "prettier.singleQuote": false
+        "prettier.singleQuote": false,
     },
     "[go.mod]": {
-        "editor.defaultFormatter": "golang.go"
+        "editor.defaultFormatter": "golang.go",
     },
     "[go]": {
-        "editor.defaultFormatter": "golang.go"
+        "editor.defaultFormatter": "golang.go",
     },
     "[ignore]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
+        "editor.defaultFormatter": "foxundermoon.shell-format",
     },
     "[java]": {
         "breadcrumbs.showArrays": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always"
+            "source.organizeImports.ruff": "always",
         },
         "editor.defaultFormatter": "redhat.java",
         "editor.maxTokenizationLineLength": 20000,
         "editor.suggest.snippetsPreventQuickSuggestions": false,
-        "outline.showVariables": true
+        "outline.showVariables": true,
     },
     "[json]": {
         "files.insertFinalNewline": false,
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
     },
     "[lua]": {
-        "editor.defaultFormatter": "sumneko.lua"
+        "editor.defaultFormatter": "sumneko.lua",
     },
     "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
     },
     "[python]": {
         "editor.codeActionsOnSave": {
-            "source.organizeImports.ruff": "always"
+            "source.organizeImports.ruff": "always",
         },
         "editor.defaultFormatter": "ms-python.black-formatter",
-        "editor.wordBasedSuggestions": "off"
+        "editor.wordBasedSuggestions": "off",
     },
     "[rust]": {
-        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
     },
     "[shellscript]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
+        "editor.defaultFormatter": "foxundermoon.shell-format",
     },
     "[terraform]": {
-        "editor.defaultFormatter": "hashicorp.terraform"
+        "editor.defaultFormatter": "hashicorp.terraform",
     },
     "[xml]": {
-        "editor.defaultFormatter": "redhat.vscode-xml"
+        "editor.defaultFormatter": "redhat.vscode-xml",
     },
     "[yaml]": {
-        "prettier.singleQuote": false
+        "prettier.singleQuote": false,
     },
     "ansible.ansible.path": "ansible",
     "ansible.ansible.useFullyQualifiedCollectionNames": true,
@@ -74,12 +74,15 @@
     "ansible.validation.lint.enabled": true,
     "ansible.validation.lint.path": "ansible-lint",
     "ansibleServer.trace.server": "messages",
-    "black-formatter.args": ["--line-length", "120"],
+    "black-formatter.args": [
+        "--line-length",
+        "120"
+    ],
     "diffEditor.ignoreTrimWhitespace": false,
     "editor.fontLigatures": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,
-    "editor.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono NL', Consolas, 'Courier New', monospace",
+    "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
     "editor.formatOnSave": false,
     "editor.indentSize": "tabSize",
     "editor.inlineSuggest.enabled": true,
@@ -108,7 +111,7 @@
         ".git/config": "gitconfig",
         "site*.yaml": "ansible",
         "site*.yml": "ansible",
-        "*.css": "tailwindcss"
+        "*.css": "tailwindcss",
     },
     "files.exclude": {
         "**/.classpath": true,
@@ -128,7 +131,7 @@
         "**/node_modules/**": true,
         "**/venv.bak/**": true,
         "**/venv/**": true,
-        "**/vendor/**": true
+        "**/vendor/**": true,
     },
     "files.trimTrailingWhitespace": false,
     "files.watcherExclude": {
@@ -149,7 +152,7 @@
         "**/node_modules/**": true,
         "**/venv.bak/**": true,
         "**/venv/**": true,
-        "**/vendor/**": true
+        "**/vendor/**": true,
     },
     "git.autofetch": false,
     "git.confirmSync": false,
@@ -164,7 +167,7 @@
         "plaintext": false,
         "scminput": false,
         "shellscript": false,
-        "yaml": false
+        "yaml": false,
     },
     "githubPullRequests.createOnPublishBranch": "never",
     "githubPullRequests.pullBranch": "never",
@@ -190,9 +193,9 @@
     "security.workspace.trust.untrustedFiles": "open",
     "telemetry.telemetryLevel": "off",
     "terminal.integrated.env.linux": {
-        "DEBUG": "true"
+        "DEBUG": "true",
     },
-    "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono NL', Consolas, 'Courier New', monospace",
+    "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font Mono', monospace",
     "terminal.integrated.persistentSessionScrollback": 1000,
     "update.showReleaseNotes": false,
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
@@ -201,11 +204,13 @@
     "workbench.editor.enablePreview": false,
     "workbench.editorAssociations": {
         "*.ipynb": "default",
-        "*.excalidraw": "editor.excalidraw"
+        "*.excalidraw": "editor.excalidraw",
     },
     "workbench.iconTheme": "material-icon-theme",
     "workbench.startupEditor": "none",
-    "yaml.customTags": ["!vault"],
+    "yaml.customTags": [
+        "!vault"
+    ],
     "yaml.format.enable": false,
     "yaml.format.printWidth": 120,
     "remote.autoForwardPorts": false,
@@ -213,10 +218,13 @@
     "excalidraw.image": {
         "exportScale": 1,
         "exportWithBackground": true,
-        "exportWithDarkMode": false
+        "exportWithDarkMode": false,
     },
     "excalidraw.theme": "dark",
     "excalidraw.language": "en",
     "docker.extension.enableComposeLanguageServer": false,
-    "python.analysis.typeCheckingMode": "strict"
+    "python.analysis.typeCheckingMode": "strict",
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
 }

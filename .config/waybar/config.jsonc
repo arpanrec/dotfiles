@@ -5,7 +5,6 @@
     // "height": 34, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 6, // Gaps between modules (4px)
-    // Choose the order of the modules
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["hyprland/window"],
     "modules-right": [
@@ -20,73 +19,66 @@
         "custom/power",
     ],
     "bluetooth": {
-        // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
         "format": " {status}",
-        // "format-disabled": "", // an empty format will hide the module
         "format-connected": " {num_connections} connected",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
         "on-click": "blueman-manager",
     },
-    // Modules configuration
     "hyprland/workspaces": {
         "disable-scroll": false,
         "all-outputs": false,
         "warp-on-scroll": false,
         "format": "{name}: {icon}",
         "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "",
-            "5": "",
+            "1": "󰆍",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
             "6": "",
             "7": "",
             "8": "",
             "9": "",
             "10": "",
-            "urgent": "",
-            "focused": "",
-            "default": "",
+            "urgent": "",
+            "focused": "󰻿",
+            "default": "󰆿",
         },
     },
     "hyprland/window": {
-        "format": "{title}",
+        "format": "{icon} {title}",
+        "expand": false,
         "rewrite": {
-            "(.*) - Mozilla Firefox": "🌎 $1",
-            "(.*) - zsh": "> [$1]",
+            "(.*) - Mozilla Firefox": "󰈹 $1",
         },
     },
     "mpris": {
         "format": "{player_icon} {player}",
         "format-paused": "{status_icon} <i>{dynamic}</i>",
         "player-icons": {
-            "default": "▶",
-            "mpv": "🎵",
+            "default": "",
         },
         "status-icons": {
-            "paused": "⏸",
+            "paused": "",
         },
-        // "ignored-players": ["firefox"]
+        "ignored-players": [],
     },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": "",
+            "activated": "󰈈",
+            "deactivated": "󰈉",
         },
     },
     "tray": {
-        // "icon-size": 21,
         "spacing": 10,
         "icons": {
             "blueman": "bluetooth",
-            //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
         },
     },
     "clock": {
-        // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}",
     },
@@ -101,8 +93,6 @@
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
         "format-icons": ["", "", "", "", ""],
     },
     "power-profiles-daemon": {
@@ -117,17 +107,16 @@
         },
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon} {format_source}",
         "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
         "format-source": "{volume}% ",
         "format-source-muted": "",
         "format-icons": {
             "headphone": "",
-            "hands-free": "",
-            "headset": "",
+            "hands-free": "󰋎",
+            "headset": "",
             "phone": "",
             "portable": "",
             "car": "",
@@ -136,7 +125,7 @@
         "on-click": "pavucontrol",
     },
     "custom/power": {
-        "format": "⏻",
+        "format": "",
         "tooltip": false,
         "menu": "on-click",
         "menu-file": "$HOME/.config/waybar/power_menu.xml",

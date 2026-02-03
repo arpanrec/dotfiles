@@ -30,7 +30,8 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme' 'network-manager-applet')
 
 # 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'
-PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra')
+# fontforge # For font-patcher, used to patch fonts for better compatibility with Hyprland
+# 'noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'otf-font-awesome'
 
 # 'chrono-date' 'gobject-introspection'
 # 'meson' 'scdoc' 'glib2-devel'

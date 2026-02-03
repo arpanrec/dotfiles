@@ -5,12 +5,16 @@ if pacman -Qi hyprlauncher &>/dev/null; then
     pacman -Rsc hyprlauncher --noconfirm # with Replace rofi
 fi
 
+if pacman -Qi hyprpolkitagent &>/dev/null; then
+    pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-agent
+fi
+
 # 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
 
-PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support' 'hyprpolkitagent'
+PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support'
     'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
-    'kanshi' # Dynamic monitor switching tool
+    'kanshi'       # Dynamic monitor switching tool
     'nwg-displays' # GUI Dynamic monitor switching tool, testings with hyprland
     'brightnessctl'
     'cliphist' 'copyq' 'wl-clip-persist')
@@ -20,9 +24,11 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'xdg-desktop-portal-kde'
     'kwalletmanager' 'kwallet' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit-kde-agent'
     'kleopatra'
-    'dolphin' 'dolphin-plugins' 'kate' 'konsole' 'kvantum' 'gwenview'
+    'kvantum'
+    'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
-    'kdegraphics-thumbnailers' 'qt6-multimedia-ffmpeg' 'qt6-imageformats' 'kimageformats')
+    'gwenview' 'kimageformats' 'qt6-imageformats'
+    'merkuro' 'kamoso' 'kcalc' 'kate' 'konsole')
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
 # 'packagekit-qt6'
@@ -37,23 +43,41 @@ PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme' 'network-manager-appl
 # 'chrono-date' 'gobject-introspection'
 # 'meson' 'scdoc' 'glib2-devel'
 
-# 'libavtp' 'lib32-alsa-plugins' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
-# 'gst-plugins-ugly' 'gst-plugins-base' 'faac' 'faad2' 'lame' 'libdca' 'libdv'
-# 'gst-libav' 'gstreamer' 'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'wavpack' 'x264' 'xvidcore'
-# 'gst-plugins-good' 'gst-plugins-bad' 'mpv-mpris' 'gst-plugin-pipewire'
+# 'libavtp' '' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
+#  'faac' 'faad2' 'lame' 'libdca' 'libdv'
+# 'gst-libav'  'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'x264' 'xvidcore'
+# 'mpv-mpris'
 
-PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'pipewire-pulse' 'pipewire-alsa' 'sof-firmware' 'pipewire-jack'
-    'lib32-pipewire' 'lib32-pipewire-jack' 'alsa-firmware' 'alsa-utils' 'pipewire-v4l2' 'pipewire-zeroconf'
-    'lib32-pipewire-v4l2' 'pavucontrol' 'ffmpeg' 'yt-dlp' 'ffmpegthumbs' 'ffmpegthumbnailer' 'haruna')
+PACMAN_PACKAGES+=('firefox')
+
+PACMAN_PACKAGES+=('ffmpeg')
+
+PACMAN_PACKAGES+=('yt-dlp')
+
+PACMAN_PACKAGES+=('gstreamer' 'gst-plugins-base' 'gst-plugins-good' 'gst-plugins-bad' 'gst-plugins-ugly' 'gst-libav')
+
+PACMAN_PACKAGES+=('alsa-plugins' 'lib32-alsa-plugins' 'alsa-firmware' 'alsa-utils')
+
+PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'lib32-pipewire' 'sof-firmware'
+    'pipewire-alsa' 'gst-plugin-pipewire' 'lib32-pipewire-jack' 'pipewire-jack' 'pipewire-pulse'
+    'pipewire-v4l2' 'lib32-pipewire-v4l2'
+    'pipewire-zeroconf')
+
+PACMAN_PACKAGES+=('pavucontrol')
+
+PACMAN_PACKAGES+=('haruna')
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
 PACMAN_PACKAGES+=('blueman')
 
 PACMAN_PACKAGES+=('wireguard-tools')
+
 PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
+
 # 'yubikey-manager-qt' Is broken
 PACMAN_PACKAGES+=('yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
+
 PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 
 PACMAN_PACKAGES+=('timeshift')
@@ -94,6 +118,10 @@ if [[ -f /usr/share/dbus-1/services/org.kde.plasma.Notifications.service ]]; the
         /usr/share/dbus-1/services/org.kde.plasma.Notifications.service.disabled
 fi
 
+echo "-------------------------------------------------------"
+echo "                    Enable Services                    "
+echo "-------------------------------------------------------"
+
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     systemctl enable nvidia-suspend.service
     systemctl enable nvidia-hibernate.service
@@ -116,9 +144,14 @@ id -u "${AUR_INSTALL_USER}" &>/dev/null ||
 
 echo "${AUR_INSTALL_USER} ALL=(ALL) NOPASSWD: ALL" >/etc/sudoers.d/10-"${AUR_INSTALL_USER}"
 
-AUR_BASIC_PACKAGES=('yay' 'nordvpn-bin' 'brave-bin' 'google-chrome' 'onlyoffice-bin' 'yubico-authenticator-bin'
-    'redhat-fonts' # redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
-    'sddm-silent-theme')
+AUR_BASIC_PACKAGES=(
+    'yay'
+    'nordvpn-bin'
+    'brave-bin' 'google-chrome'
+    'onlyoffice-bin'
+    'yubico-authenticator-bin'
+    'redhat-fonts' 'sddm-silent-theme' # redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
+)
 
 # Import OpenPGP key for yay
 su - "${AUR_INSTALL_USER}" -c "

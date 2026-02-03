@@ -25,7 +25,7 @@ profile blr-home-s1-dev-hp-docked {
         enable
         scale 2
         mode 2560x1600@60.00800
-        position 2560,0
+        position 2560,640
     }
 }
 

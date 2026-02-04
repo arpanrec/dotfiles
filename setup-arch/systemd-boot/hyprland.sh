@@ -61,7 +61,9 @@ PACMAN_PACKAGES+=('alsa-plugins' 'lib32-alsa-plugins' 'alsa-firmware' 'alsa-util
 PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'lib32-pipewire' 'sof-firmware'
     'pipewire-alsa' 'gst-plugin-pipewire' 'lib32-pipewire-jack' 'pipewire-jack' 'pipewire-pulse'
     'pipewire-v4l2' 'lib32-pipewire-v4l2'
-    'pipewire-zeroconf')
+    'pipewire-zeroconf'
+    'speech-dispatcher' # For speech recognition, like discord audio call.
+)
 
 PACMAN_PACKAGES+=('pavucontrol')
 

@@ -16,6 +16,7 @@ In this repository, you'll find my personal dotfiles for various applications an
 ## Installation
 
 ```bash
+export CLEAN_DOT_INSTALL=no; \
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
 ```
@@ -26,7 +27,7 @@ Environment variables:
 
 ## Scripts
 
-### Setup Workspace
+### Set up Workspace
 
 Set up workspace for development using [server workspace playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/server_workspace.md)
 
@@ -120,7 +121,7 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
 ### Setup Debian
 
 Bootstrap a Debian machine with a user and some basic tools using [cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md).
-And then set up the user workspace using [setup-workspace](#setup-workspace)
+And then set up the user workspace using [setup-workspace](#set-up-workspace)
 
 Any variable ends with `_FILE` will be written to a file and the directory will be created if it does not exist, also ownership will be changed to the root user.
 Variables:

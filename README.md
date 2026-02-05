@@ -111,6 +111,13 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bitwarden-desktop.sh)
 ```
 
+### [Install Postman](https://www.postman.com/downloads/)
+
+```bash
+bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-postman.sh)
+```
+
 ### [Install DBeaver Community](https://dbeaver.io/download/)
 
 ```bash

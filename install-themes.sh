@@ -137,6 +137,30 @@ echo "Installing gvolpe/BeautyLine."
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine/main/." "${HOME}/.local/share/icons/"
 rm -rf "${HOME}/.local/share/icons/.git"
 
+echo "Installing Bibata Cursor"
+
+BIBATA_CURSOR_VERSION="$(curl -s \
+    "https://api.github.com/repos/ful1e5/Bibata_Cursor/releases/latest" |
+    jq -r ".tag_name")"
+
+rm -rf "${HOME}"/.local/share/icons/Bibata-* # This asterisk should not be under quotes, i want it to expand to all files.
+
+mkdir -p "${HOME}/.local/share/icons" "${TMP_DOWNLOAD_DIRECTORY}/Bibata"
+
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz" ]]; then
+    curl -fL \
+        "https://github.com/ful1e5/Bibata_Cursor/releases/download/${BIBATA_CURSOR_VERSION}/Bibata.tar.xz" \
+        -o "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz"
+
+    echo "Downloaded Bibata Cursor version ${BIBATA_CURSOR_VERSION}"
+else
+    echo "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz is already present"
+fi
+
+tar -Jxvf "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz" -C "${TMP_DOWNLOAD_DIRECTORY}/Bibata"
+
+mv "${TMP_DOWNLOAD_DIRECTORY}"/Bibata/Bibata-* "${HOME}/.local/share/icons/"
+
 echo "Installing hack nerd-fonts"
 
 NERD_FONT_VERSION="$(curl -s \

@@ -67,6 +67,7 @@
             "(.*) - Visual Studio Code": "󰨞 $1",
             "(.*) - Brave": "󰖟 $1",
             "(.*) - Google Chrome": " $1",
+            "(.*)  — Kate": "󰦨 $1",
         },
     },
     "mpris": {

@@ -25,7 +25,8 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kwalletmanager' 'kwallet' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit-kde-agent'
     'kleopatra'
     'kvantum'
-    'kde-gtk-config'
+    'kde-gtk-config' # for gtk apps xsettingsd cli
+    'kdialog' # For popup in browsers.
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
     'gwenview' 'kimageformats' 'qt6-imageformats'

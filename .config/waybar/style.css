@@ -12,21 +12,6 @@ window#waybar {
     color: #cdd6f4;
 }
 
-/* General module styling */
-#mpris,
-#bluetooth,
-#workspaces,
-#window,
-#clock,
-#pulseaudio,
-#network,
-#tray {
-    /* padding: 0 6px; */
-    margin: 4px 4px;
-    border-radius: 8px;
-    background: rgba(49, 50, 68, 0.6);
-}
-
 /* Workspaces */
 #workspaces button {
     padding: 0 6px;
@@ -46,6 +31,25 @@ window#waybar {
 /* Window title */
 #window {
     color: #bac2de;
+}
+
+/* General module styling */
+#mpris,
+#bluetooth,
+#workspaces,
+#idle_inhibitor,
+#window,
+#clock,
+#battery,
+#power-profiles-daemon,
+#pulseaudio,
+#network,
+#custom-power,
+#tray {
+    padding: 0 6px;
+    margin: 4px 4px;
+    border-radius: 8px;
+    background: rgba(49, 50, 68, 0.6);
 }
 
 /* Clock */

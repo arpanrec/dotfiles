@@ -433,7 +433,7 @@ echo "                             Install root certificate                     
 echo "-----------------------------------------------------------------------------------"
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
-curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/root_ca_crt.pem |
+curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/dotfiles-assets/root_ca_crt.pem |
     tee "${ROOT_CERTIFICATE_TEMP_FILE}"
 trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
 

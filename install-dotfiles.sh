@@ -114,14 +114,14 @@ chmod +x "${powerlevel10k_directory}/gitstatus/install"
 
 echo "Adding my ssh key"
 
-KEY='ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk='
+public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/dotfiles-assets/id_ecdsa.pub)"
 AUTHORIZED_KEYS_FILE="${HOME}/.ssh/authorized_keys"
 
 mkdir -p "${HOME}/.ssh"; chmod 700 "${HOME}/.ssh"; \
     touch "${AUTHORIZED_KEYS_FILE}"; chmod 600 "${AUTHORIZED_KEYS_FILE}";
 
-if ! grep -qxF "${KEY}" "${AUTHORIZED_KEYS_FILE}"; then
-    echo "${KEY}" >> "${AUTHORIZED_KEYS_FILE}"
+if ! grep -qxF "${public_key}" "${AUTHORIZED_KEYS_FILE}"; then
+    echo "${public_key}" >> "${AUTHORIZED_KEYS_FILE}"
     echo "SSH key added."
 else
     echo "SSH key already present."

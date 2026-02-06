@@ -95,10 +95,12 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     sed -i '/LIBVA_DRIVER_NAME/d' /etc/environment
     sed -i '/__GLX_VENDOR_LIBRARY_NAME/d' /etc/environment
     sed -i '/NVD_BACKEND/d' /etc/environment
+    sed -i '/GBM_BACKEND/d' /etc/environment
 
     echo 'LIBVA_DRIVER_NAME=nvidia' | tee -a /etc/environment
     echo '__GLX_VENDOR_LIBRARY_NAME=nvidia' | tee -a /etc/environment
     echo 'NVD_BACKEND=direct' | tee -a /etc/environment
+    echo 'GBM_BACKEND=nvidia-drm' | tee -a /etc/environment
 fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then

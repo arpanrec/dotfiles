@@ -100,6 +100,8 @@ for item in "${zsh_items[@]}"; do
         (
             cd "${item_dir}" || exit 1
             git pull
+            git reset --hard HEAD
+            git clean -fd
         )
     fi
 done

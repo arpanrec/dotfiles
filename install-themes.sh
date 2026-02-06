@@ -56,6 +56,8 @@ for item in "${git_repositories[@]}"; do
         (
             cd "${item_dir}/${item_branch}" || exit 1
             git pull
+            git reset --hard HEAD
+            git clean -fd
         )
     fi
 done
@@ -134,8 +136,7 @@ echo "Installing vinceliuice/Layan-cursors."
 
 echo "Installing gvolpe/BeautyLine."
 
-cp -r "${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine/main/." "${HOME}/.local/share/icons/"
-rm -rf "${HOME}/.local/share/icons/.git"
+cp -r "${TMP_DOWNLOAD_DIRECTORY}"/gvolpe/BeautyLine/main/*Beauty* "${HOME}/.local/share/icons/"
 
 echo "Installing Bibata Cursor"
 

@@ -34,7 +34,7 @@ Set up workspace for development using [server workspace playbook](https://githu
 Variables
 
 * `NEBULA_TMP_DIR`: Temporary directory to download the playbook. Default `${HOME}/.tmp`.
-* `NEBULA_VERSION`: Version of the nebula playbook to be used. Default `1.14.62`.
+* `NEBULA_VERSION`: Version of the nebula playbook to be used. Default `1.14.63`.
 * `NEBULA_VENV_DIR`: Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
 * `NEBULA_EXTRA_VARS_JSON_FILE`: Extra vars for the playbook in JSON format. Default `${NEBULA_TMP_DIR}/extra_vars.json`.
 
@@ -144,7 +144,7 @@ Variables:
 * `CLOUD_INIT_INSTALL_DOCKER` : Install docker. Default `false`.
 
 * `NEBULA_TMP_DIR` : Directory to clone the ansible playbook. Default `/tmp/cloudinit`.
-* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.14.62`.
+* `NEBULA_VERSION` : Version of the nebula playbook to be used. Default `1.14.63`.
 * `NEBULA_VENV_DIR` : Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
 * `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` : Authorized keys file for the user. Default `${NEBULA_TMP_DIR}/authorized_keys`.
 * `NEBULA_REQUIREMENTS_FILE` : Ansible requirements file. Default `${NEBULA_TMP_DIR}/requirements.yml`.

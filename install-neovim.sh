@@ -45,6 +45,7 @@ TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
 NEOVIM_GIT_CLONE_DIR="${TMP_DOWNLOAD_DIRECTORY}/neovim-src-${NEOVIM_VERSION}"
 
 NEOVIM_INSTALL_DIR="${NEOVIM_INSTALL_DIR:-"${HOME}/.local"}"
+NVIM_APPNAME="${NVIM_APPNAME:-nvim}"
 
 if [[ ! -d "${NEOVIM_GIT_CLONE_DIR}" ]]; then
     echo "Cloning Neovim ${NEOVIM_VERSION} to ${NEOVIM_GIT_CLONE_DIR}"
@@ -54,8 +55,13 @@ fi
 
 cd "${NEOVIM_GIT_CLONE_DIR}" || exit 1
 
-rm -rf "${NEOVIM_INSTALL_DIR}/state/nvim" "${NEOVIM_INSTALL_DIR}/share/nvim" "${NEOVIM_INSTALL_DIR}/bin/nvim" \
-    "${HOME}/.cache/nvim"
+git reset --hard HEAD
+git clean -fd
+
+rm -rf "${NEOVIM_INSTALL_DIR}/state/${NVIM_APPNAME}" \
+    "${NEOVIM_INSTALL_DIR}/share/${NVIM_APPNAME}" \
+    "${NEOVIM_INSTALL_DIR}/bin/nvim" \
+    "${HOME}/.cache/${NVIM_APPNAME}"
 
 echo "Building Neovim"
 make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${NEOVIM_INSTALL_DIR}" -j"${CPUCOUNT}"

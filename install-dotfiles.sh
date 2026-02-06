@@ -113,9 +113,17 @@ chmod +x "${powerlevel10k_directory}/gitstatus/install"
 "${powerlevel10k_directory}/gitstatus/install" -f
 
 echo "Adding my ssh key"
-mkdir -p "${HOME}/.ssh" && chmod 700 "${HOME}/.ssh"
-echo "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk=" |
-    tee -a "${HOME}/.ssh/authorized_keys"
-chmod 600 "${HOME}/.ssh/authorized_keys"
 
+KEY='ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk='
+AUTHORIZED_KEYS_FILE="${HOME}/.ssh/authorized_keys"
+
+mkdir -p "${HOME}/.ssh"; chmod 700 "${HOME}/.ssh"; \
+    touch "${AUTHORIZED_KEYS_FILE}"; chmod 600 "${AUTHORIZED_KEYS_FILE}";
+
+if ! grep -qxF "${KEY}" "${AUTHORIZED_KEYS_FILE}"; then
+    echo "${KEY}" >> "${AUTHORIZED_KEYS_FILE}"
+    echo "SSH key added."
+else
+    echo "SSH key already present."
+fi
 echo "Completed"

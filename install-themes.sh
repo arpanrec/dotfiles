@@ -40,7 +40,7 @@ declare -a git_repositories=(
     "https://github.com/EliverLara/candy-icons.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons|master"
     "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
     "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
-
+    "https://github.com/arpanrec/dotfiles.git|${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles|dotfiles-assets"
 )
 
 for item in "${git_repositories[@]}"; do
@@ -237,5 +237,14 @@ find "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}" \
     -exec mv {} "${HOME}/.local/share/fonts/cascadia-code" \;
 
 fc-cache -r -v "${HOME}/.local/share/fonts"
+
+echo "Installing Hyprpaper"
+
+if [[ -d "${HOME}/.local/share/wallpapers/hyprpaper" ]]; then
+    cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/dotfiles-assets/hyprpaper/." \
+        "${HOME}/.local/share/wallpapers/hyprpaper/"
+else
+    echo "Hyprpaper is not installed"
+fi
 
 echo "Completed"

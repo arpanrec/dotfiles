@@ -117,11 +117,13 @@ echo "Adding my ssh key"
 public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/dotfiles-assets/id_ecdsa.pub)"
 AUTHORIZED_KEYS_FILE="${HOME}/.ssh/authorized_keys"
 
-mkdir -p "${HOME}/.ssh"; chmod 700 "${HOME}/.ssh"; \
-    touch "${AUTHORIZED_KEYS_FILE}"; chmod 600 "${AUTHORIZED_KEYS_FILE}";
+mkdir -p "${HOME}/.ssh"
+chmod 700 "${HOME}/.ssh"
+touch "${AUTHORIZED_KEYS_FILE}"
+chmod 600 "${AUTHORIZED_KEYS_FILE}"
 
 if ! grep -qxF "${public_key}" "${AUTHORIZED_KEYS_FILE}"; then
-    echo "${public_key}" >> "${AUTHORIZED_KEYS_FILE}"
+    echo "${public_key}" >>"${AUTHORIZED_KEYS_FILE}"
     echo "SSH key added."
 else
     echo "SSH key already present."

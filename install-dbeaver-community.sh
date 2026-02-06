@@ -48,7 +48,26 @@ tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux.gtk.$(un
     -C "${HOME}/.local/share/dbeaver-ce" \
     --strip-components=1
 
-mv "${HOME}/.local/share/dbeaver-ce/dbeaver-ce.desktop" "${HOME}/.local/share/applications/dbeaver.desktop"
-sed -i "s|/usr/share|${HOME}/.local/share|g" "${HOME}/.local/share/applications/dbeaver.desktop"
+#mv "${HOME}/.local/share/dbeaver-ce/dbeaver-ce.desktop" "${HOME}/.local/share/applications/dbeaver.desktop"
+#sed -i "s|/usr/share|${HOME}/.local/share|g" "${HOME}/.local/share/applications/dbeaver.desktop"
+
+tee "${HOME}/.local/share/applications/dbeaver.desktop" <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name=dbeaver-ce
+GenericName=Universal Database Manager
+Comment=Universal Database Manager and SQL Client.
+Path=${HOME}/.local/share/dbeaver-ce/
+# GDK_BACKEND=x11
+Exec=env NO_AT_BRIDGE=1 GDK_SCALE=1 GDK_DPI_SCALE=1 ${HOME}/.local/share/dbeaver-ce/dbeaver %U
+Icon=${HOME}/.local/share/dbeaver-ce/dbeaver.png
+Categories=IDE;Development
+StartupWMClass=DBeaver
+StartupNotify=true
+Keywords=Database;SQL;IDE;JDBC;ODBC;MySQL;PostgreSQL;Oracle;DB2;MariaDB
+MimeType=application/sql
+EOF
 
 echo "Dbeaver installed successfully!"

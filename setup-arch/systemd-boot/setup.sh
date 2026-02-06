@@ -4,13 +4,7 @@ echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
-
-if [[ "${TARGET_HOSTNAME}" != "s1-dev" ]] && [[ "${TARGET_HOSTNAME}" != "s2-dev" ]]; then
-    echo "Invalid hostname provided. Allowed hosts are: s1-dev, s2-dev"
-    echo "First argument should be one of the above"
-    exit 1
-fi
-
+export TARGET_DOMAINNAME=blr-home.easyiac.com
 allowed_host_names=(
     s1-dev
     s2-dev
@@ -97,7 +91,7 @@ echo "${TARGET_HOSTNAME}" | tee /etc/hostname
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   ${TARGET_HOSTNAME} ${TARGET_HOSTNAME}.blr-home.easyiac.com
+127.0.1.1   ${TARGET_HOSTNAME} ${TARGET_HOSTNAME}.${TARGET_DOMAINNAME}
 EOT
 
 if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
@@ -432,9 +426,7 @@ sbctl sign -s /boot/vmlinuz-linux
 sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
 sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
 
-sbctl status
 sbctl verify
-bootctl list
 
 echo "-----------------------------------------------------------------------------------"
 echo "                             Install root certificate                              "

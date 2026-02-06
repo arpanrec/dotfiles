@@ -26,7 +26,7 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kleopatra'
     'kvantum'
     'kde-gtk-config' # for gtk apps xsettingsd cli
-    'kdialog' # For popup in browsers.
+    'kdialog'        # For popup in browsers.
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
     'gwenview' 'kimageformats' 'qt6-imageformats'
@@ -38,9 +38,9 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 # 'networkmanager-openvpn'  'networkmanager-openconnect'
 PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme' 'network-manager-applet')
 
-# 'ttf-jetbrains-mono-nerd' 'ttf-fantasque-sans-mono' 'otf-font-awesome' 'adobe-source-sans-fonts'
-# fontforge # For font-patcher, used to patch fonts for better compatibility with Hyprland
-# 'noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'otf-font-awesome'
+# fontforge # For font-patcher, used to patching any font to nerd font
+PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'otf-font-awesome'
+    'woff2-font-awesome')
 
 # 'chrono-date' 'gobject-introspection'
 # 'meson' 'scdoc' 'glib2-devel'

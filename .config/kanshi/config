@@ -4,7 +4,7 @@
 output "BNQ BenQ EL2870U GBM03038SL0" {
     mode 3840x2160@59.99900
     position 0,0
-    scale 1.50
+    scale 1.5
     alias $BLR_HOME_BENQ
 }
 
@@ -32,7 +32,7 @@ profile blr-home-s1-dev-hp-docked {
 output "Samsung Display Corp. 0x419F Unknown" {
     mode 2880x1800@120.00Hz
     position 0,0
-    scale 1.60
+    scale 1.6
     alias $S2_DEV_INTERNAL
 }
 

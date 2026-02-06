@@ -16,7 +16,7 @@ image/png=org.kde.gwenview.desktop;
 inode/directory=org.kde.dolphin.desktop
 text/html=firefox.desktop
 text/plain=org.kde.kate.desktop;
-video/mp4=org.kde.haruna.desktop;
+video/mp4=org.kde.haruna.desktop
 video/x-ogm+ogg=org.kde.haruna.desktop;
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
@@ -32,6 +32,10 @@ application/x-extension-xht=firefox.desktop
 x-scheme-handler/about=brave-browser.desktop
 x-scheme-handler/unknown=brave-browser.desktop
 x-scheme-handler/postman=Postman.desktop
+video/x-matroska=org.kde.haruna.desktop
+video/webm=org.kde.haruna.desktop
+audio/mpeg=org.kde.haruna.desktop
+audio/flac=org.kde.haruna.desktop
 
 [Removed Associations]
 video/x-ogm+ogg=firefox.desktop;

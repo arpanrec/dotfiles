@@ -1,10 +1,8 @@
-// -*- mode: jsonc -*-
 {
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
-    // "height": 34, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    "spacing": 2, // Gaps between modules (4px)
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "spacing": 2,
     "modules-left": [
         "hyprland/workspaces"
     ],
@@ -60,7 +58,7 @@
         "expand": false,
         "rewrite": {
             "(.*) — Mozilla Firefox": "󰈹 $1",
-            "(.*) — Konsole": "󰆍 $1", // Doesn't work, Because it's not `-`.
+            "(.*) — Konsole": "󰆍 $1",
             "(.*) - Visual Studio Code": "󰨞 $1",
             "(.*) - Brave": "󰖟 $1",
             "(.*) - Google Chrome": " $1",

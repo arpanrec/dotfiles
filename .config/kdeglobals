@@ -105,7 +105,7 @@ smallestReadableFont=JetBrainsMono Nerd Font Propo,8,-1,5,400,0,0,0,0,0,0,0,0,0,
 toolBarFont=JetBrainsMono Nerd Font Propo,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 
 [Icons]
-Theme=Tela-nord
+Theme=Tela-nord-dark
 
 [KDE]
 LookAndFeelPackage=Nordic

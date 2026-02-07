@@ -44,8 +44,8 @@ profile blr-home-s2-dev-hp-docked {
     output $BLR_HOME_BENQ enable
     output $S2_DEV_INTERNAL {
         enable
-        scale 2.25
+        scale 1.5
         mode 2880x1800@60.00Hz
-        position 2560,640
+        position 2560,240
     }
 }

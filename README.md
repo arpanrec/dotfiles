@@ -38,7 +38,7 @@ KDE
 * `.config/brave-flags.conf`: password-store is pinned to kwallet6.
 * `.config/xdg-desktop-portal/portals.conf`: FileChooser is pinned to kde.
 * `.local/share/dbus-1/services/org.freedesktop.secrets.service`: secrets is pinned to /usr/bin/kwalletd6.
-* `install-vscode.sh`
+* `install-vscode.sh`: password-store is pinned to kwallet5 in ~/.vscode/argv.json
 
 Environment variables:
 

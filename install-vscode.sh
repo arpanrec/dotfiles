@@ -97,7 +97,7 @@ tee "${HOME}/.local/share/applications/code-url-handler.desktop" <<EOF
 Name=Visual Studio Code - URL Handler
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-Exec=${HOME}/.local/share/vscode/code --enable-features=UseOzonePlatform --ozone-platform=wayland --password-store=kwallet6 --open-url %U
+Exec=${HOME}/.local/share/vscode/code --enable-features=UseOzonePlatform --ozone-platform=wayland --open-url %U
 Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
 Type=Application
 NoDisplay=true
@@ -112,6 +112,15 @@ ln -s "${HOME}/.local/share/vscode/bin/code" "${HOME}/.local/bin/code"
 
 echo "Visual Studio Code installed successfully! :"
 "${HOME}/.local/bin/code" --version
+
+echo "Setting kde wallet6"
+mkdir -p "${HOME}/.vscode"
+tee "${HOME}/.vscode/argv.json" <<EOF
+{
+    "password-store": "kwallet5",
+    "enable-crash-reporter": false
+}
+EOF
 
 # VS Code extensions to be installed
 CODE_EXTENSIONS=(

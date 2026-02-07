@@ -30,11 +30,11 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kleopatra'
     'kvantum'
     'kde-gtk-config' # for gtk apps xsettingsd cli
-    'kdialog'        # For popup in browsers.
+    'kdialog'        # For popup in browsers like file save dialog.
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
     'gwenview' 'kimageformats' 'qt6-imageformats'
-    'merkuro' 'kamoso' 'kcalc' 'kate' 'konsole')
+    'kamoso' 'kate' 'konsole')
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
 # 'packagekit-qt6'
@@ -43,6 +43,11 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 PACMAN_PACKAGES+=(
     'xdg-desktop-portal-gtk' 'adw-gtk-theme'
     'gobject-introspection' 'glib2-devel' # Waybar GTK apps are breaking without gobject-introspection and glib2-devel.
+)
+
+PACMAN_PACKAGES+=(
+    'mpv-mpris' 'mpd-mpris' # For waybar mpris module. https://man.archlinux.org/man/extra/waybar/waybar-mpris.5.en
+    'playerctl' # mpris media player controller and lib for spotify, vlc, audacious, bmp, xmms2, and others.
 )
 
 # fontforge # For font-patcher, used to patching any font to nerd font
@@ -54,7 +59,6 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 # 'libavtp' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
 #  'faac' 'faad2' 'lame' 'libdca' 'libdv'
 # 'gst-libav'  'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'x264' 'xvidcore'
-# 'mpv-mpris'
 
 PACMAN_PACKAGES+=('firefox')
 

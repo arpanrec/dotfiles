@@ -97,7 +97,7 @@ tee "${HOME}/.local/share/applications/code-url-handler.desktop" <<EOF
 Name=Visual Studio Code - URL Handler
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-Exec=${HOME}/.local/share/vscode/code --enable-features=UseOzonePlatform --ozone-platform=wayland --open-url %U
+Exec=${HOME}/.local/share/vscode/code --enable-features=UseOzonePlatform --ozone-platform=wayland --password-store=kwallet6 --open-url %U
 Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
 Type=Application
 NoDisplay=true

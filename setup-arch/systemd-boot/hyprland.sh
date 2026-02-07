@@ -11,13 +11,17 @@ fi
 
 # 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
 
-PACMAN_PACKAGES+=('hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'waybar' 'hyprland-qt-support' 'hyprpicker'
-    'rofi' 'dunst' 'kitty' 'hyprshot' 'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
+PACMAN_PACKAGES+=(
+    'hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'hyprshot' 'hyprland-qt-support' 'hyprpicker'
+    'rofi' 'dunst' 'kitty' 'waybar'
+    'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
+    'network-manager-applet' # For wifi and ethernet from ngw-shell
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
     'kanshi'       # Dynamic monitor switching tool
     'nwg-displays' # GUI Dynamic monitor switching tool, testings with hyprland
     'brightnessctl'
-    'cliphist' 'copyq' 'wl-clip-persist')
+    'cliphist' 'copyq' 'wl-clip-persist'
+)
 
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
@@ -36,16 +40,18 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 # 'packagekit-qt6'
 # 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
 # 'networkmanager-openvpn'  'networkmanager-openconnect'
-PACMAN_PACKAGES+=('xdg-desktop-portal-gtk' 'adw-gtk-theme' 'network-manager-applet')
+PACMAN_PACKAGES+=(
+    'xdg-desktop-portal-gtk' 'adw-gtk-theme'
+    'gobject-introspection' 'glib2-devel' # Waybar GTK apps are breaking without gobject-introspection and glib2-devel.
+)
 
 # fontforge # For font-patcher, used to patching any font to nerd font
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'otf-font-awesome'
     'woff2-font-awesome')
 
-# 'chrono-date' 'gobject-introspection'
-# 'meson' 'scdoc' 'glib2-devel'
+# 'chrono-date' 'meson' 'scdoc' # Needed for waybar
 
-# 'libavtp' '' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
+# 'libavtp' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
 #  'faac' 'faad2' 'lame' 'libdca' 'libdv'
 # 'gst-libav'  'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'x264' 'xvidcore'
 # 'mpv-mpris'

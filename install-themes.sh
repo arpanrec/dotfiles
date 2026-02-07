@@ -238,13 +238,12 @@ find "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}" \
 
 fc-cache -r -v "${HOME}/.local/share/fonts"
 
-echo "Installing Hyprpaper"
+echo "Installing wallpapers"
 
-if [[ -d "${HOME}/.local/share/wallpapers/hyprpaper" ]]; then
-    cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/dotfiles-assets/hyprpaper/." \
-        "${HOME}/.local/share/wallpapers/hyprpaper/"
-else
-    echo "Hyprpaper is not installed"
-fi
+rm -rf "${HOME}/.local/share/wallpapers/from-dotfiles"
+mkdir -p "${HOME}/.local/share/wallpapers/from-dotfiles"
+
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/dotfiles-assets/wallpapers/." \
+    "${HOME}/.local/share/wallpapers/from-dotfiles/"
 
 echo "Completed"

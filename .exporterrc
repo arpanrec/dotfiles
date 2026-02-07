@@ -143,13 +143,11 @@ brave_profile() {
     local profile="${1:-}"
     local bravecmd
 
-    # validate profile name
     if [[ -z "$profile" || "${#profile}" -le 1 ]]; then
         printf 'brave-profile: profile name must be longer than 1 character\n' >&2
         return 2
     fi
 
-    # find brave binary
     bravecmd=$(command -v brave || command -v brave-browser) || {
         printf 'brave-profile: brave browser not found\n' >&2
         return 127
@@ -161,3 +159,26 @@ brave_profile() {
     disown
 }
 export brave_profile
+
+chrome_profile() {
+    local profile="${1:-}"
+    local chromecmd
+
+    # validate profile name
+    if [[ -z "$profile" || "${#profile}" -le 1 ]]; then
+        printf 'google-chrome-profile: profile name must be longer than 1 character\n' >&2
+        return 2
+    fi
+
+    chromecmd=$(command -v google-chrome || command -v google-chrome-stable) || {
+        printf 'google-chrome-profile: chrome browser not found\n' >&2
+        return 127
+    }
+
+    "$chromecmd" \
+        --user-data-dir="$HOME/.local/share/google-chrome-user-data-dir/$profile" \
+        >/dev/null 2>&1 &
+    disown
+}
+export chrome_profile
+

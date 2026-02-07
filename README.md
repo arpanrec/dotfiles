@@ -26,6 +26,19 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
 ```
 
+## Hardcoded session files
+
+KDE
+
+* `.config/chrome-flags.conf`
+* `.config/brave-flags.conf`
+* `.config/xdg-desktop-portal/portals.conf`
+* `.local/share/dbus-1/services/org.freedesktop.secrets.service`
+
+Hyprland
+
+* `.config/systemd/user/xdg-desktop-portal.service.d/override.conf`
+
 Environment variables:
 
 * `CLEAN_DOT_INSTALL`: This will delete existing dotfiles bare repository at `~/.dotfiles` if set to `yes`.

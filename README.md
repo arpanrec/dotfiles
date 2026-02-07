@@ -13,6 +13,8 @@ In this repository, you'll find my personal dotfiles for various applications an
 * SSH: `.ssh/config`
 * And more...
 
+Wayland is the way to go forward.
+
 ## Branches
 
 * Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main)

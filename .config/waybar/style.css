@@ -43,6 +43,9 @@ window#waybar {
 #battery,
 #power-profiles-daemon,
 #pulseaudio,
+#cpu,
+#memory,
+#disk,
 #network,
 #custom-power,
 #tray {

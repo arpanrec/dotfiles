@@ -30,16 +30,15 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
 
 ## Hardcoded session files
 
+Files which might break functions like keyring, XDG portal, or display render
+
 KDE
 
-* `.config/chrome-flags.conf`
-* `.config/brave-flags.conf`
-* `.config/xdg-desktop-portal/portals.conf`
-* `.local/share/dbus-1/services/org.freedesktop.secrets.service`
-
-Hyprland
-
-* `.config/systemd/user/xdg-desktop-portal.service.d/override.conf`
+* `.config/chrome-flags.conf`: password-store is pinned to kwallet6.
+* `.config/brave-flags.conf`: password-store is pinned to kwallet6.
+* `.config/xdg-desktop-portal/portals.conf`: FileChooser is pinned to kde.
+* `.local/share/dbus-1/services/org.freedesktop.secrets.service`: secrets is pinned to /usr/bin/kwalletd6.
+* `install-vscode.sh`
 
 Environment variables:
 

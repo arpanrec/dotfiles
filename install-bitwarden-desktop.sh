@@ -41,7 +41,7 @@ tee "${HOME}/.local/share/applications/bitwarden.desktop" <<EOF
 Name=Bitwarden
 GenericName=Password Manager
 Comment=A secure and free password manager for all of your devices.
-Exec=${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland %u
+Exec=${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland --password-store=kwallet6 %u
 Terminal=false
 MimeType=x-scheme-handler/bitwarden
 Type=Application

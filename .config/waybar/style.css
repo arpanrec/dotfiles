@@ -26,11 +26,16 @@ window#waybar {
 #disk,
 #network,
 #custom-power,
+#keyboard-state,
 #tray {
     padding: 0px 6px;
     margin: 4px 4px;
     border-radius: 8px;
     background: rgba(49, 50, 68, 0.6);
+}
+
+#idle_inhibitor {
+    color: rgb(103, 173, 173);
 }
 
 #workspaces button {
@@ -60,8 +65,4 @@ window#waybar {
 
 #pulseaudio {
     color: #94e2d5;
-}
-
-#network {
-    color: #89b4fa;
 }

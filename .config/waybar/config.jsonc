@@ -18,6 +18,7 @@
         "cpu",
         "memory",
         "battery",
+        // "network", // Moved to tray icon wit exec-once = nm-applet --indicator
         // "disk",
         // "upower",  // Use battery instate of upower
         "clock",
@@ -37,6 +38,8 @@
         "all-outputs": false,
         "warp-on-scroll": false,
         "format": "{icon}: {name}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
         "show-special": true,
         "format-icons": {
             "1": "󰆍",
@@ -52,7 +55,8 @@
     },
     "cpu": {
         "interval": 1,
-        "format": " {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+        // "format": " {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+        "format": " {usage:>2}%",
         "format-icons": [
             "▁",
             "▂",
@@ -84,6 +88,7 @@
     },
     "hyprland/window": {
         "format": "{title}",
+        "separate-outputs": true,
         "expand": false,
         "rewrite": {
             "(.*) — Mozilla Firefox": "󰈹 $1",
@@ -174,6 +179,19 @@
             "balanced": "",
             "power-saver": "",
         },
+    },
+    "network": {
+        // "interface": "wlp2s0",
+        "format": "{ifname}",
+        "format-wifi": "󰖩 {essid} ({signalStrength}%)",
+        "format-ethernet": "󰈀 {ifname}",
+        // "format-disconnected": "", //An empty format will hide the module.
+        "format-disconnected": "",
+        "tooltip-format": "{ifname}",
+        "tooltip-format-wifi": "󰖩 {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname}",
+        "tooltip-format-disconnected": "Disconnected",
+        "max-length": 50
     },
     "pulseaudio": {
         "format": "{icon} {volume}% {format_source}",

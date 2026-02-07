@@ -12,28 +12,6 @@ window#waybar {
     color: #cdd6f4;
 }
 
-/* Workspaces */
-#workspaces button {
-    padding: 0 6px;
-    color: #a6adc8;
-    background: transparent;
-}
-
-#workspaces button.active {
-    color: #89b4fa;
-    background: rgba(137, 180, 250, 0.2);
-}
-
-#workspaces button:hover {
-    background: rgba(137, 180, 250, 0.15);
-}
-
-/* Window title */
-#window {
-    color: #bac2de;
-}
-
-/* General module styling */
 #mpris,
 #bluetooth,
 #workspaces,
@@ -49,29 +27,41 @@ window#waybar {
 #network,
 #custom-power,
 #tray {
-    padding: 0 6px;
+    padding: 0px 6px;
     margin: 4px 4px;
     border-radius: 8px;
     background: rgba(49, 50, 68, 0.6);
 }
 
-/* Clock */
+#workspaces button {
+    color: #a6adc8;
+}
+
+#workspaces button.active {
+    color: #89b4fa;
+    background: rgba(137, 180, 250, 0.2);
+}
+
+#workspaces button:hover {
+    background: rgba(137, 180, 250, 0.15);
+}
+
+#window {
+    color: #bac2de;
+}
+
+#bluetooth {
+    color: #8897ed;
+}
+
 #clock {
     color: #f9e2af;
 }
 
-/* Audio */
 #pulseaudio {
     color: #94e2d5;
 }
 
-/* Network */
 #network {
     color: #89b4fa;
-}
-
-/* Tray */
-#tray {
-    padding-right: 6px;
-    padding-left: 6px;
 }

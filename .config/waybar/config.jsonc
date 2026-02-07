@@ -3,6 +3,7 @@
     "position": "top",
     "height": 34,
     "spacing": 2,
+    "margin-top": 2,
     "modules-left": [
         "hyprland/workspaces",
         "hyprland/window",
@@ -98,7 +99,7 @@
         "tooltip-spacing": 20
     },
     "hyprland/window": {
-        "format": "{title}",
+        "format": "{}",
         "separate-outputs": true,
         "expand": true,
         "rewrite": {

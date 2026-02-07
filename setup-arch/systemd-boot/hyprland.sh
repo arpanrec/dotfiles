@@ -51,8 +51,7 @@ PACMAN_PACKAGES+=(
 )
 
 # fontforge # For font-patcher, used to patching any font to nerd font
-PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'otf-font-awesome'
-    'woff2-font-awesome')
+PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'woff2-font-awesome')
 
 # 'chrono-date' 'meson' 'scdoc' # Needed for waybar
 

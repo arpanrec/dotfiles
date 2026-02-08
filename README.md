@@ -20,7 +20,7 @@ Wayland is the way to go forward.
 * Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main)
 * Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets), like certificates, public keys, themes, wallpapers etc.
 
-## Hardcoded session files
+## Hardcoded session files outside session manager directories, like: `~/.config/xfce4/xfconf/xfce-perchannel-xml/` or `~/.config/hype/hype.conf`
 
 Files which might break functions like keyring, XDG portal, or display render
 
@@ -29,7 +29,7 @@ KDE
 * `.config/chrome-flags.conf`: password-store is pinned to kwallet6.
 * `.config/brave-flags.conf`: password-store is pinned to kwallet6.
 * `.config/xdg-desktop-portal/portals.conf`: FileChooser is pinned to kde.
-* `.local/share/dbus-1/services/org.freedesktop.secrets.service`: secrets is pinned to /usr/bin/kwalletd6.
+* `.local/share/dbus-1/services/org.freedesktop.secrets.service`: secret manager is pinned to /usr/bin/kwalletd6.
 * `install-vscode.sh`: password-store is pinned to kwallet5 in ~/.vscode/argv.json
 
 ## Installation

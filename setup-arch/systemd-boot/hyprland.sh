@@ -15,40 +15,42 @@ PACMAN_PACKAGES+=(
     'hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'hyprshot' 'hyprland-qt-support' 'hyprpicker'
     'rofi' 'dunst' 'kitty' 'waybar'
     'xdg-desktop-portal-hyprland' 'xdg-user-dirs'
-    'network-manager-applet' # For wifi and ethernet from ngw-shell
     'wayland-protocols' 'xorg-xwayland' 'xorg-xeyes' 'xorg-xlsclients'
-    'kanshi'       # Dynamic monitor switching tool
-    'nwg-displays' # GUI Dynamic monitor switching tool, testings with hyprland
+    'network-manager-applet' # For wifi and ethernet from ngw-shell
+    'kanshi'                 # Dynamic monitor switching tool
+    'nwg-displays'           # GUI Dynamic monitor switching tool, testings with hyprland
     'brightnessctl'
     'cliphist' 'copyq' 'wl-clip-persist'
 )
 
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
-    'qt6ct' 'qt5ct' # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'xdg-desktop-portal-kde'
     'kwalletmanager' 'kwallet' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit-kde-agent'
     'kleopatra'
     'kvantum'
+    'qt6ct' 'qt5ct'  # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'kde-gtk-config' # for gtk apps xsettingsd cli
     'kdialog'        # For popup in browsers like file save dialog.
-    'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
     'plasma-desktop' # Some features in dolphin like "Add Network Folder" in "Networks" location.
-    'ark' # ark is needed for dolphin archive/unarchive plugin.
+    'ark'            # ark is needed for dolphin archive/unarchive plugin.
     'gwenview' 'kimageformats' 'qt6-imageformats'
-    'kamoso' 'kate' 'konsole')
+    'kamoso' 'kate' 'konsole'
+    'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
+)
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
 # 'packagekit-qt6'
-# 'appmenu-gtk-module' 'webkit2gtk' 'materia-gtk-theme' 'adapta-gtk-theme'
+# 'appmenu-gtk-module' 'materia-gtk-theme' 'adapta-gtk-theme'
 # 'networkmanager-openvpn'  'networkmanager-openconnect'
 PACMAN_PACKAGES+=(
+    'webkit2gtk' 'webkitgtk-6.0' 'webkit2gtk-4.1' # embedded browser features provided by webkitgtk 6.0 and webkit2gtk 4.1.
     'xdg-desktop-portal-gtk' 'adw-gtk-theme'
     'gobject-introspection' 'glib2-devel' # Waybar GTK apps are breaking without gobject-introspection and glib2-devel.
 )
 
 PACMAN_PACKAGES+=(
     'mpv-mpris' 'mpd-mpris' # For waybar mpris module. https://man.archlinux.org/man/extra/waybar/waybar-mpris.5.en
-    'playerctl' # mpris media player controller and lib for spotify, vlc, audacious, bmp, xmms2, and others.
+    'playerctl'             # mpris media player controller and lib for spotify, vlc, audacious, bmp, xmms2, and others.
 )
 
 # fontforge # For font-patcher, used to patching any font to nerd font
@@ -56,8 +58,7 @@ PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-e
 
 # 'chrono-date' 'meson' 'scdoc' # Needed for waybar
 
-# 'libavtp' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp'
-#  'faac' 'faad2' 'lame' 'libdca' 'libdv'
+# 'libavtp' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'faac' 'faad2' 'lame' 'libdca' 'libdv'
 # 'gst-libav'  'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'x264' 'xvidcore'
 
 PACMAN_PACKAGES+=('firefox')

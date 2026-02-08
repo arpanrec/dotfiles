@@ -2,22 +2,11 @@
 
 * Caution: If some of my choices trigger you, always remember the legend named `xkcd` and his wisdom about workflow which can be found [here in 1172](https://xkcd.com/1172/). If you are too lazy to read, just know "My setup works for me".
 
-This repository contains my dotfiles and scripts, which I use to set up and configure my development environment. These files are essential for my workflow and help me maintain a consistent environment across different machines.
-
-Dotfiles are configuration files in Linux that start with a dot (e.g. `.bashrc`, `.zshrc`).
-They are used to customize and configure your system and applications.
-In this repository, you'll find my personal dotfiles for various applications and tools, including:
-
-* Bash: `.bashrc`, `.bash_profile`
-* Zsh: `.zshrc`, `.p10k.zsh`
-* SSH: `.ssh/config`
-* And more...
-
 Wayland is the way to go forward.
 
 ## Branches
 
-* Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main)
+* Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main).
 * Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets), like certificates, public keys, themes, wallpapers, etc.
 
 ## Hardcoded session files outside session manager directories, like: `~/.config/xfce4/xfconf/xfce-perchannel-xml/` or `~/.config/hype/hype.conf`
@@ -48,7 +37,7 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
 
 ### Set up Workspace
 
-Set up workspace for development using [server workspace playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/server_workspace.md)
+Set up a workspace for development using [server workspace playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/server_workspace.md).
 
 Variables
 

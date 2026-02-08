@@ -32,6 +32,7 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kde-gtk-config' # for gtk apps xsettingsd cli
     'kdialog'        # For popup in browsers like file save dialog.
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
+    'plasma-desktop' # Some features in dolphin like "Add Network Folder" in "Networks" location.
     'ark' # ark is needed for dolphin archive/unarchive plugin.
     'gwenview' 'kimageformats' 'qt6-imageformats'
     'kamoso' 'kate' 'konsole')

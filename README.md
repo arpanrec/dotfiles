@@ -128,6 +128,12 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dbeaver-community.sh)
 ```
 
+### [Install Telegram Desktop](https://github.com/telegramdesktop/tdesktop)
+```bash
+bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-telegram-desktop.sh)
+```
+
 ### Setup Debian
 
 Bootstrap a Debian machine with a user and some basic tools using [cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md).

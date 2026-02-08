@@ -1,25 +1,20 @@
-# My Dotfiles and Scripts Repository
-
-* Caution: If some of my choices trigger you, always remember the legend named `xkcd` and his wisdom about workflow which can be found [here in 1172](https://xkcd.com/1172/). If you are too lazy to read, just know "My setup works for me".
+# Dotfiles
 
 Wayland is the way to go forward.
 
-## Branches
-
-* Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main).
-* Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets), like certificates, public keys, themes, wallpapers, etc.
-
-## Hardcoded session files outside session manager directories, like: `~/.config/xfce4/xfconf/xfce-perchannel-xml/` or `~/.config/hype/hype.conf`
-
-Files which might break functions like keyring, XDG portal, or display render
-
-KDE
+Hardcoded session files outside session manager directories, like: `~/.config/hype/hype.conf` or `~/.config/kdeglobals`.
 
 * `.config/chrome-flags.conf`: password-store is pinned to kwallet6.
 * `.config/brave-flags.conf`: password-store is pinned to kwallet6.
 * `.config/xdg-desktop-portal/portals.conf`: FileChooser is pinned to kde.
 * `.local/share/dbus-1/services/org.freedesktop.secrets.service`: secret manager is pinned to /usr/bin/kwalletd6.
 * `install-vscode.sh`: password-store is pinned to kwallet5 in ~/.vscode/argv.json
+
+## Branches
+
+* Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main).
+* Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets),
+  like certificates, public keys, themes, wallpapers, etc.
 
 ## Installation
 
@@ -138,7 +133,9 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
 Bootstrap a Debian machine with a user and some basic tools using [cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md).
 And then set up the user workspace using [setup-workspace](#set-up-workspace)
 
-Any variable ends with `_FILE` will be written to a file and the directory will be created if it does not exist, also ownership will be changed to the root user.
+Any variable ends with `_FILE` will be written to a file and the directory will be created if it does not exist,
+also ownership will be changed to the root user.
+
 Variables:
 
 * `CLOUD_INIT_GROUP` : Group name for the user to be created. Default `cloudinit`.
@@ -156,7 +153,7 @@ Variables:
 * `NEBULA_VENV_DIR` : Directory to create the ansible virtual environment. Default `${NEBULA_TMP_DIR}/venv`.
 * `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` : Authorized keys file for the user. Default `${NEBULA_TMP_DIR}/authorized_keys`.
 * `NEBULA_REQUIREMENTS_FILE` : Ansible requirements file. Default `${NEBULA_TMP_DIR}/requirements.yml`.
-  
+
 * `DEFAULT_ROLES_PATH` : Directory to clone the ansible roles. Default `${NEBULA_TMP_DIR}/roles`.
 * `ANSIBLE_ROLES_PATH` : Ansible roles path. Default `${DEFAULT_ROLES_PATH}`.
 * `ANSIBLE_COLLECTIONS_PATH` : Ansible collections path. Default `${NEBULA_TMP_DIR}/collections`.
@@ -221,3 +218,12 @@ set -euo pipefail
     tee -a /root/linode-stack-script.log
 
 ```
+
+## Notes
+
+If some of my choices trigger you,
+always remember the legend named `xkcd`
+and his wisdom about workflow which can be found
+[here in 1172](https://xkcd.com/1172/).
+
+* Caution: If you are too lazy to read, just know "My setup works for me".

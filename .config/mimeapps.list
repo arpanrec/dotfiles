@@ -36,6 +36,7 @@ video/x-matroska=org.kde.haruna.desktop
 video/webm=org.kde.haruna.desktop
 audio/mpeg=org.kde.haruna.desktop
 audio/flac=org.kde.haruna.desktop
+x-scheme-handler/bitwarden=Bitwarden.desktop
 
 [Removed Associations]
 video/x-ogm+ogg=firefox.desktop;

@@ -20,14 +20,6 @@ Wayland is the way to go forward.
 * Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main)
 * Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets), like certificates, public keys, themes, wallpapers etc.
 
-## Installation
-
-```bash
-export CLEAN_DOT_INSTALL=no; \
-bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
-```
-
 ## Hardcoded session files
 
 Files which might break functions like keyring, XDG portal, or display render
@@ -40,9 +32,17 @@ KDE
 * `.local/share/dbus-1/services/org.freedesktop.secrets.service`: secrets is pinned to /usr/bin/kwalletd6.
 * `install-vscode.sh`: password-store is pinned to kwallet5 in ~/.vscode/argv.json
 
+## Installation
+
 Environment variables:
 
 * `CLEAN_DOT_INSTALL`: This will delete existing dotfiles bare repository at `~/.dotfiles` if set to `yes`.
+
+```bash
+export CLEAN_DOT_INSTALL=no; \
+bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
+```
 
 ## Scripts
 

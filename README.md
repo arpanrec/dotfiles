@@ -18,7 +18,7 @@ Wayland is the way to go forward.
 ## Branches
 
 * Dotfiles are present in [dotfiles-main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-main)
-* Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets), like certificates, public keys, themes, wallpapers etc.
+* Static assets are present in [dotfiles-assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles-assets), like certificates, public keys, themes, wallpapers, etc.
 
 ## Hardcoded session files outside session manager directories, like: `~/.config/xfce4/xfconf/xfce-perchannel-xml/` or `~/.config/hype/hype.conf`
 

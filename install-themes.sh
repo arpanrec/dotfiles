@@ -55,9 +55,9 @@ for item in "${git_repositories[@]}"; do
         echo "${item_dir}/${item_branch} already exists. Updating."
         (
             cd "${item_dir}/${item_branch}" || exit 1
-            git pull
             git reset --hard HEAD
             git clean -fd
+            git pull
         )
     fi
 done

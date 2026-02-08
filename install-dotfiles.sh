@@ -99,9 +99,9 @@ for item in "${zsh_items[@]}"; do
         echo "${item_name} already exists at ${item_dir}. Updating."
         (
             cd "${item_dir}" || exit 1
-            git pull
             git reset --hard HEAD
             git clean -fd
+            git pull
         )
     fi
 done

@@ -36,7 +36,7 @@ video/x-matroska=org.kde.haruna.desktop
 video/webm=org.kde.haruna.desktop
 audio/mpeg=org.kde.haruna.desktop
 audio/flac=org.kde.haruna.desktop
-x-scheme-handler/bitwarden=Bitwarden.desktop
+x-scheme-handler/bitwarden=bitwarden.desktop
 x-scheme-handler/sgnl=signal-desktop.desktop
 x-scheme-handler/signalcaptcha=signal-desktop.desktop
 

@@ -18,7 +18,7 @@ curl -L --proto '=https' --tlsv1.2 -sSf \
 
 if command -v cargo &>/dev/null; then
     echo "Installing cargo packages"
-    echo y | cargo binstall "fd-find" "ripgrep" --force
+    echo y | cargo binstall "fd-find" "ripgrep" "uv" --force
 fi
 
 echo "Completed"

@@ -8,13 +8,13 @@ Dynamical assets for dotfiles.
 
 ## Wallpapers
 
-~~Wallpapers are stored in the [wallpapers](./wallpapers) directory with format `./wallpapers/<aspect ratio>/{light/dark}/*.*`~~
+Wallpapers are stored in the [wallpapers](./wallpapers) directory with format
+`./wallpapers/<aspect ratio>/{light/dark}/*.*`
 
 Scripts
 
-~~- [Wallpaper Resize and Luminance Detector](./wallpaper_resizer_luminance.py): Resizes wallpapers to fit the screen resolution and places them in the correct directory based on luminance.~~
-
-- [Wallpaper Resize](./wallpaper_resizer_luminance.py): Resizes wallpapers to fit the screen resolution.
+- [Wallpaper Resize and Luminance Detector](./wallpaper_resizer_luminance.py): Resizes wallpapers to fit the screen
+  resolution and places them in the correct directory based on luminance.
 
 Note: Convert all to JPGs:
 

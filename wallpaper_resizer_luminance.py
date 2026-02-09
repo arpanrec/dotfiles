@@ -179,7 +179,7 @@ def main():
 
         try:
             resize_and_crop(path)
-            # classify_and_move(path)
+            classify_and_move(path)
         except Exception as e:
             print(f"Error processing {path.name}: {e}")
 

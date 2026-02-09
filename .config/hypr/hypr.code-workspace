@@ -11,6 +11,9 @@
         },
         {
             "path": "../kanshi"
+        },
+        {
+            "path": "../rofi"
         }
     ],
     "settings": {}

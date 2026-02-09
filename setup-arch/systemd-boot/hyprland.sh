@@ -200,9 +200,12 @@ systemctl enable nordvpnd
 sed -i 's|^ConfigFile=configs/default\.conf$|ConfigFile=configs/rei.conf|' \
     /usr/share/sddm/themes/silent/metadata.desktop
 
-tee "/etc/sddm.conf" <<EOF
+mkdir -p /etc/sddm.conf.d
+
+tee "/etc/sddm.conf.d/10-sddm.conf" <<EOF
 [Theme]
 Current=silent
+
 EOF
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

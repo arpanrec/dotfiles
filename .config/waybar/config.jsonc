@@ -114,7 +114,7 @@
     },
     "mpris": {
         "format": "{player_icon} {player}",
-        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "format-paused": "{status_icon} <i>{player}</i>",
         "player-icons": {
             "default": "",
         },
@@ -137,9 +137,9 @@
         },
     },
     "clock": {
-        // "format": "󰥔 {:%H:%M}",
-        "format": "󰃰 {:%A, %B %d, %Y (%R)}",
-        // "format-alt": "󰃰 {:%A, %B %d, %Y (%R)}",
+        "format": "󰥔 {:%H:%M}",
+        // "format": "󰃰 {:%A, %B %d, %Y (%R)}",
+        "format-alt": "󰃰 {:%A, %B %d, %Y (%R)}",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode": "year",

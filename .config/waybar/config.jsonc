@@ -99,7 +99,7 @@
         "tooltip-spacing": 20
     },
     "hyprland/window": {
-        "format": "{}",
+        "format": "{title}",
         "separate-outputs": true,
         "expand": true,
         "rewrite": {
@@ -195,14 +195,14 @@
     },
     "network": {
         "interval": 1,
-        "format": "{icon} {ifname} {bandwidthDownBytes} {bandwidthUpBytes}",
-        "format-wifi": "{icon} {essid} {bandwidthDownBytes} {bandwidthUpBytes}",
+        "format": "{icon} {ifname}",
+        "format-wifi": "{icon} {essid}",
         "format-disconnected": "{icon}",
-        "tooltip-format": "{ipaddr}/{cidr}\n{netmask}",
-        "tooltip-format-wifi": "{ifname}: {essid} ({frequency} GHz) {signalStrength}%\n{signaldBm} dBm\n{ipaddr}/{cidr}\n{netmask}",
+        "tooltip-format": "{ipaddr}/{cidr}\n{netmask}\n{bandwidthDownBytes} {bandwidthUpBytes}",
+        "tooltip-format-wifi": "{ifname}: {essid} ({frequency} GHz) {signalStrength}%\n{signaldBm} dBm\n{ipaddr}/{cidr}\n{netmask}\n{bandwidthDownBytes} {bandwidthUpBytes}",
         "tooltip-format-disconnected": "Disconnected",
         "max-length": 50,
-        "min-length": 30,
+        // "min-length": 30,
         "format-icons": {
             "wifi": "󰖩",
             "ethernet": "󰈀",

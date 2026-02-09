@@ -46,6 +46,7 @@ PACMAN_PACKAGES+=(
     'webkit2gtk' 'webkitgtk-6.0' 'webkit2gtk-4.1' # embedded browser features provided by webkitgtk 6.0 and webkit2gtk 4.1.
     'xdg-desktop-portal-gtk' 'adw-gtk-theme'
     'gobject-introspection' 'glib2-devel' # Waybar GTK apps are breaking without gobject-introspection and glib2-devel.
+    'gnome-calculator'
 )
 
 PACMAN_PACKAGES+=(

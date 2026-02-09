@@ -43,9 +43,6 @@ CROP_LABELS = {
 }
 
 
-# ---------- IMAGE UTILS ----------
-
-
 def perceived_brightness(path: Path) -> float:
     img = Image.open(path).convert("RGB")
     arr = np.asarray(img)
@@ -101,9 +98,6 @@ def show_previews(original, scaled, crops, title):
     fig.suptitle(title, fontsize=14)
     plt.tight_layout()
     plt.show()
-
-
-# ---------- PIPELINE ----------
 
 
 def resize_and_crop(path: Path):
@@ -185,7 +179,7 @@ def main():
 
         try:
             resize_and_crop(path)
-            classify_and_move(path)
+            # classify_and_move(path)
         except Exception as e:
             print(f"Error processing {path.name}: {e}")
 

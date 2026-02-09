@@ -15,9 +15,6 @@ alias l='ls -CF'
 alias nssh="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias nsftp="sftp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
-# Office System local zsh shell
-alias zzx='exec ${HOME}/.local/bin/zsh -l'
-
 alias cdws='mkdir ${HOME}/workspace -p && cd ${HOME}/workspace'
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'

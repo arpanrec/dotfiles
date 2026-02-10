@@ -240,10 +240,10 @@ fc-cache -r -v "${HOME}/.local/share/fonts"
 
 echo "Installing wallpapers"
 
-rm -rf "${HOME}/.local/share/wallpapers/from-dotfiles"
-mkdir -p "${HOME}/.local/share/wallpapers/from-dotfiles"
+rm -rf "${HOME}/.local/share/wallpapers/arpanrec"
+mkdir -p "${HOME}/.local/share/wallpapers/arpanrec"
 
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/dotfiles-assets/wallpapers/." \
-    "${HOME}/.local/share/wallpapers/from-dotfiles/"
+    "${HOME}/.local/share/wallpapers/arpanrec/"
 
 echo "Completed"

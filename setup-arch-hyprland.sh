@@ -28,14 +28,19 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kwalletmanager' 'kwallet' 'kwallet-pam' 'sddm' 'sddm-kcm' 'polkit-kde-agent'
     'kleopatra'
     'kvantum'
+
     'qt6ct' 'qt5ct'  # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'kde-gtk-config' # for gtk apps xsettingsd cli
     'kdialog'        # For popup in browsers like file save dialog.
-    'plasma-desktop' # Some features in dolphin like "Add Network Folder" in "Networks" location.
-    'ark'            # ark is needed for dolphin archive/unarchive plugin.
+
+    # plasma-desktop: Some features in dolphin like "Add Network Folder" in "Networks" location.
+    # plasma-desktop: This will cause Plasma Desktop entry in SDDM.
+    'plasma-desktop'
+
     'gwenview' 'kimageformats' 'qt6-imageformats'
     'kamoso' 'kate' 'konsole'
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
+    'ark' # ark is needed for dolphin archive/unarchive plugin.
 )
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'

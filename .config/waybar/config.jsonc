@@ -8,14 +8,7 @@
         "hyprland/workspaces",
         "hyprland/window",
     ],
-    "modules-center": [
-        "clock",
-        "cpu",
-        "memory",
-        "battery",
-        "keyboard-state",
-        "network"
-    ],
+    "modules-center": [],
     "modules-right": [
         "mpris",
         "idle_inhibitor",
@@ -25,6 +18,16 @@
         // "network", // Moved to tray icon wit exec-once = nm-applet --indicator
         // "disk",
         // "upower",  // Use battery instate of upower
+
+        // Monitoring only: Start
+        "cpu",
+        "memory",
+        "battery",
+        "keyboard-state",
+        "network",
+        "clock",
+        // Monitoring only: Start
+
         "tray",
         "custom/power",
     ],

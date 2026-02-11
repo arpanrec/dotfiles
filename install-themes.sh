@@ -80,6 +80,8 @@ cp -r "${HOME}/.local/share/themes/Nordic/kde/plasma/look-and-feel/." "${HOME}/.
 cp -r "${HOME}/.local/share/themes/Nordic/kde/kvantum/." "${HOME}/.config/Kvantum/"
 cp -r "${HOME}/.local/share/themes/Nordic/kde/konsole/." "${HOME}/.local/share/konsole/"
 
+echo "Done EliverLara/Nordic."
+
 echo "Installing EliverLara/Nordic-kde."
 
 rm -rf "${HOME}/.local/share/plasma/desktoptheme/Nordic"
@@ -98,11 +100,15 @@ if [[ ${IS_GNOME_SHELL} == "true" ]]; then
     "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-gtk-theme/master/install.sh"
 fi
 
+echo "Done EliverLara/Nordic-kde."
+
 echo "Installing EliverLara/Sweet/mars."
 
 rm -rf "${HOME}/.local/share/themes/Sweet-mars"
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/Sweet/mars" "${HOME}/.local/share/themes/Sweet-mars"
 rm -rf "${HOME}/.local/share/themes/Sweet-mars/.git"
+
+echo "Done EliverLara/Sweet/mars."
 
 echo "Installing EliverLara/Sweet/master."
 
@@ -116,15 +122,22 @@ cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/plasma/." "${HOME}/.local/shar
 cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/kvantum/." "${HOME}/.config/Kvantum/"
 cp -r "${HOME}/.local/share/themes/Sweet-mars/kde/konsole/." "${HOME}/.local/share/konsole/"
 
+echo "Done EliverLara/Sweet/master."
+
 echo "Installing vinceliuice/Tela-icon-theme."
+
 chmod +x "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme/master/install.sh"
 "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Tela-icon-theme/master/install.sh" -a
+
+echo "Done vinceliuice/Tela-icon-theme."
 
 echo "Installing EliverLara/candy-icons."
 
 rm -rf "${HOME}/.local/share/icons/candy-icons"
 cp -r "${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons/master" "${HOME}/.local/share/icons/candy-icons"
 rm -rf "${HOME}/.local/share/icons/candy-icons/.git"
+
+echo "Done EliverLara/candy-icons."
 
 echo "Installing vinceliuice/Layan-cursors."
 
@@ -134,11 +147,15 @@ echo "Installing vinceliuice/Layan-cursors."
     ./install.sh
 )
 
+echo "Done vinceliuice/Layan-cursors."
+
 echo "Installing gvolpe/BeautyLine."
 
 cp -r "${TMP_DOWNLOAD_DIRECTORY}"/gvolpe/BeautyLine/main/*Beauty* "${HOME}/.local/share/icons/"
 
-echo "Installing Bibata Cursor"
+echo "Done gvolpe/BeautyLine."
+
+echo "Installing Bibata Cursor."
 
 BIBATA_CURSOR_VERSION="$(curl -s \
     "https://api.github.com/repos/ful1e5/Bibata_Cursor/releases/latest" |
@@ -162,7 +179,9 @@ tar -Jxvf "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz" -C "${TMP_DOWNLOAD_DIRECTORY
 
 mv "${TMP_DOWNLOAD_DIRECTORY}"/Bibata/Bibata-* "${HOME}/.local/share/icons/"
 
-echo "Installing hack nerd-fonts"
+echo "Done Bibata Cursor."
+
+echo "Installing hack nerd-fonts."
 
 NERD_FONT_VERSION="$(curl -s \
     "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" |
@@ -212,7 +231,9 @@ for NERD_FONT_TYPE in "${NERD_FONT_TYPES[@]}"; do
         -exec mv {} "${HOME}/.local/share/fonts/${NERD_FONT_TYPE}/" \;
 done
 
-echo "Installing Cascadia-Code"
+echo "Done hack nerd-fonts."
+
+echo "Installing Cascadia-Code."
 
 CASCADIA_CODE_GITHUB_TAG="$(curl -s \
     "https://api.github.com/repos/microsoft/cascadia-code/releases/latest" |
@@ -236,6 +257,39 @@ find "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}" \
     -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname '*.ttc' \) \
     -exec mv {} "${HOME}/.local/share/fonts/cascadia-code" \;
 
+echo "Done Cascadia-Code."
+
+echo "Installing Meslo Nerd Font patched for Powerlevel10k."
+
+NERD_PATCHED_FONTS_FOR_P10K=(
+    'MesloLGS NF Bold Italic'
+    'MesloLGS NF Bold'
+    'MesloLGS NF Italic'
+    'MesloLGS NF Regular'
+)
+rm -rf "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k"
+mkdir -p "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k" \
+    "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k"
+
+for NERD_PATCHED_FONT_FOR_P10K in "${NERD_PATCHED_FONTS_FOR_P10K[@]}"; do
+    if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf" ]]; then
+        NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED=$(printf %s "${NERD_PATCHED_FONT_FOR_P10K}" | jq -sRr @uri)
+        curl -fL \
+            "https://github.com/romkatv/powerlevel10k-media/raw/refs/heads/master/${NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED}.ttf" \
+            -o "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf"
+    else
+        echo "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf \
+            is already present."
+    fi
+done
+
+find "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k" \
+    -type f \( -iname '*.ttf' \) \
+    -exec install -Dm644 {} "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k" \;
+
+echo "Done Meslo Nerd Font patched for Powerlevel10k."
+
+rm -rf "${HOME}/.cache/fontconf"
 fc-cache -r -v "${HOME}/.local/share/fonts"
 
 echo "Installing wallpapers"

@@ -1,6 +1,6 @@
 [Appearance]
 ColorScheme=Nordic-Custom
-Font=JetBrainsMono Nerd Font Propo,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+Font=JetBrainsMono NF,12,-1,5,300,0,0,0,0,0,0,0,0,0,0,1,Regular
 TabColor=67,76,94,0
 
 [General]

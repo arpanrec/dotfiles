@@ -1,6 +1,7 @@
 {
     "layer": "top",
-    "position": "bottom",
+    "position": "top",
+    // "position": "bottom",
     "height": 34,
     "spacing": 2,
     "margin-top": 2,
@@ -18,7 +19,6 @@
         // "network", // Moved to tray icon wit exec-once = nm-applet --indicator
         // "disk",
         // "upower",  // Use battery instate of upower
-
         // Monitoring only: Start
         "cpu",
         "memory",
@@ -27,7 +27,6 @@
         "network",
         "clock",
         // Monitoring only: Start
-
         "tray",
         "custom/power",
     ],

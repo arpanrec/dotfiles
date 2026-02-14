@@ -114,12 +114,16 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bitwarden-desktop.sh)
 ```
 
+* Bitwarden Desktop version is hardcoded in script from [GitHub Releases](https://github.com/bitwarden/clients/releases).
+
 ### [Install Postman](https://www.postman.com/downloads/)
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-postman.sh)
 ```
+
+* Postman version is hardcoded in script from [Release Notes](https://www.postman.com/release-notes/postman-app/).
 
 ### [Install DBeaver Community](https://dbeaver.io/download/)
 

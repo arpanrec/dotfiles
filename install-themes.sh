@@ -259,6 +259,34 @@ find "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}" \
 
 echo "Done Cascadia-Code."
 
+NERD_PATCHED_FONTS_FOR_P10K=(
+    'MesloLGS NF Bold Italic'
+    'MesloLGS NF Bold'
+    'MesloLGS NF Italic'
+    'MesloLGS NF Regular'
+)
+rm -rf "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k"
+mkdir -p "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k" \
+    "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k"
+
+for NERD_PATCHED_FONT_FOR_P10K in "${NERD_PATCHED_FONTS_FOR_P10K[@]}"; do
+    if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf" ]]; then
+        NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED=$(printf %s "${NERD_PATCHED_FONT_FOR_P10K}" | jq -sRr @uri)
+        curl -fL \
+            "https://github.com/romkatv/powerlevel10k-media/raw/refs/heads/master/${NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED}.ttf" \
+            -o "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf"
+    else
+        echo "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf \
+            is already present."
+    fi
+done
+
+find "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k" \
+    -type f \( -iname '*.ttf' \) \
+    -exec install -Dm644 {} "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k" \;
+
+echo "Done Meslo Nerd Font patched for Powerlevel10k."
+
 rm -rf "${HOME}/.cache/fontconf"
 fc-cache -r -v "${HOME}/.local/share/fonts"
 

@@ -20,11 +20,11 @@
         // "disk",
         // "upower",  // Use battery instate of upower
         // Monitoring only: Start
-        "cpu",
-        "memory",
+        // "cpu",
+        // "memory",
         "battery",
-        "keyboard-state",
-        "network",
+        // "keyboard-state",
+        // "network",
         "clock",
         // Monitoring only: Start
         "tray",

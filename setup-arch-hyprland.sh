@@ -155,6 +155,19 @@ systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
 echo "-------------------------------------------------------"
+echo "                 Disable plasma.desktop                "
+echo "-------------------------------------------------------"
+
+echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
+
+if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
+    mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled
+    echo "plasma.desktop disabled"
+else
+    echo "plasma.desktop not found, skipping disable"
+fi
+
+echo "-------------------------------------------------------"
 echo "             Install Yay and AUR Packages              "
 echo "-------------------------------------------------------"
 
@@ -176,11 +189,18 @@ AUR_BASIC_PACKAGES=(
     'redhat-fonts' 'sddm-silent-theme' # redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
 )
 
-# Import OpenPGP key for yay
+# Import OpenPGP key for `yubico-authenticator-bin`
+# https://developers.yubico.com/Software_Projects/Software_Signing.html
+# https://aur.archlinux.org/packages/yubico-authenticator-bin
 su - "${AUR_INSTALL_USER}" -c "
             set -eou pipefail
-            curl https://keys.openpgp.org/vks/v1/by-fingerprint/20EE325B86A81BCBD3E56798F04367096FBA95E8 |
-            gpg --import --batch --yes
+            if ! gpg --list-keys --with-fingerprint --with-colons | grep '20EE325B86A81BCBD3E56798F04367096FBA95E8'; then
+                echo 'yubico OpenPGP key 20EE325B86A81BCBD3E56798F04367096FBA95E8 not found, importing.'
+                curl https://keys.openpgp.org/vks/v1/by-fingerprint/20EE325B86A81BCBD3E56798F04367096FBA95E8 |
+                gpg --import --batch --yes
+            else
+                echo 'yubico OpenPGP key 20EE325B86A81BCBD3E56798F04367096FBA95E8, already imported.'
+            fi
         "
 
 for AUR_BASIC_PACKAGE in "${AUR_BASIC_PACKAGES[@]}"; do
@@ -202,6 +222,10 @@ done
 
 systemctl enable nordvpnd
 
+echo "-------------------------------------------------------"
+echo "        Setting up SDDM with Silent Rei Theme          "
+echo "-------------------------------------------------------"
+
 sed -i 's|^ConfigFile=configs/default\.conf$|ConfigFile=configs/rei.conf|' \
     /usr/share/sddm/themes/silent/metadata.desktop
 
@@ -215,4 +239,6 @@ EOF
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
-echo "Completed"
+echo "-------------------------------------------------------"
+echo "             Completed Setup                           "
+echo "-------------------------------------------------------"

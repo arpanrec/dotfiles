@@ -39,7 +39,7 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
 
     'gwenview' 'kimageformats' 'qt6-imageformats'
     'kamoso' 'kate' 'konsole'
-    'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs'
+    'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs' 'kfind'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
 )
 

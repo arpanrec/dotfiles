@@ -135,7 +135,7 @@ PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'p7zip' 'unrar' 'unarchiver' 'pigz' 'lzop'
 
 # Monitoring & diagnostics
 PACMAN_BASIC_PACKAGES+=('htop' 'bpytop' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace' 'screenfetch' 'usbutils'
-    'iotop')
+    'iotop' 'locate')
 
 # Development toolchains
 PACMAN_BASIC_PACKAGES+=('make' 'cmake' 'ninja' 'gcc' 'clang' 'llvm' 'llvm-libs' 'lldb' 'devtools' 'tree-sitter')

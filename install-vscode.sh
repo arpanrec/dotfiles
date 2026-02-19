@@ -126,7 +126,9 @@ EOF
 CODE_EXTENSIONS=(
     "angular.ng-template"
     "bradlc.vscode-tailwindcss"
+    "bruno-api-client.bruno"
     "davidanson.vscode-markdownlint"
+    "docker.docker"
     "dbaeumer.vscode-eslint"
     "esbenp.prettier-vscode"
     "exiasr.hadolint"
@@ -138,6 +140,7 @@ CODE_EXTENSIONS=(
     "github.vscode-github-actions"
     "github.vscode-pull-request-github"
     "golang.go"
+    "hashicorp.hcl"
     "hashicorp.terraform"
     "ms-azuretools.vscode-containers"
     "ms-azuretools.vscode-docker"

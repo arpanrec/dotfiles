@@ -29,6 +29,8 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kleopatra'
     'kvantum'
 
+    'qt5-tools' 'qt6-tools' # Provides qtpaths which is mandatory for xdg-mime to work
+
     'qt6ct' 'qt5ct'  # Replacement for https://wiki.hypr.land/Hypr-Ecosystem/hyprqt6engine/
     'kde-gtk-config' # for gtk apps xsettingsd cli
     'kdialog'        # For popup in browsers like file save dialog.

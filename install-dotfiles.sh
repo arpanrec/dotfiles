@@ -114,7 +114,7 @@ chmod +x "${powerlevel10k_directory}/gitstatus/install"
 
 echo "Adding my ssh key"
 
-public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/dotfiles/assets/id_ecdsa.pub)"
+public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)"
 AUTHORIZED_KEYS_FILE="${HOME}/.ssh/authorized_keys"
 
 mkdir -p "${HOME}/.ssh"

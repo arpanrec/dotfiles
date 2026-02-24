@@ -13,7 +13,7 @@ Hardcoded session files outside session manager directories, like: `~/.config/hy
 ## Branches
 
 * Dotfiles are present in [dotfiles/main branch](https://github.com/arpanrec/dotfiles/tree/dotfiles/main).
-* Static assets are present in [dotfiles/assets branch](https://github.com/arpanrec/dotfiles/tree/dotfiles/assets),
+* Static assets are present in [assets branch](https://github.com/arpanrec/dotfiles/tree/assets),
   like certificates, public keys, themes, wallpapers, etc.
 
 ## Installation

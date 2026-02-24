@@ -17,7 +17,7 @@ for cmd in "${required_cmds[@]}"; do
     fi
 done
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
 IS_GNOME_SHELL=false
 

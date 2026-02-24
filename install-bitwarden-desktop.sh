@@ -13,7 +13,7 @@ x86_64)
     ;;
 esac
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 LATEST_VERSION="2026.1.0"
 APPIMAGE_FILE_NAME="Bitwarden-${LATEST_VERSION}-${DOWNLOAD_ARCH_KEY}.AppImage"
 APPIMAGE_INSTALL_DIRECTORY="${HOME}/.local/share/bitwarden-desktop"

@@ -19,7 +19,7 @@ fi
 
 rm -rf "${HOME}/.local/share/Telegram"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/applications" "${HOME}/.local/share/Telegram"
 echo "Downloading Telegram Desktop version ${LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"

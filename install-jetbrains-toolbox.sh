@@ -44,7 +44,7 @@ fi
 echo "Download URL:"
 echo "  ${DOWNLOAD_URL}"
 
-TMP_DOWNLOAD_DIRECTORY="${HOME}/.tmp/from_dotfiles_bin"
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 ARCHIVE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.tar.gz"
 CHECKSUM_FILE="${TMP_DOWNLOAD_DIRECTORY}/toolbox-${BUILD_NUMBER}-${CURRENT_ARCH}.sha256"
 

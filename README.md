@@ -79,11 +79,11 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-themes.sh)
 ```
 
-### [Install Rustus](https://rust-lang.org/tools/install/)
+### [Install Rustup](https://rust-lang.org/tools/install/)
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-rustus.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-rustup.sh)
 ```
 
 ### [Install Neovim from Source](https://github.com/neovim/neovim/wiki/Building-Neovim/688be28f98c18e73b5043879b5963287a9b13d6c)
@@ -114,7 +114,7 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bitwarden-desktop.sh)
 ```
 
-* Bitwarden Desktop version is hardcoded in script from [GitHub Releases](https://github.com/bitwarden/clients/releases).
+* Bitwarden Desktop version is hardcoded in the script from [GitHub Releases](https://github.com/bitwarden/clients/releases).
 
 ### [Install Postman](https://www.postman.com/downloads/)
 
@@ -123,7 +123,7 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-postman.sh)
 ```
 
-* Postman version is hardcoded in script from [Release Notes](https://www.postman.com/release-notes/postman-app/).
+* Postman version is hardcoded in the script from [Release Notes](https://www.postman.com/release-notes/postman-app/).
 
 ### [Install DBeaver Community](https://dbeaver.io/download/)
 

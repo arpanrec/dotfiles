@@ -40,7 +40,7 @@ declare -a git_repositories=(
     "https://github.com/EliverLara/candy-icons.git|${TMP_DOWNLOAD_DIRECTORY}/EliverLara/candy-icons|master"
     "https://github.com/vinceliuice/Layan-cursors.git|${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors|master"
     "https://github.com/gvolpe/BeautyLine.git|${TMP_DOWNLOAD_DIRECTORY}/gvolpe/BeautyLine|main"
-    "https://github.com/arpanrec/dotfiles.git|${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles|dotfiles-assets"
+    "https://github.com/arpanrec/dotfiles.git|${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles|dotfiles/assets"
 )
 
 for item in "${git_repositories[@]}"; do
@@ -295,7 +295,7 @@ echo "Installing wallpapers"
 rm -rf "${HOME}/.local/share/wallpapers/arpanrec"
 mkdir -p "${HOME}/.local/share/wallpapers/arpanrec"
 
-cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/dotfiles-assets/wallpapers/." \
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/dotfiles/assets/wallpapers/." \
     "${HOME}/.local/share/wallpapers/arpanrec/"
 
 echo "Completed"

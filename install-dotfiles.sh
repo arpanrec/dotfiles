@@ -28,7 +28,7 @@ fi
 
 dotfiles_git_remote="https://github.com/arpanrec/dotfiles.git"
 dotfiles_dir="${HOME}/.dotfiles"
-dotfiles_branch="dotfiles-main"
+dotfiles_branch="dotfiles/main"
 bash_it_directory="${HOME}/.bash_it"
 oh_my_zsh_directory="${ZSH:-${HOME}/.oh-my-zsh}"
 fzf_directory="${HOME}/.fzf"
@@ -114,7 +114,7 @@ chmod +x "${powerlevel10k_directory}/gitstatus/install"
 
 echo "Adding my ssh key"
 
-public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/dotfiles-assets/id_ecdsa.pub)"
+public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/dotfiles/assets/id_ecdsa.pub)"
 AUTHORIZED_KEYS_FILE="${HOME}/.ssh/authorized_keys"
 
 mkdir -p "${HOME}/.ssh"

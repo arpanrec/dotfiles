@@ -295,7 +295,7 @@ echo "Installing wallpapers"
 rm -rf "${HOME}/.local/share/wallpapers/arpanrec"
 mkdir -p "${HOME}/.local/share/wallpapers/arpanrec"
 
-cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/assets/wallpapers/." \
-    "${HOME}/.local/share/wallpapers/arpanrec/"
+cp -r "${TMP_DOWNLOAD_DIRECTORY}/arpanrec/dotfiles/assets/wallpapers/." \
+    "${HOME}/.local/share/wallpapers/"
 
 echo "Completed"

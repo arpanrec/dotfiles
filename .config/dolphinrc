@@ -5,7 +5,7 @@ Version=202
 ViewPropsTimestamp=2022,2,15,12,20,0.102
 
 [IconsMode]
-PreviewSize=176
+PreviewSize=112
 
 [KFileDialog Settings]
 Places Icons Auto-resize=false
@@ -21,9 +21,6 @@ eDP YPosition 2560x1600=201
 
 [PreviewSettings]
 Plugins=ffmpegthumbnailer,appimagethumbnail,audiothumbnail,glycin-heif,blenderthumbnail,comicbookthumbnail,cursorthumbnail,djvuthumbnail,ebookthumbnail,exrthumbnail,directorythumbnail,fontthumbnail,imagethumbnail,glycin-image-rs,jpegthumbnail,glycin-jxl,kraorathumbnail,windowsexethumbnail,windowsimagethumbnail,mobithumbnail,opendocumentthumbnail,gsthumbnail,rawthumbnail,glycin-svg,svgthumbnail,ffmpegthumbs
-
-[Search]
-Location=Everywhere
 
 [UiSettings]
 ColorScheme=Nordic

@@ -272,7 +272,7 @@ echo "--------------------------------------"
 
 SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
 SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
-id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash -G docker,sudo -m \
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G docker,sudo -m \
     -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
 usermod -aG docker,sudo "${SYSTEM_ADMIN_USER}"

@@ -188,6 +188,7 @@ CODE_EXTENSIONS=(
     "wholroyd.jinja"
     "yzhang.markdown-all-in-one"
     "pomdtr.excalidraw-editor"
+    "sumneko.lua"
 )
 
 echo "Installing VS Code extensions..."

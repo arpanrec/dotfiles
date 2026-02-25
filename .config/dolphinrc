@@ -1,3 +1,6 @@
+[CompactMode]
+PreviewSize=16
+
 [General]
 ShowStatusBar=FullWidth
 ShowZoomSlider=true

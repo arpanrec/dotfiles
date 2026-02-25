@@ -51,6 +51,7 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.wordBasedSuggestions": "off",
     },
+    "python.terminal.useEnvFile": true,
     "[rust]": {
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
     },

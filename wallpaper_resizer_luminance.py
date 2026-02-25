@@ -27,10 +27,6 @@ CONFIG = MainConfig(
 
 WALLPAPER_DIR = Path("wallpapers")
 
-IMAGE_EXTS = tuple(CONFIG.allowed_extensions)
-ALLOWED_ASPECT_RATIOS = CONFIG.allowed_aspect_ratios
-BRIGHTNESS_THRESHOLD = CONFIG.brightness_threshold
-
 TARGET_W, TARGET_H = map(int, CONFIG.target_resolution.split("x"))
 # --------------------------------------------
 
@@ -145,7 +141,7 @@ def classify_and_move(path: Path):
 
     aspect = reduced_aspect_ratio(width, height)
 
-    if aspect not in ALLOWED_ASPECT_RATIOS:
+    if aspect not in CONFIG.allowed_aspect_ratios:
         print(
             f"Skipping {path.name}: "
             f"aspect {width}x{height} → {aspect} (not allowed)"
@@ -153,7 +149,7 @@ def classify_and_move(path: Path):
         return
 
     brightness = perceived_brightness(path)
-    tone = "dark" if brightness < BRIGHTNESS_THRESHOLD else "light"
+    tone = "dark" if brightness < CONFIG.brightness_threshold else "light"
 
     dest_dir = WALLPAPER_DIR / aspect / tone
     dest_dir.mkdir(parents=True, exist_ok=True)
@@ -172,7 +168,7 @@ def main():
     for path in sorted(WALLPAPER_DIR.iterdir()):
         if not path.is_file():
             continue
-        if path.suffix.lower() not in IMAGE_EXTS:
+        if path.suffix.lower() not in CONFIG.allowed_extensions:
             continue
 
         print(f"\nProcessing: {path.name}")

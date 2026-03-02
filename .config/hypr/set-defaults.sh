@@ -18,12 +18,12 @@ xdg-mime default org.kde.kate.desktop application/json
 
 # HTML & web
 xdg-mime default brave-browser.desktop text/html
-xdg-mime default brave-browser application/xhtml+xml
-xdg-mime default brave-browser application/x-extension-htm
-xdg-mime default brave-browser application/x-extension-html
-xdg-mime default brave-browser application/x-extension-shtml
-xdg-mime default brave-browser application/x-extension-xht
-xdg-mime default brave-browser application/x-extension-xhtml
+xdg-mime default brave-browser.desktop application/xhtml+xml
+xdg-mime default brave-browser.desktop application/x-extension-htm
+xdg-mime default brave-browser.desktop application/x-extension-html
+xdg-mime default brave-browser.desktop application/x-extension-shtml
+xdg-mime default brave-browser.desktop application/x-extension-xht
+xdg-mime default brave-browser.desktop application/x-extension-xhtml
 
 # Text
 xdg-mime default org.kde.kate.desktop text/plain
@@ -50,7 +50,7 @@ xdg-mime default brave-browser.desktop x-scheme-handler/http
 xdg-mime default brave-browser.desktop x-scheme-handler/https
 xdg-mime default brave-browser.desktop x-scheme-handler/about
 xdg-mime default brave-browser.desktop x-scheme-handler/unknown
-xdg-mime default brave-browser x-scheme-handler/chrome
+xdg-mime default brave-browser.desktop x-scheme-handler/chrome
 
 # Custom schemes
 xdg-mime default bitwarden.desktop x-scheme-handler/bitwarden

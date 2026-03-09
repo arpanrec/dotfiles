@@ -23,6 +23,7 @@ dnf update -y
 dnf remove -y docker docker-client docker-client-latest docker-common docker-latest \
     docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
 dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+systemctl enable docker.service docker.socket
 
 dnf install -y kernel-devel-matched kernel-headers sgdisk
 
@@ -40,7 +41,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
 
 fi
 
-dnf install -y google-chrome-stable brave-browser
+dnf install -y google-chrome-stable brave-browser qbittorrent
 
 dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra bash-completion
 
@@ -53,6 +54,9 @@ dnf -y install gtk-murrine-engine gtk2-engines kate lua luarocks nextcloud-clien
 dnf install -y flatpak htop fastfetch
 
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+dnf install snapd -y
+systemctl enable snapd.socket
 
 echo "${TARGET_HOSTNAME}" | tee /etc/hostname
 cat <<EOT >"/etc/hosts"

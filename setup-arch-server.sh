@@ -194,7 +194,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     echo "Adding nvidia drivers to be installed"
     IS_NVIDIA_DRM=true
     #This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit' 'cuda')
 
     mkdir -p "/etc/pacman.d/hooks"
     cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"

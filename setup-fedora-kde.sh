@@ -6,8 +6,8 @@ TARGET_DOMAINNAME=blr-home.easyiac.com
 
 dnf install -y "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
+dnf config-manager addrepo --id=nordvpn --set=baseurl=https://repo.nordvpn.com/yum/nordvpn/centos/x86_64 --set=enabled=1 --overwrite
 dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo --overwrite
-
 
 dnf install dnf-plugins-core
 
@@ -51,12 +51,16 @@ dnf -y install vlc haruna gtk-murrine-engine gtk2-engines dolphin-plugins
 
 dnf -y install gtk-murrine-engine gtk2-engines kate lua luarocks nextcloud-client nextcloud-client-dolphin
 
-dnf install -y flatpak htop fastfetch
+dnf install -y flatpak htop fastfetch nordvpn-gui
+
+dnf swap ffmpeg-free ffmpeg --allowerasing -y # nvenc doesn't work
 
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 dnf install snapd -y
+
 systemctl enable snapd.socket
+systemctl enable nordvpnd.socket nordvpnd.service
 
 echo "${TARGET_HOSTNAME}" | tee /etc/hostname
 cat <<EOT >"/etc/hosts"

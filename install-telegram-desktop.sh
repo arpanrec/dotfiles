@@ -68,5 +68,4 @@ find "${HOME}/.local/share/applications" -type f -name "*telegram*" -exec rm -f 
 echo "Starting telegram-desktop for automatic desktop entry creation"
 
 "${HOME}/.local/share/Telegram/Telegram" &&
-
-echo "Telegram Desktop installed successfully!"
+    echo "Telegram Desktop installed successfully!"

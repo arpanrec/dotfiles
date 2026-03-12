@@ -18,7 +18,7 @@ dnf config-manager setopt google-chrome.enabled=1
 
 dnf update -y
 
- dnf install -y curl git wget tar zip unzip zsh bash-completion fuse fuse-libs
+dnf install -y curl git wget tar zip unzip zsh bash-completion fuse fuse-libs
 
 dnf remove -y docker docker-client docker-client-latest docker-common docker-latest \
     docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
@@ -28,7 +28,7 @@ systemctl enable docker.service docker.socket
 dnf install -y kernel-devel-matched kernel-headers sgdisk
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-    curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
+    curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo |
         tee /etc/yum.repos.d/nvidia-container-toolkit.repo
 
     dnf install -y akmod-nvidia nvtop
@@ -36,7 +36,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     dnf install -y nvidia-container-toolkit nvidia-container-toolkit-base libnvidia-container-tools libnvidia-container1
     nvidia-ctk runtime configure --runtime=docker
     mkdir -p /etc/dracut.conf.d/
-    echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "' > /etc/dracut.conf.d/nvidia.conf
+    echo 'add_drivers+=" nvidia nvidia_modeset nvidia_uvm nvidia_drm "' >/etc/dracut.conf.d/nvidia.conf
     dracut --force
 
 fi

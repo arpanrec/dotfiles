@@ -43,6 +43,9 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kamoso' 'kate' 'konsole'
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs' 'kfind'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
+
+    # Needed for kde-applications-meta, just in case i need to install full kde.
+    'tesseract-data-ind' 'pyside6'
 )
 
 # 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'

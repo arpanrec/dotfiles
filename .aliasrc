@@ -29,4 +29,4 @@ alias yd='youtube-dl -f best --verbose --external-downloader axel --external-dow
 alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -af --volumes'
 
 alias myip='curl ipinfo.io/ip'
-alias mount-ssd05='sudo mount --mkdir -t exfat /dev/disk/by-uuid/6DF5-7915 /mnt/SSD0D -o uid=0,gid=0,fmask=0111,dmask=0000,noatime'
+alias mount-ssd05='sudo mount --mkdir -t exfat /dev/disk/by-uuid/6DF5-7915 /mnt/SSD05 -o uid=0,gid=0,fmask=0111,dmask=0000,noatime'

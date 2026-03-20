@@ -5,6 +5,8 @@ echo "Allowed hosts are: s1-dev, s2-dev"
 
 read -p "Boot loader manged my this script, [systemd secure boot]: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
 
+read -p "Enable pacman multilib: (y/Y)" -r IS_ENABLE_PACMAN_MULTILIB
+
 IS_NVIDIA_DRM=n
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
@@ -88,9 +90,12 @@ fi
 echo "Add parallel downloading"
 sed -i 's/^#Para/Para/' /etc/pacman.conf
 sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
-echo "Enable multilib"
-sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
+
+if [[ "${IS_ENABLE_PACMAN_MULTILIB}" =~ ^[Yy]$ ]]; then
+    echo "Enable multilib"
+    sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+    cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
+fi
 
 echo "--------------------------------------"
 echo "-------------Set Host Name------------"

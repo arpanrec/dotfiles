@@ -164,15 +164,15 @@ systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
 if [[ $IS_KDE_ENABLED =~ ^[Yy]$ ]]; then
-    pacman -S --noconfirm --needed kde-applications-meta
+    pacman -S --noconfirm --needed kde-applications-meta kscreen discover packagekit-qt6
     if [[ -f /usr/share/wayland-sessions/plasma.desktop.disabled && ! -f /usr/share/wayland-sessions/plasma.desktop ]]; then
         mv /usr/share/wayland-sessions/plasma.desktop.disabled /usr/share/wayland-sessions/plasma.desktop
         echo "plasma.desktop enabled"
     fi
 else
-    if pacman -Qi plasma-login-manager &>/dev/null; then
-        pacman -R kde-applications-meta --noconfirm # with Replace sddm
-    fi
+    #    if pacman -Qi plasma-login-manager &>/dev/null; then
+    #        pacman -R kde-applications-meta --noconfirm # with Replace sddm
+    #    fi
     echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
     if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
         mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled

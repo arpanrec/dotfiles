@@ -113,9 +113,7 @@ reflector --country India --age 12 \
 
 pacman -Syu --noconfirm
 
-# Core system & boot
-PACMAN_BASIC_PACKAGES=('base' 'base-devel' 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio'
-    'efibootmgr' 'sbctl' 'plymouth')
+PACMAN_BASIC_PACKAGES=('base' 'base-devel')
 
 # Firmware
 PACMAN_BASIC_PACKAGES+=('linux-firmware' 'fwupd')
@@ -367,11 +365,13 @@ update-ca-trust
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
-echo "Completed"
 if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------------------------------"
     echo "                           Install Boot-loader with UEFI                           "
     echo "-----------------------------------------------------------------------------------"
+
+    pacman -S --needed --noconfirm 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
+        'efibootmgr' 'sbctl' 'plymouth'
 
     tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
 [Trigger]

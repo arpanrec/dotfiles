@@ -3,7 +3,7 @@ set -euo pipefail
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
-read -p "Reinstall systemd-boot with secure boot enabled: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
+read -p "Boot loader manged my this script, [systemd secure boot]: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
 
 IS_NVIDIA_DRM=n
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then

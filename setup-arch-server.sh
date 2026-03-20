@@ -5,6 +5,10 @@ echo "Allowed hosts are: s1-dev, s2-dev"
 
 read -p "Reinstall systemd-boot with secure boot enabled: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
 
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+    read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
+fi
+
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
 allowed_host_names=(
@@ -186,14 +190,12 @@ esac
 echo "--------------------------------------------------"
 echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
-IS_NVIDIA_DRM=false
-if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------"
     echo "                    Setting Nvidia Drivers                 "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
-    IS_NVIDIA_DRM=true
-    #This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
+    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
     PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit' 'cuda')
 
     mkdir -p "/etc/pacman.d/hooks"
@@ -387,7 +389,7 @@ EOF
 
     systemctl enable systemd-boot-update.service
 
-    if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
+    if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
         mkdir -p /etc/modprobe.d
         tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
 options nvidia-drm modeset=1

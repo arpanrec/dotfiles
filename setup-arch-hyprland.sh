@@ -165,8 +165,9 @@ systemctl set-default graphical.target
 
 if [[ $IS_KDE_ENABLED =~ ^[Yy]$ ]]; then
     pacman -S --noconfirm --needed kde-applications-meta
-    if [[ -f /usr/share/wayland-sessions/kde.desktop.disabled && ! -f /usr/share/wayland-sessions/kde.desktop ]]; then
-        mv /usr/share/wayland-sessions/kde.desktop.disabled /usr/share/wayland-sessions/kde.desktop
+    if [[ -f /usr/share/wayland-sessions/plasma.desktop.disabled && ! -f /usr/share/wayland-sessions/plasma.desktop ]]; then
+        mv /usr/share/wayland-sessions/plasma.desktop.disabled /usr/share/wayland-sessions/plasma.desktop
+        echo "plasma.desktop enabled"
     fi
 else
     if pacman -Qi plasma-login-manager &>/dev/null; then

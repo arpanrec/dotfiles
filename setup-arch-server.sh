@@ -118,7 +118,7 @@ pacman -Sy archlinux-keyring --noconfirm
 
 sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnupg/gpg.conf
 
-pacman -Sy reflector curl --noconfirm --needed
+pacman -Sy reflector curl --noconfirm
 
 if [[ "${UPDATE_MIRRORLIST}" == "y" || "${UPDATE_MIRRORLIST}" == "Y" ]]; then
     reflector --country India --age 12 \
@@ -253,7 +253,7 @@ echo "--------------------------------------------------"
 echo "         Installing Hell lot of packages          "
 echo "--------------------------------------------------"
 
-pacman -S --needed --noconfirm "${PACMAN_BASIC_PACKAGES[@]}"
+pacman -S --noconfirm "${PACMAN_BASIC_PACKAGES[@]}"
 
 echo "--------------------------------------------------"
 echo '      Setting Root Password to a Random one       '
@@ -382,7 +382,7 @@ if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "                           Install Boot-loader with UEFI                           "
     echo "-----------------------------------------------------------------------------------"
 
-    pacman -S --needed --noconfirm 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
+    pacman -S --noconfirm 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
         'efibootmgr' 'sbctl' 'plymouth'
 
     tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF

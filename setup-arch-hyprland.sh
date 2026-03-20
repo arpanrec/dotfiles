@@ -2,15 +2,15 @@
 set -euo pipefail
 
 if pacman -Qi hyprlauncher &>/dev/null; then
-    pacman -Rsc hyprlauncher --noconfirm # with Replace rofi
+    pacman -R hyprlauncher --noconfirm # with Replace rofi
 fi
 
 if pacman -Qi hyprpolkitagent &>/dev/null; then
-    pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-agent
+    pacman -R hyprpolkitagent --noconfirm # with Replace polkit-kde-agent
 fi
 
 if pacman -Qi plasma-login-manager &>/dev/null; then
-    pacman -Rsc plasma-login-manager --noconfirm # with Replace sddm
+    pacman -R plasma-login-manager --noconfirm # with Replace sddm
 fi
 
 read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
@@ -164,12 +164,13 @@ systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
 if [[ $IS_KDE_ENABLED =~ ^[Yy]$ ]]; then
+    pacman -S --noconfirm --needed kde-applications-meta
     if [[ -f /usr/share/wayland-sessions/kde.desktop.disabled && ! -f /usr/share/wayland-sessions/kde.desktop ]]; then
         mv /usr/share/wayland-sessions/kde.desktop.disabled /usr/share/wayland-sessions/kde.desktop
     fi
 else
+    pacman -R --noconfirm --needed kde-applications-meta
     echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
-
     if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
         mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled
         echo "plasma.desktop disabled"

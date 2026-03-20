@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
+
+IS_NVIDIA_DRM=n
+if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+    read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
+fi
+
 if pacman -Qi hyprlauncher &>/dev/null; then
     pacman -R hyprlauncher --noconfirm # with Replace rofi
 fi
@@ -12,8 +19,6 @@ fi
 if pacman -Qi plasma-login-manager &>/dev/null; then
     pacman -R plasma-login-manager --noconfirm # with Replace sddm
 fi
-
-read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
 
 PACMAN_PACKAGES+=(
     'hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'hyprshot' 'hyprland-qt-support' 'hyprpicker'
@@ -111,7 +116,7 @@ PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
 
 PACMAN_PACKAGES+=('timeshift')
 
-if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     PACMAN_PACKAGES+=('nvidia-settings' 'nvidia-prime' 'lib32-nvidia-utils' 'libvdpau-va-gl'
         'libva-nvidia-driver' 'libva-utils' # For hardware acceleration
     )
@@ -153,7 +158,7 @@ echo "-------------------------------------------------------"
 echo "                    Enable Services                    "
 echo "-------------------------------------------------------"
 
-if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
+if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     systemctl enable nvidia-suspend.service
     systemctl enable nvidia-hibernate.service
     systemctl enable nvidia-resume.service

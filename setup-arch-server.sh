@@ -3,6 +3,8 @@ set -euo pipefail
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
+read -p "Reinstall systemd-boot with secure boot enabled: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
+
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
 allowed_host_names=(
@@ -327,20 +329,8 @@ tee "/etc/systemd/system/NetworkManager.service.d/44-override.conf" <<EOF
 TimeoutStopSec=10s
 EOF
 
-tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Gracefully upgrading systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/systemctl restart systemd-boot-update.service
-EOF
-
 SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
-    'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd' 'systemd-boot-update'
+    'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd'
 )
 
 for SYSTEMD_BASIC_SERVICE in "${SYSTEMD_BASIC_SERVICES[@]}"; do
@@ -363,72 +353,6 @@ else
 fi
 
 echo "-----------------------------------------------------------------------------------"
-echo "                           Install Boot-loader with UEFI                           "
-echo "-----------------------------------------------------------------------------------"
-
-if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
-    mkdir -p /etc/modprobe.d
-    tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
-options nvidia-drm modeset=1
-EOF
-
-    sed -i 's/^MODULES=.*/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-
-fi
-
-plymouth-set-default-theme spinner
-
-tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-ALL_kver="/boot/vmlinuz-linux"
-PRESETS=('default' 'fallback')
-default_image="/boot/initramfs-linux.img"
-default_options=""
-fallback_image="/boot/initramfs-linux-fallback.img"
-fallback_options="-S autodetect"
-EOF
-
-echo "KEYMAP=us" | tee /etc/vconsole.conf
-
-sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
-    /etc/mkinitcpio.conf
-
-mkinitcpio -P
-chmod 600 /boot/initramfs-linux*
-
-mkdir -p /boot/loader
-
-tee "/boot/loader/loader.conf" <<EOF
-default  arch.conf
-timeout  4
-console-mode auto
-editor   yes
-EOF
-
-mkdir -p /boot/loader/entries
-
-tee "/boot/loader/entries/arch.conf" <<EOF
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline) splash quiet
-EOF
-
-tee "/boot/loader/entries/arch-fallback.conf" <<EOF
-title   Arch Linux (fallback)
-linux   /vmlinuz-linux
-initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline) splash quiet
-EOF
-
-bootctl install
-
-sbctl sign -s /boot/vmlinuz-linux
-sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
-
-sbctl verify
-
-echo "-----------------------------------------------------------------------------------"
 echo "                             Install root certificate                              "
 echo "-----------------------------------------------------------------------------------"
 
@@ -444,3 +368,88 @@ update-ca-trust
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
 echo "Completed"
+if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
+    echo "-----------------------------------------------------------------------------------"
+    echo "                           Install Boot-loader with UEFI                           "
+    echo "-----------------------------------------------------------------------------------"
+
+    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Gracefully upgrading systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+EOF
+
+    systemctl enable systemd-boot-update.service
+
+    if [[ "${IS_NVIDIA_DRM}" == "true" ]]; then
+        mkdir -p /etc/modprobe.d
+        tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
+options nvidia-drm modeset=1
+EOF
+
+        mkdir -p /etc/mkinitcpio.conf.d
+        tee "/etc/mkinitcpio.conf.d/99-nvidia-drm.conf" <<EOF
+MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+
+EOF
+    fi
+
+    plymouth-set-default-theme spinner
+
+    tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/boot/vmlinuz-linux"
+PRESETS=('default' 'fallback')
+default_image="/boot/initramfs-linux.img"
+default_options=""
+fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"
+EOF
+
+    echo "KEYMAP=us" | tee /etc/vconsole.conf
+
+    sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+        /etc/mkinitcpio.conf
+
+    mkinitcpio -P
+    chmod 600 /boot/initramfs-linux*
+
+    mkdir -p /boot/loader
+
+    tee "/boot/loader/loader.conf" <<EOF
+default  arch.conf
+timeout  4
+console-mode auto
+editor   yes
+EOF
+
+    mkdir -p /boot/loader/entries
+
+    tee "/boot/loader/entries/arch.conf" <<EOF
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /initramfs-linux.img
+options $(cat /etc/kernel/cmdline) splash quiet
+EOF
+
+    tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+title   Arch Linux (fallback)
+linux   /vmlinuz-linux
+initrd  /initramfs-linux-fallback.img
+options $(cat /etc/kernel/cmdline) splash quiet
+EOF
+
+    bootctl install
+
+    sbctl sign -s /boot/vmlinuz-linux
+    sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+    sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+    sbctl verify
+
+fi

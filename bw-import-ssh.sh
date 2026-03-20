@@ -88,11 +88,11 @@ declare -a bw_items=(
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 3)); do
-    echo bw item:: "${bw_items[i]}", bw attachment:: "${bw_items[i + 1]}", bw field:: "${bw_items[i + 2]}"
+    echo bw item:: "${bw_items[i]}", bw attachment:: "${bw_items[i+1]}", bw field:: "${bw_items[i+2]}"
     echo ""
     read -r -n1 -p "Press Y to continue :: " __ssh_install
     echo ""
     if [ "${__ssh_install}" == "Y" ] || [ "${__ssh_install}" == "y" ]; then
-        ssh-install "${bw_items[i]}" "${bw_items[i + 1]}" "${bw_items[i + 2]}"
+        ssh-install "${bw_items[i]}" "${bw_items[i+1]}" "${bw_items[i+2]}"
     fi
 done

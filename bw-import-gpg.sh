@@ -51,10 +51,10 @@ declare -a bw_items=(
 
 for ((i = 0; i < ${#bw_items[@]}; i += 2)); do
     echo bw item:: "${bw_items[i]}"
-    echo bw attachment:: "${bw_items[i + 1]}"
+    echo bw attachment:: "${bw_items[i+1]}"
     read -r -n1 -p "Press Y to continue :: " __import_gpg_key
     echo ""
     if [ "${__import_gpg_key}" == "Y" ] || [ "${__import_gpg_key}" == "y" ]; then
-        import_gpg_key "${bw_items[i]}" "${bw_items[i + 1]}"
+        import_gpg_key "${bw_items[i]}" "${bw_items[i+1]}"
     fi
 done

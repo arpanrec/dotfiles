@@ -9,7 +9,7 @@ if pacman -Qi hyprpolkitagent &>/dev/null; then
     pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-agent
 fi
 
-# 'mpd' 'vice' 'ncmpcpp' 'wildmidi'
+read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
 
 PACMAN_PACKAGES+=(
     'hyprland' 'hypridle' 'hyprlock' 'hyprpaper' 'hyprshot' 'hyprland-qt-support' 'hyprpicker'
@@ -21,6 +21,7 @@ PACMAN_PACKAGES+=(
     'nwg-displays'           # GUI Dynamic monitor switching tool, testings with hyprland
     'brightnessctl'
     'cliphist' 'copyq' 'wl-clip-persist'
+    'blueman' # Bluetooth manager
 )
 
 PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
@@ -95,8 +96,6 @@ PACMAN_PACKAGES+=('haruna')
 
 PACMAN_PACKAGES+=('cups' 'cups-pdf' 'hplip' 'cups-pk-helper' 'system-config-printer' 'print-manager')
 
-PACMAN_PACKAGES+=('blueman')
-
 PACMAN_PACKAGES+=('wireguard-tools')
 
 PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
@@ -159,17 +158,19 @@ fi
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
-echo "-------------------------------------------------------"
-echo "                 Disable plasma.desktop                "
-echo "-------------------------------------------------------"
-
-echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
-
-if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
-    mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled
-    echo "plasma.desktop disabled"
+if [[ $IS_KDE_ENABLED =~ ^[Yy]$ ]]; then
+    if [[ -f /usr/share/wayland-sessions/kde.desktop.disabled && ! -f /usr/share/wayland-sessions/kde.desktop ]]; then
+        mv /usr/share/wayland-sessions/kde.desktop.disabled /usr/share/wayland-sessions/kde.desktop
+    fi
 else
-    echo "plasma.desktop not found, skipping disable"
+    echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
+
+    if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
+        mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled
+        echo "plasma.desktop disabled"
+    else
+        echo "plasma.desktop not found, skipping disable"
+    fi
 fi
 
 echo "-------------------------------------------------------"

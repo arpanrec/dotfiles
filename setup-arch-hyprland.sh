@@ -169,7 +169,7 @@ if [[ $IS_KDE_ENABLED =~ ^[Yy]$ ]]; then
         mv /usr/share/wayland-sessions/kde.desktop.disabled /usr/share/wayland-sessions/kde.desktop
     fi
 else
-    pacman -R --noconfirm --needed kde-applications-meta
+    pacman -R --noconfirm kde-applications-meta
     echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
     if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
         mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled

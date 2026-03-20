@@ -9,6 +9,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
 fi
 
+read -p "Update mirrorlist: (y/Y)" -r UPDATE_MIRRORLIST
+
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
 allowed_host_names=(
@@ -112,8 +114,10 @@ sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnu
 
 pacman -Sy reflector curl --noconfirm --needed
 
-reflector --country India --age 12 \
-    --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+if [[ "${UPDATE_MIRRORLIST}" == "y" || "${UPDATE_MIRRORLIST}" == "Y" ]]; then
+    reflector --country India --age 12 \
+        --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+fi
 
 pacman -Syu --noconfirm
 

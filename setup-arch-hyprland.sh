@@ -9,6 +9,10 @@ if pacman -Qi hyprpolkitagent &>/dev/null; then
     pacman -Rsc hyprpolkitagent --noconfirm # with Replace polkit-kde-agent
 fi
 
+if pacman -Qi plasma-login-manager &>/dev/null; then
+    pacman -Rsc plasma-login-manager --noconfirm # with Replace sddm
+fi
+
 read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
 
 PACMAN_PACKAGES+=(
@@ -155,6 +159,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     systemctl enable nvidia-resume.service
 fi
 
+systemctl disable display-manager.service # replaced by sddm
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 

@@ -120,7 +120,7 @@ sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnu
 
 pacman -Sy reflector curl --noconfirm
 
-if [[ "${UPDATE_MIRRORLIST}" == "y" || "${UPDATE_MIRRORLIST}" == "Y" ]]; then
+if [[ "${UPDATE_MIRRORLIST}" =~ ^[Yy]$ ]]; then
     reflector --country India --age 12 \
         --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 fi

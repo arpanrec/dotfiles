@@ -416,11 +416,22 @@ EOF
 	plymouth-set-default-theme spinner
 
 	tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-ALL_kver="/efi/vmlinuz-linux"
+#ALL_config="/etc/mkinitcpio.conf"
+ALL_kver="/boot/vmlinuz-linux"
+#ALL_kerneldest="/boot/vmlinuz-linux"
+
+#PRESETS=('default')
 PRESETS=('default' 'fallback')
+
+#default_config="/etc/mkinitcpio.conf"
 default_image="/efi/initramfs-linux.img"
+default_uki="/efi/EFI/Linux/arch-linux.efi"
+#default_options="--splash /usr/share/systemd/bootctl/splash-arch.bmp"
 default_options=""
+
+#fallback_config="/etc/mkinitcpio.conf"
 fallback_image="/efi/initramfs-linux-fallback.img"
+fallback_uki="/efi/EFI/Linux/arch-linux-fallback.efi"
 fallback_options="-S autodetect"
 EOF
 
@@ -431,7 +442,6 @@ EOF
 
 	mkinitcpio -P
 	chmod 644 /efi/initramfs-linux*
-	chmod 644 /efi/vmlinuz-linux
 
 	mkdir -p /efi/loader
 
@@ -460,7 +470,7 @@ EOF
 
 	bootctl install
 
-	sbctl sign -s /efi/vmlinuz-linux
+	sbctl sign -s /boot/vmlinuz-linux
 	sbctl sign -s /efi/initramfs-linux.img
 	sbctl sign -s /efi/initramfs-linux-fallback.img
 	sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi

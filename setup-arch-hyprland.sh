@@ -167,7 +167,7 @@ if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     systemctl enable nvidia-resume.service
 fi
 
-systemctl disable display-manager.service # replaced by sddm
+systemctl disable display-manager.service || true # replaced by sddm
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 

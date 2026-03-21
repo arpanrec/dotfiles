@@ -407,7 +407,7 @@ EOF
 
         mkdir -p /etc/mkinitcpio.conf.d
         tee "/etc/mkinitcpio.conf.d/99-nvidia-drm.conf" <<EOF
-MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
+MODULES+=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 
 EOF
     fi

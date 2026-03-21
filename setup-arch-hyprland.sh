@@ -2,6 +2,9 @@
 set -euo pipefail
 
 read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
+if [[ "${IS_KDE_ENABLED}" =~ ^[Yy]$ ]]; then
+    read -p "Install KDE Applications: (y/Y)" -r IS_KDE_APPLICATIONS
+fi
 
 IS_NVIDIA_DRM=n
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
@@ -168,8 +171,11 @@ systemctl disable display-manager.service # replaced by sddm
 systemctl enable sddm cups avahi-daemon.service
 systemctl set-default graphical.target
 
-if [[ $IS_KDE_ENABLED =~ ^[Yy]$ ]]; then
-    pacman -S --noconfirm kde-applications-meta kscreen discover packagekit-qt6 kde-applications bluez-qt
+if [[ "${IS_KDE_ENABLED}" =~ ^[Yy]$ ]]; then
+    if [[ "${IS_KDE_APPLICATIONS}" =~ ^[Yy]$ ]]; then
+        pacman -S --noconfirm kde-applications-meta kscreen discover packagekit-qt6 kde-applications bluez-qt
+    fi
+
     if [[ -f /usr/share/wayland-sessions/plasma.desktop.disabled && ! -f /usr/share/wayland-sessions/plasma.desktop ]]; then
         mv /usr/share/wayland-sessions/plasma.desktop.disabled /usr/share/wayland-sessions/plasma.desktop
         echo "plasma.desktop enabled"

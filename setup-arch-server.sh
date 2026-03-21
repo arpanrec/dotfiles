@@ -386,20 +386,7 @@ if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     pacman -S --noconfirm --needed 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
         'efibootmgr' 'sbctl' 'plymouth'
 
-    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Gracefully upgrading systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/systemctl restart systemd-boot-update.service
-EOF
-
-    systemctl enable systemd-boot-update.service
-
+    echo "Starting initramfs generation"
     if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
         mkdir -p /etc/modprobe.d
         tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
@@ -442,7 +429,21 @@ EOF
 
     mkinitcpio -P
     chmod 644 /efi/initramfs-linux*
+    echo "End of initramfs generation"
 
+    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Gracefully upgrading systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+EOF
+
+    systemctl enable systemd-boot-update.service
     mkdir -p /efi/loader
 
     tee "/efi/loader/loader.conf" <<EOF

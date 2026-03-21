@@ -384,7 +384,7 @@ if [[ ${IS_GRUB_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------------------------------"
 
     pacman -S --noconfirm --needed 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
-        'efibootmgr' 'sbctl' 'plymouth' 'grub' 'os-prober' 'efi-utils' 'efi-firmware' 'efi-bootmgr'
+        'efibootmgr' 'sbctl' 'plymouth' 'grub' 'os-prober' 'efitools'
 
     echo "Starting initramfs generation"
     if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then

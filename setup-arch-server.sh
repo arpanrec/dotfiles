@@ -4,7 +4,7 @@ set -xeuo pipefail
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
-read -p "Boot loader manged my this script, [systemd secure boot]: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
+read -p "Boot loader manged my this script, [grub, secure-boot, efi-directory /efi, encrypted /boot]: (y/Y)" -r IS_GRUB_SECURE_BOOT
 
 read -p "Enable pacman multilib: (y/Y)" -r IS_ENABLE_PACMAN_MULTILIB
 
@@ -378,7 +378,7 @@ update-ca-trust
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
-if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
+if [[ ${IS_GRUB_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------------------------------"
     echo "                           Install Boot-loader with UEFI                           "
     echo "-----------------------------------------------------------------------------------"

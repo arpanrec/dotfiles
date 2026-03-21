@@ -401,6 +401,7 @@ EOF
     fi
 
     plymouth-set-default-theme spinner
+    echo "KEYMAP=us" | tee /etc/vconsole.conf
 
     tee "/etc/mkinitcpio.d/linux.preset" <<EOF
 #ALL_config="/etc/mkinitcpio.conf"
@@ -421,8 +422,6 @@ fallback_image="/efi/initramfs-linux-fallback.img"
 fallback_uki="/efi/EFI/Linux/arch-linux-fallback.efi"
 fallback_options="-S autodetect"
 EOF
-
-    echo "KEYMAP=us" | tee /etc/vconsole.conf
 
     sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
         /etc/mkinitcpio.conf

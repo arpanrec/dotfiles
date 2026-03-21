@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -xeuo pipefail
+
 echo "Starting setup"
 echo "Allowed hosts are: s1-dev, s2-dev"
 
-read -p "Boot loader manged my this script, [systemd secure boot]: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
+read -p "Boot loader manged my this script, [grub, secure-boot, efi-directory /efi, encrypted /boot]: (y/Y)" -r IS_GRUB_SECURE_BOOT
 
 read -p "Enable pacman multilib: (y/Y)" -r IS_ENABLE_PACMAN_MULTILIB
 
@@ -118,14 +119,15 @@ pacman -Sy archlinux-keyring --noconfirm --needed
 
 sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnupg/gpg.conf
 
-pacman -Sy reflector curl --noconfirm --needed
+pacman -S reflector curl --noconfirm --needed
 
 if [[ "${UPDATE_MIRRORLIST}" =~ ^[Yy]$ ]]; then
     reflector --country India --age 12 \
         --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+    pacman -Syy
 fi
 
-pacman -Syu --noconfirm
+pacman -Su --noconfirm
 
 PACMAN_BASIC_PACKAGES=('base' 'base-devel')
 
@@ -205,8 +207,8 @@ if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     echo "                    Setting Nvidia Drivers                 "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
-    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit' 'cuda')
+    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11' 'cuda'
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
 
     mkdir -p "/etc/pacman.d/hooks"
     cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
@@ -377,13 +379,13 @@ update-ca-trust
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
-if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
+if [[ ${IS_GRUB_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------------------------------"
     echo "                           Install Boot-loader with UEFI                           "
     echo "-----------------------------------------------------------------------------------"
 
     pacman -S --noconfirm --needed 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
-        'efibootmgr' 'sbctl' 'plymouth'
+        'efibootmgr' 'sbctl' 'plymouth' 'grub' 'os-prober' 'efitools'
 
     echo "Starting initramfs generation"
     if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
@@ -403,66 +405,19 @@ EOF
 
     echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-    tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-ALL_kver="/boot/vmlinuz-linux"
-PRESETS=('default' 'fallback')
-default_image="/boot/initramfs-linux.img"
-default_options=""
-fallback_image="/boot/initramfs-linux-fallback.img"
-fallback_options="-S autodetect"
-EOF
-
-    sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    sed -i 's/^HOOKS=.*/HOOKS=(base udev plymouth autodetect microcode modconf kms keyboard keymap consolefont block encrypt lvm2 filesystems fsck)/' \
         /etc/mkinitcpio.conf
 
     mkinitcpio -P
     chmod 600 /boot/initramfs-linux*
     echo "End of initramfs generation"
 
-    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Gracefully upgrading systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/systemctl restart systemd-boot-update.service
-EOF
-
-    systemctl enable systemd-boot-update.service
-
-    mkdir -p /boot/loader
-
-    tee "/boot/loader/loader.conf" <<EOF
-default  arch.conf
-timeout  4
-console-mode auto
-editor   yes
-EOF
-
-    mkdir -p /boot/loader/entries
-
-    tee "/boot/loader/entries/arch.conf" <<EOF
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline) splash quiet
-EOF
-
-    tee "/boot/loader/entries/arch-fallback.conf" <<EOF
-title   Arch Linux (fallback)
-linux   /vmlinuz-linux
-initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline) splash quiet
-EOF
-
-    bootctl install
+    grub-install --target=x86_64-efi --bootloader-id=Archlinux \
+        --efi-directory=/efi --root-directory=/ --recheck
+    grub-mkconfig -o /boot/grub/grub.cfg
 
     sbctl sign -s /boot/vmlinuz-linux
-    sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-    sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+    sbctl sign -s /efi/EFI/Archlinux/grubx64.efi
 
     sbctl verify
 

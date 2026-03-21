@@ -404,7 +404,7 @@ EOF
 
     echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-    sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+    sed -i 's/^HOOKS=.*/HOOKS=(base udev plymouth autodetect microcode modconf kms keyboard keymap consolefont block encrypt lvm2 filesystems fsck)/' \
         /etc/mkinitcpio.conf
 
     mkinitcpio -P

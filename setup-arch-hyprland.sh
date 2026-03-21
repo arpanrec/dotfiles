@@ -146,7 +146,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
         'libva-utils' 'mesa' 'intel-media-driver')
 fi
 
-pacman -S --noconfirm "${PACMAN_PACKAGES[@]}"
+pacman -S --noconfirm -needed "${PACMAN_PACKAGES[@]}"
 
 echo "-------------------------------------------------------"
 echo "   Disable dbus org.kde.plasma.Notifications.service   "

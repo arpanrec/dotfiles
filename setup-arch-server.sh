@@ -401,6 +401,7 @@ EOF
     fi
 
     plymouth-set-default-theme spinner
+
     echo "KEYMAP=us" | tee /etc/vconsole.conf
 
     tee "/etc/mkinitcpio.d/linux.preset" <<EOF

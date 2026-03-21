@@ -9,7 +9,7 @@ read -p "Enable pacman multilib: (y/Y)" -r IS_ENABLE_PACMAN_MULTILIB
 
 IS_NVIDIA_DRM=n
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
-    read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
+	read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
 fi
 
 read -p "Update mirrorlist: (y/Y)" -r UPDATE_MIRRORLIST
@@ -17,29 +17,29 @@ read -p "Update mirrorlist: (y/Y)" -r UPDATE_MIRRORLIST
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
 allowed_host_names=(
-    s1-dev
-    s2-dev
+	s1-dev
+	s2-dev
 )
 
 is_valid_hostname=false
 for allowed_host_name in "${allowed_host_names[@]}"; do
-    if [[ "${TARGET_HOSTNAME}" == "${allowed_host_name}" ]]; then
-        is_valid_hostname=true
-        echo "Valid hostname: $TARGET_HOSTNAME"
-        break
-    fi
+	if [[ "${TARGET_HOSTNAME}" == "${allowed_host_name}" ]]; then
+		is_valid_hostname=true
+		echo "Valid hostname: $TARGET_HOSTNAME"
+		break
+	fi
 done
 
 if ! "${is_valid_hostname}"; then
-    echo "Invalid hostname: $TARGET_HOSTNAME"
-    echo "Allowed hosts are: ${allowed_host_names[*]}"
-    exit 1
+	echo "Invalid hostname: $TARGET_HOSTNAME"
+	echo "Allowed hosts are: ${allowed_host_names[*]}"
+	exit 1
 fi
 
 if [[ -d /run/systemd/system ]] && [[ "$(ps -p 1 -o comm=)" == "systemd" ]]; then
-    export IS_RUNNING_SYSTEMD=true
+	export IS_RUNNING_SYSTEMD=true
 else
-    export IS_RUNNING_SYSTEMD=false
+	export IS_RUNNING_SYSTEMD=false
 fi
 
 echo "System is running systemd: $IS_RUNNING_SYSTEMD"
@@ -51,10 +51,10 @@ rm -rf /etc/localtime
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 
 if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
-    timedatectl set-timezone Asia/Kolkata
-    timedatectl set-ntp true
+	timedatectl set-timezone Asia/Kolkata
+	timedatectl set-ntp true
 else
-    echo "Skipping systemd time setup (not running under systemd)"
+	echo "Skipping systemd time setup (not running under systemd)"
 fi
 
 hwclock --systohc
@@ -69,11 +69,11 @@ echo 'LANG=en_US.UTF-8' >/etc/locale.conf
 locale-gen
 
 if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
-    localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8"
-    localectl --no-ask-password set-keymap us
-    localectl
+	localectl --no-ask-password set-locale LANG="en_US.UTF-8" LC_TIME="en_US.UTF-8"
+	localectl --no-ask-password set-keymap us
+	localectl
 else
-    echo "Skipping systemd services (not running under systemd)"
+	echo "Skipping systemd services (not running under systemd)"
 fi
 
 nc=$(grep -c ^processor /proc/cpuinfo)
@@ -82,9 +82,9 @@ echo "-------------------------------------------------"
 echo "Changing the makeflags for $nc cores."
 TOTALMEM=$(grep -i 'memtotal' /proc/meminfo | grep -o '[[:digit:]]*')
 if [[ $TOTALMEM -gt 8000000 ]]; then
-    sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
-    echo "Changing the compression settings for $nc cores."
-    sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+	sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+	echo "Changing the compression settings for $nc cores."
+	sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 fi
 
 echo "Add parallel downloading"
@@ -92,9 +92,9 @@ sed -i 's/^#Para/Para/' /etc/pacman.conf
 sed -i 's/^#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
 
 if [[ "${IS_ENABLE_PACMAN_MULTILIB}" =~ ^[Yy]$ ]]; then
-    echo "Enable multilib"
-    sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-    cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
+	echo "Enable multilib"
+	sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+	cp /etc/pacman.d/mirrorlist "/etc/pacman.d/mirrorlist.bak-$(date +%s)"
 fi
 
 echo "--------------------------------------"
@@ -109,9 +109,9 @@ cat <<EOT >"/etc/hosts"
 EOT
 
 if [[ "$IS_RUNNING_SYSTEMD" == "true" ]]; then
-    hostnamectl hostname "${TARGET_HOSTNAME}"
+	hostnamectl hostname "${TARGET_HOSTNAME}"
 else
-    echo "Skipping systemd services (not running under systemd)"
+	echo "Skipping systemd services (not running under systemd)"
 fi
 
 pacman -Sy archlinux-keyring --noconfirm
@@ -121,8 +121,8 @@ sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnu
 pacman -Sy reflector curl --noconfirm
 
 if [[ "${UPDATE_MIRRORLIST}" =~ ^[Yy]$ ]]; then
-    reflector --country India --age 12 \
-        --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+	reflector --country India --age 12 \
+		--protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
 fi
 
 pacman -Syu --noconfirm
@@ -142,14 +142,14 @@ PACMAN_BASIC_PACKAGES+=('networkmanager' 'dhcpcd' 'dhclient' 'inetutils' 'openss
 
 # Storage, filesystems & disk utilities
 PACMAN_BASIC_PACKAGES+=('lvm2' 'cryptsetup' 'btrfs-progs' 'xfsprogs' 'nilfs-utils' 'jfsutils' 'udftools' 'dosfstools'
-    'exfatprogs' 'ntfs-3g' 'sshfs')
+	'exfatprogs' 'ntfs-3g' 'sshfs')
 
 # Archiving & compression
 PACMAN_BASIC_PACKAGES+=('zip' 'unzip' 'p7zip' 'unrar' 'unarchiver' 'pigz' 'lzop' 'lrzip')
 
 # Monitoring & diagnostics
 PACMAN_BASIC_PACKAGES+=('htop' 'bpytop' 'bashtop' 'sysstat' 'lm_sensors' 'lsof' 'strace' 'screenfetch' 'usbutils'
-    'iotop' 'locate')
+	'iotop' 'locate')
 
 # Development toolchains
 PACMAN_BASIC_PACKAGES+=('make' 'cmake' 'ninja' 'gcc' 'clang' 'llvm' 'llvm-libs' 'lldb' 'devtools' 'tree-sitter')
@@ -161,7 +161,7 @@ PACMAN_BASIC_PACKAGES+=('dkms')
 
 # CLI essentials & shell tooling
 PACMAN_BASIC_PACKAGES+=('curlftpfs' 'wget' 'jq' 'trurl' 'git' 'less' 'tree' 'shfmt' 'tmux' 'vim' 'zsh' 'shellcheck'
-    'bash-completion')
+	'bash-completion')
 
 PACMAN_BASIC_PACKAGES+=('lua' 'luarocks')
 
@@ -184,32 +184,32 @@ proc_type=$(grep vendor /proc/cpuinfo | uniq | awk '{print $3}')
 echo "proc_type: $proc_type"
 case "$proc_type" in
 GenuineIntel)
-    echo "Installing Intel microcode"
-    PACMAN_BASIC_PACKAGES+=('intel-ucode' 'linux-firmware-intel')
-    ;;
+	echo "Installing Intel microcode"
+	PACMAN_BASIC_PACKAGES+=('intel-ucode' 'linux-firmware-intel')
+	;;
 AuthenticAMD)
-    echo "Installing AMD microcode"
-    PACMAN_BASIC_PACKAGES+=('amd-ucode' 'linux-firmware-amdgpu' 'linux-firmware-radeon')
-    ;;
+	echo "Installing AMD microcode"
+	PACMAN_BASIC_PACKAGES+=('amd-ucode' 'linux-firmware-amdgpu' 'linux-firmware-radeon')
+	;;
 *)
-    echo "Unknown processor type"
-    exit 1
-    ;;
+	echo "Unknown processor type"
+	exit 1
+	;;
 esac
 
 echo "--------------------------------------------------"
 echo "         Graphics Drivers find and install        "
 echo "--------------------------------------------------"
 if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
-    echo "-----------------------------------------------------------"
-    echo "                    Setting Nvidia Drivers                 "
-    echo "-----------------------------------------------------------"
-    echo "Adding nvidia drivers to be installed"
-    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11' 'cuda'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
+	echo "-----------------------------------------------------------"
+	echo "                    Setting Nvidia Drivers                 "
+	echo "-----------------------------------------------------------"
+	echo "Adding nvidia drivers to be installed"
+	# This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11' 'cuda'
+	PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
 
-    mkdir -p "/etc/pacman.d/hooks"
-    cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
+	mkdir -p "/etc/pacman.d/hooks"
+	cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
 [Trigger]
 Operation=Install
 Operation=Upgrade
@@ -226,27 +226,27 @@ NeedsTargets
 Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 EOT
 
-    echo "Setting Nvidia Drivers setup pacman hook and udev rules"
-    mkdir /etc/udev/rules.d/ -p
-    cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
+	echo "Setting Nvidia Drivers setup pacman hook and udev rules"
+	mkdir /etc/udev/rules.d/ -p
+	cat <<EOT >"/etc/udev/rules.d/99-nvidia.rules"
 ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-modprobe -c0 -u"
 EOT
 fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Radeon|Advanced Micro Devices)"; then
 
-    echo "-----------------------------------------------------------"
-    echo "                    Setting AMD Drivers                    "
-    echo "-----------------------------------------------------------"
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu' 'linux-firmware-radeon')
+	echo "-----------------------------------------------------------"
+	echo "                    Setting AMD Drivers                    "
+	echo "-----------------------------------------------------------"
+	PACMAN_BASIC_PACKAGES+=('linux-firmware-amdgpu' 'linux-firmware-radeon')
 fi
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel Corporation)"; then
 
-    echo "-----------------------------------------------------------"
-    echo "                   Setting Intel Drivers                   "
-    echo "-----------------------------------------------------------"
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
+	echo "-----------------------------------------------------------"
+	echo "                   Setting Intel Drivers                   "
+	echo "-----------------------------------------------------------"
+	PACMAN_BASIC_PACKAGES+=('linux-firmware-intel')
 fi
 
 echo "--------------------------------------------------"
@@ -285,11 +285,11 @@ echo "--------------------------------------"
 SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
 SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
 id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G docker,sudo -m \
-    -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
+	-d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
 usermod -aG docker,sudo "${SYSTEM_ADMIN_USER}"
 if id -nG "${SYSTEM_ADMIN_USER}" | grep -qw wheel; then
-    gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
+	gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
 fi
 echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
 echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
@@ -340,26 +340,26 @@ TimeoutStopSec=10s
 EOF
 
 SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
-    'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd'
+	'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd'
 )
 
 for SYSTEMD_BASIC_SERVICE in "${SYSTEMD_BASIC_SERVICES[@]}"; do
-    echo "Enable Service: ${SYSTEMD_BASIC_SERVICE}"
-    systemctl enable "$SYSTEMD_BASIC_SERVICE"
+	echo "Enable Service: ${SYSTEMD_BASIC_SERVICE}"
+	systemctl enable "$SYSTEMD_BASIC_SERVICE"
 done
 
 if ! command -v nvidia-ctk &>/dev/null; then
-    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
+	echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
 else
-    echo "Nvidia Container Toolkit is installed."
+	echo "Nvidia Container Toolkit is installed."
 
-    if $IS_RUNNING_SYSTEMD; then
-        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
-        nvidia-ctk runtime configure --runtime=docker
-        systemctl restart docker
-    else
-        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
-    fi
+	if $IS_RUNNING_SYSTEMD; then
+		echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+		nvidia-ctk runtime configure --runtime=docker
+		systemctl restart docker
+	else
+		echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+	fi
 fi
 
 echo "-----------------------------------------------------------------------------------"
@@ -368,7 +368,7 @@ echo "--------------------------------------------------------------------------
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
 curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |
-    tee "${ROOT_CERTIFICATE_TEMP_FILE}"
+	tee "${ROOT_CERTIFICATE_TEMP_FILE}"
 trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
 
 mkdir -p /etc/ca-certificates/trust-source/anchors
@@ -378,14 +378,14 @@ update-ca-trust
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
 
 if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
-    echo "-----------------------------------------------------------------------------------"
-    echo "                           Install Boot-loader with UEFI                           "
-    echo "-----------------------------------------------------------------------------------"
+	echo "-----------------------------------------------------------------------------------"
+	echo "                           Install Boot-loader with UEFI                           "
+	echo "-----------------------------------------------------------------------------------"
 
-    pacman -S --noconfirm 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
-        'efibootmgr' 'sbctl' 'plymouth'
+	pacman -S --noconfirm 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
+		'efibootmgr' 'sbctl' 'plymouth'
 
-    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
+	tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
 [Trigger]
 Type = Package
 Operation = Upgrade
@@ -397,71 +397,73 @@ When = PostTransaction
 Exec = /usr/bin/systemctl restart systemd-boot-update.service
 EOF
 
-    systemctl enable systemd-boot-update.service
+	systemctl enable systemd-boot-update.service
 
-    if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
-        mkdir -p /etc/modprobe.d
-        tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
+	if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
+		mkdir -p /etc/modprobe.d
+		tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
 options nvidia-drm modeset=1
 EOF
 
-        mkdir -p /etc/mkinitcpio.conf.d
-        tee "/etc/mkinitcpio.conf.d/99-nvidia-drm.conf" <<EOF
+		mkdir -p /etc/mkinitcpio.conf.d
+		tee "/etc/mkinitcpio.conf.d/99-nvidia-drm.conf" <<EOF
 MODULES+=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 
 EOF
-    fi
+	fi
 
-    plymouth-set-default-theme spinner
+	plymouth-set-default-theme spinner
 
-    tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-ALL_kver="/boot/vmlinuz-linux"
+	tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/efi/vmlinuz-linux"
 PRESETS=('default' 'fallback')
-default_image="/boot/initramfs-linux.img"
+default_image="/efi/initramfs-linux.img"
 default_options=""
-fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_image="/efi/initramfs-linux-fallback.img"
 fallback_options="-S autodetect"
 EOF
 
-    echo "KEYMAP=us" | tee /etc/vconsole.conf
+	echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-    sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
-        /etc/mkinitcpio.conf
+	sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
+		/etc/mkinitcpio.conf
 
-    mkinitcpio -P
-    chmod 600 /boot/initramfs-linux*
+	mkinitcpio -P
+	chmod 644 /efi/initramfs-linux*
+	chmod 644 /efi/vmlinuz-linux
 
-    mkdir -p /boot/loader
+	mkdir -p /efi/loader
 
-    tee "/boot/loader/loader.conf" <<EOF
+	tee "/efi/loader/loader.conf" <<EOF
 default  arch.conf
 timeout  4
 console-mode auto
 editor   yes
 EOF
 
-    mkdir -p /boot/loader/entries
+	mkdir -p /efi/loader/entries
 
-    tee "/boot/loader/entries/arch.conf" <<EOF
+	tee "/efi/loader/entries/arch.conf" <<EOF
 title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
 options $(cat /etc/kernel/cmdline) splash quiet
 EOF
 
-    tee "/boot/loader/entries/arch-fallback.conf" <<EOF
+	tee "/efi/loader/entries/arch-fallback.conf" <<EOF
 title   Arch Linux (fallback)
 linux   /vmlinuz-linux
 initrd  /initramfs-linux-fallback.img
 options $(cat /etc/kernel/cmdline) splash quiet
 EOF
 
-    bootctl install
+	bootctl install
 
-    sbctl sign -s /boot/vmlinuz-linux
-    sbctl sign -s /efi/EFI/BOOT/BOOTX64.EFI
-    sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
+	sbctl sign -s /efi/vmlinuz-linux
+	sbctl sign -s /efi/initramfs-linux.img
+	sbctl sign -s /efi/initramfs-linux-fallback.img
+	sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
 
-    sbctl verify
+	sbctl verify
 
 fi

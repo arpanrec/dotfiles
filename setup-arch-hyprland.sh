@@ -146,7 +146,7 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(Integrated Graphics Controller|Intel C
         'libva-utils' 'mesa' 'intel-media-driver')
 fi
 
-pacman -S --noconfirm "${PACMAN_PACKAGES[@]}"
+pacman -S --noconfirm --needed "${PACMAN_PACKAGES[@]}"
 
 echo "-------------------------------------------------------"
 echo "   Disable dbus org.kde.plasma.Notifications.service   "
@@ -173,7 +173,7 @@ systemctl set-default graphical.target
 
 if [[ "${IS_KDE_ENABLED}" =~ ^[Yy]$ ]]; then
     if [[ "${IS_KDE_APPLICATIONS}" =~ ^[Yy]$ ]]; then
-        pacman -S --noconfirm kde-applications-meta kscreen discover packagekit-qt6 kde-applications bluez-qt
+        pacman -S --noconfirm --needed kde-applications-meta kscreen discover packagekit-qt6 kde-applications bluez-qt
     fi
 
     if [[ -f /usr/share/wayland-sessions/plasma.desktop.disabled && ! -f /usr/share/wayland-sessions/plasma.desktop ]]; then

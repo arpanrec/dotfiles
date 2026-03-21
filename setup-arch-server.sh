@@ -459,8 +459,8 @@ EOF
     bootctl install
 
     sbctl sign -s /boot/vmlinuz-linux
-    sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-    sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+    sbctl sign -s /efi/EFI/BOOT/BOOTX64.EFI
+    sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
 
     sbctl verify
 

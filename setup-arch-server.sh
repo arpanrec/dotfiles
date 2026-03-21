@@ -205,8 +205,8 @@ if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     echo "                    Setting Nvidia Drivers                 "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
-    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit' 'cuda')
+    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11' 'cuda'
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
 
     mkdir -p "/etc/pacman.d/hooks"
     cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"

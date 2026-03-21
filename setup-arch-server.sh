@@ -384,7 +384,7 @@ if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------------------------------"
 
     pacman -S --noconfirm --needed 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
-        'efibootmgr' 'sbctl' 'plymouth'
+        'efibootmgr' 'sbctl' 'plymouth' 'grub' 'os-prober' 'efi-utils' 'efi-firmware' 'efi-bootmgr'
 
     echo "Starting initramfs generation"
     if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
@@ -404,26 +404,6 @@ EOF
 
     echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-    tee "/etc/mkinitcpio.d/linux.preset" <<EOF
-#ALL_config="/etc/mkinitcpio.conf"
-ALL_kver="/boot/vmlinuz-linux"
-#ALL_kerneldest="/boot/vmlinuz-linux"
-
-#PRESETS=('default')
-PRESETS=('default' 'fallback')
-
-#default_config="/etc/mkinitcpio.conf"
-default_image="/efi/initramfs-linux.img"
-default_uki="/efi/EFI/Linux/arch-linux.efi"
-#default_options="--splash /usr/share/systemd/bootctl/splash-arch.bmp"
-default_options=""
-
-#fallback_config="/etc/mkinitcpio.conf"
-fallback_image="/efi/initramfs-linux-fallback.img"
-fallback_uki="/efi/EFI/Linux/arch-linux-fallback.efi"
-fallback_options="-S autodetect"
-EOF
-
     sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
         /etc/mkinitcpio.conf
 
@@ -431,45 +411,10 @@ EOF
     chmod 644 /efi/initramfs-linux*
     echo "End of initramfs generation"
 
-    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Gracefully upgrading systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/systemctl restart systemd-boot-update.service
-EOF
-
-    systemctl enable systemd-boot-update.service
-    mkdir -p /efi/loader
-
-    tee "/efi/loader/loader.conf" <<EOF
-default  arch.conf
-timeout  4
-console-mode auto
-editor   yes
-EOF
-
-    mkdir -p /efi/loader/entries
-
-    tee "/efi/loader/entries/arch.conf" <<EOF
-title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /initramfs-linux.img
-options $(cat /etc/kernel/cmdline) splash quiet
-EOF
-
-    tee "/efi/loader/entries/arch-fallback.conf" <<EOF
-title   Arch Linux (fallback)
-linux   /vmlinuz-linux
-initrd  /initramfs-linux-fallback.img
-options $(cat /etc/kernel/cmdline) splash quiet
-EOF
-
-    bootctl install
+    chmod 600 /boot/initramfs-linux*
+    grub-install --target=x86_64-efi --bootloader-id=Archlinux \
+        --efi-directory=/efi --root-directory=/ --recheck
+    grub-mkconfig -o /boot/grub/grub.cfg
 
     sbctl sign -s /boot/vmlinuz-linux
     sbctl sign -s /efi/initramfs-linux.img

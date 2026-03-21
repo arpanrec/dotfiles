@@ -115,7 +115,7 @@ else
     echo "Skipping systemd services (not running under systemd)"
 fi
 
-pacman -Sy archlinux-keyring --noconfirm
+pacman -Sy archlinux-keyring --noconfirm --needed
 
 sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnupg/gpg.conf
 

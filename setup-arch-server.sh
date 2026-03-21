@@ -385,20 +385,7 @@ if [[ ${IS_SYSTEMD_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     pacman -S --noconfirm 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
         'efibootmgr' 'sbctl' 'plymouth'
 
-    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
-[Trigger]
-Type = Package
-Operation = Upgrade
-Target = systemd
-
-[Action]
-Description = Gracefully upgrading systemd-boot...
-When = PostTransaction
-Exec = /usr/bin/systemctl restart systemd-boot-update.service
-EOF
-
-    systemctl enable systemd-boot-update.service
-
+    echo "Starting initramfs generation"
     if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
         mkdir -p /etc/modprobe.d
         tee "/etc/modprobe.d/nvidia-drm.conf" <<EOF
@@ -414,6 +401,8 @@ EOF
 
     plymouth-set-default-theme spinner
 
+    echo "KEYMAP=us" | tee /etc/vconsole.conf
+
     tee "/etc/mkinitcpio.d/linux.preset" <<EOF
 ALL_kver="/boot/vmlinuz-linux"
 PRESETS=('default' 'fallback')
@@ -423,13 +412,26 @@ fallback_image="/boot/initramfs-linux-fallback.img"
 fallback_options="-S autodetect"
 EOF
 
-    echo "KEYMAP=us" | tee /etc/vconsole.conf
-
     sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
         /etc/mkinitcpio.conf
 
     mkinitcpio -P
     chmod 600 /boot/initramfs-linux*
+    echo "End of initramfs generation"
+
+    tee "/etc/pacman.d/hooks/95-systemd-boot.hook" <<EOF
+[Trigger]
+Type = Package
+Operation = Upgrade
+Target = systemd
+
+[Action]
+Description = Gracefully upgrading systemd-boot...
+When = PostTransaction
+Exec = /usr/bin/systemctl restart systemd-boot-update.service
+EOF
+
+    systemctl enable systemd-boot-update.service
 
     mkdir -p /boot/loader
 

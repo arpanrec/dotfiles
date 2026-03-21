@@ -119,14 +119,15 @@ pacman -Sy archlinux-keyring --noconfirm --needed
 
 sed -i 's|^keyserver .*|keyserver hkp://keyserver.ubuntu.com|' /etc/pacman.d/gnupg/gpg.conf
 
-pacman -Sy reflector curl --noconfirm --needed
+pacman -S reflector curl --noconfirm --needed
 
 if [[ "${UPDATE_MIRRORLIST}" =~ ^[Yy]$ ]]; then
     reflector --country India --age 12 \
         --protocol https --sort rate --save /etc/pacman.d/mirrorlist --verbose
+    pacman -Syy
 fi
 
-pacman -Syu --noconfirm
+pacman -Su --noconfirm
 
 PACMAN_BASIC_PACKAGES=('base' 'base-devel')
 
@@ -408,18 +409,15 @@ EOF
         /etc/mkinitcpio.conf
 
     mkinitcpio -P
-    chmod 644 /efi/initramfs-linux*
+    chmod 600 /boot/initramfs-linux*
     echo "End of initramfs generation"
 
-    chmod 600 /boot/initramfs-linux*
     grub-install --target=x86_64-efi --bootloader-id=Archlinux \
         --efi-directory=/efi --root-directory=/ --recheck
     grub-mkconfig -o /boot/grub/grub.cfg
 
     sbctl sign -s /boot/vmlinuz-linux
-    sbctl sign -s /efi/initramfs-linux.img
-    sbctl sign -s /efi/initramfs-linux-fallback.img
-    sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
+    sbctl sign -s /efi/EFI/Archlinux/grubx64.efi
 
     sbctl verify
 

@@ -385,7 +385,7 @@ if [[ ${IS_GRUB_SECURE_BOOT} =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------------------------------"
 
     pacman -S --noconfirm --needed 'linux' 'linux-headers' 'linux-api-headers' 'mkinitcpio' \
-        'efibootmgr' 'sbctl' 'plymouth' 'grub' 'os-prober' 'efitools'
+        'efibootmgr' 'plymouth' 'grub' 'os-prober' 'efitools'
 
     echo "Starting initramfs generation"
     if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
@@ -415,10 +415,5 @@ EOF
     grub-install --target=x86_64-efi --bootloader-id=Archlinux \
         --efi-directory=/efi --root-directory=/ --recheck
     grub-mkconfig -o /boot/grub/grub.cfg
-
-    sbctl sign -s /boot/vmlinuz-linux
-    sbctl sign -s /efi/EFI/Archlinux/grubx64.efi
-
-    sbctl verify
 
 fi

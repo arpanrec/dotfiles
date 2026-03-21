@@ -60,3 +60,8 @@ xdg-mime default Logseq.desktop x-scheme-handler/logseq
 xdg-mime default Postman.desktop x-scheme-handler/postman
 xdg-mime default signal-desktop.desktop x-scheme-handler/sgnl
 xdg-mime default signal-desktop.desktop x-scheme-handler/signalcaptcha
+
+xdg-mime default org.qbittorrent.qBittorrent.desktop \
+  application/x-bittorrent \
+  application/x-torrent \
+  x-scheme-handler/magnet

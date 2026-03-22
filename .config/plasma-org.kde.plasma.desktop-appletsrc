@@ -4,25 +4,13 @@ RightButton;NoModifier=org.kde.contextmenu
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
-[Containments][1]
-ItemGeometries-2048x1280=
+[Containments][29]
 ItemGeometries-2327x1309=
 ItemGeometriesHorizontal=
-activityId=616b18b7-8ec0-412d-a01d-1fe942fd21d4
+activityId=7951836f-be40-44e4-8533-106fb401e1a5
 formfactor=0
 immutability=1
 lastScreen=0
-location=0
-plugin=org.kde.plasma.folder
-wallpaperplugin=org.kde.image
-
-[Containments][2]
-ItemGeometries-2048x1280=
-ItemGeometriesHorizontal=
-activityId=616b18b7-8ec0-412d-a01d-1fe942fd21d4
-formfactor=0
-immutability=1
-lastScreen=1
 location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
@@ -41,8 +29,8 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][3][Applets][16][Configuration]
-popupHeight=400
-popupWidth=560
+popupHeight=416
+popupWidth=576
 
 [Containments][3][Applets][16][Configuration][Appearance]
 fontWeight=400
@@ -67,8 +55,8 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][3][Applets][4][Configuration]
-popupHeight=539
-popupWidth=713
+popupHeight=571
+popupWidth=745
 
 [Containments][3][Applets][4][Configuration][General]
 favoritesPortedToKAstats=true
@@ -88,8 +76,8 @@ immutability=1
 lastScreen=-1
 location=0
 plugin=org.kde.plasma.systemtray
-popupHeight=448
-popupWidth=448
+popupHeight=480
+popupWidth=480
 wallpaperplugin=org.kde.image
 
 [Containments][3][Applets][8][Applets][10]
@@ -126,11 +114,11 @@ plugin=org.kde.plasma.keyboardindicator
 
 [Containments][3][Applets][8][Applets][20]
 immutability=1
-plugin=org.kde.plasma.weather
+plugin=org.kde.plasma.vault
 
 [Containments][3][Applets][8][Applets][21]
 immutability=1
-plugin=org.kde.kscreen
+plugin=org.kde.plasma.networkmanagement
 
 [Containments][3][Applets][8][Applets][22]
 immutability=1
@@ -151,6 +139,18 @@ plugin=org.kde.plasma.brightness
 immutability=1
 plugin=org.kde.plasma.battery
 
+[Containments][3][Applets][8][Applets][27]
+immutability=1
+plugin=org.kde.kscreen
+
+[Containments][3][Applets][8][Applets][28]
+immutability=1
+plugin=org.kde.plasma.weather
+
+[Containments][3][Applets][8][Applets][31]
+immutability=1
+plugin=org.kde.plasma.mediacontroller
+
 [Containments][3][Applets][8][Applets][9]
 immutability=1
 plugin=org.kde.plasma.devicenotifier
@@ -161,6 +161,15 @@ knownItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.
 
 [Containments][3][General]
 AppletOrder=4;5;26;7;8;16;17
+
+[Containments][30]
+activityId=7951836f-be40-44e4-8533-106fb401e1a5
+formfactor=0
+immutability=1
+lastScreen=1
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
 
 [ScreenMapping]
 itemsOnDisabledScreens=

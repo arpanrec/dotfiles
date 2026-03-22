@@ -1,10 +1,11 @@
 [ActivityManager]
 _k_friendly_name=Activity Manager
 switch-to-activity-616b18b7-8ec0-412d-a01d-1fe942fd21d4=none,none,Switch to activity "Default"
+switch-to-activity-7951836f-be40-44e4-8533-106fb401e1a5=none,none,Switch to activity "Default"
 
 [KDE Keyboard Layout Switcher]
-Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,
-Switch to Next Keyboard Layout=Meta+Alt+K,Meta+Alt+K,
+Switch to Last-Used Keyboard Layout=Meta+Alt+L,Meta+Alt+L,Switch to Last-Used Keyboard Layout
+Switch to Next Keyboard Layout=Meta+Alt+K,Meta+Alt+K,Switch to Next Keyboard Layout
 _k_friendly_name=Keyboard Layout Switcher
 
 [kaccess]
@@ -53,7 +54,7 @@ MoveZoomDown=none,none,Move Zoomed Area Downwards
 MoveZoomLeft=none,none,Move Zoomed Area to Left
 MoveZoomRight=none,none,Move Zoomed Area to Right
 MoveZoomUp=none,none,Move Zoomed Area Upwards
-Overview=Meta+W,Meta+W,Toggle Overview
+Overview=none,Meta+W,Toggle Overview
 Setup Window Shortcut=,,Setup Window Shortcut
 Show Desktop=Meta+D,Meta+D,Peek at Desktop
 Switch One Desktop Down=Meta+Ctrl+Down,Meta+Ctrl+Down,Switch One Desktop Down
@@ -117,7 +118,7 @@ Walk Through Windows of Current Application Alternative=none,none,Walk Through W
 Walk Through Windows of Current Application Alternative (Reverse)=none,none,Walk Through Windows of Current Application Alternative (Reverse)
 Window Above Other Windows=,,Keep Window Above Others
 Window Below Other Windows=,,Keep Window Below Others
-Window Close=Alt+F4,Alt+F4,Close Window
+Window Close=Alt+F4\tMeta+W,Alt+F4,Close Window
 Window Custom Quick Tile Bottom=,,Custom Quick Tile Window to the Bottom
 Window Custom Quick Tile Left=,,Custom Quick Tile Window to the Left
 Window Custom Quick Tile Right=,,Custom Quick Tile Window to the Right
@@ -254,7 +255,7 @@ cycle-panels=Meta+Alt+P,Meta+Alt+P,Move keyboard focus between panels
 cycleNextAction=,,Next History Item
 cyclePrevAction=,,Previous History Item
 edit_clipboard=,,Edit Contents…
-manage activities=Meta+Q,Meta+Q,Show Activity Switcher
+manage activities=none,Meta+Q,Show Activity Switcher
 next activity=Meta+A,none,Walk through activities
 previous activity=Meta+Shift+A,none,Walk through activities (Reverse)
 repeat_action=,,Manually Invoke Action on Current Clipboard
@@ -264,6 +265,12 @@ show-on-mouse-pos=Meta+V,Meta+V,Show Clipboard Items at Mouse Position
 switch to next activity=,,Switch to Next Activity
 switch to previous activity=,,Switch to Previous Activity
 toggle do not disturb=,,Toggle do not disturb
+
+[services][org.kde.konsole.desktop]
+NewWindow=Meta+Q
+
+[services][org.kde.krunner.desktop]
+_launch=Meta+Space\tSearch\tAlt+Space\tAlt+F2
 
 [wacomtablet]
 Map to fullscreen=Meta+Ctrl+F,Meta+Ctrl+F,Map to fullscreen

@@ -344,17 +344,17 @@ tee /etc/motd <<EOF >/dev/null
 #       or                                                 #
 #       fuck around and find out.                          #
 ############################################################
-#       STOP! You’ve reached the peak                      #
+#       STOP! You've reached the peak                      #
 #       of your questionable life choices                  #
 ############################################################
 #       Hey, fancy seeing *you* here.                      #
 #       Remember, every command you type                   #
 #       reminds the server it deserves a better user.      #
 #                                                          #
-#       Please don’t mess things up (again).               #
+#       Please don't mess things up (again).               #
 #       And if you do, IT knows.                           #
 ############################################################
-#       Type ‘exit’ to repent.                             #
+#       Type 'exit' to repent.                             #
 ############################################################
 EOF
 

@@ -143,7 +143,7 @@ fi
 
 echo "Installing locales and setting timezone"
 apt-get update
-apt-get install -y locales tzdata
+apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip sudo bash python3-venv python3-pip vim
 
 echo "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
 timedatectl set-timezone Asia/Kolkata || true
@@ -155,15 +155,6 @@ locale -a
 locale-gen
 localectl set-locale LANG=en_US.UTF-8 || true
 
-echo "Installing apt dependencies"
-apt-get update
-apt-get install -y git curl ca-certificates gnupg2 tar unzip wget sudo bash
-
-echo "Installing Python 3 venv and pip"
-apt-get install -y python3-venv python3-pip
-
-echo "Installing vim"
-apt-get install -y vim
 echo "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
@@ -185,7 +176,6 @@ Creating directories if not exists and changing ownership to root:root"
 if [ -d "${NEBULA_VENV_DIR}" ]; then
     echo "Virtual environment already exists at ${NEBULA_VENV_DIR}"
 else
-
     echo "Creating virtual environment at ${NEBULA_VENV_DIR}"
     python3 -m venv "${NEBULA_VENV_DIR}"
 fi

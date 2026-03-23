@@ -28,20 +28,6 @@ else
     exit 1
 fi
 
-which_os_python() {
-    # Simply don't use python, /usr/bin/python etc, try to find the highest version of python3
-    declare -a PYTHON_VERSIONS=("python3.14" "python3.13" "python3.12" "python3.11")
-
-    for python_version in "${PYTHON_VERSIONS[@]}"; do
-        if command -v "${python_version}" &>/dev/null; then
-            echo "${python_version}"
-            return
-        fi
-    done
-    echo "Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
-    exit 1
-}
-
 if [[ -z $* ]]; then
 
     __install_tags=()
@@ -147,7 +133,7 @@ mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
 
 # shellcheck source=/dev/null
 if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then
-    $(readlink -f "$(which "$(which_os_python)")") -m venv "${NEBULA_VENV_DIR}"
+    python3 -m venv "${NEBULA_VENV_DIR}"
     echo "Virtual Environment created at ${NEBULA_VENV_DIR}"
 else
     echo "Virtual Environment already exists at ${NEBULA_VENV_DIR}"

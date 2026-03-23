@@ -12,15 +12,15 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
 fi
 
 if pacman -Qi hyprlauncher &>/dev/null; then
-    pacman -R hyprlauncher --noconfirm # with Replace rofi
+    pacman -R hyprlauncher --noconfirm # Replaced with rofi
 fi
 
 if pacman -Qi hyprpolkitagent &>/dev/null; then
-    pacman -R hyprpolkitagent --noconfirm # with Replace polkit-kde-agent
+    pacman -R hyprpolkitagent --noconfirm # Replaced with polkit-kde-agent
 fi
 
 if pacman -Qi plasma-login-manager &>/dev/null; then
-    pacman -R plasma-login-manager --noconfirm # with Replace sddm
+    pacman -R plasma-login-manager --noconfirm # Replaced with sddm
 fi
 
 PACMAN_PACKAGES+=(
@@ -48,23 +48,16 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'kde-gtk-config' # for gtk apps xsettingsd cli
     'kdialog'        # For popup in browsers like file save dialog.
 
-    # plasma-desktop: Some features in dolphin like "Add Network Folder" in "Networks" location.
-    # plasma-desktop: This will cause Plasma Desktop entry in SDDM.
-    'plasma-desktop'
+    'plasma-desktop' # Some features in dolphin like "Add Network Folder" in "Networks" location, This will cause Plasma Desktop entry in SDDM.
 
     'gwenview' 'kimageformats' 'qt6-imageformats'
     'kamoso' 'kate' 'konsole'
     'dolphin' 'dolphin-plugins' 'kdegraphics-thumbnailers' 'ffmpegthumbnailer' 'ffmpegthumbs' 'kfind'
     'ark' # ark is needed for dolphin archive/unarchive plugin.
 
-    # Needed for kde-applications-meta, just in case i need to install full kde.
-    'tesseract-data-ind' 'pyside6'
+    'tesseract-data-ind' 'pyside6' # Needed for kde-applications-meta, just in case i need to install full kde.
 )
 
-# 'baloo' 'audiocd-kio' 'kompare' 'kio-gdrive' 'kio-admin' 'libappimage' 'kdesdk-thumbnailers' 'icoutils'
-# 'packagekit-qt6'
-# 'appmenu-gtk-module' 'materia-gtk-theme' 'adapta-gtk-theme'
-# 'networkmanager-openvpn'  'networkmanager-openconnect'
 PACMAN_PACKAGES+=(
     'webkit2gtk' 'webkitgtk-6.0' 'webkit2gtk-4.1' # embedded browser features provided by webkitgtk 6.0 and webkit2gtk 4.1.
     'xdg-desktop-portal-gtk' 'adw-gtk-theme'
@@ -77,19 +70,11 @@ PACMAN_PACKAGES+=(
     'playerctl'             # mpris media player controller and lib for spotify, vlc, audacious, bmp, xmms2, and others.
 )
 
-# fontforge # For font-patcher, used to patching any font to nerd font
 PACMAN_PACKAGES+=('noto-fonts' 'noto-fonts-cjk' 'noto-fonts-emoji' 'noto-fonts-extra' 'woff2-font-awesome')
-
-# 'chrono-date' 'meson' 'scdoc' # Needed for waybar
-
-# 'libavtp' 'lib32-libavtp' 'lib32-libsamplerate' 'lib32-speexdsp' 'faac' 'faad2' 'lame' 'libdca' 'libdv'
-# 'gst-libav'  'libmad' 'libmpeg2' 'libtheora' 'libvorbis' 'libxv' 'x264' 'xvidcore'
 
 PACMAN_PACKAGES+=('firefox')
 
 PACMAN_PACKAGES+=('ffmpeg')
-
-PACMAN_PACKAGES+=('yt-dlp')
 
 PACMAN_PACKAGES+=('gstreamer' 'gst-plugins-base' 'gst-plugins-good' 'gst-plugins-bad' 'gst-plugins-ugly' 'gst-libav')
 
@@ -181,9 +166,6 @@ if [[ "${IS_KDE_ENABLED}" =~ ^[Yy]$ ]]; then
         echo "plasma.desktop enabled"
     fi
 else
-    #    if pacman -Qi plasma-login-manager &>/dev/null; then
-    #        pacman -R kde-applications-meta --noconfirm # with Replace sddm
-    #    fi
     echo "package: plasma-desktop causes the Plasma(wayland) session to be added to SDDM's list of available sessions."
     if [[ -f /usr/share/wayland-sessions/plasma.desktop ]]; then
         mv /usr/share/wayland-sessions/plasma.desktop /usr/share/wayland-sessions/plasma.desktop.disabled
@@ -215,9 +197,7 @@ AUR_BASIC_PACKAGES=(
     'redhat-fonts' 'sddm-silent-theme' # redhat-fonts is needed for sddm-silent-theme, which comes from AUR, So needed to be installed first and explicitly.
 )
 
-# Import OpenPGP key for `yubico-authenticator-bin`
-# https://developers.yubico.com/Software_Projects/Software_Signing.html
-# https://aur.archlinux.org/packages/yubico-authenticator-bin
+echo "Import OpenPGP key for 'yubico-authenticator-bin', https://developers.yubico.com/Software_Projects/Software_Signing.html https://aur.archlinux.org/packages/yubico-authenticator-bin"
 su - "${AUR_INSTALL_USER}" -c "
             set -eou pipefail
             if ! gpg --list-keys --with-fingerprint --with-colons | grep '20EE325B86A81BCBD3E56798F04367096FBA95E8'; then

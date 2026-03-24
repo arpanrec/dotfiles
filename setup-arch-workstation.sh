@@ -3,7 +3,7 @@ set -euo pipefail
 
 read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
 if [[ "${IS_KDE_ENABLED}" =~ ^[Yy]$ ]]; then
-    read -p "Install KDE Applications: (y/Y)" -r IS_KDE_APPLICATIONS
+    read -p "Install a working minimal KDE Plasma: (y/Y)" -r IS_KDE_APPLICATIONS
 fi
 
 IS_NVIDIA_DRM=n
@@ -17,10 +17,6 @@ fi
 
 if pacman -Qi hyprpolkitagent &>/dev/null; then
     pacman -R hyprpolkitagent --noconfirm # Replaced with polkit-kde-agent
-fi
-
-if pacman -Qi plasma-login-manager &>/dev/null; then
-    pacman -R plasma-login-manager --noconfirm # Replaced with sddm
 fi
 
 PACMAN_PACKAGES+=(

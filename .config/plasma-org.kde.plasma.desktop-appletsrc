@@ -49,6 +49,7 @@ DialogWidth=810
 
 [Containments][3][Applets][26][Configuration][General]
 groupPopups=false
+groupingStrategy=0
 
 [Containments][3][Applets][4]
 immutability=1

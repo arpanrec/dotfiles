@@ -50,6 +50,7 @@ DialogWidth=810
 [Containments][3][Applets][26][Configuration][General]
 groupPopups=false
 groupingStrategy=0
+launchers=
 
 [Containments][3][Applets][4]
 immutability=1
@@ -65,10 +66,6 @@ favoritesPortedToKAstats=true
 [Containments][3][Applets][5]
 immutability=1
 plugin=org.kde.plasma.pager
-
-[Containments][3][Applets][7]
-immutability=1
-plugin=org.kde.plasma.marginsseparator
 
 [Containments][3][Applets][8]
 activityId=
@@ -161,7 +158,7 @@ extraItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.
 knownItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.clipboard,org.kde.plasma.notifications,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.keyboardlayout,org.kde.plasma.printmanager,org.kde.plasma.battery,org.kde.kscreen,org.kde.plasma.vault,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.bluetooth
 
 [Containments][3][General]
-AppletOrder=4;5;26;7;8;16;17
+AppletOrder=4;26;5;8;16;17
 
 [Containments][30]
 activityId=7951836f-be40-44e4-8533-106fb401e1a5

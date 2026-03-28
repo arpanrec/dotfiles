@@ -12,6 +12,8 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
 fi
 
+read -p "manage Docker: (y/Y)" -r IS_MANAGE_DOCKER
+
 read -p "Update mirrorlist: (y/Y)" -r UPDATE_MIRRORLIST
 
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
@@ -167,7 +169,9 @@ PACMAN_BASIC_PACKAGES+=('lua' 'luarocks')
 
 PACMAN_BASIC_PACKAGES+=('hunspell' 'hunspell-en_us' 'hunspell-en_gb')
 
-PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose')
+if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+    PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose')
+fi
 
 PACMAN_BASIC_PACKAGES+=('postgresql-libs')
 
@@ -206,7 +210,12 @@ if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
     # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit' 'cuda')
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'cuda')
+
+    # IS_MANAGE_DOCKER
+    if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+        PACMAN_BASIC_PACKAGES+=('nvidia-container-toolkit')
+    fi
 
     mkdir -p "/etc/pacman.d/hooks"
     cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
@@ -284,10 +293,10 @@ echo "--------------------------------------"
 
 SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
 SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
-id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G docker,sudo -m \
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G sudo -m \
     -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
-usermod -aG docker,sudo "${SYSTEM_ADMIN_USER}"
+usermod -aG sudo "${SYSTEM_ADMIN_USER}"
 if id -nG "${SYSTEM_ADMIN_USER}" | grep -qw wheel; then
     gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
 fi
@@ -339,26 +348,31 @@ tee "/etc/systemd/system/NetworkManager.service.d/44-override.conf" <<EOF
 TimeoutStopSec=10s
 EOF
 
-SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
+SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'pcscd'
     'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd'
 )
+if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+    SYSTEMD_BASIC_SERVICES+=('docker')
+fi
 
 for SYSTEMD_BASIC_SERVICE in "${SYSTEMD_BASIC_SERVICES[@]}"; do
     echo "Enable Service: ${SYSTEMD_BASIC_SERVICE}"
     systemctl enable "$SYSTEMD_BASIC_SERVICE"
 done
 
-if ! command -v nvidia-ctk &>/dev/null; then
-    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
-else
-    echo "Nvidia Container Toolkit is installed."
-
-    if $IS_RUNNING_SYSTEMD; then
-        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
-        nvidia-ctk runtime configure --runtime=docker
-        systemctl restart docker
+if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+    if ! command -v nvidia-ctk &>/dev/null; then
+        echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
     else
-        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+        echo "Nvidia Container Toolkit is installed."
+
+        if $IS_RUNNING_SYSTEMD; then
+            echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+            nvidia-ctk runtime configure --runtime=docker
+            systemctl restart docker
+        else
+            echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+        fi
     fi
 fi
 

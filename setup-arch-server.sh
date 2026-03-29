@@ -12,9 +12,9 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
 fi
 
-read -p "manage Docker: (y/Y)" -r IS_MANAGE_DOCKER
+read -p "Install Docker: (y/Y)" -r IS_DOCKER_INSTALL
 
-read -p "Update mirrorlist: (y/Y)" -r UPDATE_MIRRORLIST
+read -p "Update pacman mirror list with reflector: (y/Y)" -r UPDATE_MIRRORLIST
 
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
@@ -169,7 +169,7 @@ PACMAN_BASIC_PACKAGES+=('lua' 'luarocks')
 
 PACMAN_BASIC_PACKAGES+=('hunspell' 'hunspell-en_us' 'hunspell-en_gb')
 
-if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
     PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose')
 fi
 
@@ -212,8 +212,7 @@ if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
     PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'cuda')
 
-    # IS_MANAGE_DOCKER
-    if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+    if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
         PACMAN_BASIC_PACKAGES+=('nvidia-container-toolkit')
     fi
 
@@ -351,7 +350,7 @@ EOF
 SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'pcscd'
     'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd'
 )
-if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
     SYSTEMD_BASIC_SERVICES+=('docker')
 fi
 
@@ -360,7 +359,7 @@ for SYSTEMD_BASIC_SERVICE in "${SYSTEMD_BASIC_SERVICES[@]}"; do
     systemctl enable "$SYSTEMD_BASIC_SERVICE"
 done
 
-if [[ $IS_MANAGE_DOCKER =~ ^[Yy]$ ]]; then
+if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
     if ! command -v nvidia-ctk &>/dev/null; then
         echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
     else

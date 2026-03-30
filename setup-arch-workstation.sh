@@ -73,12 +73,13 @@ PACMAN_PACKAGES+=('firefox')
 PACMAN_PACKAGES+=('ffmpeg')
 
 PACMAN_PACKAGES+=('gstreamer' 'gst-plugins-base' 'gst-plugins-good' 'gst-plugins-bad' 'gst-plugins-ugly' 'gst-libav')
+# 'lib32-alsa-plugins' 'lib32-pipewire' 'lib32-pipewire-jack' 'lib32-pipewire-v4l2'
 
-PACMAN_PACKAGES+=('alsa-plugins' 'lib32-alsa-plugins' 'alsa-firmware' 'alsa-utils')
+PACMAN_PACKAGES+=('alsa-plugins' 'alsa-firmware' 'alsa-utils')
 
-PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'lib32-pipewire' 'sof-firmware'
-    'pipewire-alsa' 'gst-plugin-pipewire' 'lib32-pipewire-jack' 'pipewire-jack' 'pipewire-pulse'
-    'pipewire-v4l2' 'lib32-pipewire-v4l2'
+PACMAN_PACKAGES+=('wireplumber' 'pipewire' 'sof-firmware'
+    'pipewire-alsa' 'gst-plugin-pipewire' 'pipewire-jack' 'pipewire-pulse'
+    'pipewire-v4l2'
     'pipewire-zeroconf'
     'speech-dispatcher' # For speech recognition, like discord audio call.
 )

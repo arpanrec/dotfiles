@@ -380,12 +380,29 @@ echo "                             Install root certificate                     
 echo "-----------------------------------------------------------------------------------"
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
-curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |
-    tee "${ROOT_CERTIFICATE_TEMP_FILE}"
-trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
+CERT_SPLIT_DIR="$(mktemp -d)"
+
+curl -fL \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/intermediate_ca_full_chain.pem \
+    -o "${ROOT_CERTIFICATE_TEMP_FILE}"
 
 mkdir -p /etc/ca-certificates/trust-source/anchors
-cp "${ROOT_CERTIFICATE_TEMP_FILE}" /etc/ca-certificates/trust-source/anchors/root_ca.crt
+
+awk -v outdir="${CERT_SPLIT_DIR}" '
+BEGIN { c = 0 }
+/-----BEGIN CERTIFICATE-----/ { c++ }
+{
+    file = outdir "/cert." c ".crt"
+    print >> file
+}
+' < "${ROOT_CERTIFICATE_TEMP_FILE}"
+
+for cert in "${CERT_SPLIT_DIR}"/*.crt; do
+    trust anchor --store "${cert}"
+    cp "${cert}" \
+        "/etc/ca-certificates/trust-source/anchors/$(basename "${cert}")"
+done
+
 update-ca-trust
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."

@@ -151,7 +151,7 @@ Variables:
 
 * `CLOUD_INIT_GROUP` : Group name for the user to be created. Default `cloudinit`.
 * `CLOUD_INIT_USER` : Username for the user to be created. Default `cloudinit`.
-* `CLOUD_INIT_USE_SSH_PUB` : Use SSH public key for the user, Default `ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/WcgpOHacjKDa7p2skBYljmk=`.
+* `CLOUD_INIT_USE_SSH_PUB` : Use SSH public key for the user, Default `curl -sSf https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub`.
 * `CLOUD_INIT_IS_DEV_MACHINE` : Install development tools. Default `false`.
 * `CLOUD_INIT_COPY_ROOT_SSH_KEYS` : Copy root SSH keys to the user. Default `false`.
 * `CLOUD_INIT_HOSTNAME` : Hostname for the machine. Default `cloudinit`.
@@ -171,7 +171,7 @@ Variables:
 * `ANSIBLE_INVENTORY` : Ansible inventory. Default `${NEBULA_TMP_DIR}/inventory.yml`.
 
 ```bash
-CLOUD_INIT_DOMAIN=arpanrec.com sudo -E -H -u root bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+CLOUD_INIT_DOMAIN=easyiac.com sudo -E -H -u root bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-debian.sh)'
 ```
 
@@ -186,7 +186,7 @@ CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root
 or for a development machine with a domain
 
 ```bash
-CLOUD_INIT_DOMAIN=blr-home.arpanrec.com CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
+CLOUD_INIT_DOMAIN=blr-home.easyiac.com CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-debian.sh)'
 ```

@@ -49,13 +49,6 @@ else
 fi
 
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
-export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 \
-AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/\
-WcgpOHacjKDa7p2skBYljmk="}"
-
-echo "
-CLOUD_INIT_USER: ${CLOUD_INIT_USER}
-CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
 current_hostname="$(hostname)"
 
@@ -80,13 +73,6 @@ CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}
 CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}
 CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}
 CLOUD_INIT_INSTALL_DOCKER: ${CLOUD_INIT_INSTALL_DOCKER}"
-
-if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
-    echo "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
-    exit 1
-else
-    echo "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
-fi
 
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
     echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false), exiting"
@@ -144,6 +130,14 @@ fi
 echo "Installing locales and setting timezone"
 apt-get update
 apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip sudo bash python3-venv python3-pip vim
+
+export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
+if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
+    echo "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
+    exit 1
+else
+    echo "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
+fi
 
 echo "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
 timedatectl set-timezone Asia/Kolkata || true

@@ -46,7 +46,7 @@ if [ "${current_status}" != "unlocked" ]; then
 fi
 
 declare -a bw_items=(
-    "GPG_KEY - 1A2249D8FE12E5D3" "1A2249D8FE12E5D3-Certify.key"
+    "GPG_KEY - 1A2249D8FE12E5D3" "Arpan_0x1A2249D8FE12E5D3_SECRET.asc"
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 2)); do

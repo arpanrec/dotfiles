@@ -54,8 +54,9 @@ PACMAN_PACKAGES+=('qt5-wayland' 'qt6-wayland'
     'tesseract-data-ind' 'pyside6' # Needed for kde-applications-meta, just in case i need to install full kde.
 )
 
+# webkit2gtk is removed and now in aur
 PACMAN_PACKAGES+=(
-    'webkit2gtk' 'webkitgtk-6.0' 'webkit2gtk-4.1' # embedded browser features provided by webkitgtk 6.0 and webkit2gtk 4.1.
+    'webkitgtk-6.0' 'webkit2gtk-4.1' # embedded browser features provided by webkitgtk 6.0 and webkit2gtk 4.1.
     'xdg-desktop-portal-gtk' 'adw-gtk-theme'
     'gobject-introspection' 'glib2-devel' # Waybar GTK apps are breaking without gobject-introspection and glib2-devel.
     'gnome-calculator'

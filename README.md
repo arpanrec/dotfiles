@@ -116,6 +116,13 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
 
 * Bitwarden Desktop version is hardcoded in the script from [GitHub Releases](https://github.com/bitwarden/clients/releases).
 
+### [Install Bruno](https://www.usebruno.com/downloads/)
+
+```bash
+bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bruno.sh)
+```
+
 ### [Install Postman](https://www.postman.com/downloads/)
 
 ```bash

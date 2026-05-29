@@ -123,6 +123,13 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bruno.sh)
 ```
 
+### [Install Trilium Notes](https://triliumnotes.org/en/get-started/)
+
+```bash
+bash <(curl -sSL --connect-timeout 10 --max-time 10 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-trilium.sh)
+```
+
 ### [Install Joplin App](https://joplinapp.org/help/install/)
 
 ```bash

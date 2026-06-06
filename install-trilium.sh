@@ -2,7 +2,7 @@
 set -xeuo pipefail
 
 LATEST_VERSION="$(
-    curl -sSLf \
+    curl -sSLf --connect-timeout 10 --max-time 60 \
         "https://api.github.com/repos/TriliumNext/Trilium/releases/latest" |
         jq -r ".tag_name"
 )"
@@ -41,7 +41,7 @@ mkdir -p \
 echo "Downloading Trilium ${LATEST_VERSION} for ${TRILIUM_ARCH}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}" ]]; then
-    curl -fL \
+    curl -fL --connect-timeout 10 --max-time 600 \
         "https://github.com/TriliumNext/Trilium/releases/download/${LATEST_VERSION}/${APPIMAGE_NAME}" \
         -o "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}"
 else

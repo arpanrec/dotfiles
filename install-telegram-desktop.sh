@@ -6,7 +6,7 @@ if [[ "$(uname -m)" != "x86_64" ]]; then
     exit 1
 fi
 
-LATEST_VERSION="$(curl -sSfL \
+LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest" |
     jq -r ".tag_name")"
 
@@ -24,7 +24,7 @@ mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/applications" "${HOME
 echo "Downloading Telegram Desktop version ${LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${LATEST_VERSION:1}.tar.xz" ]]; then
-    curl -fL "https://github.com/telegramdesktop/tdesktop/releases/download/${LATEST_VERSION}/tsetup.${LATEST_VERSION:1}.tar.xz" \
+    curl -fL --connect-timeout 10 --max-time 600 "https://github.com/telegramdesktop/tdesktop/releases/download/${LATEST_VERSION}/tsetup.${LATEST_VERSION:1}.tar.xz" \
         -o "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${LATEST_VERSION:1}.tar.xz"
 else
     echo "Tarball File already exists"

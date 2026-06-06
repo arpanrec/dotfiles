@@ -23,7 +23,7 @@ echo "Detected architecture: ${CURRENT_ARCH} (${DOWNLOAD_ARCH_KEY})"
 
 echo "Fetch latest download metadata"
 RELEASE_JSON="$(
-    curl -fsSL "https://data.services.jetbrains.com/products?code=TBA" |
+    curl -fsSL --connect-timeout 10 --max-time 60 "https://data.services.jetbrains.com/products?code=TBA" |
         jq '.[0].releases[0]'
 )"
 
@@ -54,13 +54,13 @@ mkdir -p "${TMP_DOWNLOAD_DIRECTORY}"
 echo "Downloading to ${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${ARCHIVE}" ]]; then
-    curl -fL "${DOWNLOAD_URL}" -o "${ARCHIVE}"
+    curl -fL --connect-timeout 10 --max-time 600 "${DOWNLOAD_URL}" -o "${ARCHIVE}"
 else
     echo "Archive already exists, skipping download"
 fi
 
 if [[ ! -f "${CHECKSUM_FILE}" ]]; then
-    curl -fL "${CHECKSUM_URL}" -o "${CHECKSUM_FILE}"
+    curl -fL --connect-timeout 10 --max-time 60 "${CHECKSUM_URL}" -o "${CHECKSUM_FILE}"
 else
     echo "Checksum already exists, skipping download"
 fi

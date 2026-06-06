@@ -14,7 +14,7 @@ for cmd in "${required_cmds[@]}"; do
     fi
 done
 
-LATEST_VERSION="$(curl -sSfL \
+LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://update.code.visualstudio.com/api/releases/stable" |
     jq -r ".[0]")"
 
@@ -51,7 +51,7 @@ DOWNLOAD_URL="https://update.code.visualstudio.com/${LATEST_VERSION}/linux-${DOW
 echo "Downloading Visual Studio Code version ${LATEST_VERSION} for ${CURRENT_ARCH} architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" ]]; then
-    curl -fL "${DOWNLOAD_URL}" -o "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
+    curl -fL --connect-timeout 10 --max-time 600 "${DOWNLOAD_URL}" -o "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
 else
     echo "Tarball File already exists"
 fi

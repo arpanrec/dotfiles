@@ -131,7 +131,7 @@ echo "Installing locales and setting timezone"
 apt-get update
 apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip sudo bash python3-venv python3-pip vim
 
-export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
+export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf --connect-timeout 10 --max-time 60 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
     echo "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
     exit 1

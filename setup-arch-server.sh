@@ -382,7 +382,7 @@ echo "--------------------------------------------------------------------------
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
 CERT_SPLIT_DIR="$(mktemp -d)"
 
-curl -fL \
+curl -fL --connect-timeout 10 --max-time 60 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/intermediate_ca_full_chain.pem \
     -o "${ROOT_CERTIFICATE_TEMP_FILE}"
 

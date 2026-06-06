@@ -36,7 +36,7 @@ echo "Checking for CPU count"
 CPUCOUNT=$(grep -c "^processor" /proc/cpuinfo)
 echo "CPU count is ${CPUCOUNT}"
 
-NEOVIM_VERSION="$(curl -sSfL \
+NEOVIM_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/neovim/neovim/releases/latest" |
     jq -r ".tag_name")"
 

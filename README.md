@@ -41,6 +41,12 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
 ```
 
+Clean reinstall (removes existing dotfiles bare repo and shell frameworks before installing):
+
+```bash
+CLEAN_DOT_INSTALL=yes bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
+```
+
 ---
 
 ## Workspace Setup

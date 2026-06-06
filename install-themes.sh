@@ -157,7 +157,7 @@ echo "Done gvolpe/BeautyLine."
 
 echo "Installing Bibata Cursor."
 
-BIBATA_CURSOR_VERSION="$(curl -sSfL \
+BIBATA_CURSOR_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/ful1e5/Bibata_Cursor/releases/latest" |
     jq -r ".tag_name")"
 
@@ -171,7 +171,7 @@ rm -rf "${HOME}"/.local/share/icons/Bibata-* # This asterisk should not be under
 mkdir -p "${HOME}/.local/share/icons" "${TMP_DOWNLOAD_DIRECTORY}/Bibata"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz" ]]; then
-    curl -fL \
+    curl -fL --connect-timeout 10 --max-time 600 \
         "https://github.com/ful1e5/Bibata_Cursor/releases/download/${BIBATA_CURSOR_VERSION}/Bibata.tar.xz" \
         -o "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz"
 
@@ -188,7 +188,7 @@ echo "Done Bibata Cursor."
 
 echo "Installing hack nerd-fonts."
 
-NERD_FONT_VERSION="$(curl -sSfL \
+NERD_FONT_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" |
     jq -r ".tag_name")"
 
@@ -199,7 +199,7 @@ fi
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/NerdFontPatcher-${NERD_FONT_VERSION}.zip" ]]; then
     echo "Download font patcher."
-    curl -fL \
+    curl -fL --connect-timeout 10 --max-time 600 \
         "https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/FontPatcher.zip" \
         -o "${TMP_DOWNLOAD_DIRECTORY}/NerdFontPatcher-${NERD_FONT_VERSION}.zip"
 else
@@ -221,7 +221,7 @@ declare -a NERD_FONT_TYPES=(
 for NERD_FONT_TYPE in "${NERD_FONT_TYPES[@]}"; do
     if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}.zip" ]]; then
         echo "Downloading ${NERD_FONT_TYPE}-${NERD_FONT_VERSION}"
-        curl -fL \
+        curl -fL --connect-timeout 10 --max-time 600 \
             "https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONT_VERSION}/${NERD_FONT_TYPE}.zip" \
             -o "${TMP_DOWNLOAD_DIRECTORY}/${NERD_FONT_TYPE}-${NERD_FONT_VERSION}.zip"
     else
@@ -245,7 +245,7 @@ echo "Done hack nerd-fonts."
 
 echo "Installing Cascadia-Code."
 
-CASCADIA_CODE_GITHUB_TAG="$(curl -sSfL \
+CASCADIA_CODE_GITHUB_TAG="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/microsoft/cascadia-code/releases/latest" |
     jq -r ".tag_name")"
 
@@ -255,7 +255,7 @@ if [[ -z "${CASCADIA_CODE_GITHUB_TAG}" || "${CASCADIA_CODE_GITHUB_TAG}" == "null
 fi
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" ]]; then
-    curl -fL \
+    curl -fL --connect-timeout 10 --max-time 600 \
         "https://github.com/microsoft/cascadia-code/releases/download/${CASCADIA_CODE_GITHUB_TAG}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" \
         -o "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip"
 else
@@ -287,7 +287,7 @@ mkdir -p "${HOME}/.local/share/fonts/meslo-nerd-font-patched-for-p10k" \
 for NERD_PATCHED_FONT_FOR_P10K in "${NERD_PATCHED_FONTS_FOR_P10K[@]}"; do
     if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf" ]]; then
         NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED=$(printf %s "${NERD_PATCHED_FONT_FOR_P10K}" | jq -sRr @uri)
-        curl -fL \
+        curl -fL --connect-timeout 10 --max-time 600 \
             "https://github.com/romkatv/powerlevel10k-media/raw/refs/heads/master/${NERD_PATCHED_FONT_FOR_P10K_URI_ENCODED}.ttf" \
             -o "${TMP_DOWNLOAD_DIRECTORY}/meslo-nerd-font-patched-for-p10k/${NERD_PATCHED_FONT_FOR_P10K}.ttf"
     else

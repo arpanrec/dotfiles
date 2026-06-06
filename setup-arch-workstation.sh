@@ -202,7 +202,7 @@ su - "${AUR_INSTALL_USER}" -c "
             set -eou pipefail
             if ! gpg --list-keys --with-fingerprint --with-colons | grep '20EE325B86A81BCBD3E56798F04367096FBA95E8'; then
                 echo 'yubico OpenPGP key 20EE325B86A81BCBD3E56798F04367096FBA95E8 not found, importing.'
-                curl https://keys.openpgp.org/vks/v1/by-fingerprint/20EE325B86A81BCBD3E56798F04367096FBA95E8 |
+                curl --connect-timeout 10 --max-time 60 https://keys.openpgp.org/vks/v1/by-fingerprint/20EE325B86A81BCBD3E56798F04367096FBA95E8 |
                 gpg --import --batch --yes
             else
                 echo 'yubico OpenPGP key 20EE325B86A81BCBD3E56798F04367096FBA95E8, already imported.'

@@ -76,6 +76,7 @@ if [ "${current_status}" == "locked" ]; then
         echo "Error: Unable to unlock Bitwarden"
         exit 1
     fi
+    export BW_SESSION="${__bw_session_id}"
     read -n1 -r -p "Set session id in ${BW_API_SESSION_FILE} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then

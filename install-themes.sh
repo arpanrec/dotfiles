@@ -157,9 +157,14 @@ echo "Done gvolpe/BeautyLine."
 
 echo "Installing Bibata Cursor."
 
-BIBATA_CURSOR_VERSION="$(curl -s \
+BIBATA_CURSOR_VERSION="$(curl -sSfL \
     "https://api.github.com/repos/ful1e5/Bibata_Cursor/releases/latest" |
     jq -r ".tag_name")"
+
+if [[ -z "${BIBATA_CURSOR_VERSION}" || "${BIBATA_CURSOR_VERSION}" == "null" ]]; then
+    echo "Failed to get latest Bibata Cursor version."
+    exit 1
+fi
 
 rm -rf "${HOME}"/.local/share/icons/Bibata-* # This asterisk should not be under quotes, i want it to expand to all files.
 
@@ -183,9 +188,14 @@ echo "Done Bibata Cursor."
 
 echo "Installing hack nerd-fonts."
 
-NERD_FONT_VERSION="$(curl -s \
+NERD_FONT_VERSION="$(curl -sSfL \
     "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" |
     jq -r ".tag_name")"
+
+if [[ -z "${NERD_FONT_VERSION}" || "${NERD_FONT_VERSION}" == "null" ]]; then
+    echo "Failed to get latest Nerd Font version."
+    exit 1
+fi
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/NerdFontPatcher-${NERD_FONT_VERSION}.zip" ]]; then
     echo "Download font patcher."
@@ -235,9 +245,14 @@ echo "Done hack nerd-fonts."
 
 echo "Installing Cascadia-Code."
 
-CASCADIA_CODE_GITHUB_TAG="$(curl -s \
+CASCADIA_CODE_GITHUB_TAG="$(curl -sSfL \
     "https://api.github.com/repos/microsoft/cascadia-code/releases/latest" |
     jq -r ".tag_name")"
+
+if [[ -z "${CASCADIA_CODE_GITHUB_TAG}" || "${CASCADIA_CODE_GITHUB_TAG}" == "null" ]]; then
+    echo "Failed to get latest Cascadia Code version."
+    exit 1
+fi
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/CascadiaCode-${CASCADIA_CODE_GITHUB_TAG:1}.zip" ]]; then
     curl -fL \

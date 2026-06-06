@@ -8,6 +8,11 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profil
 
 echo "Setting up Rust environment"
 
+if [[ ! -f "${HOME}/.cargo/env" ]]; then
+    echo "Rust environment file not found at ${HOME}/.cargo/env"
+    exit 1
+fi
+
 # shellcheck source=/dev/null
 source "${HOME}/.cargo/env"
 

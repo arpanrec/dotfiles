@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LATEST_VERSION="$(curl -s \
+LATEST_VERSION="$(curl -sSfL \
     "https://api.github.com/repos/dbeaver/dbeaver/releases/latest" |
     jq -r ".tag_name")"
 
-if [[ -z "${LATEST_VERSION}" ]]; then
+if [[ -z "${LATEST_VERSION}" || "${LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."
     exit 1
 fi
 
-rm -rf "${HOME}/.local/share/dbeaver"
+rm -rf "${HOME}/.local/share/dbeaver-ce"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
@@ -34,8 +34,7 @@ fi
 echo "Verifying checksum."
 CURRENT_CHECKSUM="$(sha256sum "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz" |
     awk '{print $1}')"
-EXPECTED_CHECKSUM="$(cat "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256" |
-    awk '{print $1}')"
+EXPECTED_CHECKSUM="$(awk '{print $1}' "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256")"
 
 if [[ "${CURRENT_CHECKSUM}" != "${EXPECTED_CHECKSUM}" ]]; then
     echo "Checksum verification failed."

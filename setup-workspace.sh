@@ -88,11 +88,17 @@ if [[ -z $* ]]; then
         echo "Skipping Bitwarden SDK installation"
     fi
 
+    if [[ ${#__install_tags[@]} -eq 0 ]]; then
+        echo "No tags selected, nothing to install. Exiting."
+        exit 0
+    fi
+
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
-    echo "Running with default tags :: ${__ansible_tags::-1}"
+    __ansible_tags="${__ansible_tags%,}"
+    echo "Running with default tags :: ${__ansible_tags}"
     read -n1 -s -r -p 'Press any key to continue or Ctrl+C to exit' continue_script
     if [[ "${continue_script}" == "" ]]; then
-        echo "Continuing with default tags :: ${__ansible_tags::-1}"
+        echo "Continuing with default tags :: ${__ansible_tags}"
     else
         echo "Exiting"
         exit 1
@@ -199,9 +205,9 @@ EOF
 
 cd "${HOME}" || exit 1
 
-if [[ -n "${__ansible_tags:-}" && "${__ansible_tags:-}" != "," && -z $* ]]; then
+if [[ -n "${__ansible_tags:-}" && -z $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
-        --tags "${__ansible_tags::-1}"
+        --tags "${__ansible_tags}"
 elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
 else

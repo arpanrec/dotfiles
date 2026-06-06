@@ -122,7 +122,7 @@ if [ -z "${CLOUD_INIT_WEB_SERVER_FQDN:-}" ]; then
 else
     echo "CLOUD_INIT_WEB_SERVER_FQDN is set to ${CLOUD_INIT_WEB_SERVER_FQDN}"
 
-    IPADDR=$(/sbin/ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://')
+    IPADDR=$(ip -4 addr show eth0 | awk '/inet / { print $2 }' | cut -d'/' -f1)
     sed -i "/${IPADDR}.*/d" /etc/hosts
     echo "${IPADDR} ${CLOUD_INIT_WEB_SERVER_FQDN}" | tee -a /etc/hosts
 fi

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+declare -a PACMAN_PACKAGES=()
+
 read -p "Have kde as second option: (y/Y)" -r IS_KDE_ENABLED
 if [[ "${IS_KDE_ENABLED}" =~ ^[Yy]$ ]]; then
     read -p "Install a working minimal KDE Plasma: (y/Y)" -r IS_KDE_APPLICATIONS

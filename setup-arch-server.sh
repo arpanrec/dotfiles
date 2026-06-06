@@ -231,7 +231,7 @@ Description=Update Nvidia module in initcpio
 Depends=mkinitcpio
 When=PostTransaction
 NeedsTargets
-Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 EOT
 
     echo "Setting Nvidia Drivers setup pacman hook and udev rules"
@@ -300,7 +300,7 @@ if id -nG "${SYSTEM_ADMIN_USER}" | grep -qw wheel; then
     gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
 fi
 echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
-echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
+printf '%s\n%s\n' "${SYSTEM_ADMIN_PASSWORD}" "${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
 
 echo "--------------------------------------"
 echo "         SSH Key Only login           "

@@ -4,8 +4,7 @@ set -euo pipefail
 echo "Starting"
 
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
-    if [[ ! -t 1 ]]; then
-
+    if [[ ! -t 0 ]]; then
         echo "Script is not running in interactive mode. Exiting."
         exit 1
     fi

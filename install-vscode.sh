@@ -14,7 +14,7 @@ for cmd in "${required_cmds[@]}"; do
     fi
 done
 
-LATEST_VERSION="$(curl -s \
+LATEST_VERSION="$(curl -sSfL \
     "https://update.code.visualstudio.com/api/releases/stable" |
     jq -r ".[0]")"
 

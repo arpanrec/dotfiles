@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 ssh-install() {
 
@@ -83,7 +83,7 @@ ssh-install() {
     fi
 }
 
-pre_pro=(bw)
+pre_pro=(bw jq)
 for prog in "${pre_pro[@]}"; do
     if ! hash "${prog}" &>/dev/null; then
         echo "${prog} not installed"

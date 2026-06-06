@@ -6,16 +6,15 @@ if [[ "$(uname -m)" != "x86_64" ]]; then
     exit 1
 fi
 
-LATEST_VERSION="$(curl -s \
+LATEST_VERSION="$(curl -sSfL \
     "https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest" |
     jq -r ".tag_name")"
 
-if [[ -z "${LATEST_VERSION}" ]]; then
+if [[ -z "${LATEST_VERSION}" || "${LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."
     exit 1
-else
-    echo "Installing Telegram Desktop version ${LATEST_VERSION}"
 fi
+echo "Installing Telegram Desktop version ${LATEST_VERSION}"
 
 rm -rf "${HOME}/.local/share/Telegram"
 
@@ -65,7 +64,6 @@ find "${HOME}/.local/share/applications" -type f -name "*telegram*" -exec rm -f 
 #
 #chmod 755 "${HOME}/.local/share/applications/telegram-desktop.desktop"
 
+echo "Telegram Desktop installed successfully!"
 echo "Starting telegram-desktop for automatic desktop entry creation"
-
-"${HOME}/.local/share/Telegram/Telegram" &&
-    echo "Telegram Desktop installed successfully!"
+"${HOME}/.local/share/Telegram/Telegram" || true

@@ -6,20 +6,20 @@ Personal dotfiles and setup scripts for Linux workstations. Wayland-native confi
 
 Several configurations are hardcoded outside of session manager directories:
 
-| File | Purpose |
-|------|---------|
-| `.config/chrome-flags.conf` | Password store pinned to `kwallet6` |
-| `.config/brave-flags.conf` | Password store pinned to `kwallet6` |
-| `.config/xdg-desktop-portal/portals.conf` | FileChooser pinned to KDE portal |
-| `.local/share/dbus-1/services/org.freedesktop.secrets.service` | Secret manager pinned to `/usr/bin/kwalletd6` |
-| `install-vscode.sh` | Password store pinned to `kwallet5` in `~/.vscode/argv.json` |
+| File                                                           | Purpose                                                      |
+| -------------------------------------------------------------- | ------------------------------------------------------------ |
+| `.config/chrome-flags.conf`                                    | Password store pinned to `kwallet6`                          |
+| `.config/brave-flags.conf`                                     | Password store pinned to `kwallet6`                          |
+| `.config/xdg-desktop-portal/portals.conf`                      | FileChooser pinned to KDE portal                             |
+| `.local/share/dbus-1/services/org.freedesktop.secrets.service` | Secret manager pinned to `/usr/bin/kwalletd6`                |
+| `install-vscode.sh`                                            | Password store pinned to `kwallet5` in `~/.vscode/argv.json` |
 
 ## Repository Branches
 
-| Branch | Contents |
-|--------|---------|
-| [`dotfiles/main`](https://github.com/arpanrec/dotfiles/tree/dotfiles/main) | Dotfiles tracked via bare git repository |
-| [`assets`](https://github.com/arpanrec/dotfiles/tree/assets) | Static assets: certificates, public keys, themes, wallpapers |
+| Branch                                                                     | Contents                                                     |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| [`dotfiles/main`](https://github.com/arpanrec/dotfiles/tree/dotfiles/main) | Dotfiles tracked via bare git repository                     |
+| [`assets`](https://github.com/arpanrec/dotfiles/tree/assets)               | Static assets: certificates, public keys, themes, wallpapers |
 
 ---
 
@@ -31,9 +31,9 @@ Clones the repository as a bare git repo into `~/.dotfiles`, checks out the `dot
 
 **Environment Variables:**
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CLEAN_DOT_INSTALL` | `no` | Set to `yes` to delete existing dotfiles bare repo and all shell framework directories before reinstalling |
+| Variable            | Default | Description                                                                                                |
+| ------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `CLEAN_DOT_INSTALL` | `no`    | Set to `yes` to delete existing dotfiles bare repo and all shell framework directories before reinstalling |
 
 ```bash
 export CLEAN_DOT_INSTALL=no
@@ -51,16 +51,16 @@ Provisions a full developer toolchain using the [arpanrec.nebula server_workspac
 
 **Environment Variables:**
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NEBULA_TMP_DIR` | `${HOME}/.tmp` | Temporary directory for playbook downloads |
-| `NEBULA_VERSION` | `1.14.66` | Version of the nebula playbook |
-| `NEBULA_VENV_DIR` | `${NEBULA_TMP_DIR}/venv` | Python virtual environment directory |
+| Variable                      | Default                             | Description                                |
+| ----------------------------- | ----------------------------------- | ------------------------------------------ |
+| `NEBULA_TMP_DIR`              | `${HOME}/.tmp`                      | Temporary directory for playbook downloads |
+| `NEBULA_VERSION`              | `1.14.66`                           | Version of the nebula playbook             |
+| `NEBULA_VENV_DIR`             | `${NEBULA_TMP_DIR}/venv`            | Python virtual environment directory       |
 | `NEBULA_EXTRA_VARS_JSON_FILE` | `${NEBULA_TMP_DIR}/extra_vars.json` | Extra vars for the playbook in JSON format |
-| `DEFAULT_ROLES_PATH` | `${NEBULA_TMP_DIR}/roles` | Default Ansible roles path |
-| `ANSIBLE_ROLES_PATH` | `${DEFAULT_ROLES_PATH}` | Ansible roles path override |
-| `ANSIBLE_COLLECTIONS_PATH` | `${NEBULA_TMP_DIR}/collections` | Ansible collections path |
-| `ANSIBLE_INVENTORY` | `${NEBULA_TMP_DIR}/inventory` | Ansible inventory file |
+| `DEFAULT_ROLES_PATH`          | `${NEBULA_TMP_DIR}/roles`           | Default Ansible roles path                 |
+| `ANSIBLE_ROLES_PATH`          | `${DEFAULT_ROLES_PATH}`             | Ansible roles path override                |
+| `ANSIBLE_COLLECTIONS_PATH`    | `${NEBULA_TMP_DIR}/collections`     | Ansible collections path                   |
+| `ANSIBLE_INVENTORY`           | `${NEBULA_TMP_DIR}/inventory`       | Ansible inventory file                     |
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
@@ -87,26 +87,26 @@ Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playboo
 
 **Environment Variables:**
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CLOUD_INIT_USER` | `cloudinit` | Username for the user to create |
-| `CLOUD_INIT_GROUP` | `cloudinit` | Primary group for the created user |
-| `CLOUD_INIT_USE_SSH_PUB` | Owner's public key from assets branch | SSH public key to authorize for the created user |
-| `CLOUD_INIT_HOSTNAME` | `cloudinit` | Hostname for the machine |
-| `CLOUD_INIT_DOMAIN` | `easyiac.com` | Domain name for the machine |
-| `CLOUD_INIT_COPY_ROOT_SSH_KEYS` | `false` | Copy root's authorized_keys to the created user |
-| `CLOUD_INIT_IS_DEV_MACHINE` | `false` | Run `setup-workspace` with `--tags all` after provisioning |
-| `CLOUD_INIT_INSTALL_DOTFILES` | `true` | Install dotfiles for the created user |
-| `CLOUD_INIT_INSTALL_DOCKER` | `false` | Install Docker |
-| `NEBULA_TMP_DIR` | `/cloudinit/.tmp` | Working directory for Ansible |
-| `NEBULA_VERSION` | `1.14.66` | Nebula playbook version |
-| `NEBULA_VENV_DIR` | `${NEBULA_TMP_DIR}/venv` | Python virtual environment directory |
-| `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys` | Authorized keys file for the created user |
-| `NEBULA_REQUIREMENTS_FILE` | `${NEBULA_TMP_DIR}/requirements.yml` | Ansible requirements file |
-| `DEFAULT_ROLES_PATH` | `${NEBULA_TMP_DIR}/roles` | Default Ansible roles path |
-| `ANSIBLE_ROLES_PATH` | `${DEFAULT_ROLES_PATH}` | Ansible roles path override |
-| `ANSIBLE_COLLECTIONS_PATH` | `${NEBULA_TMP_DIR}/collections` | Ansible collections path |
-| `ANSIBLE_INVENTORY` | `${NEBULA_TMP_DIR}/inventory.yml` | Ansible inventory file |
+| Variable                                 | Default                               | Description                                                |
+| ---------------------------------------- | ------------------------------------- | ---------------------------------------------------------- |
+| `CLOUD_INIT_USER`                        | `cloudinit`                           | Username for the user to create                            |
+| `CLOUD_INIT_GROUP`                       | `cloudinit`                           | Primary group for the created user                         |
+| `CLOUD_INIT_USE_SSH_PUB`                 | Owner's public key from assets branch | SSH public key to authorize for the created user           |
+| `CLOUD_INIT_HOSTNAME`                    | `cloudinit`                           | Hostname for the machine                                   |
+| `CLOUD_INIT_DOMAIN`                      | `easyiac.com`                         | Domain name for the machine                                |
+| `CLOUD_INIT_COPY_ROOT_SSH_KEYS`          | `false`                               | Copy root's authorized_keys to the created user            |
+| `CLOUD_INIT_IS_DEV_MACHINE`              | `false`                               | Run `setup-workspace` with `--tags all` after provisioning |
+| `CLOUD_INIT_INSTALL_DOTFILES`            | `true`                                | Install dotfiles for the created user                      |
+| `CLOUD_INIT_INSTALL_DOCKER`              | `false`                               | Install Docker                                             |
+| `NEBULA_TMP_DIR`                         | `/cloudinit/.tmp`                     | Working directory for Ansible                              |
+| `NEBULA_VERSION`                         | `1.14.66`                             | Nebula playbook version                                    |
+| `NEBULA_VENV_DIR`                        | `${NEBULA_TMP_DIR}/venv`              | Python virtual environment directory                       |
+| `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`   | Authorized keys file for the created user                  |
+| `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements.yml`  | Ansible requirements file                                  |
+| `DEFAULT_ROLES_PATH`                     | `${NEBULA_TMP_DIR}/roles`             | Default Ansible roles path                                 |
+| `ANSIBLE_ROLES_PATH`                     | `${DEFAULT_ROLES_PATH}`               | Ansible roles path override                                |
+| `ANSIBLE_COLLECTIONS_PATH`               | `${NEBULA_TMP_DIR}/collections`       | Ansible collections path                                   |
+| `ANSIBLE_INVENTORY`                      | `${NEBULA_TMP_DIR}/inventory.yml`     | Ansible inventory file                                     |
 
 ```bash
 # Minimal
@@ -136,23 +136,23 @@ Deployed at: [Linode Stack Script #1164660](https://cloud.linode.com/stackscript
 
 **Linode-injected Variables:**
 
-| Variable | Example |
-|----------|---------|
-| `LINODE_ID` | `66627286` |
+| Variable              | Example          |
+| --------------------- | ---------------- |
+| `LINODE_ID`           | `66627286`       |
 | `LINODE_LISHUSERNAME` | `linode66627286` |
-| `LINODE_RAM` | `2048` |
-| `LINODE_DATACENTERID` | `14` |
+| `LINODE_RAM`          | `2048`           |
+| `LINODE_DATACENTERID` | `14`             |
 
 **Configurable Variables:**
 
-| Variable | Default |
-|----------|---------|
-| `CLOUD_INIT_COPY_ROOT_SSH_KEYS` | `true` |
-| `CLOUD_INIT_IS_DEV_MACHINE` | `false` |
-| `CLOUD_INIT_INSTALL_DOTFILES` | `true` |
-| `CLOUD_INIT_INSTALL_DOCKER` | `false` |
-| `CLOUD_INIT_WEB_SERVER_FQDN` | `""` |
-| `CLOUD_INIT_DOMAIN` | `easyiac.com` |
+| Variable                        | Default       |
+| ------------------------------- | ------------- |
+| `CLOUD_INIT_COPY_ROOT_SSH_KEYS` | `true`        |
+| `CLOUD_INIT_IS_DEV_MACHINE`     | `false`       |
+| `CLOUD_INIT_INSTALL_DOTFILES`   | `true`        |
+| `CLOUD_INIT_INSTALL_DOCKER`     | `false`       |
+| `CLOUD_INIT_WEB_SERVER_FQDN`    | `""`          |
+| `CLOUD_INIT_DOMAIN`             | `easyiac.com` |
 
 **Stack Script body** (paste into Linode dashboard):
 
@@ -183,13 +183,13 @@ Configures a freshly installed Arch Linux base system (run from within `arch-chr
 
 **Interactive Prompts:**
 
-| Prompt | Description |
-|--------|-------------|
-| Systemd Secure Boot | Install and sign bootloader with `sbctl` |
-| Enable pacman multilib | Enable the multilib repository |
-| NVIDIA with DRM | Install `nvidia-open` and configure DRM mode-setting |
-| Install Docker | Install Docker and related packages |
-| Update mirrorlist | Run `reflector` to pick fastest Indian mirrors |
+| Prompt                 | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| Systemd Secure Boot    | Install and sign bootloader with `sbctl`             |
+| Enable pacman multilib | Enable the multilib repository                       |
+| NVIDIA with DRM        | Install `nvidia-open` and configure DRM mode-setting |
+| Install Docker         | Install Docker and related packages                  |
+| Update mirrorlist      | Run `reflector` to pick fastest Indian mirrors       |
 
 ```bash
 bash setup-arch-server.sh [hostname]
@@ -203,11 +203,11 @@ Installs AUR packages (yay, NordVPN, Brave, Google Chrome, OnlyOffice, Yubico Au
 
 **Interactive Prompts:**
 
-| Prompt | Description |
-|--------|-------------|
-| KDE as second option | Install KDE components and portal support |
-| Minimal KDE Plasma | Install `plasma` and `plasma-meta` metapackages |
-| NVIDIA with DRM | Install NVIDIA drivers and environment variables |
+| Prompt               | Description                                      |
+| -------------------- | ------------------------------------------------ |
+| KDE as second option | Install KDE components and portal support        |
+| Minimal KDE Plasma   | Install `plasma` and `plasma-meta` metapackages  |
+| NVIDIA with DRM      | Install NVIDIA drivers and environment variables |
 
 ```bash
 bash setup-arch-workstation.sh
@@ -225,13 +225,13 @@ Installs GTK, KDE Plasma, icon, cursor, and font assets. Detects GNOME Shell and
 
 **Installed assets:**
 
-| Category | Assets |
-|----------|--------|
+| Category         | Assets                                                                                                                                                                                                                                                                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GTK / KDE themes | [Nordic](https://github.com/EliverLara/Nordic), [Nordic KDE](https://github.com/EliverLara/Nordic-kde), [Layan KDE](https://github.com/vinceliuice/Layan-kde), [Layan GTK](https://github.com/vinceliuice/Layan-gtk-theme), [Sweet](https://github.com/EliverLara/Sweet), [Sweet Mars](https://github.com/EliverLara/Sweet/tree/mars) |
-| Icon themes | [Tela Icons](https://github.com/vinceliuice/Tela-icon-theme), [Candy Icons](https://github.com/EliverLara/candy-icons), [BeautyLine](https://github.com/gvolpe/BeautyLine) |
-| Cursor themes | [Layan Cursors](https://github.com/vinceliuice/Layan-cursors), [Bibata Cursor](https://github.com/ful1e5/Bibata_Cursor) (latest release) |
-| Fonts | [Nerd Fonts: JetBrainsMono, Hack, Meslo](https://github.com/ryanoasis/nerd-fonts), [Cascadia Code](https://github.com/microsoft/cascadia-code), MesloLGS NF (patched for Powerlevel10k) |
-| Wallpapers | From the `assets` branch of this repository |
+| Icon themes      | [Tela Icons](https://github.com/vinceliuice/Tela-icon-theme), [Candy Icons](https://github.com/EliverLara/candy-icons), [BeautyLine](https://github.com/gvolpe/BeautyLine)                                                                                                                                                            |
+| Cursor themes    | [Layan Cursors](https://github.com/vinceliuice/Layan-cursors), [Bibata Cursor](https://github.com/ful1e5/Bibata_Cursor) (latest release)                                                                                                                                                                                              |
+| Fonts            | [Nerd Fonts: JetBrainsMono, Hack, Meslo](https://github.com/ryanoasis/nerd-fonts), [Cascadia Code](https://github.com/microsoft/cascadia-code), MesloLGS NF (patched for Powerlevel10k)                                                                                                                                               |
+| Wallpapers       | From the `assets` branch of this repository                                                                                                                                                                                                                                                                                           |
 
 **Prerequisites:** `curl`, `git`, `unzip`, `gtk-update-icon-cache`, `jq`, `fc-cache`
 
@@ -257,10 +257,10 @@ Fetches the latest Neovim release tag, clones the source, and builds with `CMAKE
 
 **Environment Variables:**
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NEOVIM_INSTALL_DIR` | `${HOME}/.local` | Install prefix |
-| `NVIM_APPNAME` | `nvim` | App name used for state/cache directories |
+| Variable             | Default          | Description                               |
+| -------------------- | ---------------- | ----------------------------------------- |
+| `NEOVIM_INSTALL_DIR` | `${HOME}/.local` | Install prefix                            |
+| `NVIM_APPNAME`       | `nvim`           | App name used for state/cache directories |
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
@@ -297,8 +297,8 @@ Downloads the Bitwarden Desktop AppImage. Version is pinned via the `LATEST_VERS
 
 **Environment Variables:**
 
-| Variable | Default | Description |
-|----------|---------|-------------|
+| Variable         | Default    | Description                          |
+| ---------------- | ---------- | ------------------------------------ |
 | `LATEST_VERSION` | `2026.4.0` | Bitwarden Desktop version to install |
 
 ```bash
@@ -384,10 +384,10 @@ Handles the full Bitwarden CLI authentication flow: detects current status (`una
 
 **Environment Variables:**
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `BW_API_KEY_FILE` | `${HOME}/.env` | File to read/write `BW_CLIENTID` and `BW_CLIENTSECRET` |
-| `BW_API_SESSION_FILE` | `${HOME}/.env` | File to write the `BW_SESSION` token |
+| Variable              | Default        | Description                                            |
+| --------------------- | -------------- | ------------------------------------------------------ |
+| `BW_API_KEY_FILE`     | `${HOME}/.env` | File to read/write `BW_CLIENTID` and `BW_CLIENTSECRET` |
+| `BW_API_SESSION_FILE` | `${HOME}/.env` | File to write the `BW_SESSION` token                   |
 
 ### bw-import-ssh.sh
 
@@ -395,14 +395,14 @@ Interactive script to pull SSH private keys from a Bitwarden vault and install t
 
 **Configured keys:**
 
-| Bitwarden Item | Target File |
-|----------------|-------------|
-| `GitHub - arpanrec` | `~/.ssh/github.com` |
-| `OPENSSH ID_ECDSA` | `~/.ssh/id_ecdsa` |
-| `GitLab - arpanrec` | `~/.ssh/gitlab.com` |
-| `Linode - arpanrecme` | `~/.ssh/linode_ssh_key` |
-| `Router - BLR Flat - r1-tpla9v6` | `~/.ssh/r1-tpla9v6.key` |
-| `SCM - blr-home` | `~/.ssh/id_scm_blr_home` |
+| Bitwarden Item                   | Target File              |
+| -------------------------------- | ------------------------ |
+| `GitHub - arpanrec`              | `~/.ssh/github.com`      |
+| `OPENSSH ID_ECDSA`               | `~/.ssh/id_ecdsa`        |
+| `GitLab - arpanrec`              | `~/.ssh/gitlab.com`      |
+| `Linode - arpanrecme`            | `~/.ssh/linode_ssh_key`  |
+| `Router - BLR Flat - r1-tpla9v6` | `~/.ssh/r1-tpla9v6.key`  |
+| `SCM - blr-home`                 | `~/.ssh/id_scm_blr_home` |
 
 **Prerequisites:** `bw`, `jq`
 

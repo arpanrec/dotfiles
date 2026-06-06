@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo "Starting"
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.tmp"}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/cache/arpanrec.nebula"}"
 
 export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/setup-workspace.lock"
 
@@ -27,20 +27,6 @@ else
     echo "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
     exit 1
 fi
-
-which_os_python() {
-    # Simply don't use python, /usr/bin/python etc, try to find the highest version of python3
-    declare -a PYTHON_VERSIONS=("python3.14" "python3.13" "python3.12" "python3.11")
-
-    for python_version in "${PYTHON_VERSIONS[@]}"; do
-        if command -v "${python_version}" &>/dev/null; then
-            echo "${python_version}"
-            return
-        fi
-    done
-    echo "Supported Python version not found, Only Python3.6+ >< 4 is supported, Exiting"
-    exit 1
-}
 
 if [[ -z $* ]]; then
 
@@ -102,11 +88,17 @@ if [[ -z $* ]]; then
         echo "Skipping Bitwarden SDK installation"
     fi
 
+    if [[ ${#__install_tags[@]} -eq 0 ]]; then
+        echo "No tags selected, nothing to install. Exiting."
+        exit 0
+    fi
+
     __ansible_tags=$(printf "%s," "${__install_tags[@]}")
-    echo "Running with default tags :: ${__ansible_tags::-1}"
+    __ansible_tags="${__ansible_tags%,}"
+    echo "Running with default tags :: ${__ansible_tags}"
     read -n1 -s -r -p 'Press any key to continue or Ctrl+C to exit' continue_script
     if [[ "${continue_script}" == "" ]]; then
-        echo "Continuing with default tags :: ${__ansible_tags::-1}"
+        echo "Continuing with default tags :: ${__ansible_tags}"
     else
         echo "Exiting"
         exit 1
@@ -117,7 +109,7 @@ fi
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.65"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.67"}"
 export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
@@ -147,7 +139,7 @@ mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
 
 # shellcheck source=/dev/null
 if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then
-    $(readlink -f "$(which "$(which_os_python)")") -m venv "${NEBULA_VENV_DIR}"
+    python3 -m venv "${NEBULA_VENV_DIR}"
     echo "Virtual Environment created at ${NEBULA_VENV_DIR}"
 else
     echo "Virtual Environment already exists at ${NEBULA_VENV_DIR}"
@@ -213,9 +205,9 @@ EOF
 
 cd "${HOME}" || exit 1
 
-if [[ -n "${__ansible_tags:-}" && "${__ansible_tags:-}" != "," && -z $* ]]; then
+if [[ -n "${__ansible_tags:-}" && -z $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
-        --tags "${__ansible_tags::-1}"
+        --tags "${__ansible_tags}"
 elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
     ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
 else

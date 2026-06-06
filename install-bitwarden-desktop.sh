@@ -14,7 +14,7 @@ x86_64)
 esac
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
-LATEST_VERSION="2026.2.1"
+LATEST_VERSION="${LATEST_VERSION:-"2026.4.0"}"
 APPIMAGE_FILE_NAME="Bitwarden-${LATEST_VERSION}-${DOWNLOAD_ARCH_KEY}.AppImage"
 APPIMAGE_INSTALL_DIRECTORY="${HOME}/.local/share/bitwarden-desktop"
 DOWNLOAD_URI="https://github.com/bitwarden/clients/releases/download/desktop-v${LATEST_VERSION}/${APPIMAGE_FILE_NAME}"
@@ -23,7 +23,7 @@ mkdir -p "${APPIMAGE_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}" ]]; then
     echo "Downloading app image."
-    curl -fL "${DOWNLOAD_URI}" -o "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}"
+    curl -fL --connect-timeout 10 --max-time 600 "${DOWNLOAD_URI}" -o "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_FILE_NAME}"
 else
     echo "AppImage File already exists"
 fi
@@ -33,7 +33,7 @@ chmod +x "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.AppImage"
 
 if [[ ! -f "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.png" ]]; then
     echo "Downloading icon file."
-    curl -fL "https://bitwarden.com/favicon.png" -o "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.png"
+    curl -fL --connect-timeout 10 --max-time 60 "https://bitwarden.com/favicon.png" -o "${APPIMAGE_INSTALL_DIRECTORY}/bitwarden-desktop.png"
 fi
 
 tee "${HOME}/.local/share/applications/bitwarden.desktop" <<EOF

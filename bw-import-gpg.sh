@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 pre_pro=(bw jq gpg)
 for prog in "${pre_pro[@]}"; do
     if ! hash "${prog}" &>/dev/null; then
-        echo "${prog}" not Installed
+        echo "${prog} not installed"
         exit 1
     fi
 done
@@ -40,13 +40,12 @@ import_gpg_key() {
 echo "Check if bitwarden is unlocked"
 current_status="$(bw status --raw | jq .status -r)"
 if [ "${current_status}" != "unlocked" ]; then
-    echo "Bitwarden is not unlocked"
-    echo bw-login
+    echo "Bitwarden is not unlocked, run: bw-login"
     exit 1
 fi
 
 declare -a bw_items=(
-    "GPG_KEY - 1A2249D8FE12E5D3" "1A2249D8FE12E5D3-Certify.key"
+    "GPG_KEY - 1A2249D8FE12E5D3" "Arpan_0x1A2249D8FE12E5D3_SECRET.asc"
 )
 
 for ((i = 0; i < ${#bw_items[@]}; i += 2)); do

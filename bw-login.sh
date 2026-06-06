@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-pre_pro=(jq)
+pre_pro=(bw jq)
 for prog in "${pre_pro[@]}"; do
     if ! hash "${prog}" &>/dev/null; then
-        echo "${prog}" not Installed
+        echo "${prog} not installed"
         exit 1
     fi
 done
@@ -32,10 +32,10 @@ if [ "${current_status}" == "unauthenticated" ]; then
             read -r -p "Enter Client Secret : " -s __bw_client_secret
             echo ""
             if [ -z "${__bw_client_id}" ] || [ -z "${__bw_client_secret}" ]; then
-                echo "Error!!!!!!!!!!!!!!!! Enter Valid Keys"
+                echo "Error: Enter valid keys"
                 exit 1
             fi
-            echo "Logging in to bitwarden cli, Please Wait!!!!!!!!!!!!"
+            echo "Logging in to Bitwarden CLI, please wait..."
             BW_CLIENTID="${__bw_client_id}" BW_CLIENTSECRET="${__bw_client_secret}" bw login --apikey
             read -r -n1 -p "Press Y/y to save client id and client secret in ${BW_API_KEY_FILE}: " __save_apikeys_in_secrets
             echo ""
@@ -50,8 +50,8 @@ if [ "${current_status}" == "unauthenticated" ]; then
                 echo "BW_CLIENTSECRET=${__bw_client_secret}" >>"${BW_API_KEY_FILE}"
             fi
         else
-            echo "Client ID and Client Secret found in environment, Possibly from ${BW_API_KEY_FILE}"
-            echo "Please Wait!!!!!!!!!!!!"
+            echo "Client ID and Client Secret found in environment, possibly from ${BW_API_KEY_FILE}"
+            echo "Please wait..."
             bw login --apikey
         fi
 
@@ -64,18 +64,19 @@ fi
 if [ "${current_status}" == "locked" ]; then
     echo "Bitwarden is locked"
     echo "Current user "" $(bw status --raw | jq .userEmail)"
-    read -r -p "Unlocking Bitwarden, Enter you credential : " -s __bw_master_password
+    read -r -p "Unlocking Bitwarden, enter master password: " -s __bw_master_password
     echo ""
     if [ -z "${__bw_master_password}" ]; then
-        echo "Error!!!!!!!!!!!!!!!! Enter Valid Credential"
+        echo "Error: Enter a valid master password"
         exit 1
     fi
-    echo "Please Wait!!!!!!!!!!!!"
+    echo "Please wait..."
     __bw_session_id=$(bw unlock "${__bw_master_password}" --raw)
     if [ -z "${__bw_session_id}" ]; then
-        echo "Error!!!!!!!!!!!!!!!! Unable to unlock"
+        echo "Error: Unable to unlock Bitwarden"
         exit 1
     fi
+    export BW_SESSION="${__bw_session_id}"
     read -n1 -r -p "Set session id in ${BW_API_SESSION_FILE} : " __set_session_id_in_secrets
     echo ""
     if [ "${__set_session_id_in_secrets}" == "Y" ] || [ "${__set_session_id_in_secrets}" == "y" ]; then

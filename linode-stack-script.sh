@@ -83,7 +83,7 @@ declare -A env_vars=(
     ["CLOUD_INIT_INSTALL_DOCKER"]="${CLOUD_INIT_INSTALL_DOCKER:-false}"
     ["CLOUD_INIT_INSTALL_DOTFILES"]="${CLOUD_INIT_INSTALL_DOTFILES:-true}"
     ["CLOUD_INIT_HOSTNAME"]="${CLOUD_INIT_HOSTNAME:-${LINODE_LISHUSERNAME:-cloudinit-debian-linode}}"
-    ["CLOUD_INIT_DOMAIN"]="${CLOUD_INIT_DOMAIN:-arpanrec.com}"
+    ["CLOUD_INIT_DOMAIN"]="${CLOUD_INIT_DOMAIN:-easyiac.com}"
     ["CLOUD_INIT_WEB_SERVER_FQDN"]="${CLOUD_INIT_WEB_SERVER_FQDN:-}"
 )
 
@@ -122,7 +122,7 @@ if [ -z "${CLOUD_INIT_WEB_SERVER_FQDN:-}" ]; then
 else
     echo "CLOUD_INIT_WEB_SERVER_FQDN is set to ${CLOUD_INIT_WEB_SERVER_FQDN}"
 
-    IPADDR=$(/sbin/ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://')
+    IPADDR=$(ip -4 addr show eth0 | awk '/inet / { print $2 }' | cut -d'/' -f1)
     sed -i "/${IPADDR}.*/d" /etc/hosts
     echo "${IPADDR} ${CLOUD_INIT_WEB_SERVER_FQDN}" | tee -a /etc/hosts
 fi

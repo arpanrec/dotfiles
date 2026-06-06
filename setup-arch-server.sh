@@ -13,7 +13,9 @@ if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     read -p "Install NVIDIA with DRM: (y/Y)" -r IS_NVIDIA_DRM
 fi
 
-read -p "Update mirrorlist: (y/Y)" -r UPDATE_MIRRORLIST
+read -p "Install Docker: (y/Y)" -r IS_DOCKER_INSTALL
+
+read -p "Update pacman mirror list with reflector: (y/Y)" -r UPDATE_MIRRORLIST
 
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
@@ -169,7 +171,9 @@ PACMAN_BASIC_PACKAGES+=('lua' 'luarocks')
 
 PACMAN_BASIC_PACKAGES+=('hunspell' 'hunspell-en_us' 'hunspell-en_gb')
 
-PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose')
+if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
+    PACMAN_BASIC_PACKAGES+=('docker' 'criu' 'docker-buildx' 'docker-compose')
+fi
 
 PACMAN_BASIC_PACKAGES+=('postgresql-libs')
 
@@ -207,8 +211,12 @@ if [[ "${IS_NVIDIA_DRM}" =~ ^[Yy]$ ]]; then
     echo "                    Setting Nvidia Drivers                 "
     echo "-----------------------------------------------------------"
     echo "Adding nvidia drivers to be installed"
-    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11' 'cuda'
-    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'nvidia-container-toolkit')
+    # This will cause egl packages to install 'extra/egl-gbm' 'extra/egl-wayland' 'extra/egl-wayland2' 'egl-x11'
+    PACMAN_BASIC_PACKAGES+=('linux-firmware-nvidia' 'nvtop' 'nvidia-open' 'cuda')
+
+    if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
+        PACMAN_BASIC_PACKAGES+=('nvidia-container-toolkit')
+    fi
 
     mkdir -p "/etc/pacman.d/hooks"
     cat <<EOT >"/etc/pacman.d/hooks/nvidia.hook"
@@ -225,7 +233,7 @@ Description=Update Nvidia module in initcpio
 Depends=mkinitcpio
 When=PostTransaction
 NeedsTargets
-Exec=/bin/sh -c 'while read -r -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
 EOT
 
     echo "Setting Nvidia Drivers setup pacman hook and udev rules"
@@ -286,15 +294,15 @@ echo "--------------------------------------"
 
 SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
 SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
-id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G docker,sudo -m \
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G sudo -m \
     -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
 
-usermod -aG docker,sudo "${SYSTEM_ADMIN_USER}"
+usermod -aG sudo "${SYSTEM_ADMIN_USER}"
 if id -nG "${SYSTEM_ADMIN_USER}" | grep -qw wheel; then
     gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
 fi
 echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
-echo -e "${SYSTEM_ADMIN_PASSWORD}\n${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
+printf '%s\n%s\n' "${SYSTEM_ADMIN_PASSWORD}" "${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
 
 echo "--------------------------------------"
 echo "         SSH Key Only login           "
@@ -341,26 +349,31 @@ tee "/etc/systemd/system/NetworkManager.service.d/44-override.conf" <<EOF
 TimeoutStopSec=10s
 EOF
 
-SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'docker' 'pcscd'
+SYSTEMD_BASIC_SERVICES=('dhcpcd' 'NetworkManager' 'systemd-timesyncd' 'systemd-resolved' 'iptables' 'ufw' 'pcscd'
     'bluetooth' 'power-profiles-daemon' 'fwupd-refresh.timer' 'cronie' 'sshd'
 )
+if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
+    SYSTEMD_BASIC_SERVICES+=('docker')
+fi
 
 for SYSTEMD_BASIC_SERVICE in "${SYSTEMD_BASIC_SERVICES[@]}"; do
     echo "Enable Service: ${SYSTEMD_BASIC_SERVICE}"
     systemctl enable "$SYSTEMD_BASIC_SERVICE"
 done
 
-if ! command -v nvidia-ctk &>/dev/null; then
-    echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
-else
-    echo "Nvidia Container Toolkit is installed."
-
-    if $IS_RUNNING_SYSTEMD; then
-        echo "Systemd detected. Proceeding with Nvidia runtime configuration."
-        nvidia-ctk runtime configure --runtime=docker
-        systemctl restart docker
+if [[ $IS_DOCKER_INSTALL =~ ^[Yy]$ ]]; then
+    if ! command -v nvidia-ctk &>/dev/null; then
+        echo "Nvidia Container Toolkit is not installed. Skipping Nvidia setup."
     else
-        echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+        echo "Nvidia Container Toolkit is installed."
+
+        if $IS_RUNNING_SYSTEMD; then
+            echo "Systemd detected. Proceeding with Nvidia runtime configuration."
+            nvidia-ctk runtime configure --runtime=docker
+            systemctl restart docker
+        else
+            echo "Systemd not running (arch-chroot / container). Skipping systemd-dependent Nvidia setup."
+        fi
     fi
 fi
 
@@ -369,12 +382,29 @@ echo "                             Install root certificate                     
 echo "-----------------------------------------------------------------------------------"
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
-curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |
-    tee "${ROOT_CERTIFICATE_TEMP_FILE}"
-trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
+CERT_SPLIT_DIR="$(mktemp -d)"
+
+curl -fL --connect-timeout 10 --max-time 60 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/intermediate_ca_full_chain.pem \
+    -o "${ROOT_CERTIFICATE_TEMP_FILE}"
 
 mkdir -p /etc/ca-certificates/trust-source/anchors
-cp "${ROOT_CERTIFICATE_TEMP_FILE}" /etc/ca-certificates/trust-source/anchors/root_ca.crt
+
+awk -v outdir="${CERT_SPLIT_DIR}" '
+BEGIN { c = 0 }
+/-----BEGIN CERTIFICATE-----/ { c++ }
+{
+    file = outdir "/cert." c ".crt"
+    print >> file
+}
+' < "${ROOT_CERTIFICATE_TEMP_FILE}"
+
+for cert in "${CERT_SPLIT_DIR}"/*.crt; do
+    trust anchor --store "${cert}"
+    cp "${cert}" \
+        "/etc/ca-certificates/trust-source/anchors/$(basename "${cert}")"
+done
+
 update-ca-trust
 
 echo "Its a good idea to run 'pacman -R \$(pacman -Qtdq)' or 'yay -R \$(yay -Qtdq)'."
@@ -405,7 +435,15 @@ EOF
 
     echo "KEYMAP=us" | tee /etc/vconsole.conf
 
-    sed -i 's/^HOOKS=.*/HOOKS=(base udev plymouth autodetect microcode modconf kms keyboard keymap consolefont block encrypt lvm2 filesystems fsck)/' \
+    tee "/etc/mkinitcpio.d/linux.preset" <<EOF
+ALL_kver="/boot/vmlinuz-linux"
+PRESETS=('default' 'fallback')
+default_image="/boot/initramfs-linux.img"
+default_options=""
+fallback_image="/boot/initramfs-linux-fallback.img"
+fallback_options="-S autodetect"
+EOF
+    sed -i 's/^HOOKS=.*/HOOKS=(base systemd plymouth autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt lvm2 filesystems fsck)/' \
         /etc/mkinitcpio.conf
 
     mkinitcpio -P

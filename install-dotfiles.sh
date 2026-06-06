@@ -4,8 +4,7 @@ set -euo pipefail
 echo "Starting"
 
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
-    if [[ ! -t 1 ]]; then
-
+    if [[ ! -t 0 ]]; then
         echo "Script is not running in interactive mode. Exiting."
         exit 1
     fi
@@ -114,7 +113,7 @@ chmod +x "${powerlevel10k_directory}/gitstatus/install"
 
 echo "Adding my ssh key"
 
-public_key="$(curl -sSfL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)"
+public_key="$(curl -sSfL --connect-timeout 10 --max-time 60 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)"
 AUTHORIZED_KEYS_FILE="${HOME}/.ssh/authorized_keys"
 
 mkdir -p "${HOME}/.ssh"

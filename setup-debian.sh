@@ -49,13 +49,6 @@ else
 fi
 
 export CLOUD_INIT_USER="${CLOUD_INIT_USER:-"cloudinit"}"
-export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-"ecdsa-sha2-nistp256 \
-AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJXzoi1QAbLmxnyudx+7Dm+FGTYU+TP02MTtxqq9w82Rm2kIDtGf4xVGxaidYEP/\
-WcgpOHacjKDa7p2skBYljmk="}"
-
-echo "
-CLOUD_INIT_USER: ${CLOUD_INIT_USER}
-CLOUD_INIT_USE_SSH_PUB: ${CLOUD_INIT_USE_SSH_PUB}"
 
 current_hostname="$(hostname)"
 
@@ -68,7 +61,7 @@ fi
 export CLOUD_INIT_COPY_ROOT_SSH_KEYS="${CLOUD_INIT_COPY_ROOT_SSH_KEYS:-"false"}"
 export CLOUD_INIT_GROUP="${CLOUD_INIT_GROUP:-"${CLOUD_INIT_USER:-"cloudinit"}"}"
 export CLOUD_INIT_IS_DEV_MACHINE="${CLOUD_INIT_IS_DEV_MACHINE:-"false"}"
-export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"arpanrec.com"}"
+export CLOUD_INIT_DOMAIN="${CLOUD_INIT_DOMAIN:-"easyiac.com"}"
 export CLOUD_INIT_INSTALL_DOTFILES="${CLOUD_INIT_INSTALL_DOTFILES:-"true"}"
 export CLOUD_INIT_INSTALL_DOCKER="${CLOUD_INIT_INSTALL_DOCKER:-"false"}"
 
@@ -80,13 +73,6 @@ CLOUD_INIT_HOSTNAME: ${CLOUD_INIT_HOSTNAME}
 CLOUD_INIT_DOMAIN: ${CLOUD_INIT_DOMAIN}
 CLOUD_INIT_INSTALL_DOTFILES: ${CLOUD_INIT_INSTALL_DOTFILES}
 CLOUD_INIT_INSTALL_DOCKER: ${CLOUD_INIT_INSTALL_DOCKER}"
-
-if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
-    echo "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
-    exit 1
-else
-    echo "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
-fi
 
 if [[ ! "${CLOUD_INIT_COPY_ROOT_SSH_KEYS}" =~ ^true|false$ ]]; then
     echo "CLOUD_INIT_COPY_ROOT_SSH_KEYS must be a boolean (true|false), exiting"
@@ -143,7 +129,15 @@ fi
 
 echo "Installing locales and setting timezone"
 apt-get update
-apt-get install -y locales tzdata
+apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip sudo bash python3-venv python3-pip vim
+
+export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf --connect-timeout 10 --max-time 60 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
+if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
+    echo "CLOUD_INIT_USE_SSH_PUB is not set, exiting"
+    exit 1
+else
+    echo "CLOUD_INIT_USE_SSH_PUB is set as ${CLOUD_INIT_USE_SSH_PUB}"
+fi
 
 echo "Setting locale en_US.UTF-8 UTF-8 and timezone to Asia/Kolkata"
 timedatectl set-timezone Asia/Kolkata || true
@@ -155,20 +149,11 @@ locale -a
 locale-gen
 localectl set-locale LANG=en_US.UTF-8 || true
 
-echo "Installing apt dependencies"
-apt-get update
-apt-get install -y git curl ca-certificates gnupg2 tar unzip wget sudo bash
-
-echo "Installing Python 3 venv and pip"
-apt-get install -y python3-venv python3-pip
-
-echo "Installing vim"
-apt-get install -y vim
 echo "Setting vim as default editor"
 sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
 
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.65"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.14.67"}"
 export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
 export NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
@@ -176,7 +161,7 @@ export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/
 echo "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
-NEBULA_VENV_DIR: ${NEBULA_VENV_DIR} 
+NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
 NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE: ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}
 NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
 
@@ -185,7 +170,6 @@ Creating directories if not exists and changing ownership to root:root"
 if [ -d "${NEBULA_VENV_DIR}" ]; then
     echo "Virtual environment already exists at ${NEBULA_VENV_DIR}"
 else
-
     echo "Creating virtual environment at ${NEBULA_VENV_DIR}"
     python3 -m venv "${NEBULA_VENV_DIR}"
 fi
@@ -354,17 +338,17 @@ tee /etc/motd <<EOF >/dev/null
 #       or                                                 #
 #       fuck around and find out.                          #
 ############################################################
-#       STOP! You’ve reached the peak                      #
+#       STOP! You've reached the peak                      #
 #       of your questionable life choices                  #
 ############################################################
 #       Hey, fancy seeing *you* here.                      #
 #       Remember, every command you type                   #
 #       reminds the server it deserves a better user.      #
 #                                                          #
-#       Please don’t mess things up (again).               #
+#       Please don't mess things up (again).               #
 #       And if you do, IT knows.                           #
 ############################################################
-#       Type ‘exit’ to repent.                             #
+#       Type 'exit' to repent.                             #
 ############################################################
 EOF
 

@@ -36,9 +36,14 @@ echo "Checking for CPU count"
 CPUCOUNT=$(grep -c "^processor" /proc/cpuinfo)
 echo "CPU count is ${CPUCOUNT}"
 
-NEOVIM_VERSION="$(curl -s \
+NEOVIM_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/neovim/neovim/releases/latest" |
     jq -r ".tag_name")"
+
+if [[ -z "${NEOVIM_VERSION}" || "${NEOVIM_VERSION}" == "null" ]]; then
+    echo "Failed to get latest Neovim version."
+    exit 1
+fi
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 

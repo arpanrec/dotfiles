@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
 # shellcheck source=/dev/null
 if [ -f "/etc/bashrc" ]; then
     source /etc/bashrc
 fi
-
-# if [ -f "${HOME}/.profile" ]; then
-# shellcheck source=/dev/null
-# source "${HOME}/.profile"
-# fi
 
 # shellcheck source=/dev/null
 if [ -f /etc/bash.bashrc ]; then
@@ -20,9 +18,6 @@ fi
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
-
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
 
 # shellcheck source=/dev/null
 if [ -d ~/.bashrc.d ]; then
@@ -82,16 +77,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-xterm-color | *-256color) color_prompt=yes ;;
-esac
-
-# shellcheck source=/dev/null
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # shellcheck source=/dev/null
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -148,4 +133,3 @@ fi
 if hash mc &>/dev/null; then
     complete -C "$(readlink -f "$(which mc)")" mc
 fi
-export GOPATH="${HOME}/.go"

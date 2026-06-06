@@ -2,7 +2,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-[ -f "${HOME}/.exporterrc" ] && source ${HOME}/.exporterrc
+[ -f "${HOME}/.exporterrc" ] && source "${HOME}/.exporterrc"
 
 export ZSH="${HOME}/.oh-my-zsh"
 
@@ -25,7 +25,7 @@ autoload -U compinit && compinit
 
 [[ ! -f "$ZSH/oh-my-zsh.sh" ]] || source "$ZSH/oh-my-zsh.sh"
 
-[ -f "$HOME/.aliasrc" ] && source $HOME/.aliasrc
+[ -f "$HOME/.aliasrc" ] && source "$HOME/.aliasrc"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -48,7 +48,6 @@ fi
 # fi
 
 if command -v vault &>/dev/null; then
-    autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which vault)")" vault
 fi
 
@@ -58,12 +57,9 @@ if command -v gh &>/dev/null; then
         mkdir "$(dirname "${__auto_comp_file_path}")" 2>/dev/null
         gh completion -s zsh >"${__auto_comp_file_path}"
     fi
-    autoload -U compinit
-    compinit -i
 fi
 
 if command -v mc &>/dev/null; then
-    autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which mc)")" mc
 fi
 
@@ -72,4 +68,3 @@ if [ -d "$FNM_PATH" ]; then
     export PATH="${HOME}/.local/share/fnm:$PATH"
     eval "$(fnm env)"
 fi
-export GOPATH="${HOME}/.go"

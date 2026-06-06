@@ -20,7 +20,7 @@
 [init]
 	defaultBranch = main
 [credential]
-	helper = store --file=\"${HOME}/.git-credentials\"
+	helper = store --file=~/.git-credentials
 [color]
 	ui = auto
 [commit]

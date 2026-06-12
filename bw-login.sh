@@ -93,3 +93,7 @@ if [ "${current_status}" != "unlocked" ]; then
     echo "bitwarden cli is not unlocked"
     exit 0
 fi
+
+__bw_status_json="$(bw status --raw)"
+echo "Status  : $(echo "${__bw_status_json}" | jq -r .status)"
+echo "User    : $(echo "${__bw_status_json}" | jq -r .userEmail)"

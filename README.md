@@ -297,15 +297,15 @@ bash <(curl -sSL --connect-timeout 10 --max-time 10 \
 
 ### [Install Bitwarden Desktop](https://bitwarden.com/download/#downloads-desktop)
 
-Downloads the Bitwarden Desktop AppImage. Version is pinned via the `LATEST_VERSION` variable (default: `2026.5.0`). Configured with Wayland/Ozone platform flags and `kwallet6` password store.
+Downloads the latest Bitwarden Desktop AppImage. Since `bitwarden/clients` is a monorepo with mixed release types, the script searches the most recent 100 GitHub releases for the newest `desktop-v*` tag. Configured with Wayland/Ozone platform flags and `kwallet6` password store.
 
 **Supported architectures:** `x86_64`
 
 **Environment Variables:**
 
-| Variable         | Default    | Description                          |
-| ---------------- | ---------- | ------------------------------------ |
-| `LATEST_VERSION` | `2026.5.0` | Bitwarden Desktop version to install |
+| Variable                           | Default       | Description                                            |
+| ---------------------------------- | ------------- | ------------------------------------------------------ |
+| `BITWARDEN_DESKTOP_LATEST_VERSION` | auto-detected | Bitwarden Desktop version to install (e.g. `2026.5.0`) |
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \

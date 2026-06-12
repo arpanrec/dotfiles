@@ -14,10 +14,10 @@ x86_64)
 esac
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
-LATEST_VERSION="12.11.3"
-POSTMAN_ZIP_FILE_NAME="Postman-${LATEST_VERSION}${DOWNLOAD_ARCH_KEY}.tar.gz"
+POSTMAN_LATEST_VERSION="12.11.3"
+POSTMAN_ZIP_FILE_NAME="Postman-${POSTMAN_LATEST_VERSION}${DOWNLOAD_ARCH_KEY}.tar.gz"
 POSTMAN_INSTALL_DIRECTORY="${HOME}/.local/share/Postman"
-DOWNLOAD_URI="https://dl.pstmn.io/download/version/${LATEST_VERSION}/linux"
+DOWNLOAD_URI="https://dl.pstmn.io/download/version/${POSTMAN_LATEST_VERSION}/linux"
 
 rm -rf "${POSTMAN_INSTALL_DIRECTORY}"
 mkdir -p "${POSTMAN_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${TMP_DOWNLOAD_DIRECTORY}"

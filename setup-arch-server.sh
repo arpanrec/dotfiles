@@ -395,7 +395,7 @@ BEGIN { c = 0 }
     file = outdir "/cert." c ".crt"
     print >> file
 }
-' < "${ROOT_CERTIFICATE_TEMP_FILE}"
+' <"${ROOT_CERTIFICATE_TEMP_FILE}"
 
 for cert in "${CERT_SPLIT_DIR}"/*.crt; do
     trust anchor --store "${cert}"

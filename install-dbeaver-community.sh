@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+DBEAVER_COMMUNITY_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/dbeaver/dbeaver/releases/latest" |
     jq -r ".tag_name")"
 
-if [[ -z "${LATEST_VERSION}" || "${LATEST_VERSION}" == "null" ]]; then
+if [[ -z "${DBEAVER_COMMUNITY_LATEST_VERSION}" || "${DBEAVER_COMMUNITY_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."
     exit 1
 fi
@@ -15,26 +15,26 @@ rm -rf "${HOME}/.local/share/dbeaver-ce"
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/dbeaver-ce" "${HOME}/.local/share/applications/"
-echo "Downloading DBeaver version ${LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
+echo "Downloading DBeaver version ${DBEAVER_COMMUNITY_LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
-if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz" ]]; then
-    curl -fL --connect-timeout 10 --max-time 600 "https://dbeaver.io/files/${LATEST_VERSION}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz" \
-        -o "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz" ]]; then
+    curl -fL --connect-timeout 10 --max-time 600 "https://dbeaver.io/files/${DBEAVER_COMMUNITY_LATEST_VERSION}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz" \
+        -o "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz"
 else
     echo "Tarball File already exists"
 fi
 
-if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256" ]]; then
-    curl -fL --connect-timeout 10 --max-time 60 "https://dbeaver.io/files/${LATEST_VERSION}/checksum/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256" \
-        -o "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256" ]]; then
+    curl -fL --connect-timeout 10 --max-time 60 "https://dbeaver.io/files/${DBEAVER_COMMUNITY_LATEST_VERSION}/checksum/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256" \
+        -o "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256"
 else
     echo "Checksum File already exists"
 fi
 
 echo "Verifying checksum."
-CURRENT_CHECKSUM="$(sha256sum "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz" |
+CURRENT_CHECKSUM="$(sha256sum "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz" |
     awk '{print $1}')"
-EXPECTED_CHECKSUM="$(awk '{print $1}' "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256")"
+EXPECTED_CHECKSUM="$(awk '{print $1}' "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz.sha256")"
 
 if [[ "${CURRENT_CHECKSUM}" != "${EXPECTED_CHECKSUM}" ]]; then
     echo "Checksum verification failed."
@@ -43,7 +43,7 @@ else
     echo "Checksum OK ✔"
 fi
 
-tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${LATEST_VERSION}-linux-$(uname -m).tar.gz" \
+tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz" \
     -C "${HOME}/.local/share/dbeaver-ce" \
     --strip-components=1
 

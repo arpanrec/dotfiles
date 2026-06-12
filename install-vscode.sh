@@ -14,16 +14,16 @@ for cmd in "${required_cmds[@]}"; do
     fi
 done
 
-LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+VSCODE_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://update.code.visualstudio.com/api/releases/stable" |
     jq -r ".[0]")"
 
-if [[ -z "${LATEST_VERSION}" ]]; then
+if [[ -z "${VSCODE_LATEST_VERSION}" ]]; then
     echo "Failed to get latest version."
     exit 1
 fi
 
-echo "Installing Visual Studio Code version ${LATEST_VERSION}"
+echo "Installing Visual Studio Code version ${VSCODE_LATEST_VERSION}"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
@@ -46,17 +46,17 @@ aarch64 | arm64)
     ;;
 esac
 
-DOWNLOAD_URL="https://update.code.visualstudio.com/${LATEST_VERSION}/linux-${DOWNLOAD_ARCH_KEY}/stable"
+DOWNLOAD_URL="https://update.code.visualstudio.com/${VSCODE_LATEST_VERSION}/linux-${DOWNLOAD_ARCH_KEY}/stable"
 
-echo "Downloading Visual Studio Code version ${LATEST_VERSION} for ${CURRENT_ARCH} architecture to ${TMP_DOWNLOAD_DIRECTORY}"
+echo "Downloading Visual Studio Code version ${VSCODE_LATEST_VERSION} for ${CURRENT_ARCH} architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
-if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" ]]; then
-    curl -fL --connect-timeout 10 --max-time 600 "${DOWNLOAD_URL}" -o "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" ]]; then
+    curl -fL --connect-timeout 10 --max-time 600 "${DOWNLOAD_URL}" -o "${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
 else
     echo "Tarball File already exists"
 fi
 
-tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/vscode-${LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" \
+tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" \
     -C "${HOME}/.local/share/vscode" \
     --strip-components=1
 

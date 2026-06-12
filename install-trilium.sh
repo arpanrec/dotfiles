@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
 
-LATEST_VERSION="$(
+TRILIUM_LATEST_VERSION="$(
     curl -sSLf --connect-timeout 10 --max-time 60 \
         "https://api.github.com/repos/TriliumNext/Trilium/releases/latest" |
         jq -r ".tag_name"
 )"
 
-if [[ -z "${LATEST_VERSION}" || "${LATEST_VERSION}" == "null" ]]; then
+if [[ -z "${TRILIUM_LATEST_VERSION}" || "${TRILIUM_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."
     exit 1
 fi
@@ -31,18 +31,18 @@ INSTALL_DIRECTORY="${HOME}/.local/share/trilium"
 APPLICATION_DIRECTORY="${HOME}/.local/share/applications"
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
-APPIMAGE_NAME="TriliumNotes-${LATEST_VERSION}-linux-${TRILIUM_ARCH}.AppImage"
+APPIMAGE_NAME="TriliumNotes-${TRILIUM_LATEST_VERSION}-linux-${TRILIUM_ARCH}.AppImage"
 
 mkdir -p \
     "${INSTALL_DIRECTORY}" \
     "${APPLICATION_DIRECTORY}" \
     "${TMP_DOWNLOAD_DIRECTORY}"
 
-echo "Downloading Trilium ${LATEST_VERSION} for ${TRILIUM_ARCH}"
+echo "Downloading Trilium ${TRILIUM_LATEST_VERSION} for ${TRILIUM_ARCH}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}" ]]; then
     curl -fL --connect-timeout 10 --max-time 600 \
-        "https://github.com/TriliumNext/Trilium/releases/download/${LATEST_VERSION}/${APPIMAGE_NAME}" \
+        "https://github.com/TriliumNext/Trilium/releases/download/${TRILIUM_LATEST_VERSION}/${APPIMAGE_NAME}" \
         -o "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}"
 else
     echo "AppImage already exists"

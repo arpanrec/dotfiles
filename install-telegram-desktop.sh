@@ -6,31 +6,31 @@ if [[ "$(uname -m)" != "x86_64" ]]; then
     exit 1
 fi
 
-LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+TELEGRAM_DESKTOP_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
     "https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest" |
     jq -r ".tag_name")"
 
-if [[ -z "${LATEST_VERSION}" || "${LATEST_VERSION}" == "null" ]]; then
+if [[ -z "${TELEGRAM_DESKTOP_LATEST_VERSION}" || "${TELEGRAM_DESKTOP_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."
     exit 1
 fi
-echo "Installing Telegram Desktop version ${LATEST_VERSION}"
+echo "Installing Telegram Desktop version ${TELEGRAM_DESKTOP_LATEST_VERSION}"
 
 rm -rf "${HOME}/.local/share/Telegram"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/applications" "${HOME}/.local/share/Telegram"
-echo "Downloading Telegram Desktop version ${LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
+echo "Downloading Telegram Desktop version ${TELEGRAM_DESKTOP_LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
-if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${LATEST_VERSION:1}.tar.xz" ]]; then
-    curl -fL --connect-timeout 10 --max-time 600 "https://github.com/telegramdesktop/tdesktop/releases/download/${LATEST_VERSION}/tsetup.${LATEST_VERSION:1}.tar.xz" \
-        -o "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${LATEST_VERSION:1}.tar.xz"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" ]]; then
+    curl -fL --connect-timeout 10 --max-time 600 "https://github.com/telegramdesktop/tdesktop/releases/download/${TELEGRAM_DESKTOP_LATEST_VERSION}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
+        -o "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz"
 else
     echo "Tarball File already exists"
 fi
 
-tar -xf "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${LATEST_VERSION:1}.tar.xz" \
+tar -xf "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
     -C "${HOME}/.local/share/Telegram" --strip-components=1
 
 find "${HOME}/.local/share/applications" -type f -name "*telegram*" -exec rm -f {} \;

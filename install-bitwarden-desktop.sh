@@ -14,10 +14,30 @@ x86_64)
 esac
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
-LATEST_VERSION="${LATEST_VERSION:-"2026.5.0"}"
-APPIMAGE_FILE_NAME="Bitwarden-${LATEST_VERSION}-${DOWNLOAD_ARCH_KEY}.AppImage"
+REPO="bitwarden/clients"
+
+if [[ -z "${BITWARDEN_DESKTOP_LATEST_VERSION:-}" ]]; then
+    # bitwarden/clients is a monorepo (cli, browser, desktop, ...), so the
+    # "latest" release endpoint may not be a desktop release. Search the most
+    # recent 100 releases for the newest desktop-v* tag instead.
+    LATEST_DESKTOP_TAG="$(
+        curl -sSLf --connect-timeout 10 --max-time 60 \
+            "https://api.github.com/repos/${REPO}/releases?per_page=100&page=1" |
+            jq -r '[.[].tag_name | select(startswith("desktop-v"))] | first // empty'
+    )"
+
+    if [[ -z "${LATEST_DESKTOP_TAG}" ]]; then
+        echo "No desktop release found in the last 100 releases."
+        exit 1
+    fi
+
+    echo "Latest Bitwarden desktop release: ${LATEST_DESKTOP_TAG}"
+    BITWARDEN_DESKTOP_LATEST_VERSION="${LATEST_DESKTOP_TAG#desktop-v}"
+fi
+
+APPIMAGE_FILE_NAME="Bitwarden-${BITWARDEN_DESKTOP_LATEST_VERSION}-${DOWNLOAD_ARCH_KEY}.AppImage"
 APPIMAGE_INSTALL_DIRECTORY="${HOME}/.local/share/bitwarden-desktop"
-DOWNLOAD_URI="https://github.com/bitwarden/clients/releases/download/desktop-v${LATEST_VERSION}/${APPIMAGE_FILE_NAME}"
+DOWNLOAD_URI="https://github.com/${REPO}/releases/download/desktop-v${BITWARDEN_DESKTOP_LATEST_VERSION}/${APPIMAGE_FILE_NAME}"
 
 mkdir -p "${APPIMAGE_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${TMP_DOWNLOAD_DIRECTORY}"
 

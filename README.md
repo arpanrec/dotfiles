@@ -60,7 +60,7 @@ Provisions a full developer toolchain using the [arpanrec.nebula server_workspac
 | Variable                      | Default                             | Description                                |
 | ----------------------------- | ----------------------------------- | ------------------------------------------ |
 | `NEBULA_TMP_DIR`              | `${HOME}/.tmp`                      | Temporary directory for playbook downloads |
-| `NEBULA_VERSION`              | `1.14.67`                           | Version of the nebula playbook             |
+| `NEBULA_VERSION`              | `1.14.68`                           | Version of the nebula playbook             |
 | `NEBULA_VENV_DIR`             | `${NEBULA_TMP_DIR}/venv`            | Python virtual environment directory       |
 | `NEBULA_EXTRA_VARS_JSON_FILE` | `${NEBULA_TMP_DIR}/extra_vars.json` | Extra vars for the playbook in JSON format |
 | `DEFAULT_ROLES_PATH`          | `${NEBULA_TMP_DIR}/roles`           | Default Ansible roles path                 |
@@ -105,7 +105,7 @@ Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playboo
 | `CLOUD_INIT_INSTALL_DOTFILES`            | `true`                                | Install dotfiles for the created user                      |
 | `CLOUD_INIT_INSTALL_DOCKER`              | `false`                               | Install Docker                                             |
 | `NEBULA_TMP_DIR`                         | `/cloudinit/.tmp`                     | Working directory for Ansible                              |
-| `NEBULA_VERSION`                         | `1.14.67`                             | Nebula playbook version                                    |
+| `NEBULA_VERSION`                         | `1.14.68`                             | Nebula playbook version                                    |
 | `NEBULA_VENV_DIR`                        | `${NEBULA_TMP_DIR}/venv`              | Python virtual environment directory                       |
 | `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`   | Authorized keys file for the created user                  |
 | `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements.yml`  | Ansible requirements file                                  |

@@ -197,7 +197,7 @@ Window to Screen 4=,,Move Window to Screen 4
 Window to Screen 5=,,Move Window to Screen 5
 Window to Screen 6=,,Move Window to Screen 6
 Window to Screen 7=,,Move Window to Screen 7
-_k_friendly_name=System Settings
+_k_friendly_name=KWin
 disableInputCapture=Meta+Shift+Esc,Meta+Shift+Esc,Disable Active Input Capture
 view_actual_size=Meta+0,Meta+0,Zoom to Actual Size
 view_zoom_in=Meta++\tMeta+=,Meta++\tMeta+=,Zoom In
@@ -271,6 +271,13 @@ NewWindow=Meta+Q
 
 [services][org.kde.krunner.desktop]
 _launch=Meta+Space\tSearch\tAlt+Space\tAlt+F2
+
+[trilium]
+0FD51ED821EEF6D1E7AF1E196F67717F-Ctrl+Alt+P=,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+503173CC5A32D469FF68B5C910CB1E4B-Ctrl+Alt+P=,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+85DAFCDAF35FC6090912F4DA66DD4737-Ctrl+Alt+P=,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+BADEFEA90A8BF1FCF59B03DFB57DFB88-Ctrl+Alt+P=Ctrl+Alt+P,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+_k_friendly_name=Trilium Notes
 
 [wacomtablet]
 Map to fullscreen=Meta+Ctrl+F,Meta+Ctrl+F,Map to fullscreen

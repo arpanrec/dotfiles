@@ -56,7 +56,7 @@
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
     },
     "[shellscript]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format",
+        "editor.defaultFormatter": "mkhl.shfmt",
     },
     "[terraform]": {
         "editor.defaultFormatter": "hashicorp.terraform",
@@ -227,5 +227,8 @@
     "python.analysis.typeCheckingMode": "strict",
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[dockerbake]": {
+        "editor.defaultFormatter": "docker.docker"
     },
 }

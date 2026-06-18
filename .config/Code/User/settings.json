@@ -56,7 +56,7 @@
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
     },
     "[shellscript]": {
-        "editor.defaultFormatter": "mkhl.shfmt",
+        "editor.defaultFormatter": "foxundermoon.shell-format",
     },
     "[terraform]": {
         "editor.defaultFormatter": "hashicorp.terraform",

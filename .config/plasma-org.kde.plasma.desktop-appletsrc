@@ -30,8 +30,8 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][3][Applets][16][Configuration]
-popupHeight=451
-popupWidth=592
+popupHeight=467
+popupWidth=608
 
 [Containments][3][Applets][16][Configuration][Appearance]
 fontWeight=400
@@ -58,8 +58,8 @@ immutability=1
 plugin=org.kde.plasma.kickoff
 
 [Containments][3][Applets][4][Configuration]
-popupHeight=667
-popupWidth=841
+popupHeight=537
+popupWidth=713
 
 [Containments][3][Applets][4][Configuration][General]
 favoritesPortedToKAstats=true
@@ -75,8 +75,8 @@ immutability=1
 lastScreen=-1
 location=0
 plugin=org.kde.plasma.systemtray
-popupHeight=560
-popupWidth=560
+popupHeight=784
+popupWidth=784
 wallpaperplugin=org.kde.image
 
 [Containments][3][Applets][8][Applets][10]
@@ -155,6 +155,10 @@ placeDisplayName=Bangalore, India, IN
 placeInfo=Bangalore, India, IN|1277333
 provider=bbcukmet
 
+[Containments][3][Applets][8][Applets][30]
+immutability=1
+plugin=org.kde.kdeconnect
+
 [Containments][3][Applets][8][Applets][31]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
@@ -164,8 +168,8 @@ immutability=1
 plugin=org.kde.plasma.devicenotifier
 
 [Containments][3][Applets][8][General]
-extraItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.clipboard,org.kde.plasma.notifications,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.keyboardlayout,org.kde.plasma.printmanager,org.kde.plasma.battery,org.kde.kscreen,org.kde.plasma.vault,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.bluetooth
-knownItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.clipboard,org.kde.plasma.notifications,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.keyboardlayout,org.kde.plasma.printmanager,org.kde.plasma.battery,org.kde.kscreen,org.kde.plasma.vault,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.bluetooth
+extraItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.clipboard,org.kde.plasma.notifications,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.keyboardlayout,org.kde.plasma.printmanager,org.kde.plasma.battery,org.kde.kscreen,org.kde.plasma.vault,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.bluetooth,org.kde.kdeconnect
+knownItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.plasma.clipboard,org.kde.plasma.notifications,org.kde.plasma.brightness,org.kde.plasma.cameraindicator,org.kde.plasma.manage-inputmethod,org.kde.plasma.keyboardlayout,org.kde.plasma.printmanager,org.kde.plasma.battery,org.kde.kscreen,org.kde.plasma.vault,org.kde.plasma.keyboardindicator,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.bluetooth,org.kde.kdeconnect
 
 [Containments][3][General]
 AppletOrder=4;26;5;8;16;17

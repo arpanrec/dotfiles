@@ -100,7 +100,7 @@ PACMAN_PACKAGES+=('veracrypt' 'keepassxc')
 # 'yubikey-manager-qt' Is broken
 PACMAN_PACKAGES+=('yubikey-personalization' 'yubikey-personalization-gui' 'yubikey-manager')
 
-PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop' 'nextcloud-client')
+PACMAN_PACKAGES+=('gimp' 'qbittorrent' 'signal-desktop')
 
 PACMAN_PACKAGES+=('timeshift')
 

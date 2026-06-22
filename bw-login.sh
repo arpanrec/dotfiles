@@ -26,7 +26,7 @@ if [ "${current_status}" == "unauthenticated" ]; then
     echo ""
     if [ "${__is_api_login}" == "Y" ] || [ "${__is_api_login}" == "y" ]; then
 
-        if [ -z "${BW_CLIENTID}" ] || [ -z "${BW_CLIENTSECRET}" ]; then
+        if [ -z "${BW_CLIENTID:-}" ] || [ -z "${BW_CLIENTSECRET:-}" ]; then
             read -r -p "Enter Client ID : " -s __bw_client_id
             echo ""
             read -r -p "Enter Client Secret : " -s __bw_client_secret
@@ -63,7 +63,7 @@ fi
 
 if [ "${current_status}" == "locked" ]; then
     echo "Bitwarden is locked"
-    echo "Current user "" $(bw status --raw | jq .userEmail)"
+    echo "Current user: $(bw status --raw | jq -r .userEmail)"
     read -r -p "Unlocking Bitwarden, enter master password: " -s __bw_master_password
     echo ""
     if [ -z "${__bw_master_password}" ]; then
@@ -91,7 +91,7 @@ current_status=$(__get_current_status)
 
 if [ "${current_status}" != "unlocked" ]; then
     echo "bitwarden cli is not unlocked"
-    exit 0
+    exit 1
 fi
 
 __bw_status_json="$(bw status --raw)"

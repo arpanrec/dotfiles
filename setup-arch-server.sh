@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 echo "Starting setup"
-echo "Allowed hosts are: s1-dev, s2-dev"
+echo "Allowed hosts are: s1-dev, s1-dev-*, s2-dev, s2-dev-*"
 
 read -p "Boot loader manged my this script, [systemd secure boot]: (y/Y)" -r IS_SYSTEMD_SECURE_BOOT
 
@@ -18,25 +18,16 @@ read -p "Update pacman mirror list with reflector: (y/Y)" -r UPDATE_MIRRORLIST
 
 export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
-allowed_host_names=(
-    s1-dev
-    s2-dev
-)
-
-is_valid_hostname=false
-for allowed_host_name in "${allowed_host_names[@]}"; do
-    if [[ "${TARGET_HOSTNAME}" == "${allowed_host_name}" ]]; then
-        is_valid_hostname=true
-        echo "Valid hostname: $TARGET_HOSTNAME"
-        break
-    fi
-done
-
-if ! "${is_valid_hostname}"; then
-    echo "Invalid hostname: $TARGET_HOSTNAME"
-    echo "Allowed hosts are: ${allowed_host_names[*]}"
+case "${TARGET_HOSTNAME}" in
+s1-dev | s1-dev-* | s2-dev | s2-dev-*)
+    echo "Valid hostname: ${TARGET_HOSTNAME}"
+    ;;
+*)
+    echo "Invalid hostname: ${TARGET_HOSTNAME}"
+    echo "Allowed hosts are: s1-dev, s1-dev-*, s2-dev, s2-dev-*"
     exit 1
-fi
+    ;;
+esac
 
 if [[ -d /run/systemd/system ]] && [[ "$(ps -p 1 -o comm=)" == "systemd" ]]; then
     export IS_RUNNING_SYSTEMD=true

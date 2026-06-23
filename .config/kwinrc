@@ -4,6 +4,9 @@ Id_2=06875b53-ab1e-4490-94bf-354519b12107
 Number=2
 Rows=2
 
+[Effect-scale]
+Duration=1
+
 [TabBox]
 LayoutName=flipswitch
 

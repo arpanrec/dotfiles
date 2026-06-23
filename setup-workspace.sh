@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo "Starting"
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/cache/arpanrec.nebula"}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.cache/arpanrec.nebula"}"
 
 export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/setup-workspace.lock"
 

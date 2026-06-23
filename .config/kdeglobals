@@ -109,6 +109,7 @@ toolBarFont=JetBrainsMono Nerd Font Propo,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 Theme=Tela-nord-dark
 
 [KDE]
+AnimationDurationFactor=0.75
 LookAndFeelPackage=Nordic
 ShowDeleteCommand=false
 SingleClick=false

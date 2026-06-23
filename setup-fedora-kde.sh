@@ -1,22 +1,32 @@
 #!/bin/bash
 set -xeuo pipefail
 
-export TARGET_HOSTNAME=s1-dev
+export TARGET_HOSTNAME="${1:-$(hostname -s)}"
 export TARGET_DOMAINNAME=blr-home.easyiac.com
+case "${TARGET_HOSTNAME}" in
+s1-dev | s1-dev-* | s2-dev | s2-dev-*)
+    echo "Valid hostname: ${TARGET_HOSTNAME}"
+    ;;
+*)
+    echo "Invalid hostname: ${TARGET_HOSTNAME}"
+    echo "Allowed hosts are: s1-dev, s1-dev-*, s2-dev, s2-dev-*"
+    exit 1
+    ;;
+esac
 
 dnf install -y "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 dnf install -y "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
-dnf config-manager addrepo --id=nordvpn  --set=enabled=1 --overwrite \
-	--set=baseurl=https://repo.nordvpn.com/yum/nordvpn/centos/x86_64
+dnf config-manager addrepo --id=nordvpn --set=enabled=1 --overwrite \
+    --set=baseurl=https://repo.nordvpn.com/yum/nordvpn/centos/x86_64
 rpm -v --import https://repo.nordvpn.com//gpg/nordvpn_public.asc
 
 dnf config-manager addrepo --overwrite --from-repofile \
-	https://download.docker.com/linux/fedora/docker-ce.repo
+    https://download.docker.com/linux/fedora/docker-ce.repo
 
 dnf install dnf-plugins-core
 
 dnf config-manager addrepo --overwrite --from-repofile \
-	https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 
 dnf install -y fedora-workstation-repositories
 dnf config-manager setopt google-chrome.enabled=1
@@ -34,11 +44,11 @@ dnf install -y kernel-devel-matched kernel-headers sgdisk
 
 if lspci | grep -E "(VGA|3D)" | grep -E "(NVIDIA|GeForce)"; then
     dnf config-manager addrepo --overwrite --from-repofile \
-		https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
-	dnf config-manager addrepo --overwrite --from-repofile \
-		https://developer.download.nvidia.com/compute/cuda/repos/fedora43/x86_64/cuda-fedora43.repo
+        https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
+    dnf config-manager addrepo --overwrite --from-repofile \
+        https://developer.download.nvidia.com/compute/cuda/repos/fedora43/x86_64/cuda-fedora43.repo
 
-	dnf clean expire-cache
+    dnf clean expire-cache
 
     dnf install -y cuda-drivers nvtop
     dnf install -y nvidia-container-toolkit nvidia-container-toolkit-base libnvidia-container-tools libnvidia-container1
@@ -51,7 +61,8 @@ fi
 
 dnf install -y google-chrome-stable brave-browser qbittorrent
 
-dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra bash-completion
+dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra bash-completion \
+    shfmt
 
 dnf -y install vim python3-devel python3-pyyaml kvantum ffmpegthumbnailer ffmpegthumbs
 
@@ -93,11 +104,27 @@ echo "                             Install root certificate                     
 echo "-----------------------------------------------------------------------------------"
 
 ROOT_CERTIFICATE_TEMP_FILE="$(mktemp)"
-curl -fL https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/root_ca_crt.pem |
-    tee "${ROOT_CERTIFICATE_TEMP_FILE}"
-trust anchor --store "${ROOT_CERTIFICATE_TEMP_FILE}"
+CERT_SPLIT_DIR="$(mktemp -d)"
+
+curl -fL --connect-timeout 10 --max-time 60 \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/intermediate_ca_full_chain.pem \
+    -o "${ROOT_CERTIFICATE_TEMP_FILE}"
 
 mkdir -p /etc/ca-certificates/trust-source/anchors
-cp "${ROOT_CERTIFICATE_TEMP_FILE}" /etc/ca-certificates/trust-source/anchors/root_ca.crt
-update-ca-trust
 
+awk -v outdir="${CERT_SPLIT_DIR}" '
+BEGIN { c = 0 }
+/-----BEGIN CERTIFICATE-----/ { c++ }
+{
+    file = outdir "/cert." c ".crt"
+    print >> file
+}
+' <"${ROOT_CERTIFICATE_TEMP_FILE}"
+
+for cert in "${CERT_SPLIT_DIR}"/*.crt; do
+    trust anchor --store "${cert}"
+    cp "${cert}" \
+        "/etc/ca-certificates/trust-source/anchors/$(basename "${cert}")"
+done
+
+update-ca-trust

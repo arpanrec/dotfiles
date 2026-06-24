@@ -81,6 +81,10 @@ dnf install snapd -y
 systemctl enable snapd.socket
 systemctl enable nordvpnd.socket nordvpnd.service
 
+echo "--------------------------------------"
+echo "-------------Set Host Name------------"
+echo "--------------------------------------"
+
 echo "${TARGET_HOSTNAME}" | tee /etc/hostname
 cat <<EOT >"/etc/hosts"
 127.0.0.1   localhost
@@ -90,6 +94,20 @@ EOT
 
 hostnamectl hostname "${TARGET_HOSTNAME}"
 
+echo "--------------------------------------------------"
+echo '      Setting Root Password to a Random one       '
+echo "--------------------------------------------------"
+
+# shellcheck disable=SC2155
+NEW_RANDOM_ROOT_PASSWORD="$(openssl rand -base64 128 | tr -d '\n')"
+export NEW_RANDOM_ROOT_PASSWORD
+echo "Setting a random root password"
+printf '%s\n%s\n' "$NEW_RANDOM_ROOT_PASSWORD" "$NEW_RANDOM_ROOT_PASSWORD" | passwd root
+
+echo "------------------------------------------"
+echo "       heil wheel group in sudoers        "
+echo "------------------------------------------"
+
 getent group sudo || groupadd --system sudo
 getent group wheel || groupadd --system wheel
 
@@ -98,6 +116,22 @@ mkdir -p /etc/sudoers.d
 echo "root ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1000-root
 echo "%sudo ALL=(ALL:ALL) ALL" | tee /etc/sudoers.d/1100-sudo
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/1200-wheel
+
+echo "--------------------------------------"
+echo "           Create Admin User          "
+echo "--------------------------------------"
+
+SYSTEM_ADMIN_USER="${SYSTEM_ADMIN_USER:-admin1}"
+SYSTEM_ADMIN_PASSWORD="${SYSTEM_ADMIN_PASSWORD:-password}"
+id -u "${SYSTEM_ADMIN_USER}" &>/dev/null || useradd -s /bin/bash --system -G sudo -m \
+    -d "/home/${SYSTEM_ADMIN_USER}" "${SYSTEM_ADMIN_USER}"
+
+usermod -aG sudo "${SYSTEM_ADMIN_USER}"
+if id -nG "${SYSTEM_ADMIN_USER}" | grep -qw wheel; then
+    gpasswd --delete "${SYSTEM_ADMIN_USER}" wheel
+fi
+echo "Set the password for user ${SYSTEM_ADMIN_USER} using '${SYSTEM_ADMIN_PASSWORD}'."
+printf '%s\n%s\n' "${SYSTEM_ADMIN_PASSWORD}" "${SYSTEM_ADMIN_PASSWORD}" | passwd "${SYSTEM_ADMIN_USER}"
 
 echo "-----------------------------------------------------------------------------------"
 echo "                             Install root certificate                              "

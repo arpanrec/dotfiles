@@ -68,7 +68,7 @@ dnf -y install vim python3-devel python3-pyyaml kvantum ffmpegthumbnailer ffmpeg
 
 dnf -y install vlc haruna gtk-murrine-engine gtk2-engines dolphin-plugins
 
-dnf -y install gtk-murrine-engine gtk2-engines kate lua luarocks
+dnf -y install gtk-murrine-engine gtk2-engines kate lua luarocks restic rsync
 
 dnf install -y flatpak htop fastfetch nordvpn-gui
 

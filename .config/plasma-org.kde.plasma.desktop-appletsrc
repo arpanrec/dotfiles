@@ -174,8 +174,20 @@ knownItems=org.kde.plasma.devicenotifier,org.kde.plasma.mediacontroller,org.kde.
 [Containments][3][General]
 AppletOrder=4;26;5;8;16;17
 
-[Containments][30]
-activityId=7951836f-be40-44e4-8533-106fb401e1a5
+[Containments][31]
+ItemGeometries-2048x1280=
+ItemGeometries-2327x1309=
+ItemGeometriesHorizontal=
+activityId=f985916d-f520-4059-873e-22be45353228
+formfactor=0
+immutability=1
+lastScreen=0
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
+[Containments][32]
+activityId=f985916d-f520-4059-873e-22be45353228
 formfactor=0
 immutability=1
 lastScreen=1

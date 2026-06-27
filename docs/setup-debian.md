@@ -18,7 +18,7 @@ Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playboo
 | `CLOUD_INIT_INSTALL_DOTFILES`            | `true`                                | Install dotfiles for the created user                      |
 | `CLOUD_INIT_INSTALL_DOCKER`              | `false`                               | Install Docker                                             |
 | `NEBULA_TMP_DIR`                         | `/cloudinit/.tmp`                     | Working directory for Ansible                              |
-| `NEBULA_VERSION`                         | `1.14.71`                             | Nebula playbook version                                    |
+| `NEBULA_VERSION`                         | `1.14.72`                             | Nebula playbook version                                    |
 | `NEBULA_VENV_DIR`                        | `${NEBULA_TMP_DIR}/venv`              | Python virtual environment directory                       |
 | `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`   | Authorized keys file for the created user                  |
 | `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements.yml`  | Ansible requirements file                                  |

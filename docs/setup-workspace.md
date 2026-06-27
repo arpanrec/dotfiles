@@ -7,7 +7,7 @@ Provisions a full developer toolchain using the [arpanrec.nebula server_workspac
 | Variable                      | Default                             | Description                                |
 | ----------------------------- | ----------------------------------- | ------------------------------------------ |
 | `NEBULA_TMP_DIR`              | `${HOME}/.tmp`                      | Temporary directory for playbook downloads |
-| `NEBULA_VERSION`              | `1.14.71`                           | Version of the nebula playbook             |
+| `NEBULA_VERSION`              | `1.14.72`                           | Version of the nebula playbook             |
 | `NEBULA_VENV_DIR`             | `${NEBULA_TMP_DIR}/venv`            | Python virtual environment directory       |
 | `NEBULA_EXTRA_VARS_JSON_FILE` | `${NEBULA_TMP_DIR}/extra_vars.json` | Extra vars for the playbook in JSON format |
 | `DEFAULT_ROLES_PATH`          | `${NEBULA_TMP_DIR}/roles`           | Default Ansible roles path                 |

@@ -29,21 +29,24 @@ Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playboo
 
 ## Usage
 
+### Minimal
+
 ```bash
-# Minimal
 CLOUD_INIT_DOMAIN=easyiac.com sudo -E -H -u root bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-debian.sh)'
 ```
 
+### Development machine
+
 ```bash
-# Development machine
 CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-debian.sh)'
 ```
 
+### Development machine with a custom domain
+
 ```bash
-# Development machine with a custom domain
 CLOUD_INIT_DOMAIN=blr-home.easyiac.com CLOUD_INIT_IS_DEV_MACHINE=true CLOUD_INIT_INSTALL_DOCKER=true sudo -E -H -u root \
     bash -c '/bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
     https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-debian.sh)'

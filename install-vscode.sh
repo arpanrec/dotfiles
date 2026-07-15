@@ -134,7 +134,7 @@ CODE_EXTENSIONS=(
     "exiasr.hadolint"
     # "foxundermoon.shell-format"
     # "github.codespaces"
-    # "github.github-vscode-theme"
+    "github.github-vscode-theme"
     # "github.remotehub"
     # "github.vscode-codeql"
     # "github.vscode-github-actions"

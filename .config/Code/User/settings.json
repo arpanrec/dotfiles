@@ -42,7 +42,7 @@
         "editor.defaultFormatter": "sumneko.lua",
     },
     "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
     },
     "[python]": {
         "editor.codeActionsOnSave": {

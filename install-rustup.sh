@@ -23,7 +23,7 @@ curl -L --proto '=https' --tlsv1.2 -sSf --connect-timeout 10 --max-time 300 \
 
 if command -v cargo &>/dev/null; then
     echo "Installing cargo packages"
-    echo y | cargo binstall "fd-find" "ripgrep" "uv@0.11.31" --force
+    echo y | cargo binstall "fd-find" "ripgrep" "uv" --force
 fi
 
 echo "Completed"

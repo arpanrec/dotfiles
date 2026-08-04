@@ -3,6 +3,7 @@
 	forceDeleteBranch = false
 [fetch]
 	prune = false
+	tags = all
 [pull]
 	rebase = false
 [core]
@@ -17,6 +18,7 @@
 	symlinks = true
 [push]
 	followTags = true
+	autoSetupRemote = true
 [init]
 	defaultBranch = main
 [credential]

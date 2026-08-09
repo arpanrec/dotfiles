@@ -22,7 +22,7 @@
 [init]
 	defaultBranch = main
 [credential]
-	helper = store --file=~/.git-credentials
+	helper = !git credential-store --file=\"$HOME/.git-credentials\"
 [color]
 	ui = auto
 [commit]

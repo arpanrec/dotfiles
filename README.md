@@ -80,6 +80,7 @@ All installers download to `~/.cache/dotfiles-tmp-download-dir` and skip re-down
 - [Install Nextcloud Desktop](docs/install-nextcloud-desktop.md) — Nextcloud Desktop AppImage
 - [Install Postman](docs/install-postman.md) — Postman API client
 - [Install Trilium Notes](docs/install-trilium.md) — TriliumNext note-taking app
+- [Install draw.io Desktop](docs/install-drawio.md) — draw.io diagramming app
 - [Install Joplin](docs/install-joplin.md) — Joplin Desktop note-taking app
 - [Install Telegram Desktop](docs/install-telegram-desktop.md) — Telegram Desktop client
 

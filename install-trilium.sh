@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeuo pipefail
+set -euo pipefail
 
 TRILIUM_LATEST_VERSION="$(
     curl -sSLf --connect-timeout 10 --max-time 60 \

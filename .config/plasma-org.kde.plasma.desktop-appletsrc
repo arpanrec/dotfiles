@@ -4,6 +4,18 @@ RightButton;NoModifier=org.kde.contextmenu
 [ActionPlugins][1]
 RightButton;NoModifier=org.kde.contextmenu
 
+[Containments][29]
+ItemGeometries-1800x1125=
+ItemGeometries-2327x1309=
+ItemGeometriesHorizontal=
+activityId=7951836f-be40-44e4-8533-106fb401e1a5
+formfactor=0
+immutability=1
+lastScreen=0
+location=0
+plugin=org.kde.plasma.folder
+wallpaperplugin=org.kde.image
+
 [Containments][3]
 activityId=
 formfactor=2
@@ -18,8 +30,8 @@ immutability=1
 plugin=org.kde.plasma.digitalclock
 
 [Containments][3][Applets][16][Configuration]
-popupHeight=416
-popupWidth=576
+popupHeight=467
+popupWidth=608
 
 [Containments][3][Applets][16][Configuration][Appearance]
 fontWeight=400
@@ -63,8 +75,8 @@ immutability=1
 lastScreen=-1
 location=0
 plugin=org.kde.plasma.systemtray
-popupHeight=528
-popupWidth=528
+popupHeight=784
+popupWidth=784
 wallpaperplugin=org.kde.image
 
 [Containments][3][Applets][8][Applets][10]
@@ -137,6 +149,11 @@ plugin=org.kde.plasma.weather
 [Containments][3][Applets][8][Applets][28][Configuration][ConfigDialog]
 DialogHeight=630
 DialogWidth=810
+
+[Containments][3][Applets][8][Applets][28][Configuration][WeatherStation]
+placeDisplayName=Bangalore, India, IN
+placeInfo=Bangalore, India, IN|1277333
+provider=bbcukmet
 
 [Containments][3][Applets][8][Applets][30]
 immutability=1

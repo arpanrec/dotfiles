@@ -1,17 +1,16 @@
 -- luacheck: globals vim
 
 return {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     lazy = false,
 
     dependencies = {
-        { "williamboman/mason-lspconfig.nvim" },
+        { "mason-org/mason-lspconfig.nvim" },
         { "WhoIsSethDaniel/mason-tool-installer.nvim" },
     },
 
     cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Open Mason Manage UI" } },
-    build = ":MasonUpdate",
     config = function()
         -- import mason
         local mason = require("mason")
@@ -58,8 +57,8 @@ return {
                 -- Formatter
             },
 
-            -- auto-install configured servers (with lspconfig)
-            automatic_installation = true, -- not the same as ensure_installed
+            -- automatically vim.lsp.enable() every server installed above
+            automatic_enable = true,
         })
 
         local mason_tool_installer = require("mason-tool-installer")

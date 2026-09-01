@@ -129,7 +129,8 @@ fi
 
 echo "Installing locales and setting timezone"
 apt-get update
-apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip sudo bash python3-venv python3-pip vim
+apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip \
+    sudo bash python3-venv python3-pip vim python3-requests python3-httpx
 
 export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf --connect-timeout 10 --max-time 60 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
@@ -230,7 +231,7 @@ source "${NEBULA_VENV_DIR}/bin/activate"
 echo "Installing ansible and hvac using pip3"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible hvac --upgrade
+pip3 install ansible hvac httpx requests --upgrade
 
 echo "Installing nebula version ${NEBULA_VERSION}"
 

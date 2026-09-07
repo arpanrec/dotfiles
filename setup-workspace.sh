@@ -170,7 +170,7 @@ Working dir :: ${PWD}
 Installing ansible, hvac and arpanrec.nebula"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible hvac --upgrade
+pip3 install ansible hvac httpx --upgrade
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     echo "Downloading ${NEBULA_REQUIREMENTS_FILE}"

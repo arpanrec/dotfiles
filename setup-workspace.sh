@@ -88,6 +88,14 @@ if [[ -z $* ]]; then
         echo "Skipping Bitwarden SDK installation"
     fi
 
+    read -n1 -s -r -p 'Enter "Y" to install uv (Press any other key to Skip*) : ' install_uv
+    if [[ "${install_uv}" == "Y" || "${install_uv}" == "y" ]]; then
+        echo "uv installation selected"
+        __install_tags+=('uv')
+    else
+        echo "Skipping uv installation"
+    fi
+
     if [[ ${#__install_tags[@]} -eq 0 ]]; then
         echo "No tags selected, nothing to install. Exiting."
         exit 0
@@ -109,7 +117,7 @@ fi
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-export NEBULA_VERSION="${NEBULA_VERSION:-"1.17.0"}"
+export NEBULA_VERSION="${NEBULA_VERSION:-"1.18.0"}"
 export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"

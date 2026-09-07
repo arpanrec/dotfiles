@@ -1,13 +1,13 @@
 # Set Up Development Workspace
 
-Provisions a full developer toolchain using the [arpanrec.nebula server_workspace playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/server_workspace.md) via Ansible. Run as a **non-root user**. When called without arguments, an interactive prompt selects which optional tool tags to install (Node.js, Go, Java, Vault, Terraform, Pulumi, Bitwarden SDK). Custom tags and extra vars can be passed directly.
+Provisions a full developer toolchain using the [arpanrec.nebula server_workspace playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/server_workspace.md) via Ansible. Run as a **non-root user**. When called without arguments, an interactive prompt selects which optional tool tags to install (Node.js, Go, Java, Vault, Terraform, Pulumi, Bitwarden SDK, uv). Custom tags and extra vars can be passed directly.
 
 ## Environment Variables
 
 | Variable                      | Default                             | Description                                |
 | ----------------------------- | ----------------------------------- | ------------------------------------------ |
 | `NEBULA_TMP_DIR`              | `${HOME}/.tmp`                      | Temporary directory for playbook downloads |
-| `NEBULA_VERSION`              | `1.17.0`                           | Version of the nebula playbook             |
+| `NEBULA_VERSION`              | `1.18.0`                            | Version of the nebula playbook             |
 | `NEBULA_VENV_DIR`             | `${NEBULA_TMP_DIR}/venv`            | Python virtual environment directory       |
 | `NEBULA_EXTRA_VARS_JSON_FILE` | `${NEBULA_TMP_DIR}/extra_vars.json` | Extra vars for the playbook in JSON format |
 | `DEFAULT_ROLES_PATH`          | `${NEBULA_TMP_DIR}/roles`           | Default Ansible roles path                 |

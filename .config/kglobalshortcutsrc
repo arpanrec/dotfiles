@@ -276,6 +276,13 @@ NewWindow=Meta+Q
 [services][org.kde.krunner.desktop]
 _launch=Search\tAlt+Space\tAlt+F2\tMeta+Space
 
+[trilium]
+0FD51ED821EEF6D1E7AF1E196F67717F-Ctrl+Alt+P=none,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+503173CC5A32D469FF68B5C910CB1E4B-Ctrl+Alt+P=none,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+85DAFCDAF35FC6090912F4DA66DD4737-Ctrl+Alt+P=none,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+BADEFEA90A8BF1FCF59B03DFB57DFB88-Ctrl+Alt+P=Ctrl+Alt+P,Ctrl+Alt+P,Trilium Notes shortcut: Ctrl+Alt+P
+_k_friendly_name=Trilium Notes
+
 [wacomtablet]
 Map to fullscreen=Meta+Ctrl+F,Meta+Ctrl+F,Map to fullscreen
 Map to screen 1=Meta+Ctrl+1,Meta+Ctrl+1,Map to screen 1

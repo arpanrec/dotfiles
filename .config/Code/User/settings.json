@@ -36,7 +36,8 @@
     },
     "[json]": {
         "files.insertFinalNewline": false,
-        "files.trimFinalNewlines": true
+        "files.trimFinalNewlines": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[lua]": {
         "editor.defaultFormatter": "sumneko.lua"
@@ -54,9 +55,6 @@
     "python.terminal.useEnvFile": false,
     "[rust]": {
         "editor.defaultFormatter": "rust-lang.rust-analyzer"
-    },
-    "[shellscript]": {
-        "editor.defaultFormatter": "foxundermoon.shell-format"
     },
     "[terraform]": {
         "editor.defaultFormatter": "hashicorp.terraform"
@@ -221,7 +219,7 @@
     "docker.extension.enableComposeLanguageServer": false,
     "python.analysis.typeCheckingMode": "strict",
     "[jsonc]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[dockerbake]": {
         "editor.defaultFormatter": "docker.docker"
@@ -251,5 +249,8 @@
             "**/.forgejo/workflows/*.yml",
             "**/.forgejo/workflows/*.yaml"
         ]
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml"
     }
 }

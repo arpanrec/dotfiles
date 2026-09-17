@@ -23,14 +23,14 @@ TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/applications" "${HOME}/.local/share/Telegram"
 echo "Downloading Telegram Desktop version ${TELEGRAM_DESKTOP_LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
-if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" ]]; then
-    curl -fL --connect-timeout 10 --max-time 600 "https://github.com/telegramdesktop/tdesktop/releases/download/${TELEGRAM_DESKTOP_LATEST_VERSION}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
-        -o "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz"
+if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" ]]; then
+    curl -fL --connect-timeout 10 --max-time 600 "https://github.com/telegramdesktop/tdesktop/releases/download/${TELEGRAM_DESKTOP_LATEST_VERSION}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
+        -o "${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz"
 else
     echo "Tarball File already exists"
 fi
 
-tar -xf "${TMP_DOWNLOAD_DIRECTORY}/tsetup.${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
+tar -xf "${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
     -C "${HOME}/.local/share/Telegram" --strip-components=1
 
 find "${HOME}/.local/share/applications" -type f -name "*telegram*" -exec rm -f {} \;

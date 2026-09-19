@@ -152,7 +152,7 @@ CODE_EXTENSIONS=(
     "ms-python.mypy-type-checker"
     "ms-python.pylint"
     "ms-python.python"
-    "ms-python.vscode-pylance"
+    # "ms-python.vscode-pylance"
     "ms-toolsai.jupyter"
     "ms-toolsai.jupyter-keymap"
     "ms-toolsai.jupyter-renderers"

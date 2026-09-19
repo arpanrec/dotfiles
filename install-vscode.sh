@@ -92,7 +92,6 @@ Exec=${HOME}/.local/share/vscode/code --new-window %F
 Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
 EOF
 
-
 # --enable-features=UseOzonePlatform --ozone-platform=wayland
 tee "${HOME}/.local/share/applications/code-url-handler.desktop" <<EOF
 [Desktop Entry]

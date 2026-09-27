@@ -1,1 +1,3 @@
-shell-integration-features = ssh-env,ssh-terminfo
+shell-integration-features = ssh-env,ssh-terminfo,sudo
+keybind = ctrl+shift+o=new_split:down
+keybind = ctrl+shift+e=new_split:right

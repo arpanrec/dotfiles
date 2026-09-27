@@ -154,6 +154,8 @@
         "**/.ruff_cache/**": true,
         "**/.settings": true,
         "**/.trunk/**": true,
+        "**/.venv/**": true,
+        "**/.cache/**": true,
         "**/node_modules/**": true
     },
     "files.trimTrailingWhitespace": false,
@@ -169,6 +171,8 @@
         "**/.ruff_cache/**": true,
         "**/.settings": true,
         "**/.trunk/**": true,
+        "**/.venv/**": true,
+        "**/.cache/**": true,
         "**/node_modules/**": true
     },
     "git.autofetch": false,

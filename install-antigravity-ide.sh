@@ -61,6 +61,8 @@ tar -xzvf "${TARBALL_FILE}" \
     -C "${INSTALL_DIRECTORY}" \
     --strip-components=1
 
+touch "${HOME}/.exporterrc"
+
 tee "${HOME}/.local/share/applications/antigravity-ide.desktop" <<EOF
 [Desktop Entry]
 Version=1.0

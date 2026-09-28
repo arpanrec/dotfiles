@@ -67,7 +67,7 @@ Version=1.0
 Name=Antigravity IDE
 Comment=Experience liftoff
 GenericName=Text Editor
-Exec=${INSTALL_DIRECTORY}/bin/antigravity-ide %F
+Exec=/usr/bin/env bash -c 'source "\$HOME/.exporterrc" 2>/dev/null; exec "${INSTALL_DIRECTORY}/bin/antigravity-ide" "\$@"' _ %F
 Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 Type=Application
 StartupNotify=false
@@ -79,7 +79,7 @@ Keywords=vscode;antigravity;ide;
 
 [Desktop Action new-empty-window]
 Name=New Empty Window
-Exec=${INSTALL_DIRECTORY}/bin/antigravity-ide --new-window %F
+Exec=/usr/bin/env bash -c 'source "\$HOME/.exporterrc" 2>/dev/null; exec "${INSTALL_DIRECTORY}/bin/antigravity-ide" --new-window "\$@"' _ %F
 Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 EOF
 
@@ -88,7 +88,7 @@ tee "${HOME}/.local/share/applications/antigravity-ide-url-handler.desktop" <<EO
 Name=Antigravity IDE - URL Handler
 Comment=Experience liftoff
 GenericName=Text Editor
-Exec=${INSTALL_DIRECTORY}/bin/antigravity-ide --open-url %U
+Exec=/usr/bin/env bash -c 'source "\$HOME/.exporterrc" 2>/dev/null; exec "${INSTALL_DIRECTORY}/bin/antigravity-ide" --open-url "\$@"' _ %U
 Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 Type=Application
 NoDisplay=true

@@ -1,6 +1,6 @@
 # [Install Postman](https://www.postman.com/downloads/)
 
-Downloads the Postman tarball. Version is pinned in the script (`12.11.3`). See [Postman release notes](https://www.postman.com/release-notes/postman-app/) to update.
+Downloads the Postman tarball. The version is pinned in the script (`12.11.3`). Check the [Postman release notes](https://www.postman.com/release-notes/postman-app/) when updating.
 
 **Supported architectures:** `x86_64`
 

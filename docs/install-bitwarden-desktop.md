@@ -1,6 +1,6 @@
 # [Install Bitwarden Desktop](https://bitwarden.com/download/#downloads-desktop)
 
-Downloads the latest Bitwarden Desktop AppImage. Since `bitwarden/clients` is a monorepo with mixed release types, the script searches the most recent 100 GitHub releases for the newest `desktop-v*` tag. Configured with Wayland/Ozone platform flags and `kwallet6` password store.
+Downloads the latest Bitwarden Desktop AppImage. Because `bitwarden/clients` is a monorepo with mixed release types, the script searches the most recent 100 GitHub releases for the newest `desktop-v*` tag. It configures the desktop entry with Wayland and Ozone platform flags and sets the password store to `kwallet6`.
 
 **Supported architectures:** `x86_64`
 

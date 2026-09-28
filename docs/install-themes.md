@@ -1,6 +1,6 @@
 # Install Themes
 
-Installs GTK, KDE Plasma, icon, cursor, and font assets. Detects GNOME Shell and switches between Layan GTK and Layan KDE accordingly.
+Installs GTK, KDE Plasma, icon, cursor, and font assets. It checks for GNOME Shell and switches between Layan GTK and Layan KDE accordingly.
 
 ## Installed Assets
 

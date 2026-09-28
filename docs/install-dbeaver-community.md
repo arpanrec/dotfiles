@@ -1,6 +1,6 @@
 # [Install DBeaver Community](https://dbeaver.io/download/)
 
-Downloads the latest DBeaver CE tarball from dbeaver.io, verifies the SHA-256 checksum, extracts to `~/.local/share/dbeaver-ce`, and creates a desktop entry.
+Downloads the latest DBeaver CE tarball from dbeaver.io, verifies the SHA-256 checksum, extracts it to `~/.local/share/dbeaver-ce`, and creates a desktop entry.
 
 **Supported architectures:** `x86_64`, `aarch64`
 

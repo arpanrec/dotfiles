@@ -1,8 +1,8 @@
 # Setup Arch Workstation
 
-Installs the full graphical workstation environment on top of an Arch base. Primary compositor is **Hyprland** with Waybar, Rofi, Dunst, and Kitty. KDE components (KWallet, Dolphin, Konsole, Gwenview, etc.) are installed for Wayland portal support, secret management, and file management, with an option to enable the full KDE Plasma session via SDDM.
+Installs a graphical desktop environment on an Arch Linux base. The primary compositor is Hyprland, paired with Waybar, Rofi, Dunst, and Kitty. It installs KDE tools (KWallet, Dolphin, Konsole, Gwenview) for Wayland portal integration, secret storage, and file management, with an option to enable a full KDE Plasma session in SDDM.
 
-Installs AUR packages (yay, NordVPN, Brave, Google Chrome, OnlyOffice, Yubico Authenticator, SDDM Silent theme) using a temporary unprivileged build user. Configures PipeWire audio, CUPS printing, Bluetooth, WireGuard, and GPU drivers (NVIDIA/AMD/Intel) as detected.
+A temporary unprivileged build user installs AUR packages (yay, NordVPN, Brave, Google Chrome, OnlyOffice, Yubico Authenticator, SDDM Silent theme). The script also configures PipeWire audio, CUPS printing, Bluetooth, WireGuard, and graphics drivers (NVIDIA, AMD, or Intel).
 
 ## Interactive Prompts
 

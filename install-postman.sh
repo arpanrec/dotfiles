@@ -23,10 +23,10 @@ rm -rf "${POSTMAN_INSTALL_DIRECTORY}"
 mkdir -p "${POSTMAN_INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/${POSTMAN_ZIP_FILE_NAME}" ]]; then
-    echo "Downloading app image."
+    echo "Downloading Postman."
     curl -fL --connect-timeout 10 --max-time 600 "${DOWNLOAD_URI}" -o "${TMP_DOWNLOAD_DIRECTORY}/${POSTMAN_ZIP_FILE_NAME}"
 else
-    echo "AppImage File already exists"
+    echo "Postman already exists"
 fi
 tar -zxvf "${TMP_DOWNLOAD_DIRECTORY}/${POSTMAN_ZIP_FILE_NAME}" -C "${POSTMAN_INSTALL_DIRECTORY}" --strip-components=1
 

@@ -1,6 +1,6 @@
 # Setup Arch Server
 
-Configures a freshly installed Arch Linux base system (run from within `arch-chroot` or on a live system). Sets timezone to `Asia/Kolkata`, locale to `en_US.UTF-8`, hostname, pacman, and installs packages covering networking, storage, dev toolchains, cross-compilers, monitoring, and optionally Docker and NVIDIA drivers. Randomises the root password, creates a `wheel`-group admin user, hardens SSH, and optionally sets up `systemd-boot` with Secure Boot signing via `sbctl`.
+Configures an Arch Linux base system from `arch-chroot` or on a running machine. It sets the timezone to `Asia/Kolkata`, locale to `en_US.UTF-8`, hostname, and pacman mirrors, then installs packages for networking, storage, development toolchains, cross-compilers, and monitoring. It also generates a random root password, adds a `wheel`-group admin user, hardens SSH, and can optionally install Docker, NVIDIA drivers, or `systemd-boot` with Secure Boot signing through `sbctl`.
 
 **Allowed Hostnames:** `s1-dev`, `s2-dev`
 

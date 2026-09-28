@@ -1,8 +1,8 @@
 # Setup Fedora KDE
 
-Configures a Fedora KDE workstation. Adds RPM Fusion, NordVPN, Docker, Brave, and Google Chrome repositories, then installs packages covering dev toolchains, multimedia, browsers, and system utilities. Detects NVIDIA GPUs and installs CUDA drivers with container toolkit support. Sets up Docker, Snap, Flatpak (Flathub), and NordVPN services.
+Configures a Fedora KDE workstation. It adds repositories for RPM Fusion, NordVPN, Docker, Brave, and Google Chrome, then installs packages for development, multimedia, web browsing, and system administration. For NVIDIA hardware, it installs CUDA drivers and the container toolkit. It also configures Docker, Snap, Flatpak (Flathub), and NordVPN services.
 
-Sets hostname, randomises the root password, creates an admin user in the `sudo` group, configures passwordless `sudo` for `wheel`, and installs a custom root CA certificate from the `assets` branch.
+The script sets the hostname, generates a random root password, creates an admin user in the `sudo` group, enables passwordless `sudo` for `wheel`, and imports a custom root CA certificate from the `assets` branch.
 
 **Allowed Hostnames:** `s1-dev`, `s1-dev-*`, `s2-dev`, `s2-dev-*`
 

@@ -1,6 +1,6 @@
 # Linode Stack Script
 
-Extends [Setup Debian](setup-debian.md) for Akamai/Linode VMs. Validates required Linode metadata variables (`LINODE_ID`, `LINODE_LISHUSERNAME`, `LINODE_RAM`, `LINODE_DATACENTERID`), persists them to `/etc/environment`, installs cron, and schedules itself to re-run daily at 01:00 from the latest version on GitHub. Uses a lock file to prevent concurrent executions.
+Extends [Setup Debian](setup-debian.md) for Akamai and Linode VMs. It validates required Linode metadata (`LINODE_ID`, `LINODE_LISHUSERNAME`, `LINODE_RAM`, `LINODE_DATACENTERID`), writes them to `/etc/environment`, installs cron, and schedules a daily run at 01:00 using the latest version from GitHub. A lock file prevents concurrent runs.
 
 Deployed at: [Linode Stack Script #1164660](https://cloud.linode.com/stackscripts/1164660)
 

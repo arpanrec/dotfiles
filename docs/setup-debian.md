@@ -1,6 +1,6 @@
 # Setup Debian
 
-Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md). Sets up locale, timezone, a non-root user with SSH key access, and optionally installs dotfiles, the development workspace toolchain, and Docker. Applies a lock file to prevent concurrent or duplicate runs.
+Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md). It sets up the locale, timezone, and a non-root user with SSH key access, and can install dotfiles, development workspace tools, and Docker. A lock file prevents duplicate or concurrent runs.
 
 > Any variable whose name ends with `_FILE` will be written to a file; the directory is created automatically and ownership is set to root.
 
@@ -18,7 +18,7 @@ Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playboo
 | `CLOUD_INIT_INSTALL_DOTFILES`            | `true`                                | Install dotfiles for the created user                      |
 | `CLOUD_INIT_INSTALL_DOCKER`              | `false`                               | Install Docker                                             |
 | `NEBULA_TMP_DIR`                         | `/cloudinit/.tmp`                     | Working directory for Ansible                              |
-| `NEBULA_VERSION`                         | `1.19.1`                             | Nebula playbook version                                    |
+| `NEBULA_VERSION`                         | `1.19.1`                              | Nebula playbook version                                    |
 | `NEBULA_VENV_DIR`                        | `${NEBULA_TMP_DIR}/venv`              | Python virtual environment directory                       |
 | `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`   | Authorized keys file for the created user                  |
 | `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements.yml`  | Ansible requirements file                                  |

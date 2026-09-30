@@ -41,7 +41,7 @@ find "${HOME}/.local/share/applications" -type f -name "*telegram*" -exec rm -f 
 #Name=Telegram
 #Comment=New era of messaging
 #TryExec=${HOME}/.local/share/Telegram/Telegram
-#Exec=${HOME}/.local/share/Telegram/Telegram --enable-features=UseOzonePlatform --ozone-platform=wayland --password-store=kwallet6 -- %U
+#Exec=${HOME}/.local/share/Telegram/Telegram --enable-features=UseOzonePlatform --ozone-platform=wayland --disable-features=Vulkan --password-store=kwallet6 -- %U
 #Icon=org.telegram.desktop
 #Terminal=false
 #StartupWMClass=TelegramDesktop

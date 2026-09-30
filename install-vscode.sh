@@ -92,7 +92,7 @@ Exec=${HOME}/.local/share/vscode/code --new-window %F
 Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
 EOF
 
-# --enable-features=UseOzonePlatform --ozone-platform=wayland
+# --enable-features=UseOzonePlatform --ozone-platform=wayland --disable-features=Vulkan
 tee "${HOME}/.local/share/applications/code-url-handler.desktop" <<EOF
 [Desktop Entry]
 Name=Visual Studio Code - URL Handler

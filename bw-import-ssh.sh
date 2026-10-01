@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+BW_ITEMS_JSON=""
+
+# Usage: _bw_select_one <description> <jq array path> <value> <json> [key]
+# Prints the single object whose <key> (default: name) equals <value>, within the
+# array selected by <jq array path> of <json>. Exits if there is not exactly one match.
+_bw_select_one() {
+    local description="${1}"
+    local array_path="${2}"
+    local value="${3}"
+    local json="${4}"
+    local key="${5:-name}"
+    local matches
+    matches=$(jq -c --arg value "${value}" --arg key "${key}" \
+        "[${array_path} | if type == \"array\" then .[] else . end | select(.[\$key] == \$value)]" <<<"${json}")
+    local count
+    count=$(jq 'length' <<<"${matches}")
+    if [ "${count}" -ne 1 ]; then
+        echo "Expected exactly one match for ${description}, found ${count}" >&2
+        exit 1
+    fi
+    jq -c '.[0]' <<<"${matches}"
+}
+
 ssh-install() {
 
     local bw_item_name="${1}"
@@ -21,15 +44,25 @@ ssh-install() {
 
     echo "Searching Bitwarden for item: ${bw_item_name}"
     local bw_item_json
-    bw_item_json=$(bw list items --search "${bw_item_name}" --pretty | jq '.[0]')
+    bw_item_json=$(_bw_select_one "item '${bw_item_name}'" '.' "${bw_item_name}" "${BW_ITEMS_JSON}")
     local bw_item_id
-    bw_item_id=$(echo "${bw_item_json}" | jq -r '.id')
-    local bw_field_ssh_passphrase
-    bw_field_ssh_passphrase=$(echo "${bw_item_json}" | jq -r ".fields[] | select(.name == \"${bw_field_name_ssh_passphrase}\") | .value")
+    bw_item_id=$(jq -r '.id' <<<"${bw_item_json}")
     echo "Found item ID: ${bw_item_id}"
 
+    local bw_attachment_json
+    bw_attachment_json=$(_bw_select_one "attachment '${ssh_key_file}' in item '${bw_item_name}'" \
+        '.attachments // []' "${ssh_key_file}" "${bw_item_json}" 'fileName')
+    local bw_attachment_id
+    bw_attachment_id=$(jq -r '.id' <<<"${bw_attachment_json}")
+
+    local bw_field_json
+    bw_field_json=$(_bw_select_one "field '${bw_field_name_ssh_passphrase}' in item '${bw_item_name}'" \
+        '.fields // []' "${bw_field_name_ssh_passphrase}" "${bw_item_json}" 'name')
+    local bw_field_ssh_passphrase
+    bw_field_ssh_passphrase=$(jq -r '.value' <<<"${bw_field_json}")
+
     echo "Downloading attachment '${ssh_key_file}' to ${HOME}/.ssh/${ssh_key_file}"
-    bw get attachment "${ssh_key_file}" --itemid "${bw_item_id}" --output "${HOME}/.ssh/${ssh_key_file}"
+    bw get attachment "${bw_attachment_id}" --itemid "${bw_item_id}" --output "${HOME}/.ssh/${ssh_key_file}"
     echo "Attachment downloaded"
 
     chmod 600 "${HOME}/.ssh/${ssh_key_file}"
@@ -97,6 +130,9 @@ if [ "${current_status}" != "unlocked" ]; then
     echo "Bitwarden is not unlocked, run: bw-login"
     exit 1
 fi
+
+echo "Fetching Bitwarden items"
+BW_ITEMS_JSON="$(bw list items --raw)"
 
 echo "Creating ${HOME}/.ssh if it does not exist"
 mkdir -p "${HOME}/.ssh"

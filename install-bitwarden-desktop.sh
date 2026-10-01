@@ -19,11 +19,16 @@ REPO="bitwarden/clients"
 if [[ -z "${BITWARDEN_DESKTOP_LATEST_VERSION:-}" ]]; then
     # bitwarden/clients is a monorepo (cli, browser, desktop, ...), so the
     # "latest" release endpoint may not be a desktop release. Search the most
-    # recent 100 releases for the newest desktop-v* tag instead.
+    # recent 100 releases for the newest stable desktop-v* release that ships
+    # an AppImage (prereleases and drafts are skipped).
     LATEST_DESKTOP_TAG="$(
         curl -sSLf --connect-timeout 10 --max-time 60 \
             "https://api.github.com/repos/${REPO}/releases?per_page=100&page=1" |
-            jq -r '[.[].tag_name | select(startswith("desktop-v"))] | first // empty'
+            jq -r --arg arch "${DOWNLOAD_ARCH_KEY}" '
+                [.[]
+                    | select((.prerelease | not) and (.draft | not) and (.tag_name | startswith("desktop-v")))
+                    | select(any(.assets[]; .name | endswith("-" + $arch + ".AppImage")))
+                    | .tag_name] | first // empty'
     )"
 
     if [[ -z "${LATEST_DESKTOP_TAG}" ]]; then

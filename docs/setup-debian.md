@@ -1,6 +1,6 @@
 # Setup Debian
 
-Bootstraps a Debian machine as root using the [arpanrec.nebula cloudinit playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/cloudinit.md). It sets up the locale, timezone, and a non-root user with SSH key access, and can install dotfiles, development workspace tools, and Docker. A lock file prevents duplicate or concurrent runs.
+Bootstraps a Debian machine as root using the [Ansible cloudinit playbook](https://github.com/arpanrec/ansible-collection-nebula/blob/main/playbooks/cloudinit.md). It sets up the locale, timezone, and a non-root user with SSH key access, and can install dotfiles, development workspace tools, and Docker. A lock file prevents duplicate or concurrent runs.
 
 > Any variable whose name ends with `_FILE` will be written to a file; the directory is created automatically and ownership is set to root.
 

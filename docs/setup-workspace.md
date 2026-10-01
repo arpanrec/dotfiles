@@ -1,6 +1,6 @@
 # Set Up Development Workspace
 
-Provisions a developer toolchain with Ansible using the [arpanrec.nebula server_workspace playbook](https://github.com/arpanrec/arpanrec.nebula/blob/main/playbooks/server_workspace.md). Run this script as a non-root user. When called without arguments, an interactive prompt selects which tool tags to install (Node.js, Go, Java, Vault, Terraform, Pulumi, Bitwarden SDK, uv). You can also pass custom tags and extra vars directly.
+Provisions a developer toolchain with Ansible using the [Ansible server_workspace playbook](https://github.com/arpanrec/ansible-collection-nebula/blob/main/playbooks/server_workspace.md). Run this script as a non-root user. When called without arguments, an interactive prompt selects which tool tags to install (Node.js, Go, Java, Vault, Terraform, Pulumi, Bitwarden SDK, uv). You can also pass custom tags and extra vars directly.
 
 ## Environment Variables
 

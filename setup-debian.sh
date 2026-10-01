@@ -200,7 +200,7 @@ fi
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     echo "Downloading nebula ansible requirements ${NEBULA_VERSION} file to ${NEBULA_REQUIREMENTS_FILE}"
     curl -sSL --connect-timeout 10 --max-time 10 \
-        "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+        "https://raw.githubusercontent.com/arpanrec/ansible-collection-nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
         -o "${NEBULA_REQUIREMENTS_FILE}"
 else
     echo "${NEBULA_REQUIREMENTS_FILE} already exists"
@@ -238,8 +238,8 @@ echo "Installing nebula version ${NEBULA_VERSION}"
 echo "Installing roles and collections dependencies"
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 
-echo "Installing arpanrec.nebula collection version ${NEBULA_VERSION}"
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,"${NEBULA_VERSION}"
+echo "Installing Nebula ansible collection version ${NEBULA_VERSION}"
+ansible-galaxy collection install git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
 
 echo Creating inventory file at "${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
@@ -267,7 +267,7 @@ EOF
 
 #             ansible_python_interpreter: "$(which python3)"
 
-echo Running ansible-playbook arpanrec.nebula.cloudinit
+echo Running ansible-playbook nebula cloudinit playbook.
 
 ansible-playbook arpanrec.nebula.cloudinit
 

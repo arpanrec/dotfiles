@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo "Starting"
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.cache/arpanrec.nebula"}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.cache/ansible-nebula-cache"}"
 
 export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/setup-workspace.lock"
 
@@ -167,7 +167,7 @@ echo "
 Python :: $(python --version)
 Virtual Env :: ${VIRTUAL_ENV}
 Working dir :: ${PWD}
-Installing ansible, hvac and arpanrec.nebula"
+Installing ansible, hvac and ansible collections"
 pip3 install --upgrade pip
 pip3 install setuptools-rust wheel setuptools --upgrade
 pip3 install ansible hvac httpx --upgrade
@@ -176,14 +176,14 @@ if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     echo "Downloading ${NEBULA_REQUIREMENTS_FILE}"
     mkdir -p "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
     curl -sSL --connect-timeout 10 --max-time 10 \
-        "https://raw.githubusercontent.com/arpanrec/arpanrec.nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
+        "https://raw.githubusercontent.com/arpanrec/ansible-collection-nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
         -o "${NEBULA_REQUIREMENTS_FILE}"
 else
     echo "Requirements file ${NEBULA_REQUIREMENTS_FILE} exists"
 fi
 
 ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
-ansible-galaxy collection install git+https://github.com/arpanrec/arpanrec.nebula.git,"${NEBULA_VERSION}"
+ansible-galaxy collection install git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
 
 echo "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then

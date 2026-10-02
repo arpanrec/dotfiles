@@ -1,0 +1,248 @@
+{
+    "layer": "top",
+    "position": "top",
+    // "position": "bottom",
+    "height": 34,
+    "spacing": 2,
+    "margin-top": 2,
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/window",
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "mpris",
+        "idle_inhibitor",
+        "pulseaudio",
+        "power-profiles-daemon",
+        "bluetooth",
+        // "network", // Moved to tray icon wit exec-once = nm-applet --indicator
+        // "disk",
+        // "upower",  // Use battery instate of upower
+        // Monitoring only: Start
+        // "cpu",
+        // "memory",
+        "battery",
+        // "keyboard-state",
+        // "network",
+        "clock",
+        // Monitoring only: Start
+        "tray",
+        "custom/power",
+    ],
+    "bluetooth": {
+        "format": " {status}",
+        "format-connected": " {num_connections}",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "blueman-manager",
+    },
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{icon} {name}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": false,
+        "warp-on-scroll": false,
+        "format": "{icon}: {name}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "show-special": true,
+        "format-icons": {
+            "1": "󰆍",
+            "2": "󰊯",
+            "3": "",
+            "4": "",
+            "5": "",
+            "urgent": "",
+            // "active": "󰻿",
+            "default": "",
+            "special": "󰊪",
+        },
+    },
+    "cpu": {
+        "interval": 1,
+        // "format": " {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+        "format": " {usage:>2}%",
+        "format-icons": [
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ],
+    },
+    "memory": {
+        "interval": 30,
+        "format": " {}%",
+        "max-length": 10
+    },
+    "disk": {
+        "interval": 30,
+        "format": "{percentage_free}% free on {path}",
+        // "format": "{specific_free:0.2f} GB out of {specific_total:0.2f} GB available. Alternatively {free} out of {total} available",
+        "unit": "GB"
+        // 1434.25 GB out of 2000.00 GB available. Alternatively 1.4TiB out of 1.9TiB available.
+    },
+    "upower": {
+        "icon-size": 20,
+        "hide-if-empty": true,
+        "tooltip": true,
+        "tooltip-spacing": 20
+    },
+    "hyprland/window": {
+        "format": "{title}",
+        "separate-outputs": true,
+        "expand": true,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰈹 $1",
+            "(.*) — Konsole": "󰆍 $1",
+            "(.*) - Visual Studio Code": "󰨞 $1",
+            "(.*) - Brave": "󰖟 $1",
+            "(.*) - Google Chrome": " $1",
+            "(.*)  — Kate": "󰦨 $1",
+            "(.*) — Haruna": "󱛽 $1",
+        },
+    },
+    "mpris": {
+        "format": "{player_icon} {player}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "player-icons": {
+            "default": "",
+        },
+        "status-icons": {
+            "paused": "",
+        },
+        "ignored-players": [],
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰈈",
+            "deactivated": "󰈉",
+        },
+    },
+    "tray": {
+        "spacing": 10,
+        "icons": {
+            "blueman": "bluetooth",
+        },
+    },
+    "clock": {
+        "format": "󰥔 {:%H:%M}",
+        // "format": "󰃰 {:%A, %B %d, %Y (%R)}",
+        "format-alt": "󰃰 {:%A, %B %d, %Y (%R)}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+    "battery": {
+        "states": {
+            "good": 80,
+            "warning": 30,
+            "critical": 15,
+        },
+        "format": "{icon} {capacity}%",
+        "format-full": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+    },
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+        "tooltip": true,
+        "format-icons": {
+            "default": "",
+            "performance": "󰑮",
+            "balanced": "",
+            "power-saver": "",
+        },
+    },
+    "network": {
+        "interval": 1,
+        "format": "{icon} {ifname}",
+        "format-wifi": "{icon} {essid}",
+        "format-disconnected": "{icon}",
+        "tooltip-format": "{ipaddr}/{cidr}\n{netmask}\n{bandwidthDownBytes} {bandwidthUpBytes}",
+        "tooltip-format-wifi": "{ifname}: {essid} ({frequency} GHz) {signalStrength}%\n{signaldBm} dBm\n{ipaddr}/{cidr}\n{netmask}\n{bandwidthDownBytes} {bandwidthUpBytes}",
+        "tooltip-format-disconnected": "Disconnected",
+        "max-length": 50,
+        // "min-length": 30,
+        "format-icons": {
+            "wifi": "󰖩",
+            "ethernet": "󰈀",
+            "disconnected": "",
+        },
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}% {format_source}",
+        "format-bluetooth": "{icon}  {volume}% {format_source}",
+        "format-bluetooth-muted": "󰝟 {icon}  {format_source}",
+        "format-muted": "󰝟 {format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "󰋎",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": [
+                "",
+                "",
+                ""
+            ],
+        },
+        "on-click": "pavucontrol",
+    },
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "$HOME/.config/waybar/power_menu.xml",
+        "menu-actions": {
+            "logout": "loginctl terminate-user $USER",
+            "shutdown": "systemctl poweroff",
+            "reboot": "systemctl reboot -i",
+            "suspend": "systemctl suspend",
+        },
+    },
+}

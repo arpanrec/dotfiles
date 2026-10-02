@@ -1,0 +1,91 @@
+---
+save:
+    # Hyprland session files
+    hyprland:
+        location: "$CONFIG_DIR"
+        entries:
+            - "hypr"
+    # Bar, notifications, launcher, portals
+    wayland_tools:
+        location: "$CONFIG_DIR"
+        entries:
+            - "dunst/dunstrc"
+            - "rofi/config.rasi"
+            - "waybar"
+            - "xdg-desktop-portal/portals.conf"
+            - "xsettingsd/xsettingsd.conf"
+            - "copyq/copyq-commands.ini"
+            - "copyq/copyq.conf"
+    # GTK and Qt look and feel
+    theming:
+        location: "$CONFIG_DIR"
+        entries:
+            - "Kvantum/Nordic-Custom/Nordic-Custom.kvconfig"
+            - "Kvantum/Nordic-Custom/Nordic-Custom.svg"
+            - "Kvantum/kvantum.kvconfig"
+            - "Trolltech.conf"
+            - "gtk-3.0"
+            - "gtk-4.0"
+            - "gtkrc"
+            - "gtkrc-2.0"
+            - "qt5ct/qt5ct.conf"
+            - "qt6ct/qt6ct.conf"
+    home_theming:
+        location: "$HOME"
+        entries:
+            - ".gtkrc-2.0"
+    # KDE Plasma and KDE apps
+    kde:
+        location: "$CONFIG_DIR"
+        entries:
+            - "dolphinrc"
+            - "katerc"
+            - "kcminputrc"
+            - "kded5rc"
+            - "kdeglobals"
+            - "kglobalshortcutsrc"
+            - "kleopatrarc"
+            - "konsolerc"
+            - "krunnerrc"
+            - "kscreenlockerrc"
+            - "kwinrc"
+            - "plasma-org.kde.plasma.desktop-appletsrc"
+            - "plasmarc"
+            - "powerdevilrc"
+    kde_share:
+        location: "$SHARE_DIR"
+        entries:
+            - "konsole/Nordic-Custom.colorscheme"
+            - "konsole/Nordic.colorscheme"
+            - "konsole/Sweet-Mars.colorscheme"
+            - "konsole/mainkonsole.profile"
+            - "kxmlgui5/konsole/konsoleui.rc"
+            - "kxmlgui5/konsole/sessionui.rc"
+
+    # Tied to this hardware; drop on different hardware
+    machine_specific:
+        location: "$CONFIG_DIR"
+        entries:
+            - "kanshi/config"
+            - "plasma-workspace/env/disable-triple-buffering.sh"
+# The following files will only be used for exporting and importing.
+export:
+    share_folder:
+        location: "$SHARE_DIR"
+        entries:
+            - plasma
+            - kwin
+            - konsole
+            - fonts
+            - color-schemes
+            - aurorae
+            - icons
+            - wallpapers
+            - yakuake
+
+    home_folder:
+        location: "$HOME/"
+        entries:
+            - .fonts
+            - .themes
+            - .icons

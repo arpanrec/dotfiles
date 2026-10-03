@@ -15,6 +15,13 @@ output "California Institute of Technology 0x1609 Unknown" {
     alias $S1_DEV_INTERNAL
 }
 
+output "LG Electronics LG IPS FULLHD 0x01010101" {
+    mode 1920x1080@74.97300
+    position 0,0
+    scale 1
+    alias $BLR_HOME_LG
+}
+
 profile s1-dev {
     output $S1_DEV_INTERNAL
 }
@@ -47,5 +54,18 @@ profile blr-home-s2-dev-hp-docked {
         scale 1.5
         mode 2880x1800@60.00Hz
         position 2560,240
+    }
+}
+
+profile blr-home-s1-dev-clr {
+    output $BLR_HOME_LG {
+        enable
+        position 1920,0
+    }
+    output $S2_DEV_INTERNAL {
+        enable
+        scale 1.5
+        mode 2880x1800@60.00Hz
+        position 0,0
     }
 }

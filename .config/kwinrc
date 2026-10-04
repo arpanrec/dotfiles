@@ -22,6 +22,10 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][06875b53-ab1e-4490-94bf-354519b12107][8ce9cd13-a767-4d99-bae1-52389c89d1f4]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Tiling][06875b53-ab1e-4490-94bf-354519b12107][c5ef7d5e-b5a7-40a3-9f7d-87af9b8282ad]
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
@@ -46,12 +50,16 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][a83802fa-206c-47d8-9675-53a98c261005][8ce9cd13-a767-4d99-bae1-52389c89d1f4]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Tiling][a83802fa-206c-47d8-9675-53a98c261005][c5ef7d5e-b5a7-40a3-9f7d-87af9b8282ad]
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Xwayland]
-Scale=1.65
+Scale=1.6
 
 [org.kde.kdecoration2]
 library=org.kde.kwin.aurorae.v2

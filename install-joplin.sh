@@ -68,7 +68,7 @@ Name=Joplin
 GenericName=Note Taking Application
 Comment=Open source note taking and to-do application
 Path=${INSTALL_DIRECTORY}/
-Exec=${INSTALL_DIRECTORY}/joplin.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland --password-store=kwallet6 --use-gl=angle --use-angle=gl %U
+Exec=${INSTALL_DIRECTORY}/joplin.AppImage --enable-features=UseOzonePlatform --ozone-platform=wayland  %U
 Icon=${INSTALL_DIRECTORY}/joplin.png
 Categories=Office;Utility;
 StartupNotify=true

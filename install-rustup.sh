@@ -4,7 +4,8 @@ set -euo pipefail
 echo "Starting"
 
 echo "Installing Rust"
-curl --proto '=https' --tlsv1.2 -sSf --connect-timeout 10 --max-time 300 https://sh.rustup.rs | sh -s -- -y --profile complete --verbose
+curl --proto '=https' --tlsv1.2 -sSf --connect-timeout 10 --max-time 300 https://sh.rustup.rs |
+    sh -s -- -y --profile default --verbose
 
 echo "Setting up Rust environment"
 

@@ -74,6 +74,7 @@ All installers download to `~/.cache/dotfiles-tmp-download-dir` and skip re-down
 - [Install Rustup](docs/install-rustup.md): Rust toolchain with cargo-binstall extras
 - [Install Antigravity CLI](docs/install-antigravity-cli.md): Antigravity CLI
 - [Install Antigravity IDE](docs/install-antigravity-ide.md): Antigravity IDE with extensions
+- [Install Claude Code](docs/install-claude-code.md): Claude Code CLI
 - [Install Neovim](docs/install-neovim.md): Build Neovim from source
 - [Install Visual Studio Code](docs/install-vscode.md): VS Code with extensions
 - [Install JetBrains Toolbox](docs/install-jetbrains-toolbox.md): JetBrains Toolbox app

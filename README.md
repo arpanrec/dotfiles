@@ -12,8 +12,8 @@ Several configurations are hardcoded outside of session manager directories:
 | `.config/brave-flags.conf`                                     | Password store pinned to `kwallet6`                                   |
 | `.config/xdg-desktop-portal/portals.conf`                      | FileChooser pinned to KDE portal                                      |
 | `.local/share/dbus-1/services/org.freedesktop.secrets.service` | Secret manager pinned to `/usr/bin/kwalletd6`                         |
-| `install-vscode.sh`                                            | Password store pinned to `kwallet5` in `~/.vscode/argv.json`          |
-| `install-antigravity-ide.sh`                                   | Password store pinned to `kwallet5` in `~/.antigravity-ide/argv.json` |
+| `install-vscode`                                               | Password store pinned to `kwallet5` in `~/.vscode/argv.json`          |
+| `install-antigravity-ide`                                      | Password store pinned to `kwallet5` in `~/.antigravity-ide/argv.json` |
 
 ## Repository branches
 
@@ -37,13 +37,13 @@ Clones the repository as a bare git repository into `~/.dotfiles`, checks out th
 ```bash
 export CLEAN_DOT_INSTALL=no
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles)
 ```
 
 Clean reinstall (removes existing dotfiles bare repo and shell frameworks before installing):
 
 ```bash
-CLEAN_DOT_INSTALL=yes bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
+CLEAN_DOT_INSTALL=yes bash <(curl -sSL --connect-timeout 10 --max-time 10 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles)
 ```
 
 ---
@@ -89,11 +89,11 @@ All installers download to `~/.cache/dotfiles-tmp-download-dir` and skip re-down
 
 ## Bitwarden Utilities
 
-These scripts require `bw` (Bitwarden CLI) to be installed and unlocked. Run `bw-login.sh` first.
+These scripts require `bw` (Bitwarden CLI) to be installed and unlocked. Run `bw-login` first.
 
-- [bw-login.sh](docs/bw-login.md): Bitwarden CLI authentication flow
-- [bw-import-ssh.sh](docs/bw-import-ssh.md): Import SSH keys from Bitwarden vault
-- [bw-import-gpg.sh](docs/bw-import-gpg.md): Import GPG key from Bitwarden vault
+- [bw-login](docs/bw-login.md): Bitwarden CLI authentication flow
+- [bw-import-ssh](docs/bw-import-ssh.md): Import SSH keys from Bitwarden vault
+- [bw-import-gpg](docs/bw-import-gpg.md): Import GPG key from Bitwarden vault
 
 ---
 

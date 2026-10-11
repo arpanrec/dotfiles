@@ -15,5 +15,5 @@ A temporary unprivileged build user installs AUR packages (yay, NordVPN, Brave, 
 ## Usage
 
 ```bash
-bash setup-arch-workstation.sh
+bash setup-arch-workstation
 ```

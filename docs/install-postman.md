@@ -8,5 +8,5 @@ Downloads the Postman tarball. The version is pinned in the script (`12.11.3`). 
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-postman.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-postman)
 ```

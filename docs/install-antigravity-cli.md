@@ -8,5 +8,5 @@ Downloads the latest Antigravity CLI release for the detected architecture from 
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-antigravity-cli.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-antigravity-cli)
 ```

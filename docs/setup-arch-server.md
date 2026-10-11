@@ -17,5 +17,5 @@ Configures an Arch Linux base system from `arch-chroot` or on a running machine.
 ## Usage
 
 ```bash
-bash setup-arch-server.sh [hostname]
+bash setup-arch-server [hostname]
 ```

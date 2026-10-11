@@ -8,5 +8,5 @@ Downloads the latest TriliumNext AppImage from GitHub Releases, extracts the bun
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-trilium.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-trilium)
 ```

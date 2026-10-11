@@ -39,6 +39,6 @@ set -euo pipefail
 # <udf name="CLOUD_INIT_WEB_SERVER_FQDN" label="Web server fully qualified domain name" example="example.com" default=""/>
 
 /bin/bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/linode-stack-script.sh) |
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/linode-stack-script) |
     tee -a /root/linode-stack-script.log
 ```

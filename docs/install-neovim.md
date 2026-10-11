@@ -15,5 +15,5 @@ Fetches the latest Neovim release tag, clones the source, and builds with `CMAKE
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-neovim.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-neovim)
 ```

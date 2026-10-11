@@ -1,4 +1,4 @@
-# bw-import-gpg.sh
+# bw-import-gpg
 
 Imports a GPG private key from a Bitwarden vault attachment, sets the key's trust level to ultimate, and ensures `~/.gnupg` has correct permissions.
 

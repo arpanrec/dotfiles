@@ -43,5 +43,5 @@ The script sets the hostname, generates a random root password, creates an admin
 ## Usage
 
 ```bash
-sudo bash setup-fedora-kde.sh [hostname]
+sudo bash setup-fedora-kde [hostname]
 ```

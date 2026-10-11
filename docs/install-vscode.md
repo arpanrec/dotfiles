@@ -8,5 +8,5 @@ Downloads the latest stable VS Code tarball, extracts it to `~/.local/share/vsco
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-vscode.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-vscode)
 ```

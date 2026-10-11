@@ -6,5 +6,5 @@ Installs Rust via `rustup` with the `complete` profile, then installs `cargo-bin
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-rustup.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-rustup)
 ```

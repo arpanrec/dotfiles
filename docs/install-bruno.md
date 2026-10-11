@@ -8,5 +8,5 @@ Downloads the latest Bruno API client AppImage from GitHub Releases, extracts th
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bruno.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bruno)
 ```

@@ -14,5 +14,5 @@ Downloads the latest Bitwarden Desktop AppImage. Because `bitwarden/clients` is 
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bitwarden-desktop.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-bitwarden-desktop)
 ```

@@ -1,4 +1,4 @@
-# bw-login.sh
+# bw-login
 
 Manages the Bitwarden CLI authentication flow: checks the current status (`unauthenticated`, `locked`, or `unlocked`), supports API key or email login, unlocks the vault, and can save credentials and the session token to a file (default: `~/.env`).
 

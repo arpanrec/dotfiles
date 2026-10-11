@@ -18,5 +18,5 @@ Installs GTK, KDE Plasma, icon, cursor, and font assets. It checks for GNOME She
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-themes.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-themes)
 ```

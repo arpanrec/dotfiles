@@ -8,5 +8,5 @@ Downloads the latest DBeaver CE tarball from dbeaver.io, verifies the SHA-256 ch
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dbeaver-community.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dbeaver-community)
 ```

@@ -8,5 +8,5 @@ Downloads the latest stable Antigravity IDE standalone tarball, extracts it to `
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-antigravity-ide.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-antigravity-ide)
 ```

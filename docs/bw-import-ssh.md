@@ -1,4 +1,4 @@
-# bw-import-ssh.sh
+# bw-import-ssh
 
 Pulls SSH private keys interactively from a Bitwarden vault and writes them to `~/.ssh/`. For each key, it supports overwrite protection, passphrase removal, public key generation, and PPK conversion (requires `puttygen`).
 

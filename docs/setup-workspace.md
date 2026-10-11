@@ -19,13 +19,13 @@ Provisions a developer toolchain with Ansible using the [Ansible server_workspac
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-workspace.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-workspace)
 ```
 
 With custom tags and extra vars:
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-workspace.sh) \
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-workspace) \
     --tags all,code --extra-vars='pv_ua_nodejs_version=16 pv_ua_code_version=1.64.2'
 ```

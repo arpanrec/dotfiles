@@ -303,12 +303,12 @@ export LOGNAME="${CLOUD_INIT_USER}"
 
 if [ "${CLOUD_INIT_INSTALL_DOTFILES}" = true ]; then
     bash <(curl -sSLf --connect-timeout 10 --max-time 10 \
-        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles.sh)
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-dotfiles)
 fi
 
 if [ "${CLOUD_INIT_IS_DEV_MACHINE}" = true ]; then
     bash <(curl -sSLf --connect-timeout 10 --max-time 10 \
-        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-workspace.sh) \
+        https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/setup-workspace) \
         --tags all
 fi
 

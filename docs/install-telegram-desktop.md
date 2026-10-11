@@ -8,5 +8,5 @@ Downloads the latest Telegram Desktop tarball from GitHub Releases, extracts it 
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-telegram-desktop.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-telegram-desktop)
 ```

@@ -8,5 +8,5 @@ Fetches the latest Toolbox release metadata from the JetBrains API, downloads th
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-jetbrains-toolbox.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-jetbrains-toolbox)
 ```

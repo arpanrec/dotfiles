@@ -14,5 +14,5 @@ Downloads the latest Nextcloud Desktop AppImage from GitHub Releases, extracts t
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-nextcloud-desktop.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-nextcloud-desktop)
 ```

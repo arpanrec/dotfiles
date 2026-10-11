@@ -8,5 +8,5 @@ Downloads the latest Joplin Desktop AppImage from GitHub Releases, extracts the 
 
 ```bash
 bash <(curl -sSL --connect-timeout 10 --max-time 10 \
-    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-joplin.sh)
+    https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/main/install-joplin)
 ```

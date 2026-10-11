@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TOOLBOX_DIR="${HOME}/.local/share/jetbrains-toolbox"
+INSTALL_DIRECTORY="${HOME}/.local/share/jetbrains-toolbox"
 
 echo "Detect architecture"
 CURRENT_ARCH="$(uname -m)"
@@ -83,20 +83,20 @@ fi
 
 echo "Checksum OK ✔"
 
-rm -rf "${TOOLBOX_DIR}"
-mkdir -p "${TOOLBOX_DIR}"
+rm -rf "${INSTALL_DIRECTORY}"
+mkdir -p "${INSTALL_DIRECTORY}"
 
-tar -xzvf "${ARCHIVE}" --strip-components=1 -C "${TOOLBOX_DIR}"
+tar -xzvf "${ARCHIVE}" --strip-components=1 -C "${INSTALL_DIRECTORY}"
 
 # Sanity check
-if [[ ! -x "${TOOLBOX_DIR}/bin/jetbrains-toolbox" ]]; then
+if [[ ! -x "${INSTALL_DIRECTORY}/bin/jetbrains-toolbox" ]]; then
     echo "Extraction failed: jetbrains-toolbox binary not found"
     exit 1
 fi
 
-rm -f "${TOOLBOX_DIR}/bin/jetbrains-toolbox.desktop"
+rm -f "${INSTALL_DIRECTORY}/bin/jetbrains-toolbox.desktop"
 
 echo
 echo "✅ JetBrains Toolbox installed successfully!"
-echo "Running: ${TOOLBOX_DIR}/bin/jetbrains-toolbox"
-"${TOOLBOX_DIR}/bin/jetbrains-toolbox"
+echo "Running: ${INSTALL_DIRECTORY}/bin/jetbrains-toolbox"
+"${INSTALL_DIRECTORY}/bin/jetbrains-toolbox"

@@ -26,9 +26,11 @@ fi
 echo "Installing Visual Studio Code version ${VSCODE_LATEST_VERSION}"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
+INSTALL_DIRECTORY="${HOME}/.local/share/vscode"
+APPLICATION_DIRECTORY="${HOME}/.local/share/applications"
 
-rm -rf "${HOME}/.local/share/vscode"
-mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/vscode" "${HOME}/.local/share/applications/" \
+rm -rf "${INSTALL_DIRECTORY}"
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${INSTALL_DIRECTORY}" "${APPLICATION_DIRECTORY}" \
     "${HOME}/.local/bin"
 
 CURRENT_ARCH="$(uname -m)"
@@ -57,17 +59,17 @@ else
 fi
 
 tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" \
-    -C "${HOME}/.local/share/vscode" \
+    -C "${INSTALL_DIRECTORY}" \
     --strip-components=1
 
-tee "${HOME}/.local/share/applications/code.desktop" <<EOF
+tee "${APPLICATION_DIRECTORY}/code.desktop" <<EOF
 [Desktop Entry]
 Version=1.0
 Name=Visual Studio Code
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-Exec=${HOME}/.local/share/vscode/code %F
-Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
+Exec=${INSTALL_DIRECTORY}/code %F
+Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 Type=Application
 StartupNotify=false
 StartupWMClass=Code
@@ -88,18 +90,18 @@ Name[ko]=새 빈 창
 Name[ru]=Новое пустое окно
 Name[zh_CN]=新建空窗口
 Name[zh_TW]=開新空視窗
-Exec=${HOME}/.local/share/vscode/code --new-window %F
-Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
+Exec=${INSTALL_DIRECTORY}/code --new-window %F
+Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 EOF
 
 # --enable-features=UseOzonePlatform --ozone-platform=wayland
-tee "${HOME}/.local/share/applications/code-url-handler.desktop" <<EOF
+tee "${APPLICATION_DIRECTORY}/code-url-handler.desktop" <<EOF
 [Desktop Entry]
 Name=Visual Studio Code - URL Handler
 Comment=Code Editing. Redefined.
 GenericName=Text Editor
-Exec=${HOME}/.local/share/vscode/code --open-url %U
-Icon=${HOME}/.local/share/vscode/resources/app/resources/linux/code.png
+Exec=${INSTALL_DIRECTORY}/code --open-url %U
+Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 Type=Application
 NoDisplay=true
 StartupNotify=true
@@ -109,7 +111,7 @@ Keywords=vscode;
 EOF
 
 rm -f "${HOME}/.local/bin/code"
-ln -s "${HOME}/.local/share/vscode/bin/code" "${HOME}/.local/bin/code"
+ln -s "${INSTALL_DIRECTORY}/bin/code" "${HOME}/.local/bin/code"
 
 echo "Visual Studio Code installed successfully! :"
 "${HOME}/.local/bin/code" --version

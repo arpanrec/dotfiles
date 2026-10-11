@@ -10,11 +10,14 @@ if [[ -z "${DBEAVER_COMMUNITY_LATEST_VERSION}" || "${DBEAVER_COMMUNITY_LATEST_VE
     exit 1
 fi
 
-rm -rf "${HOME}/.local/share/dbeaver-ce"
+INSTALL_DIRECTORY="${HOME}/.local/share/dbeaver-ce"
+APPLICATION_DIRECTORY="${HOME}/.local/share/applications"
+
+rm -rf "${INSTALL_DIRECTORY}"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 
-mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/share/dbeaver-ce" "${HOME}/.local/share/applications/"
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${INSTALL_DIRECTORY}" "${APPLICATION_DIRECTORY}"
 echo "Downloading DBeaver version ${DBEAVER_COMMUNITY_LATEST_VERSION} for $(uname -m) architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
 if [[ ! -f "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz" ]]; then
@@ -44,13 +47,13 @@ else
 fi
 
 tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/dbeaver-ce-${DBEAVER_COMMUNITY_LATEST_VERSION}-linux-$(uname -m).tar.gz" \
-    -C "${HOME}/.local/share/dbeaver-ce" \
+    -C "${INSTALL_DIRECTORY}" \
     --strip-components=1
 
-#mv "${HOME}/.local/share/dbeaver-ce/dbeaver-ce.desktop" "${HOME}/.local/share/applications/dbeaver.desktop"
-#sed -i "s|/usr/share|${HOME}/.local/share|g" "${HOME}/.local/share/applications/dbeaver.desktop"
+#mv "${INSTALL_DIRECTORY}/dbeaver-ce.desktop" "${APPLICATION_DIRECTORY}/dbeaver.desktop"
+#sed -i "s|/usr/share|${HOME}/.local/share|g" "${APPLICATION_DIRECTORY}/dbeaver.desktop"
 
-tee "${HOME}/.local/share/applications/dbeaver.desktop" <<EOF
+tee "${APPLICATION_DIRECTORY}/dbeaver.desktop" <<EOF
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -58,10 +61,10 @@ Terminal=false
 Name=dbeaver-ce
 GenericName=Universal Database Manager
 Comment=Universal Database Manager and SQL Client.
-Path=${HOME}/.local/share/dbeaver-ce/
+Path=${INSTALL_DIRECTORY}/
 # GDK_BACKEND=x11
-Exec=env NO_AT_BRIDGE=1 GDK_SCALE=1 GDK_DPI_SCALE=1 ${HOME}/.local/share/dbeaver-ce/dbeaver %U
-Icon=${HOME}/.local/share/dbeaver-ce/dbeaver.png
+Exec=env NO_AT_BRIDGE=1 GDK_SCALE=1 GDK_DPI_SCALE=1 ${INSTALL_DIRECTORY}/dbeaver %U
+Icon=${INSTALL_DIRECTORY}/dbeaver.png
 Categories=IDE;Development
 StartupWMClass=DBeaver
 StartupNotify=true

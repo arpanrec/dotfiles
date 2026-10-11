@@ -44,10 +44,11 @@ echo "Installing Antigravity IDE version ${ANTIGRAVITY_IDE_LATEST_VERSION}"
 
 TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
 INSTALL_DIRECTORY="${HOME}/.local/share/antigravity-ide"
+APPLICATION_DIRECTORY="${HOME}/.local/share/applications"
 TARBALL_FILE="${TMP_DOWNLOAD_DIRECTORY}/antigravity-ide-${ANTIGRAVITY_IDE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
 
 rm -rf "${INSTALL_DIRECTORY}"
-mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${INSTALL_DIRECTORY}" "${HOME}/.local/share/applications" "${HOME}/.local/bin"
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${INSTALL_DIRECTORY}" "${APPLICATION_DIRECTORY}" "${HOME}/.local/bin"
 
 echo "Downloading Antigravity IDE version ${ANTIGRAVITY_IDE_LATEST_VERSION} for ${CURRENT_ARCH} architecture to ${TMP_DOWNLOAD_DIRECTORY}"
 
@@ -63,13 +64,13 @@ tar -xzvf "${TARBALL_FILE}" \
 
 touch "${HOME}/.exporterrc"
 
-tee "${HOME}/.local/share/applications/antigravity-ide.desktop" <<EOF
+tee "${APPLICATION_DIRECTORY}/antigravity-ide.desktop" <<EOF
 [Desktop Entry]
 Version=1.0
 Name=Antigravity IDE
 Comment=Experience liftoff
 GenericName=Text Editor
-Exec="${INSTALL_DIRECTORY}/bin/antigravity-ide" %F
+Exec="${INSTALL_DIRECTORY}/antigravity-ide" %F
 Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 Type=Application
 StartupNotify=false
@@ -81,16 +82,16 @@ Keywords=vscode;antigravity;ide;
 
 [Desktop Action new-empty-window]
 Name=New Empty Window
-Exec="${INSTALL_DIRECTORY}/bin/antigravity-ide" --new-window %F
+Exec="${INSTALL_DIRECTORY}/antigravity-ide" --new-window %F
 Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 EOF
 
-tee "${HOME}/.local/share/applications/antigravity-ide-url-handler.desktop" <<EOF
+tee "${APPLICATION_DIRECTORY}/antigravity-ide-url-handler.desktop" <<EOF
 [Desktop Entry]
 Name=Antigravity IDE - URL Handler
 Comment=Experience liftoff
 GenericName=Text Editor
-Exec="${INSTALL_DIRECTORY}/bin/antigravity-ide" --open-url %U
+Exec="${INSTALL_DIRECTORY}/antigravity-ide" --open-url %U
 Icon=${INSTALL_DIRECTORY}/resources/app/resources/linux/code.png
 Type=Application
 NoDisplay=true

@@ -11,13 +11,13 @@
         "context": [
             { "key": "last_command", "operator": "equal", "operand": "insert_best_completion" },
             { "key": "auto_complete_visible", "operator": "equal", "operand": false },
-            { "key": "setting.tab_completion", "operator": "equal", "operand": true }
-        ]
+            { "key": "setting.tab_completion", "operator": "equal", "operand": true },
+        ],
     },
     {
         "keys": ["ctrl+d"],
         "command": "run_macro_file",
-        "args": { "file": "Packages/Default/Delete Line.sublime-macro" }
+        "args": { "file": "Packages/Default/Delete Line.sublime-macro" },
     },
     { "keys": ["ctrl+shift+c"], "command": "toggle_comment", "args": { "block": false } },
     { "keys": ["ctrl+shift+c"], "command": "toggle_comment", "args": { "block": true } },
@@ -30,5 +30,5 @@
     { "keys": ["ctrl+l"], "command": "show_overlay", "args": { "overlay": "goto", "text": ":" } },
     { "keys": ["shift+ctrl+f4"], "command": "close_all" },
     { "keys": ["shift+ctrl+y"], "command": "lower_case" },
-    { "keys": ["shift+ctrl+x"], "command": "upper_case" }
+    { "keys": ["shift+ctrl+x"], "command": "upper_case" },
 ]

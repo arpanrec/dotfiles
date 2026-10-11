@@ -100,8 +100,8 @@ MimeType=x-scheme-handler/antigravity-ide;
 Keywords=vscode;antigravity;ide;
 EOF
 
-rm -f "${HOME}/.local/bin/antigravity-ide"
-ln -s "${INSTALL_DIRECTORY}/bin/antigravity-ide" "${HOME}/.local/bin/antigravity-ide"
+rm -f "${HOME}/.local/bin/antigravity"
+ln -s "${INSTALL_DIRECTORY}/bin/antigravity-ide" "${HOME}/.local/bin/antigravity"
 
 mkdir -p "${HOME}/.antigravity-ide"
 tee "${HOME}/.antigravity-ide/argv.json" <<EOF
@@ -112,7 +112,7 @@ tee "${HOME}/.antigravity-ide/argv.json" <<EOF
 EOF
 
 echo "Antigravity IDE installed successfully!"
-"${HOME}/.local/bin/antigravity-ide" --version
+"${HOME}/.local/bin/antigravity" --version
 
 # VS Code extensions to be installed
 CODE_EXTENSIONS=(
@@ -157,7 +157,7 @@ CODE_EXTENSIONS=(
 echo "Installing Antigravity IDE extensions..."
 
 # Get currently installed extensions (lowercased for comparison)
-INSTALLED_EXTENSIONS="$("${HOME}/.local/bin/antigravity-ide" --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+INSTALLED_EXTENSIONS="$("${HOME}/.local/bin/antigravity" --list-extensions 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 
 install_extension() {
     local ext="$1"
@@ -166,7 +166,7 @@ install_extension() {
     local attempt=1
 
     while ((attempt <= retries)); do
-        if "${HOME}/.local/bin/antigravity-ide" --install-extension "$ext" >/dev/null 2>&1; then
+        if "${HOME}/.local/bin/antigravity" --install-extension "$ext" >/dev/null 2>&1; then
             echo "✔ Installed: $ext"
             return 0
         fi

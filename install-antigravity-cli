@@ -56,8 +56,8 @@ fi
 
 chmod +x "${INSTALL_DIRECTORY}/antigravity"
 
-rm -f "${HOME}/.local/bin/antigravity"
-ln -s "${INSTALL_DIRECTORY}/antigravity" "${HOME}/.local/bin/antigravity"
+rm -f "${HOME}/.local/bin/agy"
+ln -s "${INSTALL_DIRECTORY}/antigravity" "${HOME}/.local/bin/agy"
 
 echo "Antigravity CLI installed successfully!"
-"${HOME}/.local/bin/antigravity" --version
+"${HOME}/.local/bin/agy" --version

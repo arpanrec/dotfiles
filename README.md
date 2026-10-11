@@ -13,7 +13,7 @@ Several configurations are hardcoded outside of session manager directories:
 | `.config/xdg-desktop-portal/portals.conf`                      | FileChooser pinned to KDE portal                                      |
 | `.local/share/dbus-1/services/org.freedesktop.secrets.service` | Secret manager pinned to `/usr/bin/kwalletd6`                         |
 | `install-vscode`                                               | Password store pinned to `kwallet5` in `~/.vscode/argv.json`          |
-| `install-antigravity-ide`                                      | Password store pinned to `kwallet5` in `~/.antigravity-ide/argv.json` |
+| `install-antigravity`                                          | Password store pinned to `kwallet5` in `~/.antigravity-ide/argv.json` |
 
 ## Repository branches
 
@@ -73,7 +73,7 @@ All installers download to `~/.cache/dotfiles-tmp-download-dir` and skip re-down
 - [Install Themes](docs/install-themes.md): GTK, KDE, icon, cursor, and font assets
 - [Install Rustup](docs/install-rustup.md): Rust toolchain with cargo-binstall extras
 - [Install Antigravity CLI](docs/install-antigravity-cli.md): Antigravity CLI
-- [Install Antigravity IDE](docs/install-antigravity-ide.md): Antigravity IDE with extensions
+- [Install Antigravity IDE](docs/install-antigravity.md): Antigravity IDE with extensions
 - [Install Claude Code](docs/install-claude-code.md): Claude Code CLI
 - [Install Neovim](docs/install-neovim.md): Build Neovim from source
 - [Install Visual Studio Code](docs/install-vscode.md): VS Code with extensions

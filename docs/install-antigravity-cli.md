@@ -1,6 +1,6 @@
 # [Install Antigravity CLI](https://github.com/google-antigravity/antigravity-cli)
 
-Downloads the latest Antigravity CLI release for the detected architecture from GitHub Releases and links the `antigravity` binary into `~/.local/bin`.
+Downloads the latest Antigravity CLI release for the detected architecture from GitHub Releases and links the `antigravity` binary into `~/.local/bin` as `agy`.
 
 **Supported architectures:** `x86_64`, `aarch64`
 

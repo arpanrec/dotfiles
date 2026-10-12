@@ -486,14 +486,5 @@
         "key": "f4",
         "command": "java.action.showTypeHierarchy",
         "when": "editorLangId == java && editorTextFocus"
-    },
-    {
-        "key": "ctrl+a",
-        "command": "antigravity.toggleChatFocus"
-    },
-    {
-        "key": "ctrl+l",
-        "command": "-antigravity.toggleChatFocus",
-        "when": "!terminalFocus"
     }
 ]

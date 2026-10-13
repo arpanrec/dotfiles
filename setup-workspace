@@ -7,6 +7,9 @@ export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.cache/ansible-nebula-cache"}"
 
 export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/setup-workspace.lock"
 
+export UV_INSTALL_DIR="${NEBULA_TMP_DIR}/uv"
+export UV_NO_MODIFY_PATH=1
+
 if [[ -f "${SERVER_WORKSPACE_LOCK_FILE}" ]]; then
     echo "Lock file ${SERVER_WORKSPACE_LOCK_FILE} exists, Exiting"
     exit 1
@@ -20,13 +23,8 @@ if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
     echo "Root user detected, Please run this script as a non-root user, Exiting"
     exit 1
 fi
-
-if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-    echo "Virtual environment is not activated"
-else
-    echo "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
-    exit 1
-fi
+export PATH="${UV_INSTALL_DIR}:${PATH}"
+curl -LsSf https://astral.sh/uv/install.sh | bash
 
 if [[ -z $* ]]; then
 
@@ -115,17 +113,15 @@ else
     echo "Running with custom tags :: $*"
 fi
 
-export PATH="${HOME}/.local/bin:${PATH}"
-
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.19.2"}"
-export NEBULA_VENV_DIR="${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"}"
+export NEBULA_PYTHON_VERSION="${NEBULA_PYTHON_VERSION:-"3.14.8"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
 echo "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
-NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
+NEBULA_PYTHON_VERSION: ${NEBULA_PYTHON_VERSION}
 NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}
 NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}"
 
@@ -145,32 +141,8 @@ echo Creating NEBULA_TMP_DIR at "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_V
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
     "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
 
-# shellcheck source=/dev/null
-if [[ ! -d "${NEBULA_VENV_DIR}" ]]; then
-    python3 -m venv "${NEBULA_VENV_DIR}"
-    echo "Virtual Environment created at ${NEBULA_VENV_DIR}"
-else
-    echo "Virtual Environment already exists at ${NEBULA_VENV_DIR}"
-fi
-
-if [[ -f "${NEBULA_VENV_DIR}/local/bin/activate" ]]; then
-    echo "Activating ${NEBULA_VENV_DIR}/local/bin/activate"
-    # shellcheck source=/dev/null
-    source "${NEBULA_VENV_DIR}/local/bin/activate"
-else
-    echo "Activating ${NEBULA_VENV_DIR}/bin/activate"
-    # shellcheck source=/dev/null
-    source "${NEBULA_VENV_DIR}/bin/activate"
-fi
-
-echo "
-Python :: $(python --version)
-Virtual Env :: ${VIRTUAL_ENV}
-Working dir :: ${PWD}
-Installing ansible, hvac and ansible collections"
-pip3 install --upgrade pip
-pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible hvac httpx --upgrade
+__uvx_ansible=(uvx --python "${NEBULA_PYTHON_VERSION}" --from ansible-core --with ansible --with hvac --with httpx
+    --with requests)
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
     echo "Downloading ${NEBULA_REQUIREMENTS_FILE}"
@@ -182,8 +154,9 @@ else
     echo "Requirements file ${NEBULA_REQUIREMENTS_FILE} exists"
 fi
 
-ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
-ansible-galaxy collection install git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
+"${__uvx_ansible[@]}" ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
+"${__uvx_ansible[@]}" ansible-galaxy collection install \
+    git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
 
 echo "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then
@@ -208,16 +181,16 @@ all:
     hosts:
         localhost:
             ansible_connection: local
-            ansible_python_interpreter: "$(which python3)"
+            ansible_python_interpreter: "{{ ansible_playbook_python }}"
 EOF
 
 cd "${HOME}" || exit 1
 
 if [[ -n "${__ansible_tags:-}" && -z $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
+    "${__uvx_ansible[@]}" ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
         --tags "${__ansible_tags}"
 elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
-    ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
+    "${__uvx_ansible[@]}" ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
 else
     echo "Not sure what to do, Exiting"
     exit 1

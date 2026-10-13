@@ -20,13 +20,6 @@ export LANG="en_GB.UTF-8"
 
 echo "Starting"
 
-if [[ -z "${VIRTUAL_ENV:-}" ]]; then
-    echo "Virtual environment is not activated"
-else
-    echo "Already in python virtual environment ${VIRTUAL_ENV}, deactivate and run again, exiting"
-    exit 1
-fi
-
 if [ "$(id -u)" -ne 0 ]; then
     echo "Please run as root, exiting"
     exit 1
@@ -117,6 +110,8 @@ fi
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/cloudinit/.tmp"}"
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR%/}" # Remove trailing slash if exists
 export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/setup-debian.lock"
+export UV_INSTALL_DIR="${NEBULA_TMP_DIR}/uv"
+export UV_NO_MODIFY_PATH=1
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
     echo "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
@@ -130,7 +125,11 @@ fi
 echo "Installing locales and setting timezone"
 apt-get update
 apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip \
-    sudo bash python3-venv python3-pip vim python3-requests python3-httpx
+    sudo bash python3-pip vim python3-requests python3-httpx
+
+echo "Installing uv at ${UV_INSTALL_DIR}"
+export PATH="${UV_INSTALL_DIR}:${PATH}"
+curl -LsSf https://astral.sh/uv/install.sh | bash
 
 export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf --connect-timeout 10 --max-time 60 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
@@ -155,33 +154,26 @@ sed -i '/^EDITOR=.*/d' /etc/environment
 echo "EDITOR=vim" | tee -a /etc/environment
 
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.19.2"}"
-export NEBULA_VENV_DIR=${NEBULA_VENV_DIR:-"${NEBULA_TMP_DIR}/venv"} # Do not create this directory if it does not exist, it will be created by `python3 -m venv`
+export NEBULA_PYTHON_VERSION="${NEBULA_PYTHON_VERSION:-"3.14.8"}"
 export NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE="${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE:-"${NEBULA_TMP_DIR}/authorized_keys"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
 echo "
 NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
 NEBULA_VERSION: ${NEBULA_VERSION}
-NEBULA_VENV_DIR: ${NEBULA_VENV_DIR}
+NEBULA_PYTHON_VERSION: ${NEBULA_PYTHON_VERSION}
 NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE: ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}
 NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
 
 Creating directories if not exists and changing ownership to root:root"
 
-if [ -d "${NEBULA_VENV_DIR}" ]; then
-    echo "Virtual environment already exists at ${NEBULA_VENV_DIR}"
-else
-    echo "Creating virtual environment at ${NEBULA_VENV_DIR}"
-    python3 -m venv "${NEBULA_VENV_DIR}"
-fi
-
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" \
     "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
-echo Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+echo Changing ownership of "${NEBULA_TMP_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
     to root:root
-chown -R root:root "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+chown -R root:root "${NEBULA_TMP_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 echo "Creating authorized_keys file at ${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}"
@@ -224,22 +216,16 @@ mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_
 chown -R root:root "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
     "$(dirname "${ANSIBLE_INVENTORY}")"
 
-echo "Activating virtual environment at ${NEBULA_VENV_DIR}"
-# shellcheck source=/dev/null
-source "${NEBULA_VENV_DIR}/bin/activate"
-
-echo "Installing ansible and hvac using pip3"
-pip3 install --upgrade pip
-pip3 install setuptools-rust wheel setuptools --upgrade
-pip3 install ansible hvac httpx requests --upgrade
+__uvx_ansible=(uvx --python "${NEBULA_PYTHON_VERSION}" --from ansible-core --with ansible --with hvac --with httpx
+    --with requests)
 
 echo "Installing nebula version ${NEBULA_VERSION}"
 
 echo "Installing roles and collections dependencies"
-ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
+"${__uvx_ansible[@]}" ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
 
 echo "Installing Nebula ansible collection version ${NEBULA_VERSION}"
-ansible-galaxy collection install git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
+"${__uvx_ansible[@]}" ansible-galaxy collection install git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
 
 echo Creating inventory file at "${ANSIBLE_INVENTORY}"
 tee "${ANSIBLE_INVENTORY}" <<EOF >/dev/null
@@ -269,16 +255,12 @@ EOF
 
 echo Running ansible-playbook nebula cloudinit playbook.
 
-ansible-playbook arpanrec.nebula.cloudinit
+"${__uvx_ansible[@]}" ansible-playbook arpanrec.nebula.cloudinit
 
-echo Deactivating virtual environment at "${NEBULA_VENV_DIR}"
-
-deactivate
-
-echo Changing ownership of "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+echo Changing ownership of "${NEBULA_TMP_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")" \
     to "${CLOUD_INIT_USER}:${CLOUD_INIT_GROUP}"
-chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" "${NEBULA_VENV_DIR}" \
+chown -R "${CLOUD_INIT_USER}":"${CLOUD_INIT_GROUP}" "${NEBULA_TMP_DIR}" \
     "$(dirname "${NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE}")" "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 echo Changing ownership of "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \

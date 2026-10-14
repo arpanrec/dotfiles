@@ -247,5 +247,6 @@
     },
     "network.meteredConnection": "off",
     "google.cloud.billingQuotaProject": "personalappsonlocal",
-    "http.systemCertificatesNode": true
+    "http.systemCertificatesNode": true,
+    "extensions.autoUpdate": false
 }

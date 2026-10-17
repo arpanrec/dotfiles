@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BRUNO_LATEST_VERSION="$(
-    curl -sSLf --connect-timeout 10 --max-time 60 \
-        "https://api.github.com/repos/usebruno/bruno/releases/latest" |
-        jq -r ".tag_name"
-)"
+if [[ -z "${BRUNO_LATEST_VERSION:-}" ]]; then
+    BRUNO_LATEST_VERSION="$(
+        curl -sSLf --connect-timeout 10 --max-time 60 \
+            "https://api.github.com/repos/usebruno/bruno/releases/latest" |
+            jq -r ".tag_name"
+    )"
+fi
 
 if [[ -z "${BRUNO_LATEST_VERSION}" || "${BRUNO_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."

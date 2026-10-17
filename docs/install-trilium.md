@@ -4,6 +4,12 @@ Downloads the latest TriliumNext AppImage from GitHub Releases, extracts the bun
 
 **Supported architectures:** `x86_64`, `aarch64`
 
+## Environment Variables
+
+| Variable                 | Default       | Description                                  |
+| ------------------------ | ------------- | -------------------------------------------- |
+| `TRILIUM_LATEST_VERSION` | auto-detected | Trilium version to install (e.g. `v0.106.0`) |
+
 ## Usage
 
 ```bash

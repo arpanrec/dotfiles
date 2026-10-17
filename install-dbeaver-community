@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DBEAVER_COMMUNITY_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/dbeaver/dbeaver/releases/latest" |
-    jq -r ".tag_name")"
+if [[ -z "${DBEAVER_COMMUNITY_LATEST_VERSION:-}" ]]; then
+    DBEAVER_COMMUNITY_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/dbeaver/dbeaver/releases/latest" |
+        jq -r ".tag_name")"
+fi
 
 if [[ -z "${DBEAVER_COMMUNITY_LATEST_VERSION}" || "${DBEAVER_COMMUNITY_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."

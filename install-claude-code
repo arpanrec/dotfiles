@@ -20,9 +20,11 @@ if compgen -G "/lib/ld-musl-*" >/dev/null; then
     DOWNLOAD_ARCH_KEY="${DOWNLOAD_ARCH_KEY}-musl"
 fi
 
-CLAUDE_CODE_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/anthropics/claude-code/releases/latest" |
-    jq -r ".tag_name")"
+if [[ -z "${CLAUDE_CODE_LATEST_VERSION:-}" ]]; then
+    CLAUDE_CODE_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/anthropics/claude-code/releases/latest" |
+        jq -r ".tag_name")"
+fi
 
 if [[ -z "${CLAUDE_CODE_LATEST_VERSION}" || "${CLAUDE_CODE_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."

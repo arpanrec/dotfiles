@@ -4,6 +4,12 @@ Downloads the latest stable VS Code tarball, extracts it to `~/.local/share/vsco
 
 **Supported architectures:** `x86_64`, `aarch64`
 
+## Environment Variables
+
+| Variable                | Default       | Description                                 |
+| ----------------------- | ------------- | ------------------------------------------- |
+| `VSCODE_LATEST_VERSION` | auto-detected | VS Code version to install (e.g. `1.142.0`) |
+
 ## Usage
 
 ```bash

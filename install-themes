@@ -157,9 +157,11 @@ echo "Done gvolpe/BeautyLine."
 
 echo "Installing Bibata Cursor."
 
-BIBATA_CURSOR_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/ful1e5/Bibata_Cursor/releases/latest" |
-    jq -r ".tag_name")"
+if [[ -z "${BIBATA_CURSOR_VERSION:-}" ]]; then
+    BIBATA_CURSOR_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/ful1e5/Bibata_Cursor/releases/latest" |
+        jq -r ".tag_name")"
+fi
 
 if [[ -z "${BIBATA_CURSOR_VERSION}" || "${BIBATA_CURSOR_VERSION}" == "null" ]]; then
     echo "Failed to get latest Bibata Cursor version."
@@ -188,9 +190,11 @@ echo "Done Bibata Cursor."
 
 echo "Installing hack nerd-fonts."
 
-NERD_FONT_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" |
-    jq -r ".tag_name")"
+if [[ -z "${NERD_FONT_VERSION:-}" ]]; then
+    NERD_FONT_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest" |
+        jq -r ".tag_name")"
+fi
 
 if [[ -z "${NERD_FONT_VERSION}" || "${NERD_FONT_VERSION}" == "null" ]]; then
     echo "Failed to get latest Nerd Font version."

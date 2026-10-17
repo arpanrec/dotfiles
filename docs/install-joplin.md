@@ -4,6 +4,12 @@ Downloads the latest Joplin Desktop AppImage from GitHub Releases, extracts the 
 
 **Supported architectures:** `x86_64` only
 
+## Environment Variables
+
+| Variable                | Default       | Description                                |
+| ----------------------- | ------------- | ------------------------------------------ |
+| `JOPLIN_LATEST_VERSION` | auto-detected | Joplin version to install (e.g. `v3.7.21`) |
+
 ## Usage
 
 ```bash

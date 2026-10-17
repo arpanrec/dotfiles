@@ -6,10 +6,11 @@ Fetches the latest Neovim release tag, clones the source, and builds with `CMAKE
 
 ## Environment Variables
 
-| Variable             | Default          | Description                               |
-| -------------------- | ---------------- | ----------------------------------------- |
-| `NEOVIM_INSTALL_DIR` | `${HOME}/.local` | Install prefix                            |
-| `NVIM_APPNAME`       | `nvim`           | App name used for state/cache directories |
+| Variable             | Default          | Description                                  |
+| -------------------- | ---------------- | -------------------------------------------- |
+| `NEOVIM_INSTALL_DIR` | `${HOME}/.local` | Install prefix                               |
+| `NVIM_APPNAME`       | `nvim`           | App name used for state/cache directories    |
+| `NEOVIM_VERSION`     | auto-detected    | Neovim release tag to build (e.g. `v0.12.6`) |
 
 ## Usage
 

@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TRILIUM_LATEST_VERSION="$(
-    curl -sSLf --connect-timeout 10 --max-time 60 \
-        "https://api.github.com/repos/TriliumNext/Trilium/releases/latest" |
-        jq -r ".tag_name"
-)"
+if [[ -z "${TRILIUM_LATEST_VERSION:-}" ]]; then
+    TRILIUM_LATEST_VERSION="$(
+        curl -sSLf --connect-timeout 10 --max-time 60 \
+            "https://api.github.com/repos/TriliumNext/Trilium/releases/latest" |
+            jq -r ".tag_name"
+    )"
+fi
 
 if [[ -z "${TRILIUM_LATEST_VERSION}" || "${TRILIUM_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."

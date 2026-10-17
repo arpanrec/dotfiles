@@ -4,6 +4,12 @@ Downloads the latest Bruno API client AppImage from GitHub Releases, extracts th
 
 **Supported architectures:** `x86_64`, `aarch64`
 
+## Environment Variables
+
+| Variable               | Default       | Description                              |
+| ---------------------- | ------------- | ---------------------------------------- |
+| `BRUNO_LATEST_VERSION` | auto-detected | Bruno version to install (e.g. `v4.2.1`) |
+
 ## Usage
 
 ```bash

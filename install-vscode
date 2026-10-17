@@ -14,9 +14,11 @@ for cmd in "${required_cmds[@]}"; do
     fi
 done
 
-VSCODE_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://update.code.visualstudio.com/api/releases/stable" |
-    jq -r ".[0]")"
+if [[ -z "${VSCODE_LATEST_VERSION:-}" ]]; then
+    VSCODE_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://update.code.visualstudio.com/api/releases/stable" |
+        jq -r ".[0]")"
+fi
 
 if [[ -z "${VSCODE_LATEST_VERSION}" ]]; then
     echo "Failed to get latest version."

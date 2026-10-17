@@ -6,9 +6,11 @@ if [[ "$(uname -m)" != "x86_64" ]]; then
     exit 1
 fi
 
-TELEGRAM_DESKTOP_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest" |
-    jq -r ".tag_name")"
+if [[ -z "${TELEGRAM_DESKTOP_LATEST_VERSION:-}" ]]; then
+    TELEGRAM_DESKTOP_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/telegramdesktop/tdesktop/releases/latest" |
+        jq -r ".tag_name")"
+fi
 
 if [[ -z "${TELEGRAM_DESKTOP_LATEST_VERSION}" || "${TELEGRAM_DESKTOP_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."

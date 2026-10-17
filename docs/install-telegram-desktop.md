@@ -4,6 +4,12 @@ Downloads the latest Telegram Desktop tarball from GitHub Releases, extracts it 
 
 **Supported architectures:** `x86_64` only
 
+## Environment Variables
+
+| Variable                          | Default       | Description                                         |
+| --------------------------------- | ------------- | --------------------------------------------------- |
+| `TELEGRAM_DESKTOP_LATEST_VERSION` | auto-detected | Telegram Desktop version to install (e.g. `v7.3.1`) |
+
 ## Usage
 
 ```bash

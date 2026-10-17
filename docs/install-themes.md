@@ -14,6 +14,13 @@ Installs GTK, KDE Plasma, icon, cursor, and font assets. It checks for GNOME She
 
 **Prerequisites:** `curl`, `git`, `unzip`, `gtk-update-icon-cache`, `jq`, `fc-cache`
 
+## Environment Variables
+
+| Variable                | Default       | Description                                      |
+| ----------------------- | ------------- | ------------------------------------------------ |
+| `BIBATA_CURSOR_VERSION` | auto-detected | Bibata Cursor version to install (e.g. `v2.0.7`) |
+| `NERD_FONT_VERSION`     | auto-detected | Nerd Fonts version to install (e.g. `v3.5.1`)    |
+
 ## Usage
 
 ```bash

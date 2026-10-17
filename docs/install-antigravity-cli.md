@@ -4,6 +4,12 @@ Downloads the latest Antigravity CLI release for the detected architecture from 
 
 **Supported architectures:** `x86_64`, `aarch64`
 
+## Environment Variables
+
+| Variable                         | Default       | Description                                       |
+| -------------------------------- | ------------- | ------------------------------------------------- |
+| `ANTIGRAVITY_CLI_LATEST_VERSION` | auto-detected | Antigravity CLI version to install (e.g. `1.4.0`) |
+
 ## Usage
 
 ```bash

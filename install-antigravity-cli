@@ -16,9 +16,11 @@ aarch64 | arm64)
     ;;
 esac
 
-ANTIGRAVITY_CLI_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/google-antigravity/antigravity-cli/releases/latest" |
-    jq -r ".tag_name")"
+if [[ -z "${ANTIGRAVITY_CLI_LATEST_VERSION:-}" ]]; then
+    ANTIGRAVITY_CLI_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/google-antigravity/antigravity-cli/releases/latest" |
+        jq -r ".tag_name")"
+fi
 
 if [[ -z "${ANTIGRAVITY_CLI_LATEST_VERSION}" || "${ANTIGRAVITY_CLI_LATEST_VERSION}" == "null" ]]; then
     echo "Failed to get latest version."

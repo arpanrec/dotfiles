@@ -4,6 +4,12 @@ Downloads the latest Claude Code release for the detected architecture from GitH
 
 **Supported architectures:** `x86_64`, `aarch64`
 
+## Environment Variables
+
+| Variable                     | Default       | Description                                      |
+| ---------------------------- | ------------- | ------------------------------------------------ |
+| `CLAUDE_CODE_LATEST_VERSION` | auto-detected | Claude Code version to install (e.g. `v2.1.302`) |
+
 ## Usage
 
 ```bash

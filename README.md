@@ -60,7 +60,7 @@ CLEAN_DOT_INSTALL=yes bash <(curl -sSL --connect-timeout 10 --max-time 10 https:
 ## Arch Linux Setup
 
 - [Setup Arch Server](docs/setup-arch-server.md): Base system configuration for Arch Linux
-- [Setup Arch Workstation](docs/setup-arch-workstation.md): Full graphical workstation environment
+- [Setup Arch KDE Hyprland](docs/setup-arch-kde-hyprland.md): Full graphical workstation environment
 
 ## Fedora Setup
 

@@ -212,6 +212,8 @@
     "prettier.useTabs": false,
     "python.analysis.typeCheckingMode": "strict",
     "python.terminal.useEnvFile": false,
+    "python.terminal.activateEnvInCurrentTerminal": false,
+    "python.terminal.activateEnvironment": false,
     "redhat.telemetry.enabled": false,
     "remote.autoForwardPorts": false,
     "security.workspace.trust.untrustedFiles": "open",

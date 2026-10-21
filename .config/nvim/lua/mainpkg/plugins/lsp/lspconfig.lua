@@ -3,12 +3,10 @@
 return {
     "neovim/nvim-lspconfig",
     lazy = false,
-    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "hrsh7th/cmp-nvim-lsp" },
         { "antosha417/nvim-lsp-file-operations", config = true },
-        { "folke/neodev.nvim", config = true },
-        { "hrsh7th/vscode-langservers-extracted" },
+        { "folke/lazydev.nvim", ft = "lua", opts = {} },
     },
     config = function()
         vim.diagnostic.config({
@@ -36,10 +34,14 @@ return {
                 vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
 
                 opts.desc = "Go to previous diagnostic"
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+                vim.keymap.set("n", "[d", function()
+                    vim.diagnostic.jump({ count = -1, float = true })
+                end, opts)
 
                 opts.desc = "Go to next diagnostic"
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+                vim.keymap.set("n", "]d", function()
+                    vim.diagnostic.jump({ count = 1, float = true })
+                end, opts)
 
                 opts.desc = "Show help for the method signature"
                 vim.keymap.set("n", "<leader>vh", vim.lsp.buf.signature_help, opts)

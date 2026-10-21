@@ -8,21 +8,21 @@ Mode codes: `n` normal, `v` visual, `x` visual (excludes select mode), `i` inser
 
 Source: `lua/mainpkg/keymap.lua`
 
-| Mode | Keys          | Action                                                                                                                           |
-| ---- | ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| n    | `<leader>pv`  | Open netrw                                                                                                                       |
-| v    | `J`           | Move selected lines down                                                                                                         |
-| v    | `K`           | Move selected lines up                                                                                                           |
-| n    | `J`           | Join line below, keep cursor position                                                                                            |
-| n    | `<C-d>`       | Half page down, keep cursor centered                                                                                             |
-| n    | `<C-u>`       | Half page up, keep cursor centered                                                                                               |
-| n    | `n`           | Next search match, keep cursor centered                                                                                          |
-| n    | `N`           | Previous search match, keep cursor centered                                                                                      |
-| x    | `<leader>p`   | Paste over selection without overwriting the register                                                                            |
-| n, v | `<leader>y`   | Yank to the system clipboard                                                                                                     |
-| n    | `<leader>Y`   | Yank line to the system clipboard                                                                                                |
-| n    | `<leader>vrn` | Prefill `:%s` to replace the word under the cursor across the file (overridden by LSP rename when an LSP is attached, see below) |
-| n    | `<leader>x`   | Make the current file executable (`chmod +x`)                                                                                    |
+| Mode | Keys         | Action                                                             |
+| ---- | ------------ | ------------------------------------------------------------------ |
+| n    | `<leader>pv` | Open netrw                                                         |
+| v    | `J`          | Move selected lines down                                           |
+| v    | `K`          | Move selected lines up                                             |
+| n    | `J`          | Join line below, keep cursor position                              |
+| n    | `<C-d>`      | Half page down, keep cursor centered                               |
+| n    | `<C-u>`      | Half page up, keep cursor centered                                 |
+| n    | `n`          | Next search match, keep cursor centered                            |
+| n    | `N`          | Previous search match, keep cursor centered                        |
+| x    | `<leader>p`  | Paste over selection without overwriting the register              |
+| n, v | `<leader>y`  | Yank to the system clipboard                                       |
+| n    | `<leader>Y`  | Yank line to the system clipboard                                  |
+| n    | `<leader>vs` | Prefill `:%s` to replace the word under the cursor across the file |
+| n    | `<leader>x`  | Make the current file executable (`chmod +x`)                      |
 
 ## Windows
 
@@ -135,33 +135,33 @@ Source: `after/plugin/fugetive.lua`
 
 Source: `lua/mainpkg/plugins/lsp/lspconfig.lua`. Buffer-local, active once an LSP client attaches to the buffer.
 
-| Mode | Keys          | Action                                                                                                               |
-| ---- | ------------- | -------------------------------------------------------------------------------------------------------------------- |
-| n    | `<leader>vd`  | Show diagnostics for the current line                                                                                |
-| n    | `[d`          | Go to the previous diagnostic in the buffer                                                                          |
-| n    | `]d`          | Go to the next diagnostic in the buffer                                                                              |
-| n    | `<leader>vh`  | Show signature help                                                                                                  |
-| n    | `<leader>vk`  | Show hover documentation                                                                                             |
-| n    | `gD`          | Go to declaration                                                                                                    |
-| n    | `gd`          | Go to definition                                                                                                     |
-| n    | `<leader>vws` | Show workspace symbols                                                                                               |
-| n    | `<leader>vca` | Show code actions                                                                                                    |
-| n    | `<leader>vrr` | Show references                                                                                                      |
-| n    | `<leader>vrn` | Rename the symbol under the cursor (overrides the global `<leader>vrn` substitute mapping while the LSP is attached) |
-| n, v | `<leader>vfl` | Format with the LSP client                                                                                           |
+| Mode | Keys          | Action                                      |
+| ---- | ------------- | ------------------------------------------- |
+| n    | `<leader>vd`  | Show diagnostics for the current line       |
+| n    | `[d`          | Go to the previous diagnostic in the buffer |
+| n    | `]d`          | Go to the next diagnostic in the buffer     |
+| n    | `<leader>vh`  | Show signature help                         |
+| n    | `<leader>vk`  | Show hover documentation                    |
+| n    | `gD`          | Go to declaration                           |
+| n    | `gd`          | Go to definition                            |
+| n    | `<leader>vws` | Show workspace symbols                      |
+| n    | `<leader>vca` | Show code actions                           |
+| n    | `<leader>vrr` | Show references                             |
+| n    | `<leader>vrn` | Rename the symbol under the cursor          |
+| n, v | `<leader>vfl` | Format with the LSP client                  |
 
 ## Diagnostics and Trouble
 
 Source: `after/plugin/trouble.lua`
 
-| Mode | Keys         | Action                           |
-| ---- | ------------ | -------------------------------- |
-| n    | `<leader>xx` | Toggle Trouble                   |
-| n    | `<leader>xw` | Toggle workspace diagnostics     |
-| n    | `<leader>xd` | Toggle document diagnostics      |
-| n    | `<leader>xq` | Toggle the quickfix list         |
-| n    | `<leader>xl` | Toggle the location list         |
-| n    | `gR`         | Toggle LSP references in Trouble |
+| Mode | Keys         | Action                                    |
+| ---- | ------------ | ----------------------------------------- |
+| n    | `<leader>xx` | Toggle Trouble diagnostics                |
+| n    | `<leader>xw` | Toggle diagnostics for all buffers        |
+| n    | `<leader>xd` | Toggle diagnostics for the current buffer |
+| n    | `<leader>xq` | Toggle the quickfix list                  |
+| n    | `<leader>xl` | Toggle the location list                  |
+| n    | `gR`         | Toggle LSP references in Trouble          |
 
 ## Completion (insert mode)
 

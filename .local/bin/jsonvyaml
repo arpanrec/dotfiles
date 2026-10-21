@@ -1,32 +1,37 @@
 #!/usr/bin/env python3
 
-import sys
+from __future__ import annotations
+
 import json
+import sys
 from pathlib import Path
+from typing import Any
 
 try:
     import yaml
 except ImportError as e:
-    print(f"Error: {e}. Try 'pip install pyyaml'")
+    sys.stderr.write(f"Error: {e}. Try 'pip install pyyaml'\n")
     sys.exit(1)
 
-def main():
+
+def main() -> None:
     if len(sys.argv) != 2:
-        print("Usage: convert.py <file>")
+        sys.stderr.write(f"Usage: {Path(sys.argv[0]).name} <file>\n")
         sys.exit(1)
 
     file_path = Path(sys.argv[1])
 
     if not file_path.exists():
-        print(f"Error: File '{file_path}' does not exist")
+        sys.stderr.write(f"Error: File '{file_path}' does not exist\n")
         sys.exit(1)
 
     suffix = file_path.suffix.lower()
 
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             content = f.read()
 
+        data: Any
         if suffix == ".json":
             # Convert JSON → YAML
             data = json.loads(content)
@@ -38,12 +43,13 @@ def main():
             print(json.dumps(data, indent=2))
 
         else:
-            print("Error: Unsupported file type. Must be .json, .yaml, or .yml")
+            sys.stderr.write("Error: Unsupported file type. Must be .json, .yaml, or .yml\n")
             sys.exit(1)
 
-    except Exception as e:
-        print(f"Error processing file: {e}")
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        sys.stderr.write(f"Error processing file: {e}\n")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

@@ -22,11 +22,11 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 alias running-services='systemctl list-unit-files --type=service'
 
-alias yd='youtube-dl -f best --verbose --external-downloader axel --external-downloader-args "-n 10 -a"'
+alias yd='yt-dlp -f best --verbose --downloader axel --downloader-args "axel:-n 10 -a"'
 
 ## Docker
-# remove all docker containers
-alias docker-rm-all='docker rm $(docker ps -a -q) -f && docker system prune -af --volumes'
+# remove all docker containers, then prune every image, network and volume
+alias docker-rm-all='docker ps -aq | xargs -r docker rm -f; docker system prune -af --volumes'
 
-alias myip='curl ipinfo.io/ip'
+alias myip='curl https://ipinfo.io/ip'
 # alias mount-ssd05='sudo mount --mkdir -t exfat /dev/disk/by-uuid/6DF5-7915 /mnt/SSD05 -o uid=0,gid=0,fmask=0111,dmask=0000,noatime'

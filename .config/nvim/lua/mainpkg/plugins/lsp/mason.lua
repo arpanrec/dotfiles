@@ -9,7 +9,6 @@ return {
         { "WhoIsSethDaniel/mason-tool-installer.nvim" },
     },
 
-    cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Open Mason Manage UI" } },
     config = function()
         -- import mason
@@ -50,7 +49,6 @@ return {
                 "ansiblels",
                 "yamlls",
                 -- "cssmodules_ls",
-                "marksman",
                 -- DAP
                 -- Linter
                 -- "eslint", -- This is not useded for lsp, but for linting only

@@ -38,7 +38,7 @@ opts.desc = "copy selected text to system clipboard in normal"
 vim.keymap.set("n", "<leader>Y", [["+Y]], opts)
 
 opts.desc = "Replace the word under the curson for the entire file"
-vim.keymap.set("n", "<leader>vrn", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
+vim.keymap.set("n", "<leader>vs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
 
 opts.desc = "Make the current file executable"
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", opts)

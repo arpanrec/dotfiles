@@ -1,8 +1,6 @@
 [Unit]
 Description=rclone: Remote FUSE filesystem for cloud storage config %i
 Documentation=man:rclone(1)
-After=network-online.target
-Wants=network-online.target 
 
 [Service]
 Type=notify
@@ -15,7 +13,7 @@ ExecStart= \
     --vfs-cache-mode writes \
     --vfs-cache-max-size 100M \
     --log-level INFO \
-    --log-file /tmp/rclone-%i.log \
+    --log-file %t/rclone-%i.log \
     --umask 022 \
     %i:/ %h/mnt/%i
 ExecStop=/bin/fusermount -uz %h/mnt/%i

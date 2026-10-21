@@ -139,6 +139,11 @@ if [[ ! "${PATH}" =~ ${PNPM_HOME}: ]]; then
     export PATH="${PNPM_HOME}:${PATH}"
 fi
 
+export BUN_INSTALL="${HOME}/.bun"
+if [[ ! "${PATH}" =~ ${BUN_INSTALL}/bin: ]]; then
+    export PATH="${BUN_INSTALL}/bin:${PATH}"
+fi
+
 brave_profile() {
     local profile="${1:-}"
     local bravecmd

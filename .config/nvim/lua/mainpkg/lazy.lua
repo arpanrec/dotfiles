@@ -7,7 +7,7 @@ if vim.fn.filereadable(vim.fn.expand("~/.ssh/github.com")) == 1 then
 end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -30,7 +30,7 @@ require("lazy").setup({ { import = "mainpkg.plugins" }, { import = "mainpkg.plug
         -- version = "*", -- enable this to try installing the latest stable versions of plugins
     },
     install = {
-        colorscheme = { "nightfly" },
+        colorscheme = { "tokyonight-moon" },
     },
     checker = {
         enabled = true,

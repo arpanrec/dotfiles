@@ -1,5 +1,6 @@
 [Unit]
-Description="Bitwarden Local Server (https://bitwarden.com/help/vault-management-api/)"
+Description=Bitwarden Local Server
+Documentation=https://bitwarden.com/help/vault-management-api/
 ConditionPathExists=%h/.env
 
 [Service]

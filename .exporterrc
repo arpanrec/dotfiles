@@ -16,55 +16,50 @@ export LC_IDENTIFICATION="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export CLOUD_INIT_IS_DEV_MACHINE=true
 
-export LD_LIBRARY_PATH=${HOME}/.local/lib64:${HOME}/.local/lib:${LD_LIBRARY_PATH}
+# Prepend a directory to PATH unless it is already present.
+__dotfiles_path_prepend() {
+    case ":${PATH}:" in
+    *":$1:"*) ;;
+    *) export PATH="$1${PATH:+:${PATH}}" ;;
+    esac
+}
 
-if ! [[ "${PATH}" =~ /usr/local/bin: ]]; then
-    export PATH="/usr/local/bin:${PATH}"
-fi
+for __dotfiles_lib in "${HOME}/.local/lib" "${HOME}/.local/lib64"; do
+    case ":${LD_LIBRARY_PATH:-}:" in
+    *":${__dotfiles_lib}:"*) ;;
+    *) export LD_LIBRARY_PATH="${__dotfiles_lib}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" ;;
+    esac
+done
+unset __dotfiles_lib
+
+__dotfiles_path_prepend "/usr/local/bin"
 
 if [ -f "${HOME}/.env" ]; then
     # shellcheck source=/dev/null
     source "${HOME}/.env"
 fi
 
-if ! [[ "${PATH}" =~ /usr/local/sbin: ]]; then
-    export PATH="/usr/local/sbin:${PATH}"
+__dotfiles_path_prepend "/usr/local/sbin"
+__dotfiles_path_prepend "/sbin"
+__dotfiles_path_prepend "/usr/sbin"
+
+if [[ -d "/var/lib/snapd/snap/bin" ]]; then
+    __dotfiles_path_prepend "/var/lib/snapd/snap/bin"
 fi
 
-if ! [[ "${PATH}" =~ /sbin: ]]; then
-    export PATH="/sbin:${PATH}"
+if [[ -d "${HOME}/.local/share/JetBrains/Toolbox/scripts" ]]; then
+    __dotfiles_path_prepend "${HOME}/.local/share/JetBrains/Toolbox/scripts"
 fi
 
-if ! [[ "${PATH}" =~ /usr/sbin: ]]; then
-    export PATH="/usr/sbin:${PATH}"
-fi
-
-if [[ -d "/var/lib/snapd/snap/bin" ]] && [[ ! "${PATH}" =~ /var/lib/snapd/snap/bin: ]]; then
-    export PATH="/var/lib/snapd/snap/bin:${PATH}"
-fi
-
-if [[ -d "${HOME}/.local/share/JetBrains/Toolbox/scripts" ]] &&
-    [[ ! "${PATH}" =~ ${HOME}/.local/share/JetBrains/Toolbox/scripts: ]]; then
-    export PATH="${HOME}/.local/share/JetBrains/Toolbox/scripts:${PATH}"
-fi
-
-if [ -f "${HOME}/.local/share/go/bin/go" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/go/bin: ]]; then
-    export PATH="${HOME}/.local/share/go/bin:${PATH}"
+if [ -f "${HOME}/.local/share/go/bin/go" ]; then
+    __dotfiles_path_prepend "${HOME}/.local/share/go/bin"
 fi
 
 export GOPATH="${HOME}/.go"
+__dotfiles_path_prepend "${GOPATH}/bin"
 
-if [[ ! "${PATH}" =~ ${GOPATH}/bin: ]]; then
-    export PATH="${GOPATH}/bin:${PATH}"
-fi
-
-if command -v go &>/dev/null; then
-    GOROOT=$(go env GOROOT)
-    export GOROOT
-fi
-
-if [ -f "${HOME}/.local/share/node/bin/node" ] && [[ ! "${PATH}" =~ ${HOME}/.local/share/node/bin: ]]; then
-    export PATH="${HOME}/.local/share/node/bin:${PATH}"
+if [ -f "${HOME}/.local/share/node/bin/node" ]; then
+    __dotfiles_path_prepend "${HOME}/.local/share/node/bin"
 fi
 
 if [ -f "${HOME}/.pre.jdk.env.sh" ]; then
@@ -77,29 +72,26 @@ if [ -f "${HOME}/.jdk.env.sh" ]; then
     source "${HOME}/.jdk.env.sh"
 fi
 
-if [[ -f "${HOME}/.local/share/coursier/bin/cs" ]] && [[ ! "${PATH}" =~ ${HOME}/.local/share/coursier/bin: ]]; then
-    export PATH="${HOME}/.local/share/coursier/bin:${PATH}"
+if [[ -f "${HOME}/.local/share/coursier/bin/cs" ]]; then
+    __dotfiles_path_prepend "${HOME}/.local/share/coursier/bin"
 fi
 
-if [[ ! "${PATH}" =~ ${HOME}/.local/bin: ]]; then
-    export PATH="${HOME}/.local/bin:${PATH}"
+__dotfiles_path_prepend "${HOME}/.local/bin"
+__dotfiles_path_prepend "${HOME}/bin"
+
+if [[ -f "${HOME}/.cargo/bin/cargo" ]]; then
+    __dotfiles_path_prepend "${HOME}/.cargo/bin"
 fi
 
-if [[ ! "${PATH}" =~ ${HOME}/bin: ]]; then
-    export PATH="${HOME}/bin:${PATH}"
+if [[ -f "${HOME}/.pulumi/bin/pulumi" ]]; then
+    __dotfiles_path_prepend "${HOME}/.pulumi/bin"
 fi
 
-if [[ -f "${HOME}/.cargo/bin/cargo" ]] && [[ ! "${PATH}" =~ ${HOME}/.cargo/bin: ]]; then
-    export PATH="${HOME}/.cargo/bin:${PATH}"
-    # shellcheck source=/dev/null
-    source "${HOME}/.cargo/env"
-fi
-
-if [[ -f "${HOME}/.pulumi/bin/pulumi" ]] && [[ ! "${PATH}" =~ ${HOME}/.pulumi/bin: ]]; then
-    export PATH="${HOME}/.pulumi/bin:${PATH}"
-fi
-
-if [ -t 0 ]; then
+# zsh exposes the terminal as $TTY, which stays correct under the p10k instant prompt
+# where stdin is redirected and `tty` reports "not a tty".
+if [ -n "${ZSH_VERSION:-}" ] && [ -n "${TTY:-}" ]; then
+    export GPG_TTY="${TTY}"
+elif [ -t 0 ]; then
     GPG_TTY="$(tty 2>/dev/null)"
     if [ -n "$GPG_TTY" ] && [ "$GPG_TTY" != "not a tty" ]; then
         export GPG_TTY
@@ -125,24 +117,20 @@ fi
 
 # Miniconda
 if [[ -d "${HOME}/.miniconda3" ]]; then
-    export PATH="${HOME}/.miniconda3/bin:${PATH}"
+    __dotfiles_path_prepend "${HOME}/.miniconda3/bin"
 fi
 if [[ -d "${HOME}/miniconda3" ]]; then
-    export PATH="${HOME}/miniconda3/bin:${PATH}"
+    __dotfiles_path_prepend "${HOME}/miniconda3/bin"
 fi
 if [[ -d "${HOME}/.dotnet/tools" ]]; then
-    export PATH="${HOME}/.dotnet/tools:${PATH}"
+    __dotfiles_path_prepend "${HOME}/.dotnet/tools"
 fi
 
 export PNPM_HOME="${HOME}/.local/share/pnpm"
-if [[ ! "${PATH}" =~ ${PNPM_HOME}: ]]; then
-    export PATH="${PNPM_HOME}:${PATH}"
-fi
+__dotfiles_path_prepend "${PNPM_HOME}"
 
 export BUN_INSTALL="${HOME}/.bun"
-if [[ ! "${PATH}" =~ ${BUN_INSTALL}/bin: ]]; then
-    export PATH="${BUN_INSTALL}/bin:${PATH}"
-fi
+__dotfiles_path_prepend "${BUN_INSTALL}/bin"
 
 brave_profile() {
     local profile="${1:-}"
@@ -184,3 +172,5 @@ chrome_profile() {
         >/dev/null 2>&1 &
     disown
 }
+
+unset -f __dotfiles_path_prepend

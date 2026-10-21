@@ -21,8 +21,6 @@ plugins=(
     zsh-completions
 )
 
-autoload -U compinit && compinit
-
 [[ ! -f "$ZSH/oh-my-zsh.sh" ]] || source "$ZSH/oh-my-zsh.sh"
 
 [ -f "$HOME/.aliasrc" ] && source "$HOME/.aliasrc"
@@ -33,8 +31,9 @@ autoload -U compinit && compinit
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # unsetopt correct_all
 
+autoload -U +X bashcompinit && bashcompinit
+
 if command -v terraform &>/dev/null; then
-    autoload -U +X bashcompinit && bashcompinit
     complete -o nospace -C "$(readlink -f "$(which terraform)")" terraform
 fi
 
@@ -65,6 +64,9 @@ fi
 
 FNM_PATH="${HOME}/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
-    export PATH="${HOME}/.local/share/fnm:$PATH"
+    case ":${PATH}:" in
+    *":${FNM_PATH}:"*) ;;
+    *) export PATH="${FNM_PATH}:${PATH}" ;;
+    esac
     eval "$(fnm env)"
 fi

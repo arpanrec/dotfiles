@@ -3,7 +3,8 @@
 	forceDeleteBranch = false
 [fetch]
 	prune = false
-	tags = all
+	tags = false
+	pruneTags = false
 [pull]
 	rebase = false
 [core]
@@ -17,8 +18,8 @@
 	excludesFile = ~/.gitignore
 	symlinks = true
 [push]
-	followTags = true
-	autoSetupRemote = true
+	followTags = false
+	autoSetupRemote = false
 [init]
 	defaultBranch = main
 [credential]

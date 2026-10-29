@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CURRENT_ARCH="$(uname -m)"
+
+case "${CURRENT_ARCH}" in
+x86_64)
+    VENDOR_TARGET="x86_64-unknown-linux-musl"
+    ;;
+aarch64 | arm64)
+    VENDOR_TARGET="aarch64-unknown-linux-musl"
+    ;;
+*)
+    echo "Unsupported architecture: ${CURRENT_ARCH}"
+    exit 1
+    ;;
+esac
+
+if [[ -z "${CODEX_CLI_LATEST_VERSION:-}" ]]; then
+    CODEX_CLI_LATEST_VERSION="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+        "https://api.github.com/repos/openai/codex/releases/latest" |
+        jq -r ".tag_name")"
+fi
+
+if [[ -z "${CODEX_CLI_LATEST_VERSION}" || "${CODEX_CLI_LATEST_VERSION}" == "null" ]]; then
+    echo "Failed to get latest version."
+    exit 1
+fi
+
+echo "Installing Codex CLI version ${CODEX_CLI_LATEST_VERSION}"
+
+TMP_DOWNLOAD_DIRECTORY="${HOME}/.cache/dotfiles-tmp-download-dir"
+ARCHIVE_NAME="codex-package-${VENDOR_TARGET}.tar.gz"
+CHECKSUM_NAME="codex-package_SHA256SUMS"
+ARCHIVE_PATH="${TMP_DOWNLOAD_DIRECTORY}/codex-cli-${CODEX_CLI_LATEST_VERSION}-${ARCHIVE_NAME}"
+EXTRACT_DIRECTORY="${TMP_DOWNLOAD_DIRECTORY}/codex-cli-${CODEX_CLI_LATEST_VERSION}-${VENDOR_TARGET}-extract"
+RELEASE_URL="https://github.com/openai/codex/releases/download/${CODEX_CLI_LATEST_VERSION}"
+
+mkdir -p "${TMP_DOWNLOAD_DIRECTORY}" "${HOME}/.local/bin"
+
+echo "Downloading Codex CLI ${CODEX_CLI_LATEST_VERSION} for ${CURRENT_ARCH} architecture"
+
+if [[ ! -f "${ARCHIVE_PATH}" ]]; then
+    curl -fL --connect-timeout 10 --max-time 600 \
+        "${RELEASE_URL}/${ARCHIVE_NAME}" \
+        -o "${ARCHIVE_PATH}"
+else
+    echo "Archive already exists"
+fi
+
+echo "Verifying checksum"
+EXPECTED_CHECKSUM="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+    "${RELEASE_URL}/${CHECKSUM_NAME}" |
+    awk -v name="${ARCHIVE_NAME}" '$2 == name { print $1 }')"
+
+if [[ -z "${EXPECTED_CHECKSUM}" ]]; then
+    echo "Failed to get checksum for ${ARCHIVE_NAME}"
+    exit 1
+fi
+
+if ! echo "${EXPECTED_CHECKSUM}  ${ARCHIVE_PATH}" | sha256sum -c -; then
+    echo "Checksum mismatch, removing ${ARCHIVE_PATH}"
+    rm -f "${ARCHIVE_PATH}"
+    exit 1
+fi
+
+rm -rf "${EXTRACT_DIRECTORY}"
+mkdir -p "${EXTRACT_DIRECTORY}"
+
+tar -xzf "${ARCHIVE_PATH}" -C "${EXTRACT_DIRECTORY}"
+
+if [[ ! -f "${EXTRACT_DIRECTORY}/bin/codex" ]]; then
+    echo "Extraction failed: codex binary not found"
+    exit 1
+fi
+
+# Codex normally locates its bundled ripgrep/sandbox helpers via the
+# codex-path/ and codex-resources/ directories that ship next to bin/ in the
+# release archive. Copying just the binaries flat into ~/.local/bin drops
+# that layout, so codex instead needs `rg` and `bwrap` to already be on
+# PATH as system packages for search and Linux sandboxing to work.
+rm -f "${HOME}/.local/bin/codex" "${HOME}/.local/bin/codex-code-mode-host"
+cp "${EXTRACT_DIRECTORY}/bin/codex" "${HOME}/.local/bin/codex"
+cp "${EXTRACT_DIRECTORY}/bin/codex-code-mode-host" "${HOME}/.local/bin/codex-code-mode-host"
+chmod +x "${HOME}/.local/bin/codex" "${HOME}/.local/bin/codex-code-mode-host"
+
+rm -rf "${EXTRACT_DIRECTORY}"
+
+for dep in rg bwrap; do
+    if ! command -v "${dep}" >/dev/null 2>&1; then
+        echo "Warning: '${dep}' not found on PATH. Codex bundles it internally, but this flat install does not vendor it; install it system-wide (e.g. 'pacman -S ripgrep bubblewrap') for full search/sandbox functionality." >&2
+    fi
+done
+
+echo "Codex CLI installed successfully!"
+"${HOME}/.local/bin/codex" --version

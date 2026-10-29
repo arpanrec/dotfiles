@@ -75,6 +75,7 @@ All installers download to `~/.cache/dotfiles-tmp-download-dir` and skip re-down
 - [Install Antigravity CLI](docs/install-antigravity-cli.md): Antigravity CLI
 - [Install Antigravity IDE](docs/install-antigravity.md): Antigravity IDE with extensions
 - [Install Claude Code](docs/install-claude-code.md): Claude Code CLI
+- [Install Codex CLI](docs/install-codex-cli.md): OpenAI Codex CLI
 - [Install Neovim](docs/install-neovim.md): Build Neovim from source
 - [Install Visual Studio Code](docs/install-vscode.md): VS Code with extensions
 - [Install JetBrains Toolbox](docs/install-jetbrains-toolbox.md): JetBrains Toolbox app

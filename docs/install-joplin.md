@@ -1,6 +1,6 @@
 # [Install Joplin](https://joplinapp.org/help/install/)
 
-Downloads the latest Joplin Desktop AppImage from GitHub Releases, extracts the bundled icon, and creates a desktop entry.
+Downloads the latest Joplin Desktop AppImage from GitHub Releases, verifies its SHA-256 checksum against the digest GitHub publishes for the release asset, extracts the bundled icon, and creates a desktop entry.
 
 **Supported architectures:** `x86_64` only
 

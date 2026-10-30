@@ -60,6 +60,24 @@ else
     echo "Tarball File already exists"
 fi
 
+EXPECTED_CHECKSUM="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+    "https://update.code.visualstudio.com/api/versions/${VSCODE_LATEST_VERSION}/linux-${DOWNLOAD_ARCH_KEY}/stable" |
+    jq -r ".sha256hash")"
+
+if [[ -z "${EXPECTED_CHECKSUM}" || "${EXPECTED_CHECKSUM}" == "null" ]]; then
+    echo "Failed to get checksum from the VS Code update API."
+    exit 1
+fi
+
+echo "Verifying checksum."
+
+if ! echo "${EXPECTED_CHECKSUM}  ${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" |
+    sha256sum -c -; then
+    echo "Checksum mismatch, removing ${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
+    rm -f "${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz"
+    exit 1
+fi
+
 tar -xzvf "${TMP_DOWNLOAD_DIRECTORY}/vscode-${VSCODE_LATEST_VERSION}-linux-${DOWNLOAD_ARCH_KEY}.tar.gz" \
     -C "${INSTALL_DIRECTORY}" \
     --strip-components=1

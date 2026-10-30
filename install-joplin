@@ -41,6 +41,25 @@ else
     echo "AppImage already exists"
 fi
 
+EXPECTED_CHECKSUM="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+    "https://api.github.com/repos/laurent22/joplin/releases/tags/${JOPLIN_LATEST_VERSION}" |
+    jq -r --arg name "${APPIMAGE_NAME}" \
+        '.assets[] | select(.name == $name) | .digest' |
+    sed 's/^sha256://')"
+
+if [[ -z "${EXPECTED_CHECKSUM}" || "${EXPECTED_CHECKSUM}" == "null" ]]; then
+    echo "Failed to get checksum from GitHub release."
+    exit 1
+fi
+
+echo "Verifying checksum."
+
+if ! echo "${EXPECTED_CHECKSUM}  ${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}" | sha256sum -c -; then
+    echo "Checksum mismatch, removing ${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}"
+    rm -f "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}"
+    exit 1
+fi
+
 echo "Installing Joplin"
 
 cp "${TMP_DOWNLOAD_DIRECTORY}/${APPIMAGE_NAME}" \

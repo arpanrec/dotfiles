@@ -46,6 +46,25 @@ else
     echo "Archive already exists"
 fi
 
+EXPECTED_CHECKSUM="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+    "https://api.github.com/repos/google-antigravity/antigravity-cli/releases/tags/${ANTIGRAVITY_CLI_LATEST_VERSION}" |
+    jq -r --arg name "${ARCHIVE_NAME}" \
+        '.assets[] | select(.name == $name) | .digest' |
+    sed 's/^sha256://')"
+
+if [[ -z "${EXPECTED_CHECKSUM}" || "${EXPECTED_CHECKSUM}" == "null" ]]; then
+    echo "Failed to get checksum from GitHub release."
+    exit 1
+fi
+
+echo "Verifying checksum."
+
+if ! echo "${EXPECTED_CHECKSUM}  ${ARCHIVE_PATH}" | sha256sum -c -; then
+    echo "Checksum mismatch, removing ${ARCHIVE_PATH}"
+    rm -f "${ARCHIVE_PATH}"
+    exit 1
+fi
+
 rm -rf "${INSTALL_DIRECTORY}"
 mkdir -p "${INSTALL_DIRECTORY}"
 

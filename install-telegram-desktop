@@ -35,6 +35,26 @@ else
     echo "Tarball File already exists"
 fi
 
+EXPECTED_CHECKSUM="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+    "https://api.github.com/repos/telegramdesktop/tdesktop/releases/tags/${TELEGRAM_DESKTOP_LATEST_VERSION}" |
+    jq -r --arg name "td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
+        '.assets[] | select(.name == $name) | .digest' |
+    sed 's/^sha256://')"
+
+if [[ -z "${EXPECTED_CHECKSUM}" || "${EXPECTED_CHECKSUM}" == "null" ]]; then
+    echo "Failed to get checksum from GitHub release."
+    exit 1
+fi
+
+echo "Verifying checksum."
+
+if ! echo "${EXPECTED_CHECKSUM}  ${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" |
+    sha256sum -c -; then
+    echo "Checksum mismatch, removing ${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz"
+    rm -f "${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz"
+    exit 1
+fi
+
 tar -xf "${TMP_DOWNLOAD_DIRECTORY}/td-setup-linux-x64-${TELEGRAM_DESKTOP_LATEST_VERSION:1}.tar.xz" \
     -C "${INSTALL_DIRECTORY}" --strip-components=1
 

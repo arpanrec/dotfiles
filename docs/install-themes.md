@@ -1,6 +1,6 @@
 # Install Themes
 
-Installs GTK, KDE Plasma, icon, cursor, and font assets. It checks for GNOME Shell and switches between Layan GTK and Layan KDE accordingly.
+Installs GTK, KDE Plasma, icon, cursor, and font assets. It checks for GNOME Shell and switches between Layan GTK and Layan KDE accordingly. Nerd Fonts archives are verified against the SHA-256 digests GitHub publishes for the release assets.
 
 ## Installed Assets
 

@@ -1,6 +1,6 @@
 # [Install Nextcloud Desktop](https://github.com/nextcloud-releases/desktop/releases)
 
-Downloads the latest Nextcloud Desktop AppImage from GitHub Releases, extracts the bundled icon, and creates a desktop entry with an `nc://` URL scheme handler.
+Downloads the latest Nextcloud Desktop AppImage from GitHub Releases, verifies its SHA-256 checksum against the digest GitHub publishes for the release asset, extracts the bundled icon, and creates a desktop entry with an `nc://` URL scheme handler.
 
 **Supported architectures:** `x86_64` only
 

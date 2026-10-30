@@ -1,6 +1,6 @@
 # Set Up Development Workspace
 
-Provisions a developer toolchain with Ansible using the [Ansible server_workspace playbook](https://github.com/arpanrec/ansible-collection-nebula/blob/main/playbooks/server_workspace.yml). Run this script as a non-root user on Linux. It needs `curl`, `jq`, `tar`, `sha256sum`, `flock` and `mktemp`.
+Provisions a developer toolchain with Ansible using the [Ansible server_workspace playbook](https://github.com/arpanrec/ansible-collection-nebula/blob/main/playbooks/server_workspace.md). Run this script as a non-root user on Linux. It needs `curl`, `jq`, `tar`, `sha256sum`, `flock` and `mktemp`.
 
 When called without arguments, the script asks which tools to install (Node.js, Go, Oracle JDK, Terraform, Vault, Pulumi, Bitwarden SDK, Hadolint, Gitleaks, uv, Rclone, Bun), then asks for confirmation before it runs the playbook. The prompts need a terminal. In unattended runs, pass arguments; the script hands them straight to `ansible-playbook`.
 

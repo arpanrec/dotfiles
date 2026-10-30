@@ -31,7 +31,7 @@ The login banner uses `fastfetch` when the release's repositories have it. When 
 | `UV_VERSION`                             | `0.13.6`                                        | uv release used to run Ansible                                  |
 | `UV_TARBALL`                             | `${NEBULA_TMP_DIR}/uv-<arch>-<ver>.tar.gz`      | Cached uv release tarball, verified by SHA-256 before use       |
 | `UV_INSTALL_DIR`                         | `${NEBULA_TMP_DIR}/uv`                          | Directory the `uv` and `uvx` binaries are installed to          |
-| `NEBULA_VERSION`                         | `1.23.0`                                        | Nebula collection and playbook version                          |
+| `NEBULA_VERSION`                         | `1.24.0`                                        | Nebula collection and playbook version                          |
 | `NEBULA_PYTHON_VERSION`                  | `3.14.8`                                        | Python version uv uses to run Ansible                           |
 | `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`             | Authorized keys file for the created user                       |
 | `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements-<version>.yml`  | Cached Ansible Galaxy requirements of the collection            |

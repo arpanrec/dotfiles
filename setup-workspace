@@ -1,246 +1,195 @@
 #!/usr/bin/env bash
+# Provisions a developer toolchain with the arpanrec.nebula.server_workspace Ansible playbook.
+#
+# Without arguments, prompts for the tool tags to install.
+# With arguments, passes them straight to ansible-playbook, e.g. `setup-workspace --tags all`.
 set -euo pipefail
 
-echo "Starting"
+log() {
+    printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >&2
+}
 
-export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.cache/ansible-nebula-cache"}"
-
-export SERVER_WORKSPACE_LOCK_FILE="${NEBULA_TMP_DIR}/setup-workspace.lock"
-
-if [[ -f "${SERVER_WORKSPACE_LOCK_FILE}" ]]; then
-    echo "Lock file ${SERVER_WORKSPACE_LOCK_FILE} exists, Exiting"
+die() {
+    log "ERROR: $*"
     exit 1
-else
-    echo "Creating lock file ${SERVER_WORKSPACE_LOCK_FILE}"
-    mkdir -p "$(dirname "${SERVER_WORKSPACE_LOCK_FILE}")"
-    touch "${SERVER_WORKSPACE_LOCK_FILE}"
-fi
+}
 
 if [[ "$(id -u)" -eq 0 || "${HOME}" == "/root" ]]; then
-    echo "Root user detected, Please run this script as a non-root user, Exiting"
-    exit 1
+    die "Root user detected, run this script as a non-root user"
 fi
 
-if ! command -v jq >/dev/null 2>&1; then
-    echo "jq is not installed, Exiting"
-    exit 1
+if [[ "$(uname -s)" != "Linux" ]]; then
+    die "Unsupported OS $(uname -s), only Linux is supported"
 fi
+
+for __cmd in curl jq tar sha256sum flock mktemp; do
+    command -v "${__cmd}" >/dev/null 2>&1 || die "${__cmd} is not installed"
+done
+
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"${HOME}/.cache/ansible-nebula-cache"}"
+export NEBULA_TMP_DIR="${NEBULA_TMP_DIR%/}"
+export SERVER_WORKSPACE_LOCK_FILE="${SERVER_WORKSPACE_LOCK_FILE:-"${NEBULA_TMP_DIR}/setup-workspace.lock"}"
 
 export UV_VERSION="${UV_VERSION:-0.13.6}"
 export UV_INSTALL_DIR="${UV_INSTALL_DIR:-"${NEBULA_TMP_DIR}/uv"}"
 export UV_TARBALL="${UV_TARBALL:-"${NEBULA_TMP_DIR}/uv-$(uname -m)-${UV_VERSION}.tar.gz"}"
-
-UV_ASSET_NAME="uv-$(uname -m)-unknown-linux-gnu.tar.gz"
-
-EXPECTED_UV_TARBALL_HASH="$(curl -sSfL --connect-timeout 10 --max-time 60 \
-    "https://api.github.com/repos/astral-sh/uv/releases/tags/${UV_VERSION}" |
-    jq -r --arg name "${UV_ASSET_NAME}" '.assets[] | select(.name == $name) | .digest' |
-    sed 's/^sha256://')"
-
-if [[ -z "${EXPECTED_UV_TARBALL_HASH}" || "${EXPECTED_UV_TARBALL_HASH}" == "null" ]]; then
-    echo "Failed to get checksum of ${UV_ASSET_NAME} from uv ${UV_VERSION} GitHub release, Exiting"
-    exit 1
-fi
-
-rm -f "${UV_INSTALL_DIR}/uv" "${UV_INSTALL_DIR}/uvx"
-mkdir -p "$(dirname "${UV_TARBALL}")" "${UV_INSTALL_DIR}"
-
-if [[ ! -f "${UV_TARBALL}" ]]; then
-    echo "Downloading uv ${UV_VERSION} to ${UV_TARBALL}"
-    curl -fL --connect-timeout 10 --max-time 600 \
-        "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${UV_ASSET_NAME}" \
-        -o "${UV_TARBALL}"
-else
-    echo "${UV_TARBALL} already exists"
-fi
-
-echo "Verifying checksum of ${UV_TARBALL}"
-if ! echo "${EXPECTED_UV_TARBALL_HASH}  ${UV_TARBALL}" | sha256sum -c -; then
-    echo "Checksum mismatch, removing ${UV_TARBALL}"
-    rm -f "${UV_TARBALL}"
-    exit 1
-fi
-
-echo "Extracting uv ${UV_VERSION} to ${UV_INSTALL_DIR}"
-tar -xzf "${UV_TARBALL}" -C "${UV_INSTALL_DIR}" --strip-components=1
-chmod 755 "${UV_INSTALL_DIR}/uv" "${UV_INSTALL_DIR}/uvx"
-
-if [[ -z $* ]]; then
-
-    __install_tags=()
-
-    read -n1 -s -r -p 'Enter "Y" to install node js (Press any other key to Skip*) : ' install_node_js
-    if [[ "${install_node_js}" == "Y" || "${install_node_js}" == "y" ]]; then
-        echo "Nodejs installation selected"
-        __install_tags+=('nodejs')
-    else
-        echo "Skipping nodejs installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install go (Press any other key to Skip*) : ' install_go
-    if [[ "${install_go}" == "Y" || "${install_go}" == "y" ]]; then
-        echo "Go installation selected"
-        __install_tags+=('go')
-    else
-        echo "Skipping go installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Oracle JDK (Press any other key to Skip*) : ' install_java
-    if [[ "${install_java}" == "Y" || "${install_java}" == "y" ]]; then
-        echo "Java installation selected"
-        __install_tags+=('java')
-    else
-        echo "Skipping Java installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Vault (Press any other key to Skip*) : ' install_vault
-    if [[ "${install_vault}" == "Y" || "${install_vault}" == "y" ]]; then
-        echo "Vault installation selected"
-        __install_tags+=('vault')
-    else
-        echo "Skipping Vault installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Terraform (Press any other key to Skip*) : ' install_terraform
-    if [[ "${install_terraform}" == "Y" || "${install_terraform}" == "y" ]]; then
-        echo "Terraform installation selected"
-        __install_tags+=('terraform')
-    else
-        echo "Skipping Terraform installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install pulumi (Press any other key to Skip*) : ' install_pulumi
-    if [[ "${install_pulumi}" == "Y" || "${install_pulumi}" == "y" ]]; then
-        echo "Pulumi installation selected"
-        __install_tags+=('pulumi')
-    else
-        echo "Skipping Pulumi installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Bitwarden SDK (Press any other key to Skip*) : ' install_bitwarden_sdk
-    if [[ "${install_bitwarden_sdk}" == "Y" || "${install_bitwarden_sdk}" == "y" ]]; then
-        echo "Bitwarden SDK installation selected"
-        __install_tags+=('bws')
-    else
-        echo "Skipping Bitwarden SDK installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Hadolint (Press any other key to Skip*) : ' install_hadolint
-    if [[ "${install_hadolint}" == "Y" || "${install_hadolint}" == "y" ]]; then
-        echo "Hadolint installation selected"
-        __install_tags+=('hadolint')
-    else
-        echo "Skipping Hadolint installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Gitleaks (Press any other key to Skip*) : ' install_gitleaks
-    if [[ "${install_gitleaks}" == "Y" || "${install_gitleaks}" == "y" ]]; then
-        echo "Gitleaks installation selected"
-        __install_tags+=('gitleaks')
-    else
-        echo "Skipping Gitleaks installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install uv (Press any other key to Skip*) : ' install_uv
-    if [[ "${install_uv}" == "Y" || "${install_uv}" == "y" ]]; then
-        echo "uv installation selected"
-        __install_tags+=('uv')
-    else
-        echo "Skipping uv installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Rclone (Press any other key to Skip*) : ' install_rclone
-    if [[ "${install_rclone}" == "Y" || "${install_rclone}" == "y" ]]; then
-        echo "Rclone installation selected"
-        __install_tags+=('rclone')
-    else
-        echo "Skipping Rclone installation"
-    fi
-
-    read -n1 -s -r -p 'Enter "Y" to install Bun (Press any other key to Skip*) : ' install_bun
-    if [[ "${install_bun}" == "Y" || "${install_bun}" == "y" ]]; then
-        echo "Bun installation selected"
-        __install_tags+=('bun')
-    else
-        echo "Skipping Bun installation"
-    fi
-
-    if [[ ${#__install_tags[@]} -eq 0 ]]; then
-        echo "No tags selected, nothing to install. Exiting."
-        exit 0
-    fi
-
-    __ansible_tags=$(printf "%s," "${__install_tags[@]}")
-    __ansible_tags="${__ansible_tags%,}"
-    echo "Running with default tags :: ${__ansible_tags}"
-    read -n1 -s -r -p 'Press any key to continue or Ctrl+C to exit' continue_script
-    if [[ "${continue_script}" == "" ]]; then
-        echo "Continuing with default tags :: ${__ansible_tags}"
-    else
-        echo "Exiting"
-        exit 1
-    fi
-else
-    echo "Running with custom tags :: $*"
-fi
 
 export NEBULA_VERSION="${NEBULA_VERSION:-"1.23.0"}"
 export NEBULA_PYTHON_VERSION="${NEBULA_PYTHON_VERSION:-"3.14.8"}"
 export NEBULA_EXTRA_VARS_JSON_FILE="${NEBULA_EXTRA_VARS_JSON_FILE:-"${NEBULA_TMP_DIR}/extra_vars.json"}"
 export NEBULA_REQUIREMENTS_FILE="${NEBULA_REQUIREMENTS_FILE:-"${NEBULA_TMP_DIR}/requirements-${NEBULA_VERSION}.yml"}"
 
-echo "
-NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
-NEBULA_VERSION: ${NEBULA_VERSION}
-NEBULA_PYTHON_VERSION: ${NEBULA_PYTHON_VERSION}
-NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}
-NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}"
-
 export DEFAULT_ROLES_PATH="${DEFAULT_ROLES_PATH:-"${NEBULA_TMP_DIR}/roles"}"
 export ANSIBLE_ROLES_PATH="${ANSIBLE_ROLES_PATH:-"${DEFAULT_ROLES_PATH}"}"
 export ANSIBLE_COLLECTIONS_PATH="${ANSIBLE_COLLECTIONS_PATH:-"${NEBULA_TMP_DIR}/collections"}"
 export ANSIBLE_INVENTORY="${ANSIBLE_INVENTORY:-"${NEBULA_TMP_DIR}/inventory.yml"}"
 
-echo "
-DEFAULT_ROLES_PATH: ${DEFAULT_ROLES_PATH}
-ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
-ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
-ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}"
+# Tags of the server_workspace playbook offered in the interactive prompt, in playbook order, as "tag:label".
+__tag_choices=(
+    "nodejs:Node.js"
+    "go:Go"
+    "java:Oracle JDK"
+    "terraform:Terraform"
+    "vault:Vault"
+    "pulumi:Pulumi"
+    "bws:Bitwarden SDK"
+    "hadolint:Hadolint"
+    "gitleaks:Gitleaks"
+    "uv:uv"
+    "rclone:Rclone"
+    "bun:Bun"
+)
 
-echo Creating NEBULA_TMP_DIR at "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
-    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
-mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
-    "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" "$(dirname "${ANSIBLE_INVENTORY}")"
+mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${SERVER_WORKSPACE_LOCK_FILE}")"
 
-__uvx_ansible=("${UV_INSTALL_DIR}/uvx" --python "${NEBULA_PYTHON_VERSION}" --from ansible-core --with ansible --with hvac --with httpx
-    --with requests)
+# The lock is held on an open file descriptor, so the kernel releases it when the script exits for any reason.
+exec {__lock_fd}>"${SERVER_WORKSPACE_LOCK_FILE}"
+if ! flock -n "${__lock_fd}"; then
+    die "Another setup-workspace run holds the lock ${SERVER_WORKSPACE_LOCK_FILE}"
+fi
+
+__work_dir="$(mktemp -d "${NEBULA_TMP_DIR}/setup-workspace.XXXXXX")"
+trap 'rm -rf "${__work_dir}"' EXIT
+
+__curl() {
+    curl -fsSL --retry 3 --retry-delay 2 --connect-timeout 10 "$@"
+}
+
+__verify_sha256() {
+    echo "${1}  ${2}" | sha256sum -c --status -
+}
+
+__install_uv() {
+    local installed_version=""
+    if [[ -x "${UV_INSTALL_DIR}/uv" && -x "${UV_INSTALL_DIR}/uvx" ]]; then
+        read -r _ installed_version _ < <("${UV_INSTALL_DIR}/uv" --version 2>/dev/null) || true
+    fi
+    if [[ "${installed_version}" == "${UV_VERSION}" ]]; then
+        log "uv ${UV_VERSION} is already installed in ${UV_INSTALL_DIR}"
+        return
+    fi
+
+    local asset_name expected_hash
+    asset_name="uv-$(uname -m)-unknown-linux-gnu.tar.gz"
+    expected_hash="$(__curl --max-time 60 "https://api.github.com/repos/astral-sh/uv/releases/tags/${UV_VERSION}" |
+        jq -r --arg name "${asset_name}" '.assets[] | select(.name == $name) | .digest' |
+        sed 's/^sha256://')"
+    if [[ -z "${expected_hash}" || "${expected_hash}" == "null" ]]; then
+        die "Failed to get the checksum of ${asset_name} from the uv ${UV_VERSION} GitHub release"
+    fi
+
+    mkdir -p "$(dirname "${UV_TARBALL}")" "${UV_INSTALL_DIR}"
+
+    if [[ -f "${UV_TARBALL}" ]] && ! __verify_sha256 "${expected_hash}" "${UV_TARBALL}"; then
+        log "Cached ${UV_TARBALL} failed checksum verification, downloading it again"
+        rm -f "${UV_TARBALL}"
+    fi
+
+    if [[ ! -f "${UV_TARBALL}" ]]; then
+        log "Downloading uv ${UV_VERSION} to ${UV_TARBALL}"
+        __curl --max-time 600 -o "${__work_dir}/${asset_name}" \
+            "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${asset_name}"
+        __verify_sha256 "${expected_hash}" "${__work_dir}/${asset_name}" ||
+            die "Checksum mismatch for the downloaded ${asset_name}"
+        mv -f "${__work_dir}/${asset_name}" "${UV_TARBALL}"
+    fi
+
+    log "Extracting uv ${UV_VERSION} to ${UV_INSTALL_DIR}"
+    mkdir -p "${__work_dir}/uv"
+    tar -xzf "${UV_TARBALL}" -C "${__work_dir}/uv" --strip-components=1
+    install -m 755 "${__work_dir}/uv/uv" "${__work_dir}/uv/uvx" "${UV_INSTALL_DIR}/"
+}
+
+__select_tags() {
+    local choice tag label answer
+    local -a selected=()
+
+    for choice in "${__tag_choices[@]}"; do
+        tag="${choice%%:*}"
+        label="${choice#*:}"
+        read -n1 -r -p "Install ${label}? [y/N] " answer </dev/tty || answer=""
+        echo >&2
+        if [[ "${answer}" == [yY] ]]; then
+            selected+=("${tag}")
+        fi
+    done
+
+    if [[ ${#selected[@]} -eq 0 ]]; then
+        log "No tags selected, nothing to install"
+        exit 0
+    fi
+
+    local IFS=,
+    __ansible_tags="${selected[*]}"
+}
+
+__ansible_args=()
+if [[ $# -eq 0 ]]; then
+    [[ -t 0 && -r /dev/tty ]] || die "No arguments given and no terminal for prompts, pass e.g. --tags all"
+    __select_tags
+    read -n1 -r -p "Run the playbook with tags ${__ansible_tags}? [y/N] " __confirm </dev/tty || __confirm=""
+    echo >&2
+    [[ "${__confirm}" == [yY] ]] || die "Aborted by user"
+    __ansible_args=(--tags "${__ansible_tags}")
+else
+    __ansible_args=("$@")
+fi
+
+log "Configuration:
+    NEBULA_TMP_DIR: ${NEBULA_TMP_DIR}
+    NEBULA_VERSION: ${NEBULA_VERSION}
+    NEBULA_PYTHON_VERSION: ${NEBULA_PYTHON_VERSION}
+    NEBULA_EXTRA_VARS_JSON_FILE: ${NEBULA_EXTRA_VARS_JSON_FILE}
+    NEBULA_REQUIREMENTS_FILE: ${NEBULA_REQUIREMENTS_FILE}
+    UV_VERSION: ${UV_VERSION}
+    UV_INSTALL_DIR: ${UV_INSTALL_DIR}
+    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}
+    ANSIBLE_COLLECTIONS_PATH: ${ANSIBLE_COLLECTIONS_PATH}
+    ANSIBLE_INVENTORY: ${ANSIBLE_INVENTORY}
+    ansible-playbook arguments: ${__ansible_args[*]}"
+
+__install_uv
+
+mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
+    "$(dirname "${ANSIBLE_INVENTORY}")" "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")" \
+    "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
 
 if [[ ! -f "${NEBULA_REQUIREMENTS_FILE}" ]]; then
-    echo "Downloading ${NEBULA_REQUIREMENTS_FILE}"
-    mkdir -p "$(dirname "${NEBULA_REQUIREMENTS_FILE}")"
-    curl -sSL --connect-timeout 10 --max-time 10 \
-        "https://raw.githubusercontent.com/arpanrec/ansible-collection-nebula/refs/tags/${NEBULA_VERSION}/requirements.yml" \
-        -o "${NEBULA_REQUIREMENTS_FILE}"
-else
-    echo "Requirements file ${NEBULA_REQUIREMENTS_FILE} exists"
+    log "Downloading ${NEBULA_REQUIREMENTS_FILE}"
+    __curl --max-time 60 -o "${__work_dir}/requirements.yml" \
+        "https://raw.githubusercontent.com/arpanrec/ansible-collection-nebula/refs/tags/${NEBULA_VERSION}/requirements.yml"
+    mv -f "${__work_dir}/requirements.yml" "${NEBULA_REQUIREMENTS_FILE}"
 fi
 
-"${__uvx_ansible[@]}" ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
-"${__uvx_ansible[@]}" ansible-galaxy collection install \
-    git+https://github.com/arpanrec/ansible-collection-nebula.git,"${NEBULA_VERSION}"
-
-echo "NEBULA_EXTRA_VARS_JSON_FILE :: ${NEBULA_EXTRA_VARS_JSON_FILE}"
 if [[ ! -f "${NEBULA_EXTRA_VARS_JSON_FILE}" ]]; then
-    echo "Creating ${NEBULA_EXTRA_VARS_JSON_FILE}"
-    echo "Creating directory $(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
-    mkdir -p "$(dirname "${NEBULA_EXTRA_VARS_JSON_FILE}")"
+    log "Creating empty ${NEBULA_EXTRA_VARS_JSON_FILE}"
     echo "{}" >"${NEBULA_EXTRA_VARS_JSON_FILE}"
-else
-    echo "${NEBULA_EXTRA_VARS_JSON_FILE} exists"
 fi
+jq -e 'type == "object"' "${NEBULA_EXTRA_VARS_JSON_FILE}" >/dev/null ||
+    die "${NEBULA_EXTRA_VARS_JSON_FILE} is not a JSON object"
 
-echo "Creating ansible inventory yaml file. ANSIBLE_INVENTORY :: ${ANSIBLE_INVENTORY}"
-tee "${ANSIBLE_INVENTORY}" >/dev/null <<EOF
+log "Writing Ansible inventory ${ANSIBLE_INVENTORY}"
+cat >"${ANSIBLE_INVENTORY}" <<'EOF'
 ---
 all:
     children:
@@ -255,19 +204,18 @@ all:
             ansible_python_interpreter: "{{ ansible_playbook_python }}"
 EOF
 
-cd "${HOME}" || exit 1
+__uvx_ansible=("${UV_INSTALL_DIR}/uvx" --python "${NEBULA_PYTHON_VERSION}" --from ansible-core --with ansible
+    --with hvac --with httpx --with requests)
 
-if [[ -n "${__ansible_tags:-}" && -z $* ]]; then
-    "${__uvx_ansible[@]}" ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" \
-        --tags "${__ansible_tags}"
-elif [[ -z "${__ansible_tags:-}" && -n $* ]]; then
-    "${__uvx_ansible[@]}" ansible-playbook arpanrec.nebula.server_workspace --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "$@"
-else
-    echo "Not sure what to do, Exiting"
-    exit 1
-fi
+log "Installing Ansible requirements for nebula ${NEBULA_VERSION}"
+"${__uvx_ansible[@]}" ansible-galaxy install -r "${NEBULA_REQUIREMENTS_FILE}"
+"${__uvx_ansible[@]}" ansible-galaxy collection install \
+    "git+https://github.com/arpanrec/ansible-collection-nebula.git,${NEBULA_VERSION}"
 
-echo "Removing lock file ${SERVER_WORKSPACE_LOCK_FILE}"
-rm -f "${SERVER_WORKSPACE_LOCK_FILE}"
+cd "${HOME}"
 
-echo "Completed"
+log "Running arpanrec.nebula.server_workspace"
+"${__uvx_ansible[@]}" ansible-playbook arpanrec.nebula.server_workspace \
+    --extra-vars "@${NEBULA_EXTRA_VARS_JSON_FILE}" "${__ansible_args[@]}"
+
+log "Completed"

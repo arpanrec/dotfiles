@@ -125,12 +125,44 @@ if [[ -z $* ]]; then
         echo "Skipping Bitwarden SDK installation"
     fi
 
+    read -n1 -s -r -p 'Enter "Y" to install Hadolint (Press any other key to Skip*) : ' install_hadolint
+    if [[ "${install_hadolint}" == "Y" || "${install_hadolint}" == "y" ]]; then
+        echo "Hadolint installation selected"
+        __install_tags+=('hadolint')
+    else
+        echo "Skipping Hadolint installation"
+    fi
+
+    read -n1 -s -r -p 'Enter "Y" to install Gitleaks (Press any other key to Skip*) : ' install_gitleaks
+    if [[ "${install_gitleaks}" == "Y" || "${install_gitleaks}" == "y" ]]; then
+        echo "Gitleaks installation selected"
+        __install_tags+=('gitleaks')
+    else
+        echo "Skipping Gitleaks installation"
+    fi
+
     read -n1 -s -r -p 'Enter "Y" to install uv (Press any other key to Skip*) : ' install_uv
     if [[ "${install_uv}" == "Y" || "${install_uv}" == "y" ]]; then
         echo "uv installation selected"
         __install_tags+=('uv')
     else
         echo "Skipping uv installation"
+    fi
+
+    read -n1 -s -r -p 'Enter "Y" to install Rclone (Press any other key to Skip*) : ' install_rclone
+    if [[ "${install_rclone}" == "Y" || "${install_rclone}" == "y" ]]; then
+        echo "Rclone installation selected"
+        __install_tags+=('rclone')
+    else
+        echo "Skipping Rclone installation"
+    fi
+
+    read -n1 -s -r -p 'Enter "Y" to install Bun (Press any other key to Skip*) : ' install_bun
+    if [[ "${install_bun}" == "Y" || "${install_bun}" == "y" ]]; then
+        echo "Bun installation selected"
+        __install_tags+=('bun')
+    else
+        echo "Skipping Bun installation"
     fi
 
     if [[ ${#__install_tags[@]} -eq 0 ]]; then

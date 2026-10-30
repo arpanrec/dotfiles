@@ -6,26 +6,29 @@ Bootstraps a Debian machine as root using the [Ansible cloudinit playbook](https
 
 ## Environment Variables
 
-| Variable                                 | Default                               | Description                                                |
-| ---------------------------------------- | ------------------------------------- | ---------------------------------------------------------- |
-| `CLOUD_INIT_USER`                        | `cloudinit`                           | Username for the user to create                            |
-| `CLOUD_INIT_GROUP`                       | `cloudinit`                           | Primary group for the created user                         |
-| `CLOUD_INIT_USE_SSH_PUB`                 | Owner's public key from assets branch | SSH public key to authorize for the created user           |
-| `CLOUD_INIT_HOSTNAME`                    | `cloudinit`                           | Hostname for the machine                                   |
-| `CLOUD_INIT_DOMAIN`                      | `easyiac.com`                         | Domain name for the machine                                |
-| `CLOUD_INIT_COPY_ROOT_SSH_KEYS`          | `false`                               | Copy root's authorized_keys to the created user            |
-| `CLOUD_INIT_IS_DEV_MACHINE`              | `false`                               | Run `setup-workspace` with `--tags all` after provisioning |
-| `CLOUD_INIT_INSTALL_DOTFILES`            | `true`                                | Install dotfiles for the created user                      |
-| `CLOUD_INIT_INSTALL_DOCKER`              | `false`                               | Install Docker                                             |
-| `NEBULA_TMP_DIR`                         | `/cloudinit/.tmp`                     | Working directory for Ansible                              |
-| `NEBULA_VERSION`                         | `1.23.0`                              | Nebula playbook version                                    |
-| `NEBULA_VENV_DIR`                        | `${NEBULA_TMP_DIR}/venv`              | Python virtual environment directory                       |
-| `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`   | Authorized keys file for the created user                  |
-| `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements.yml`  | Ansible requirements file                                  |
-| `DEFAULT_ROLES_PATH`                     | `${NEBULA_TMP_DIR}/roles`             | Default Ansible roles path                                 |
-| `ANSIBLE_ROLES_PATH`                     | `${DEFAULT_ROLES_PATH}`               | Ansible roles path override                                |
-| `ANSIBLE_COLLECTIONS_PATH`               | `${NEBULA_TMP_DIR}/collections`       | Ansible collections path                                   |
-| `ANSIBLE_INVENTORY`                      | `${NEBULA_TMP_DIR}/inventory.yml`     | Ansible inventory file                                     |
+| Variable                                 | Default                                    | Description                                                |
+| ---------------------------------------- | ------------------------------------------ | ---------------------------------------------------------- |
+| `CLOUD_INIT_USER`                        | `cloudinit`                                | Username for the user to create                            |
+| `CLOUD_INIT_GROUP`                       | `cloudinit`                                | Primary group for the created user                         |
+| `CLOUD_INIT_USE_SSH_PUB`                 | Owner's public key from assets branch      | SSH public key to authorize for the created user           |
+| `CLOUD_INIT_HOSTNAME`                    | `cloudinit`                                | Hostname for the machine                                   |
+| `CLOUD_INIT_DOMAIN`                      | `easyiac.com`                              | Domain name for the machine                                |
+| `CLOUD_INIT_COPY_ROOT_SSH_KEYS`          | `false`                                    | Copy root's authorized_keys to the created user            |
+| `CLOUD_INIT_IS_DEV_MACHINE`              | `false`                                    | Run `setup-workspace` with `--tags all` after provisioning |
+| `CLOUD_INIT_INSTALL_DOTFILES`            | `true`                                     | Install dotfiles for the created user                      |
+| `CLOUD_INIT_INSTALL_DOCKER`              | `false`                                    | Install Docker                                             |
+| `NEBULA_TMP_DIR`                         | `/cloudinit/.tmp`                          | Working directory for Ansible                              |
+| `UV_VERSION`                             | `0.13.6`                                   | uv release used to run Ansible                             |
+| `UV_TARBALL`                             | `${NEBULA_TMP_DIR}/uv-<arch>-<ver>.tar.gz` | Cached uv release tarball, verified by SHA-256 before use  |
+| `UV_INSTALL_DIR`                         | `${NEBULA_TMP_DIR}/uv`                     | Directory the `uv` and `uvx` binaries are extracted to     |
+| `NEBULA_VERSION`                         | `1.23.0`                                   | Nebula playbook version                                    |
+| `NEBULA_VENV_DIR`                        | `${NEBULA_TMP_DIR}/venv`                   | Python virtual environment directory                       |
+| `NEBULA_CLOUD_INIT_AUTHORIZED_KEYS_FILE` | `${NEBULA_TMP_DIR}/authorized_keys`        | Authorized keys file for the created user                  |
+| `NEBULA_REQUIREMENTS_FILE`               | `${NEBULA_TMP_DIR}/requirements.yml`       | Ansible requirements file                                  |
+| `DEFAULT_ROLES_PATH`                     | `${NEBULA_TMP_DIR}/roles`                  | Default Ansible roles path                                 |
+| `ANSIBLE_ROLES_PATH`                     | `${DEFAULT_ROLES_PATH}`                    | Ansible roles path override                                |
+| `ANSIBLE_COLLECTIONS_PATH`               | `${NEBULA_TMP_DIR}/collections`            | Ansible collections path                                   |
+| `ANSIBLE_INVENTORY`                      | `${NEBULA_TMP_DIR}/inventory.yml`          | Ansible inventory file                                     |
 
 ## Usage
 

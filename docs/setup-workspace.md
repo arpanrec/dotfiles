@@ -4,16 +4,19 @@ Provisions a developer toolchain with Ansible using the [Ansible server_workspac
 
 ## Environment Variables
 
-| Variable                      | Default                             | Description                                |
-| ----------------------------- | ----------------------------------- | ------------------------------------------ |
-| `NEBULA_TMP_DIR`              | `${HOME}/.tmp`                      | Temporary directory for playbook downloads |
-| `NEBULA_VERSION`              | `1.23.0`                            | Version of the nebula playbook             |
-| `NEBULA_VENV_DIR`             | `${NEBULA_TMP_DIR}/venv`            | Python virtual environment directory       |
-| `NEBULA_EXTRA_VARS_JSON_FILE` | `${NEBULA_TMP_DIR}/extra_vars.json` | Extra vars for the playbook in JSON format |
-| `DEFAULT_ROLES_PATH`          | `${NEBULA_TMP_DIR}/roles`           | Default Ansible roles path                 |
-| `ANSIBLE_ROLES_PATH`          | `${DEFAULT_ROLES_PATH}`             | Ansible roles path override                |
-| `ANSIBLE_COLLECTIONS_PATH`    | `${NEBULA_TMP_DIR}/collections`     | Ansible collections path                   |
-| `ANSIBLE_INVENTORY`           | `${NEBULA_TMP_DIR}/inventory`       | Ansible inventory file                     |
+| Variable                      | Default                                    | Description                                               |
+| ----------------------------- | ------------------------------------------ | --------------------------------------------------------- |
+| `NEBULA_TMP_DIR`              | `${HOME}/.tmp`                             | Temporary directory for playbook downloads                |
+| `UV_VERSION`                  | `0.13.6`                                   | uv release used to run Ansible                            |
+| `UV_TARBALL`                  | `${NEBULA_TMP_DIR}/uv-<arch>-<ver>.tar.gz` | Cached uv release tarball, verified by SHA-256 before use |
+| `UV_INSTALL_DIR`              | `${NEBULA_TMP_DIR}/uv`                     | Directory the `uv` and `uvx` binaries are extracted to    |
+| `NEBULA_VERSION`              | `1.23.0`                                   | Version of the nebula playbook                            |
+| `NEBULA_VENV_DIR`             | `${NEBULA_TMP_DIR}/venv`                   | Python virtual environment directory                      |
+| `NEBULA_EXTRA_VARS_JSON_FILE` | `${NEBULA_TMP_DIR}/extra_vars.json`        | Extra vars for the playbook in JSON format                |
+| `DEFAULT_ROLES_PATH`          | `${NEBULA_TMP_DIR}/roles`                  | Default Ansible roles path                                |
+| `ANSIBLE_ROLES_PATH`          | `${DEFAULT_ROLES_PATH}`                    | Ansible roles path override                               |
+| `ANSIBLE_COLLECTIONS_PATH`    | `${NEBULA_TMP_DIR}/collections`            | Ansible collections path                                  |
+| `ANSIBLE_INVENTORY`           | `${NEBULA_TMP_DIR}/inventory`              | Ansible inventory file                                    |
 
 ## Usage
 

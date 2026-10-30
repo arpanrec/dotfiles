@@ -110,8 +110,6 @@ fi
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR:-"/cloudinit/.tmp"}"
 export NEBULA_TMP_DIR="${NEBULA_TMP_DIR%/}" # Remove trailing slash if exists
 export CLOUD_INIT_LOCK_FILE="${NEBULA_TMP_DIR}/setup-debian.lock"
-export UV_INSTALL_DIR="${NEBULA_TMP_DIR}/uv"
-export UV_NO_MODIFY_PATH=1
 
 if [ -f "${CLOUD_INIT_LOCK_FILE}" ] || [ -d "${CLOUD_INIT_LOCK_FILE}" ] || [ -L "${CLOUD_INIT_LOCK_FILE}" ]; then
     echo "Lock file ${CLOUD_INIT_LOCK_FILE} exists, If you are sure then delete it and run again, exiting"
@@ -121,15 +119,50 @@ else
     mkdir -p "$(dirname "${CLOUD_INIT_LOCK_FILE}")"
     touch "${CLOUD_INIT_LOCK_FILE}"
 fi
-
 echo "Installing locales and setting timezone"
 apt-get update
 apt-get install -y locales tzdata git curl ca-certificates gnupg2 tar unzip \
-    sudo bash python3-pip vim python3-requests python3-httpx
+    sudo bash python3-pip vim python3-requests python3-httpx jq
 
-echo "Installing uv at ${UV_INSTALL_DIR}"
-export PATH="${UV_INSTALL_DIR}:${PATH}"
-curl -LsSf https://astral.sh/uv/install.sh | bash
+export UV_VERSION="${UV_VERSION:-0.13.6}"
+export UV_INSTALL_DIR="${UV_INSTALL_DIR:-"${NEBULA_TMP_DIR}/uv"}"
+export UV_TARBALL="${UV_TARBALL:-"${NEBULA_TMP_DIR}/uv-$(uname -m)-${UV_VERSION}.tar.gz"}"
+export UV_NO_MODIFY_PATH=1
+
+UV_ASSET_NAME="uv-$(uname -m)-unknown-linux-gnu.tar.gz"
+
+EXPECTED_UV_TARBALL_HASH="$(curl -sSfL --connect-timeout 10 --max-time 60 \
+    "https://api.github.com/repos/astral-sh/uv/releases/tags/${UV_VERSION}" |
+    jq -r --arg name "${UV_ASSET_NAME}" '.assets[] | select(.name == $name) | .digest' |
+    sed 's/^sha256://')"
+
+if [[ -z "${EXPECTED_UV_TARBALL_HASH}" || "${EXPECTED_UV_TARBALL_HASH}" == "null" ]]; then
+    echo "Failed to get checksum of ${UV_ASSET_NAME} from uv ${UV_VERSION} GitHub release, exiting"
+    exit 1
+fi
+
+rm -f "${UV_INSTALL_DIR}/uv" "${UV_INSTALL_DIR}/uvx"
+mkdir -p "$(dirname "${UV_TARBALL}")" "${UV_INSTALL_DIR}"
+
+if [[ ! -f "${UV_TARBALL}" ]]; then
+    echo "Downloading uv ${UV_VERSION} to ${UV_TARBALL}"
+    curl -fL --connect-timeout 10 --max-time 600 \
+        "https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${UV_ASSET_NAME}" \
+        -o "${UV_TARBALL}"
+else
+    echo "${UV_TARBALL} already exists"
+fi
+
+echo "Verifying checksum of ${UV_TARBALL}"
+if ! echo "${EXPECTED_UV_TARBALL_HASH}  ${UV_TARBALL}" | sha256sum -c -; then
+    echo "Checksum mismatch, removing ${UV_TARBALL}"
+    rm -f "${UV_TARBALL}"
+    exit 1
+fi
+
+echo "Extracting uv ${UV_VERSION} to ${UV_INSTALL_DIR}"
+tar -xzf "${UV_TARBALL}" -C "${UV_INSTALL_DIR}" --strip-components=1
+chmod 755 "${UV_INSTALL_DIR}/uv" "${UV_INSTALL_DIR}/uvx"
 
 export CLOUD_INIT_USE_SSH_PUB="${CLOUD_INIT_USE_SSH_PUB:-$(curl -sSf --connect-timeout 10 --max-time 60 https://raw.githubusercontent.com/arpanrec/dotfiles/refs/heads/assets/id_ecdsa.pub)}"
 if [ -z "${CLOUD_INIT_USE_SSH_PUB}" ]; then
@@ -216,7 +249,7 @@ mkdir -p "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_
 chown -R root:root "${DEFAULT_ROLES_PATH}" "${ANSIBLE_ROLES_PATH}" "${ANSIBLE_COLLECTIONS_PATH}" \
     "$(dirname "${ANSIBLE_INVENTORY}")"
 
-__uvx_ansible=(uvx --python "${NEBULA_PYTHON_VERSION}" --from ansible-core --with ansible --with hvac --with httpx
+__uvx_ansible=("${UV_INSTALL_DIR}/uvx" --python "${NEBULA_PYTHON_VERSION}" --from ansible-core --with ansible --with hvac --with httpx
     --with requests)
 
 echo "Installing nebula version ${NEBULA_VERSION}"

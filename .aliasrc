@@ -33,4 +33,6 @@ alias myip='curl https://ipinfo.io/ip'
 ## Claude Code
 # second account, kept in its own config directory
 alias claude-sa='CLAUDE_CONFIG_DIR="${HOME}/.claude-sa" claude'
+# share the main account's skills and CLAUDE.md with the second account
+alias claude-sa-link='mkdir -p "${HOME}/.claude/skills" "${HOME}/.claude-sa" && touch "${HOME}/.claude/CLAUDE.md" && rm -rf "${HOME}/.claude-sa/skills" "${HOME}/.claude-sa/CLAUDE.md" && ln -sfn "${HOME}/.claude/skills" "${HOME}/.claude-sa/skills" && ln -sfn "${HOME}/.claude/CLAUDE.md" "${HOME}/.claude-sa/CLAUDE.md"'
 # alias mount-ssd05='sudo mount --mkdir -t exfat /dev/disk/by-uuid/6DF5-7915 /mnt/SSD05 -o uid=0,gid=0,fmask=0111,dmask=0000,noatime'

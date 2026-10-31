@@ -29,4 +29,8 @@ alias yd='yt-dlp -f best --verbose --downloader axel --downloader-args "axel:-n 
 alias docker-rm-all='docker ps -aq | xargs -r docker rm -f; docker system prune -af --volumes'
 
 alias myip='curl https://ipinfo.io/ip'
+
+## Claude Code
+# second account, kept in its own config directory
+alias claude-sa='CLAUDE_CONFIG_DIR="${HOME}/.claude-sa" claude'
 # alias mount-ssd05='sudo mount --mkdir -t exfat /dev/disk/by-uuid/6DF5-7915 /mnt/SSD05 -o uid=0,gid=0,fmask=0111,dmask=0000,noatime'

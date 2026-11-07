@@ -61,8 +61,7 @@ fi
 
 dnf install -y google-chrome-stable brave-browser qbittorrent
 
-dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra bash-completion \
-    shfmt
+dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra bash-completion
 
 dnf -y install vim python3-devel python3-pyyaml kvantum ffmpegthumbnailer ffmpegthumbs
 

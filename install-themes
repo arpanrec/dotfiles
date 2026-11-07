@@ -141,6 +141,10 @@ echo "Done EliverLara/candy-icons."
 
 echo "Installing vinceliuice/Layan-cursors."
 
+# The upstream installer copies with "cp -r dist/ <dest>", which nests a "dist" copy inside an existing
+# destination, so remove the old cursor themes first.
+rm -rf "${HOME}"/.local/share/icons/Layan*-cursors
+
 (
     cd "${TMP_DOWNLOAD_DIRECTORY}/vinceliuice/Layan-cursors/master" || exit 1
     chmod +x ./install.sh
@@ -187,6 +191,21 @@ tar -Jxvf "${TMP_DOWNLOAD_DIRECTORY}/Bibata.tar.xz" -C "${TMP_DOWNLOAD_DIRECTORY
 mv "${TMP_DOWNLOAD_DIRECTORY}"/Bibata/Bibata-* "${HOME}/.local/share/icons/"
 
 echo "Done Bibata Cursor."
+
+echo "Linking cursor themes into ~/.icons."
+
+# The KDE Pointers settings page searches the Xcursor path (~/.icons, /usr/share/icons, ...) and skips
+# ~/.local/share/icons, so expose the cursor themes there through symlinks.
+mkdir -p "${HOME}/.icons"
+rm -rf "${HOME}"/.icons/Bibata-* "${HOME}"/.icons/Layan*-cursors
+
+for cursor_theme_dir in "${HOME}"/.local/share/icons/Bibata-* "${HOME}"/.local/share/icons/Layan*-cursors; do
+    if [[ -d "${cursor_theme_dir}" ]]; then
+        ln -sfn "${cursor_theme_dir}" "${HOME}/.icons/$(basename "${cursor_theme_dir}")"
+    fi
+done
+
+echo "Done linking cursor themes into ~/.icons."
 
 echo "Installing hack nerd-fonts."
 

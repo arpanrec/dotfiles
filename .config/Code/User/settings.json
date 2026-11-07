@@ -175,7 +175,7 @@
         "**/.cache/**": true,
         "**/node_modules/**": true
     },
-    "git.autofetch": false,
+    "git.autofetch": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
     "git.ignoreLegacyWarning": true,
@@ -247,5 +247,6 @@
             "**/.forgejo/workflows/*.yml",
             "**/.forgejo/workflows/*.yaml"
         ]
-    }
+    },
+    "extensions.verifySignature": false
 }

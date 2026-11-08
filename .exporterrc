@@ -126,8 +126,10 @@ if [[ -d "${HOME}/.dotnet/tools" ]]; then
     __dotfiles_path_prepend "${HOME}/.dotnet/tools"
 fi
 
-export PNPM_HOME="${HOME}/.local/share/pnpm"
-__dotfiles_path_prepend "${PNPM_HOME}"
+if [[ -f "${HOME}/.local/share/pnpm/pnpm" ]]; then
+    export PNPM_HOME="${HOME}/.local/share/pnpm"
+    __dotfiles_path_prepend "${PNPM_HOME}"
+fi
 
 export BUN_INSTALL="${HOME}/.bun"
 __dotfiles_path_prepend "${BUN_INSTALL}/bin"

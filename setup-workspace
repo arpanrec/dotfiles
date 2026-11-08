@@ -59,6 +59,7 @@ __tag_choices=(
     "rclone:Rclone"
     "bun:Bun"
     "betterleaks:Betterleaks"
+    "pnpm:pnpm"
 )
 
 mkdir -p "${NEBULA_TMP_DIR}" "$(dirname "${SERVER_WORKSPACE_LOCK_FILE}")"

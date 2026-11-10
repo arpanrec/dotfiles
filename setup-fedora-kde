@@ -63,6 +63,11 @@ dnf install -y google-chrome-stable brave-browser qbittorrent
 
 dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra bash-completion
 
+# llvm-devel provides llvm-config.
+dnf -y install gcc-c++ clang llvm llvm-devel lld meson autoconf automake libtool perl pkgconf-pkg-config
+
+dnf -y install openssl ripgrep fd-find fzf
+
 dnf -y install vim python3-devel python3-pyyaml kvantum ffmpegthumbnailer ffmpegthumbs
 
 dnf -y install vlc haruna gtk-murrine-engine gtk2-engines dolphin-plugins
